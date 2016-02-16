@@ -1,0 +1,377 @@
+body {
+    margin-top: 100px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#content{
+    padding-left: 0px;
+}
+
+#main-content{
+    width: 100%;
+    padding: 0px;
+    background-color: #FFF;
+}
+
+/* Top Navigation */
+
+.top-nav {
+    padding: 0 15px;
+}
+
+.top-nav>li {
+    display: inline-block;
+    float: left;
+}
+
+.top-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    line-height: 20px;
+    color: #fff;
+}
+
+.top-nav>li>a:hover,
+.top-nav>li>a:focus,
+.top-nav>.open>a,
+.top-nav>.open>a:hover,
+.top-nav>.open>a:focus {
+    color: #fff;
+    background-color: #999;
+}
+
+.top-nav>.open>.dropdown-menu {
+    float: left;
+    position: absolute;
+    margin-top: 0;
+    border: 1px solid rgba(0,0,0,.15);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: #fff;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.top-nav>.open>.dropdown-menu>li>a {
+    white-space: normal;
+}
+
+ul.message-dropdown {
+    padding: 0;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+li.message-preview {
+    width: 275px;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+}
+
+li.message-preview>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+li.message-footer {
+    margin: 5px 0;
+}
+
+ul.alert-dropdown {
+    width: 200px;
+}
+
+
+/* Side Navigation */
+
+.side-nav>li>ul {
+    padding: 0;
+}
+
+.side-nav>li>ul>li>a {
+    display: block;
+    padding: 10px 15px 10px 38px;
+    text-decoration: none;
+    color: #999;
+}
+
+.side-nav>li>ul>li>a:hover {
+    color: #fff;
+    
+}
+
+#demo>.active>a{
+     background-color: #333;
+    border-left: 5px solid #999;
+}
+
+.navbar{
+    background-color: #9D1616;
+}
+
+.navbar-inverse{
+    border-color: #999;
+    box-shadow: 0 0 5px rgba(0,0,0,0.75);
+}
+
+.navbar-inverse .navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.active>a:focus,
+.navbar-inverse .navbar-nav>.active>a:hover{
+    background-color: #333;
+    border-left: 5px solid #999;
+}
+
+.navbar-brand{
+    padding-top: 11px;
+}
+
+.navbar-brand a{
+   text-decoration: none;
+   color: #FFF;
+}
+
+/* media queries */
+@media(min-width:768px){
+    body{
+        margin-top: 50px;
+    }
+
+    #content{
+        padding-left: 225px;
+    }
+
+    #main-content{
+        padding: 10px;
+    }
+
+    .side-nav {
+        position: fixed;
+        top: 51px;
+        left: 225px;
+        width: 225px;
+        margin-left: -225px;
+        border: none;
+        border-radius: 0;
+        overflow-y: auto;
+        background-color: #222;
+        bottom: 0;
+        overflow-x: hidden;
+        padding-bottom: 40px;
+    }
+
+    .side-nav>li>a {
+        width: 225px;
+    }
+
+    .side-nav li a:hover,
+    .side-nav li a:focus {
+        outline: none;
+        background-color: #333 !important;
+    }  
+}
+
+/* Cuando el ancho de la pantalla es menor que 767px*/
+@media(max-width: 767px){
+
+     .navbar-inverse .navbar-toggle{
+        border: none;
+    }
+
+    .navbar-inverse .navbar-toggle:hover{
+        background-color: transparent;
+    }
+
+    .navbar-inverse .navbar-collapse{
+        border-color: #999;
+    }
+
+    .navbar-collapse{
+        background: #222;
+    }
+
+    .navbar-collapse ul{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+}
+
+
+/* colores botones*/
+.color-green{
+    color: #5cb85c;
+}
+
+.color-red{
+    color: #d9534f;
+}
+
+/* iconos de mis reservas */
+.icon-left{
+    float: left;
+    font-size: 1.4em;
+}
+
+.icon-right{
+    float: right;
+    font-size: 1.4em;
+}
+
+.page-header{
+    margin-top: 15px;
+}
+
+/* Círculos de colores numerados */
+span.red {
+  background: #9D1616;
+   border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.5em; 
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+  box-shadow:         2px 2px 5px 0px rgba(0,0,0,0.75);
+}
+
+/* div reservas*/
+
+.reserva{
+    background-color: #DC23AB;
+    border-radius: 4px;
+    color: #fff;
+    height: 80px;
+    padding: 10px;
+    position: relative;
+}
+
+.reserva-hora{
+    position: absolute;
+    border-left: 1px solid #77155D;
+    top: 10px;
+    right: 5px;
+    padding: 0px 0px 0px 5px;
+    color: #fff;
+}
+
+.reserva-hora hr{
+    border-color: #503816;
+    margin-top: 10px;
+    margin-bottom: 9px;
+}
+
+.reserva-hora a,
+.reserva-hora a:hover{
+    text-decoration: none;
+    color: #FFF;
+}
+
+span.badge{
+    background-color: #FEF02B;
+    color: #000;
+}
+
+/* linea con texto en medio*/
+.line {
+    overflow: hidden;
+    text-align: center;
+}
+.line:before,
+.line:after {
+    background-color: #77155D;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 50%;
+}
+.line:before {
+    right: 0.5em;
+    margin-left: -50%;
+}
+.line:after {
+    left: 0.5em;
+    margin-right: -50%;
+}
+
+.form-horizontal .control-label{
+    text-align: left;
+}
+
+button.green{
+    border-bottom: 3px solid #4CAE4C;
+}
+
+button.blue{
+    border-bottom: 3px solid #2E6DA4;
+}
+
+button.yellow{
+    border-bottom: 3px solid #EEA236;
+}
+
+.panel-default{
+   border-color: #CCC;
+}
+
+.panel-default>.panel-heading{
+    background: #E9E9E9;
+    border-color: #CCC;
+}
+
+.div-login{
+    margin-top: 30px;
+    margin-bottom: 50px;
+    -background-color: #7F8284;
+    padding: 10px 0 10px 0;
+    border-radius: 4px;
+    -border: 1px solid #000;
+}
+
+.div-login button,
+.div-login button:hover{
+    border-radius: 0;
+    border-color: #777;
+    color: #777;
+    font-weight: bold;
+    padding-left:15px; 
+    padding-right:15px;  
+}
+
+.div-login .page-header,
+.div-login hr{
+    border-color: #777;
+    color: #777;
+}
+
+.div-login a{
+    text-decoration: none;
+    color: #397AFB;
+    font-weight: bold;
+}
+
+.div-footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    background: #333;
+    color:#FFF;
+}
+
+#calendar{
+	max-width: 900px;
+}
+
+#btn-logout{
+	border:none;
+	background-color: transparent;
+	padding-left: 20px;
+}

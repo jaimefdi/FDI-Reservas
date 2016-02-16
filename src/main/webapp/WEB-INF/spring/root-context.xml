@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context" 
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:data="http://www.springframework.org/schema/data/jpa"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+			       http://www.springframework.org/schema/beans/spring-beans.xsd
+			       http://www.springframework.org/schema/context
+			       http://www.springframework.org/schema/context/spring-context.xsd
+			       http://www.springframework.org/schema/tx
+				   http://www.springframework.org/schema/tx/spring-tx.xsd
+			       http://www.springframework.org/schema/data/jpa
+			       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+
+	<!-- Scans the classpath of this application for @Components to deploy as 
+		beans -->
+		<context:component-scan base-package="es.fdi.reservas.reserva.business" />
+		<context:component-scan base-package="es.fdi.reservas.users.business" />
+	
+
+	<!-- Hibernate -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/reservas_db" />
+		<property name="username" value="root" />
+		<property name="password" value="" />
+	</bean>
+
+	<bean id="myEmf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<array>
+				<value>es.fdi.reservas.reserva.business.entity</value>
+				<value>es.fdi.reservas.users.business.entity</value>
+			</array>
+		</property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+				<prop key="hibernate.hbm2ddl.import_files">/META-INF/init-data.sql</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="myEmf" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<!-- -->
+	<!-- Spring Data JPA -->
+	<!-- Para que los metodos de la interfaz sean transactional -->
+
+	<data:repositories base-package="es.fdi.reservas.users.business.control"
+		entity-manager-factory-ref="myEmf"
+		transaction-manager-ref="transactionManager" />
+		
+	<data:repositories base-package="es.fdi.reservas.reserva.business.control"
+		entity-manager-factory-ref="myEmf"
+		transaction-manager-ref="transactionManager" />
+
+
+</beans>
