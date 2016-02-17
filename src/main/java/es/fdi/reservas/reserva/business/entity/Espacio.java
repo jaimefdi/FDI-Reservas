@@ -36,15 +36,12 @@ public class Espacio {
 	private Edificio edificio;
 	
 
-	Espacio(){
+    Espacio(){
 		
 	}
 	
-	public Espacio(String n, int c){
-		nombre_espacio = n;
-		capacidad = c;
-		microfono = true;
-		proyector = true;
+	public Espacio(Long id_espacio){
+		id = id_espacio;
 	}
 
 	public String getNombre_espacio() {

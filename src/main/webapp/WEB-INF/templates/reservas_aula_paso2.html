@@ -101,7 +101,8 @@
 						        <option th:each="s : ${allSpaces}" 
 						        		th:text="${s.nombre_espacio}" 
 						        		th:value="${s.id}"
-						        		name="s">
+						        		th:selected="espacio.nombre_espacio"
+						        		name="espacio.nombre_espacio">
 						        </option>
 						   </select>                      
                        </div>

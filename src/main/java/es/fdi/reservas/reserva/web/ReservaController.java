@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -43,7 +44,7 @@ public class ReservaController {
     }
 	
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
-    public ModelAndView Reservar(Reserva r) {
+    public ModelAndView crearReserva(Reserva r) {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("user", u);
@@ -54,14 +55,6 @@ public class ReservaController {
         return model;
     }
 	
-	@RequestMapping(value="/reservas_aula_paso1", method=RequestMethod.GET)
-    public ModelAndView ReservaPaso1() {
-		ModelAndView model = new ModelAndView("index");
-		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("view", "reservas_aula_paso1");
-		model.addObject("uri", "/reservar-por-aulas/paso-1");
-        return model;
-    }
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
     public ModelAndView Edificios() {
@@ -89,6 +82,7 @@ public class ReservaController {
 	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio) {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
+		model.addObject("espacio", new Espacio(id_espacio));
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "reservas_aula_paso2");
 		model.addObject("uri", "/reservar-por-aulas/paso-2");
