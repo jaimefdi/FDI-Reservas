@@ -26,10 +26,10 @@ public class ReservasRestController {
 		user_service = us;
 	}
 	
-	@RequestMapping(value="/eventos", method=RequestMethod.GET)
-	public List<ReservaFullCalendarDTO> allReserv(){
-		List<Reserva> allReservas = reserva_service.getAllReservations();
-		//List<Reserva> allReservas = reserva_service.getReservations(1);//espacio 1
+	@RequestMapping(value="{id_espacio}/eventos", method=RequestMethod.GET)
+	public List<ReservaFullCalendarDTO> allReserv(@PathVariable("id_espacio") long id_espacio){
+		//List<Reserva> allReservas = reserva_service.getAllReservations();
+		List<Reserva> allReservas = reserva_service.getReservations(id_espacio);//espacio 1
 		List<ReservaFullCalendarDTO> result = new ArrayList<>();
 		for(Reserva r : allReservas) {
 			result.add(ReservaFullCalendarDTO.fromReserva(r));

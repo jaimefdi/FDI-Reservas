@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 
 public class ReservaFullCalendarDTO {
@@ -12,7 +13,7 @@ public class ReservaFullCalendarDTO {
 	private String title;
 	private DateTime start;
 	private DateTime end;
-	private String spacename;
+	private Espacio espacio;
 
 	public ReservaFullCalendarDTO(String id, String title, DateTime start, DateTime end) {
 		this.id = id;
@@ -49,15 +50,29 @@ public class ReservaFullCalendarDTO {
 		return fmt.print(end);
 	}
 
-	public String getSpacename() {
-		return spacename;
-	}
-
-	public void setSpacename(String spacename) {
-		this.spacename = spacename;
-	}
+	
 
 	
+	public Espacio getEspacio() {
+		return espacio;
+	}
+
+
+	public void setEspacio(Espacio espacio) {
+		this.espacio = espacio;
+	}
+
+
+	public void setStart(DateTime start) {
+		this.start = start;
+	}
+
+
+	public void setEnd(DateTime end) {
+		this.end = end;
+	}
+
+
 	public static ReservaFullCalendarDTO fromReserva(Reserva reserva) {
 		return new ReservaFullCalendarDTO(reserva.getId().toString(), reserva.getAsunto(), reserva.getFecha_ini(), reserva.getFecha_fin());
 	}

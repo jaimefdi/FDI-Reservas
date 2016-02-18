@@ -22,8 +22,8 @@
                         <tr>
                             <th>Asunto</th>
                             <th>Espacio</th>
-                            <th>Dia</th>
-                            <th>Hora</th>
+                            <th>Desde</th>
+                            <th>Hasta</th>
                             <th>Estado</th>
                             
                         </tr>
@@ -32,8 +32,8 @@
                         <tr th:each="r : ${allReservations}">
                             <td th:text="${r.asunto}">Recuperacion de clase</td>
                             <td th:text="${r.espacio.nombre_espacio}">Aula 9</td>
-                            <td th:text="${#joda.format(r.fecha_ini, 'dd/MM/yyyy')}">21/01/2016</td>
-                            <td th:text="${#joda.format(r.fecha_ini, 'HH:mm') + ' - ' + #joda.format(r.fecha_fin, 'HH:mm') }">10:00 </td> 
+                            <td th:text="${#joda.format(r.fecha_ini, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
+                            <td th:text="${#joda.format(r.fecha_fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
                             <td th:if="${r.estado}" class=" text-center"><span class="label label-success">Confirmada</span></td>
                             <td th:unless="${r.estado}" class=" text-center"><span class="label label-danger">Denegada</span></td>
                         </tr>     

@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header text-center">
-            <small>Reserva un espacio en tan sÛlo 3 pasos.</small>
+            <small>Reserva un espacio en tan s√≥lo 3 pasos.</small>
         </h1>
     </div>
 </div>
@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col-md-6">
-         <h3><span class="red">3</span> Elige un dÌa.</h3><br/>
+         <h3><span class="red">3</span> Elige un d√≠a.</h3><br/>
     </div>                   
 </div>
 <!-- /.row -->
@@ -19,9 +19,32 @@
 <div class="row">
     <div id="filtro" class="col-md-10 col-md-offset-1">
         <form class="form-horizontal" role="form">
-
-          
-            <div class="col-md-4">
+        
+			<div class="col-md-2 text-center">
+	            <div class="checkbox">
+				    <label>
+				      <input type="checkbox" /> Mis reservas
+				    </label>
+				 </div>
+			</div>
+			<div class="col-md-2 text-center">
+	            <div class="checkbox">
+				    <label>
+				      <input type="checkbox" /> De ma√±ana
+				    </label>
+				 </div>
+			</div>
+			<div class="col-md-2 text-center">
+	            <div class="checkbox">
+				    <label>
+				      <input type="checkbox" /> De tarde
+				    </label>
+				 </div>
+			</div>
+			<div class="col-md-6 text-right">
+	           <button type="submit" class="btn-filtrar">Filtrar <i class="fa fa-arrow-right"></i></button>
+			</div>
+            <!--<div class="col-md-4">
                 <div class="form-group">
                     <label for="ejemplo_1" class="col-md-2 control-label">Espacios: </label>
                     <div class="col-md-9">
@@ -42,7 +65,7 @@
                         <select class="form-control">
                           <option>Todas</option>
                           <option>Mis reservas</option>
-                          <option>De maÒana</option>
+                          <option>De ma√±ana</option>
                           <option>De tarde</option>
                           
                         </select>
@@ -53,7 +76,7 @@
             
             <div class="col-md-4 text-right">
                <button type="submit" class="btn btn-primary blue">Filtrar <i class="fa fa-filter"></i></button>
-            </div>
+            </div>-->
         
      </form>
     </div>
@@ -251,7 +274,9 @@
 		
 		
 		$(document).ready(function(){
+			
 			$('#calendar').fullCalendar({
+				lang: 'es',
 			    header: {
 			        left: 'prev,next today',
 			        center: 'title',
@@ -273,12 +298,13 @@
 			    eventLimit: true, // allow "more" link when too many events
 			    eventRender : function(event,element) {
 					element.popover({
-								
-								placement : 'left',
+		
+								placement : 'auto',
 								html : true,
 								trigger : 'hover',
 								animation : 'true',
-								content : event.title
+								container:'#calendar',
+								content : "<b>" + event.title + "</b><br/>" + "jjjjjjjjjjjjjj"
 							});
 					/*
 					$('body').on('hover',function(e) {
@@ -309,7 +335,7 @@
 				},
 			    eventSources: [ // your event source
 				        {
-				            url: '/reservas/eventos', // use the `url` property
+				            url: '/reservas/3/eventos', // use the `url` property
 				            color: 'yellow',    // an option!
 				            textColor: 'black'  // an option!
 				        }

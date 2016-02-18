@@ -102,7 +102,8 @@ ul.alert-dropdown {
 
 #demo>.active>a{
      background-color: #333;
-    border-left: 5px solid #999;
+     border-left: 5px solid #999;
+     color: #FFF;
 }
 
 .navbar{
@@ -239,66 +240,13 @@ span.red {
   box-shadow:         2px 2px 5px 0px rgba(0,0,0,0.75);
 }
 
-/* div reservas*/
 
-.reserva{
-    background-color: #DC23AB;
-    border-radius: 4px;
-    color: #fff;
-    height: 80px;
-    padding: 10px;
-    position: relative;
-}
-
-.reserva-hora{
-    position: absolute;
-    border-left: 1px solid #77155D;
-    top: 10px;
-    right: 5px;
-    padding: 0px 0px 0px 5px;
-    color: #fff;
-}
-
-.reserva-hora hr{
-    border-color: #503816;
-    margin-top: 10px;
-    margin-bottom: 9px;
-}
-
-.reserva-hora a,
-.reserva-hora a:hover{
-    text-decoration: none;
-    color: #FFF;
-}
 
 span.badge{
     background-color: #FEF02B;
     color: #000;
 }
 
-/* linea con texto en medio*/
-.line {
-    overflow: hidden;
-    text-align: center;
-}
-.line:before,
-.line:after {
-    background-color: #77155D;
-    content: "";
-    display: inline-block;
-    height: 1px;
-    position: relative;
-    vertical-align: middle;
-    width: 50%;
-}
-.line:before {
-    right: 0.5em;
-    margin-left: -50%;
-}
-.line:after {
-    left: 0.5em;
-    margin-right: -50%;
-}
 
 .form-horizontal .control-label{
     text-align: left;
@@ -374,4 +322,21 @@ button.yellow{
 	border:none;
 	background-color: transparent;
 	padding-left: 20px;
+}
+
+#filtro{
+	background-color: #CCC;
+	padding: 10px 15px;
+	-border-radius: 4px;
+}
+
+.jumbotron{
+	padding: 20px 50px;
+}
+
+.btn-filtrar{
+	border: none;
+	padding: 8px;
+	background-color: #555;
+	color: #FFF;
 }

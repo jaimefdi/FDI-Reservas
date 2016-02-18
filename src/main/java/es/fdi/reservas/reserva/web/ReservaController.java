@@ -1,15 +1,10 @@
 package es.fdi.reservas.reserva.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Espacio;
@@ -39,7 +34,6 @@ public class ReservaController {
 		model.addObject("user", u);
 		model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
 		model.addObject("view", "mis_reservas");
-		model.addObject("uri", "/");
         return model;
     }
 	
@@ -51,7 +45,6 @@ public class ReservaController {
 		reserva_service.agregarReserva(r,u.getUsername());
 		model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
 		model.addObject("view", "mis_reservas");
-		model.addObject("uri", "/");
         return model;
     }
 	
@@ -62,7 +55,6 @@ public class ReservaController {
 		model.addObject("user", user_service.getCurrentUser());
 		model.addObject("allBuildings", reserva_service.getAllBuildings());
 		model.addObject("view", "edificio");
-		model.addObject("uri", "/reservar-por-aulas/paso-1");
         return model;
     }
 	
@@ -72,7 +64,6 @@ public class ReservaController {
 		model.addObject("user", user_service.getCurrentUser());
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "espacios");
-		model.addObject("uri", "/reservar-por-aulas/paso-1");
         return model;
     }
 	
@@ -85,7 +76,6 @@ public class ReservaController {
 		model.addObject("espacio", new Espacio(id_espacio));
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "reservas_aula_paso2");
-		model.addObject("uri", "/reservar-por-aulas/paso-2");
         return model;
     }
 	
@@ -96,7 +86,6 @@ public class ReservaController {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
 		model.addObject("view", "reservas_fecha");
-		model.addObject("uri", "/reservar-por-fecha");
         return model;
     }
 }
