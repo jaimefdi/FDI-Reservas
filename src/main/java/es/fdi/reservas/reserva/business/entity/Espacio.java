@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,8 +37,11 @@ public class Espacio {
 	@JoinColumn(name="EDIFICIO_ID")
 	private Edificio edificio;
 	
+	@Enumerated(EnumType.ORDINAL)
+	private TipoEspacio tipoEspacio;
 
-    Espacio(){
+
+	Espacio(){
 		
 	}
 	
@@ -99,6 +104,14 @@ public class Espacio {
 
 	public void setEdificio(Edificio edificio) {
 		this.edificio = edificio;
+	}
+	
+	 public TipoEspacio getTipoEspacio() {
+		return tipoEspacio;
+	}
+
+	public void setTipoEspacio(TipoEspacio tipoEspacio) {
+		this.tipoEspacio = tipoEspacio;
 	}
 	
 }

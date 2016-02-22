@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Reserva;
+import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -38,14 +39,14 @@ public class ReservaController {
     }
 	
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
-    public ModelAndView crearReserva(Reserva r) {
-		ModelAndView model = new ModelAndView("index");
+    public String crearReserva(Reserva r) {
+		//ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
+		//model.addObject("user", u);
 		reserva_service.agregarReserva(r,u.getUsername());
-		model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
-		model.addObject("view", "mis_reservas");
-        return model;
+		//model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
+		//model.addObject("view", "mis_reservas");
+        return "redirect:mis_reservas";
     }
 	
 	
@@ -62,6 +63,7 @@ public class ReservaController {
     public ModelAndView Espacios(@PathVariable("id_edif") long id_edif) {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
+		//model.addObject("typeSpaces",funcion);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "espacios");
         return model;
@@ -73,9 +75,10 @@ public class ReservaController {
 	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio) {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("espacio", new Espacio(id_espacio));
+		model.addObject("espacio", reserva_service.getSpaceById(id_espacio));
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "reservas_aula_paso2");
+		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
         return model;
     }
 	

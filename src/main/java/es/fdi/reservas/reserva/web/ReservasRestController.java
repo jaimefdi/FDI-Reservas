@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Reserva;
+import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import es.fdi.reservas.users.business.boundary.UserService;
 
 @RestController
@@ -36,6 +38,25 @@ public class ReservasRestController {
 		}
 		 
 		return result;
+	}
+	
+	@RequestMapping(value="{id_edif}/tipoEspacio/{tipoEspacio}", method=RequestMethod.GET)
+	public List<EspacioTipoDTO> todosLosEspacios(@PathVariable("id_edif") long id_edif, @PathVariable("tipoEspacio") String tipoEspacio){
+		List<EspacioTipoDTO> result = new ArrayList<>();
+		List<Espacio> allSpaces = new ArrayList<>();
+		
+		if(tipoEspacio.equals("Todos"))
+			 allSpaces = reserva_service.getAllSpaces(id_edif);
+		else
+		     allSpaces = reserva_service.getTypeSpaces(id_edif, TipoEspacio.fromTipoEspacio(tipoEspacio));
+		
+		
+		for(Espacio e : allSpaces) {
+			result.add(EspacioTipoDTO.fromEspacioTipoDTO(e));
+		}
+		 
+		return result;
+			
 	}
 
 	

@@ -20,6 +20,7 @@ public class ReservaFullCalendarDTO {
 		this.title = title;
 		this.start = start;
 		this.end = end;
+		//this.espacio = espacio;
 	}
 
 	

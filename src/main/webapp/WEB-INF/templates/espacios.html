@@ -16,6 +16,13 @@
 <!-- /.row -->
 
  <div class="row">
+ 	Tipo:
+ 	<select id="selec_tipoEspacios">
+ 		<option value="Todos"> Todos </option>
+        <option value="Aula"> Aula </option>
+        <option value="Sala"> Sala </option>   
+    </select>
+    Espacio:
     <select id="selec_espacios">
         <option th:each="s : ${allSpaces}" 
         		th:text="${s.nombre_espacio}" 
@@ -36,11 +43,67 @@
 
 <script>
 
-$("#selec_espacios").change(function(){
-	var id_espacio = $("#selec_espacios").val();
-	var link = 'espacio/' + id_espacio;
-	$("#espacio_link").attr("href",link);
+	$("#selec_tipoEspacios").change(function(){
+		var tipoEspacio = $("#selec_tipoEspacios").val();
+		var pathname = window.location.pathname;
+		var w = pathname.split("/");
+		var id_edif = w[3];
+		
+		$.ajax({
+			url: '/reservas/' + id_edif + '/tipoEspacio/' + tipoEspacio,
+			type: 'GET',
+			contentType: 'application/json',
+			success : function(datos) {
+
+				$("#selec_espacios").empty();
+				for(var i in datos){
+					var text = datos[i].nombre_espacio;
+					var value = datos[i].id;
+					$("#selec_espacios").append(new Option(text, value));	
+				}
+			    
+			},    
+		    error : function(xhr, status) {
+		        alert('Disculpe, existió un problema');
+		    }
+		});
+		
+	});
 	
-});
+
+</script>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+          
+	$("#selec_tipoEspacios").change(function(){
+		var id_tipoEspacio = $("#selec_tipoEspacios").val();
+		//var allSpaces = /*[${allSpaces}]*/;
+       // console.log(allSpaces);
+		var espacios = [];
+		var espacio = new Object();
+		var i = 0;
+		// no se bien cómo hacerlo
+		//for( /*[${allSpaces}]*/ in espacio){
+		//	if('${espacio.tipoEspacio}' == id_tipoEspacio)
+		//		espacios['${espacio.id}'].push(espacio);
+		//}
+		
+		//vaciar el select de espacios
+		// ...
+		
+		// rellenar el select de espacios
+		// ...
+		// $("#mySelect").append('<option value=1>My option</option>');
+		
+		
+	});
 	
+	$("#selec_espacios").change(function(){
+		var id_espacio = $("#selec_espacios").val();
+		var link = 'espacio/' + id_espacio;
+		$("#espacio_link").attr("href",link);
+		
+	});
+	/*]]>*/
 </script>

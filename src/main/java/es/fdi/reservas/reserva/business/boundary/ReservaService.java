@@ -11,6 +11,7 @@ import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Reserva;
+import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 
 @Service
 public class ReservaService {
@@ -50,8 +51,16 @@ public class ReservaService {
 		return reserva_repository.findByEspacio_Id(id_espacio);
 	}
 	// todos los espacios de un edificio 
-	public Iterable<Espacio> getAllSpaces(long id_edif) {
+	public List<Espacio> getAllSpaces(long id_edif) {
 		return espacio_repository.findByEdificio_Id(id_edif);
+	}
+
+	public Espacio getSpaceById(long id_espacio) {
+		return espacio_repository.findOne(id_espacio);
+	}
+
+	public List<Espacio> getTypeSpaces(long id_edif, TipoEspacio id_tipoEspacio) {
+		return espacio_repository.findByEdificio_IdAndTipoEspacio(id_edif, id_tipoEspacio);
 	}
 
 
