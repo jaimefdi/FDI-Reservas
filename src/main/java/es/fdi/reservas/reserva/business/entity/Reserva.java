@@ -43,7 +43,7 @@ public class Reserva {
 	private Espacio espacio;
 	
 
-	Reserva(){
+	public Reserva(){
 		
 	}
 	

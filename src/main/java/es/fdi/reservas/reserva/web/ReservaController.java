@@ -2,9 +2,11 @@ package es.fdi.reservas.reserva.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Espacio;
@@ -39,7 +41,7 @@ public class ReservaController {
     }
 	
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
-    public String crearReserva(Reserva r) {
+    public String crearReserva(@ModelAttribute Reserva r) {
 		//ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		//model.addObject("user", u);
@@ -75,7 +77,9 @@ public class ReservaController {
 	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio) {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("espacio", reserva_service.getSpaceById(id_espacio));
+		model.addObject("Espacio", reserva_service.getSpaceById(id_espacio));
+		model.addObject("Reserva", new Reserva());
+		//model.addObject("id_espacio", id_espacio);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "reservas_aula_paso2");
 		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
