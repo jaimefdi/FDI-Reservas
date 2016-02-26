@@ -142,7 +142,7 @@
                         <label for="ejemplo_1" class="col-md-3 control-label">Tipo:</label>
                          
                        <div class="col-md-9">
-                       	 <p class="form-control-static" th:text="${Espacio.tipoEspacio}">aaaa </p>
+                       	 <p class="form-control-static" th:text="*{espacio.tipoEspacio}">aaaa </p>
                        	<!-- <input type="hidden" th:value="${espacio.tipoEspacio}"/>
                              <select id="seleccionTipoEspacios" class="form-control">
                               <option>Sala</option>
@@ -158,9 +158,9 @@
                         <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
                         
                       <div class="col-md-10">
-                       	   <p class="form-control-static" th:text="${Espacio.nombre_espacio}"></p>
+                       	   <p class="form-control-static" th:text="*{espacio.nombre_espacio}"></p>
                        	   
-                           <input type="hidden" th:value="${Espacio.id}" th:field="*{espacio}" />
+                           <input type="hidden" th:field="*{espacio.id}" />
                             <!-- <select id="seleccionEspacios" class="form-control">
 						        <option th:each="s : ${allSpaces}" 
 						        		th:text="${s.nombre_espacio}" 

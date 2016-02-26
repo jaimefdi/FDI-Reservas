@@ -40,7 +40,9 @@ public class UserController {
 	
 	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.POST)
 	public String crearUsuario(User u){
+		user_service.addNewUser(u);
 	   return "redirect:/login";
+		//return "nuevoUsuario";
 	}
 	
 }

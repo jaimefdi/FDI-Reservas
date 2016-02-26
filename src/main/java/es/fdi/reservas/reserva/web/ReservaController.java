@@ -77,8 +77,10 @@ public class ReservaController {
 	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio) {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("Espacio", reserva_service.getSpaceById(id_espacio));
-		model.addObject("Reserva", new Reserva());
+		//model.addObject("Espacio", reserva_service.getSpaceById(id_espacio));
+		Reserva r=new Reserva();
+		r.setEspacio(reserva_service.getSpaceById(id_espacio));
+		model.addObject("Reserva", r);
 		//model.addObject("id_espacio", id_espacio);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "reservas_aula_paso2");
