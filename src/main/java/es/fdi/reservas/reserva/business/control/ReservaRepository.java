@@ -17,4 +17,7 @@ public interface ReservaRepository extends CrudRepository<Reserva, Long>{
 	public List<Reserva> findAll();
 
 	public List<Reserva> findByEspacio_Id(long id_espacio); 
+	
+	public List<Reserva> findByEstado(boolean estado);
+	
 }

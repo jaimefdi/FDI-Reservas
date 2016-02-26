@@ -41,6 +41,10 @@ public class ReservaService {
 	public List<Reserva> getAllReservations() {
 		return reserva_repository.findAll();
 	}
+	
+	public List<Reserva> getAllUnacceptedReservations() {
+		return reserva_repository.findByEstado(false);
+	}
 
 	public Iterable<Edificio> getAllBuildings(){
 		return edificio_repository.findAll();
@@ -62,8 +66,5 @@ public class ReservaService {
 	public List<Espacio> getTypeSpaces(long id_edif, TipoEspacio id_tipoEspacio) {
 		return espacio_repository.findByEdificio_IdAndTipoEspacio(id_edif, id_tipoEspacio);
 	}
-
-
-
 	
 }

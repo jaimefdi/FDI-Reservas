@@ -97,4 +97,12 @@ public class ReservaController {
 		model.addObject("view", "reservas_fecha");
         return model;
     }
+	
+	@RequestMapping(value="/secre/all", method=RequestMethod.GET)
+	public ModelAndView muestraReservas()
+	{
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("Reservas", reserva_service.getAllUnacceptedReservations());
+		return model;
+	}
 }
