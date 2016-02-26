@@ -33,6 +33,14 @@ public class UserController {
 	   return "login";
 	}
 	
+	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.GET)
+	public ModelAndView nuevoUsuario(){
+	   return new ModelAndView("nuevoUsuario", "User", new User());
+	}
 	
+	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.POST)
+	public String crearUsuario(User u){
+	   return "redirect:/login";
+	}
 	
 }

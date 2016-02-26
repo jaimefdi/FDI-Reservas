@@ -160,7 +160,7 @@
                       <div class="col-md-10">
                        	   <p class="form-control-static" th:text="${Espacio.nombre_espacio}"></p>
                        	   
-                           <input type="hidden" name="espacio" th:field="*{espacio}" />
+                           <input type="hidden" th:value="${Espacio.id}" th:field="*{espacio}" />
                             <!-- <select id="seleccionEspacios" class="form-control">
 						        <option th:each="s : ${allSpaces}" 
 						        		th:text="${s.nombre_espacio}" 

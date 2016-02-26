@@ -48,7 +48,7 @@ public class User implements UserDetails{
 	
 
 
-	User() {
+	public User() {
 		
 	}
 	
