@@ -41,14 +41,17 @@ public class ReservaController {
     }
 	
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
-    public String crearReserva(@ModelAttribute Reserva r) {
+    public String crearReserva(Reserva r) {
 		//ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
+		long id_esp = r.getEspacio().getId();
+		Espacio e = reserva_service.getSpaceById(id_esp);
+		r.setEspacio(e);
 		//model.addObject("user", u);
 		reserva_service.agregarReserva(r,u.getUsername());
 		//model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
 		//model.addObject("view", "mis_reservas");
-        return "redirect:mis_reservas";
+        return "redirect:/mis_reservas";
     }
 	
 	
@@ -76,9 +79,13 @@ public class ReservaController {
 	@RequestMapping(value="/edificio/{id_edif}/espacio/{id_espacio}", method=RequestMethod.GET) 
 	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio) {
 		ModelAndView model = new ModelAndView("index");
+		
+		Espacio e = reserva_service.getSpaceById(id_espacio);
+		Reserva r = new Reserva();
+		r.setEspacio(e);
 		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("Espacio", reserva_service.getSpaceById(id_espacio));
-		model.addObject("Reserva", new Reserva());
+		//model.addObject("Espacio", e);
+		model.addObject("Reserva", r);
 		//model.addObject("id_espacio", id_espacio);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "reservas_aula_paso2");

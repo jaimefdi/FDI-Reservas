@@ -41,7 +41,7 @@ public class Espacio {
 	private TipoEspacio tipoEspacio;
 
 
-	Espacio(){
+	public Espacio(){
 		
 	}
 	

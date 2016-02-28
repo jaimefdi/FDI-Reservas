@@ -142,7 +142,7 @@
                         <label for="ejemplo_1" class="col-md-3 control-label">Tipo:</label>
                          
                        <div class="col-md-9">
-                       	 <p class="form-control-static" th:text="${Espacio.tipoEspacio}">aaaa </p>
+                       	 <p class="form-control-static" th:text="*{espacio.tipoEspacio}">aaaa </p>
                        	<!-- <input type="hidden" th:value="${espacio.tipoEspacio}"/>
                              <select id="seleccionTipoEspacios" class="form-control">
                               <option>Sala</option>
@@ -158,9 +158,9 @@
                         <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
                         
                       <div class="col-md-10">
-                       	   <p class="form-control-static" th:text="${Espacio.nombre_espacio}"></p>
+                       	   <p class="form-control-static" th:text="*{espacio.nombre_espacio}"></p>
                        	   
-                           <input type="hidden" name="espacio" th:field="*{espacio}" />
+                           <input type="hidden" th:field="*{espacio.id}" />
                             <!-- <select id="seleccionEspacios" class="form-control">
 						        <option th:each="s : ${allSpaces}" 
 						        		th:text="${s.nombre_espacio}" 
@@ -278,9 +278,12 @@
 	
 		/*<![CDATA[*/
 		
-		
-		
 		$(document).ready(function(){
+			
+			var pathname = window.location.pathname;
+			var w = pathname.split("/");
+			var id_espacio = w[5]; 
+			
 			
 			$('#calendar').fullCalendar({
 				lang: 'es',
@@ -293,8 +296,8 @@
 					$('#modalEditarReserva').modal('show');
 					//$('#seleccionEspacios').val(calEvent.spacename);
 					$('#modalEditarReserva #idAsunto').attr("value",calEvent.title);
-					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("YYYY/MM/DD HH:mm"));
-					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("YYYY/MM/DD HH:mm"));
+					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
+					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
 
 					//$("#selectorEspacio").val(calEvent.espacio);
 					//$("#modalEditarReserva form").attr("action","${postURLactualizar}" + calEvent.idReserva);
@@ -323,8 +326,8 @@
 			    select : function(start, end) {
 					$('#modalCrearReserva').modal('show');
 					var eventData;
-					$("#datetimepicker1").attr("value",start.format("YYYY/MM/DD HH:mm"));
-					$("#datetimepicker2").attr("value",end.format("YYYY/MM/DD HH:mm"));
+					$("#datetimepicker1").attr("value",start.format("DD/MM/YYYY HH:mm"));
+					$("#datetimepicker2").attr("value",end.format("DD/MM/YYYY HH:mm"));
 					/*
 					if (idSeleccionado != "todos") {
 						$("#selectorEspacioCrear").val(idSeleccionado);
@@ -340,18 +343,16 @@
 					//Desmarca el evento si no se ha creado
 					$('#calendar').fullCalendar('unselect');
 				},
-			    eventSources: [ // your event source
+			    eventSources: [ 
 				        {
-				            url: '/reservas/3/eventos', // use the `url` property
-				            color: 'yellow',    // an option!
-				            textColor: 'black'  // an option!
+				            url: '/reservas/' + id_espacio + '/eventos',
+				            color: 'yellow',    
+				            textColor: 'black'  
 				        }
 		
-				        // any other sources...
-					        
+		        
 			    ]
-			    
-			    	
+			       	
 			    
 			});
 		});

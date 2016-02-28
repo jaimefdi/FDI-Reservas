@@ -32,7 +32,7 @@ public class ReservaService {
 	}
 
 	public Reserva agregarReserva(Reserva r, String username) {
-		Reserva nuevaReserva = new Reserva(r.getAsunto(),r.getFecha_ini(),r.getFecha_fin(),username);
+		Reserva nuevaReserva = new Reserva(r.getAsunto(),r.getFecha_ini(),r.getFecha_fin(),username, r.getEspacio());
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		
 		return nuevaReserva;

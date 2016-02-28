@@ -23,10 +23,12 @@ public class UserController {
 		user_service = userService;
 	}
 	
+	/*
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String home() {
 		return "welcome";
 	}
+	*/
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String login(){

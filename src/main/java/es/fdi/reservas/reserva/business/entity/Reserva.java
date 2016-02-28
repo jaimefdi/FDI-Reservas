@@ -47,13 +47,13 @@ public class Reserva {
 		
 	}
 	
-	public Reserva(String a, DateTime ini, DateTime fin, String user_name){
+	public Reserva(String a, DateTime ini, DateTime fin, String user_name, Espacio esp){
 		asunto = a;
 		fecha_ini = ini;
 		fecha_fin = fin;
 		estado = true;
 		username = user_name;
-		//spacename = space_name;
+		espacio = esp;
 	}
 
 	public String getAsunto() {
