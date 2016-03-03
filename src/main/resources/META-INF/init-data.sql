@@ -1,9 +1,12 @@
 INSERT INTO USER (USER_ID, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired) VALUES (1, 'root', 'root@ucm.es', '$2a$10$//HU8yTgOoLrZX6z9cgXhuR/IJki.BtS/ZM4Pr8s/zBDCFIT.I3P6', true, false, false, false);
 INSERT INTO USER (USER_ID, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', true, false, false, false);
+INSERT INTO USER (USER_ID, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired) VALUES (3, 'secre', 'secre@ucm.es', '$2a$10$EZ58bq8tORYqXV0Na68Z.efgCBxX.vzEqNz1b8.oqKahvptmtnHWO', true, false, false, false);
 
 INSERT INTO USERROLE (user, role) VALUES(1, 'ROLE_USER');
 INSERT INTO USERROLE (user, role) VALUES(1, 'ROLE_ADMIN');
 INSERT INTO USERROLE (user, role) VALUES(2, 'ROLE_USER');
+INSERT INTO USERROLE (user, role) VALUES(3, 'ROLE_USER');
+INSERT INTO USERROLE (user, role) VALUES(3, 'ROLE_SECRE');
 
 INSERT INTO EDIFICIO(EDIFICIO_ID, nombre_edificio) VALUES(1,'Facultad de Informática');
 INSERT INTO EDIFICIO(EDIFICIO_ID, nombre_edificio) VALUES(2,'Multiusos');

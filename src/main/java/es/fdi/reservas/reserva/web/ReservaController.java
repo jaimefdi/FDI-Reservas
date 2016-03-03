@@ -1,6 +1,7 @@
 package es.fdi.reservas.reserva.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,9 +30,20 @@ public class ReservaController {
 		user_service = us;
 	}
 	
-	
+	@PreAuthorize("hasRole('ROLE_USER') && getAuthorities().size()==1")
 	@RequestMapping({"/","","/mis_reservas"})
     public ModelAndView MisReservas() {
+		ModelAndView model = new ModelAndView("index");
+		User u = user_service.getCurrentUser();
+		model.addObject("user", u);
+		model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
+		model.addObject("view", "mis_reservas");
+        return model;
+    }
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping({"/","","/mis_reservas"})
+    public ModelAndView MisReservasAdmin() {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("user", u);
