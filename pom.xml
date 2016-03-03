@@ -96,9 +96,6 @@
 			<version>2.9.0</version>
 		</dependency>
 
-
-
-
 		<!-- ////// -->
 		<!-- Spring -->
 		<!-- ////// -->
@@ -114,8 +111,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 		</dependency>
-		<!-- <dependency> <groupId>commons-dbcp</groupId> <artifactId>commons-dbcp</artifactId> 
-			<version>1.2.2</version> </dependency> -->
 
 		<!-- /////////////// -->
 		<!-- Spring security -->
