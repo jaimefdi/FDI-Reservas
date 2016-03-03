@@ -13,14 +13,14 @@ public class ReservaFullCalendarDTO {
 	private String title;
 	private DateTime start;
 	private DateTime end;
-	private Espacio espacio;
+	private String nombreEspacio;
 
-	public ReservaFullCalendarDTO(String id, String title, DateTime start, DateTime end) {
+	public ReservaFullCalendarDTO(String id, String title, DateTime start, DateTime end, String nombre_espacio) {
 		this.id = id;
 		this.title = title;
 		this.start = start;
 		this.end = end;
-		//this.espacio = espacio;
+		this.nombreEspacio = nombre_espacio;
 	}
 
 	
@@ -51,16 +51,14 @@ public class ReservaFullCalendarDTO {
 		return fmt.print(end);
 	}
 
-	
 
-	
-	public Espacio getEspacio() {
-		return espacio;
+	public String getNombreEspacio() {
+		return nombreEspacio;
 	}
 
 
-	public void setEspacio(Espacio espacio) {
-		this.espacio = espacio;
+	public void setNombreEspacio(String nombreEspacio) {
+		this.nombreEspacio = nombreEspacio;
 	}
 
 
@@ -75,6 +73,6 @@ public class ReservaFullCalendarDTO {
 
 
 	public static ReservaFullCalendarDTO fromReserva(Reserva reserva) {
-		return new ReservaFullCalendarDTO(reserva.getId().toString(), reserva.getAsunto(), reserva.getFecha_ini(), reserva.getFecha_fin());
+		return new ReservaFullCalendarDTO(reserva.getId().toString(), reserva.getAsunto(), reserva.getFecha_ini(), reserva.getFecha_fin(), reserva.getEspacio().getNombre_espacio());
 	}
 }

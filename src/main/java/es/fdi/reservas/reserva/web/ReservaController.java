@@ -42,30 +42,41 @@ public class ReservaController {
 	
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
     public String crearReserva(Reserva r) {
-		//ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		long id_esp = r.getEspacio().getId();
 		Espacio e = reserva_service.getSpaceById(id_esp);
 		r.setEspacio(e);
-		//model.addObject("user", u);
+		
 		reserva_service.agregarReserva(r,u.getUsername());
-		//model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
-		//model.addObject("view", "mis_reservas");
+		
         return "redirect:/mis_reservas";
     }
 	
+	@RequestMapping(value="/reserva/editar/{id_res}",method=RequestMethod.PUT)
+    public String editarReserva(@PathVariable("id_res") long id_res, Reserva nuevaReserva) {
+		User u = user_service.getCurrentUser();
+		
+		Reserva viejaReserva = reserva_service.getReservaById(id_res);
+		//se copian las propiedades de la nuevaReserva a la vieja y se guarda
+		
+		//reserva_service.actualizarReserva(r,u.getUsername());
+		
+        return "redirect:/mis_reservas";
+    }
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
-    public ModelAndView Edificios() {
+    public ModelAndView edificios() {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
+		model.addObject("Facultades", reserva_service.getFacultades());// todas las facultades
 		model.addObject("allBuildings", reserva_service.getAllBuildings());
 		model.addObject("view", "edificio");
         return model;
     }
 	
+	// Todos los espacios del edificio {id_edif}
 	@RequestMapping(value="/edificio/{id_edif}/espacios", method=RequestMethod.GET)
-    public ModelAndView Espacios(@PathVariable("id_edif") long id_edif) {
+    public ModelAndView espacios(@PathVariable("id_edif") long id_edif) {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
 		//model.addObject("typeSpaces",funcion);
@@ -75,25 +86,23 @@ public class ReservaController {
     }
 	
 	
-	//carga los eventos del espacio {id_espacio} del edificio {id_edif}
+	// Carga los eventos del espacio {id_espacio} del edificio {id_edif}
 	@RequestMapping(value="/edificio/{id_edif}/espacio/{id_espacio}", method=RequestMethod.GET) 
 	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio) {
 		ModelAndView model = new ModelAndView("index");
-		
 		Espacio e = reserva_service.getSpaceById(id_espacio);
 		Reserva r = new Reserva();
 		r.setEspacio(e);
 		model.addObject("user", user_service.getCurrentUser());
-		//model.addObject("Espacio", e);
 		model.addObject("Reserva", r);
-		//model.addObject("id_espacio", id_espacio);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "reservas_aula_paso2");
 		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
+		
         return model;
     }
 	
-
+	
 	
 	@RequestMapping(value="/reservas_fecha", method=RequestMethod.GET)
     public ModelAndView ReservaPrFecha() {
@@ -102,4 +111,6 @@ public class ReservaController {
 		model.addObject("view", "reservas_fecha");
         return model;
     }
+	
+	
 }

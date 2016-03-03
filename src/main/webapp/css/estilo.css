@@ -341,3 +341,53 @@ button.yellow{
 	background-color: #555;
 	color: #FFF;
 }
+
+.btn-rec{
+	padding: 6px 12px;
+	background: transparent;
+	font-weight: bold;
+}
+
+.btn-rec.yellow{
+	border: 2px solid #EEA236;
+	color: #EEA236;
+}
+
+.btn-rec.green{
+	border: 2px solid #4CAE4C;
+	color: #4CAE4C;
+}
+
+.btn-rec.blue{
+	border: 2px solid #2E6DA4;
+	color: #2E6DA4;
+}
+
+.btn-rec.red{
+	border: 2px solid #D9534F;
+	color: #D9534F;
+}
+
+.btn-rec.yellow:hover{
+	background: #EEA236;
+	color: #FFF;
+}
+
+.btn-rec.green:hover{
+	background: #4CAE4C;
+	color: #FFF;
+}
+
+.btn-rec.blue:hover{
+	background: #2E6DA4;
+	color: #FFF;
+}
+
+.btn-rec.red:hover{
+	background: #D9534F;
+	color: #FFF;
+}
+
+#repetir{
+	display:none;
+}

@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import es.fdi.reservas.reserva.business.control.EdificioRepository;
 import es.fdi.reservas.reserva.business.control.EspacioRepository;
+import es.fdi.reservas.reserva.business.control.FacultadRepository;
 import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 
@@ -17,12 +19,14 @@ import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 public class ReservaService {
 	
 	private ReservaRepository reserva_repository;
+	private FacultadRepository facultad_repository;
 	private EdificioRepository edificio_repository;
 	private EspacioRepository espacio_repository;
 	
 	@Autowired
-	public ReservaService(ReservaRepository rr, EdificioRepository er, EspacioRepository sr){
+	public ReservaService(ReservaRepository rr, FacultadRepository fr, EdificioRepository er, EspacioRepository sr){
 		reserva_repository = rr;
+		facultad_repository = fr;
 		edificio_repository = er;
 		espacio_repository = sr;
 	}
@@ -61,6 +65,18 @@ public class ReservaService {
 
 	public List<Espacio> getTypeSpaces(long id_edif, TipoEspacio id_tipoEspacio) {
 		return espacio_repository.findByEdificio_IdAndTipoEspacio(id_edif, id_tipoEspacio);
+	}
+
+	public Reserva getReservaById(long id_res) {
+		return reserva_repository.findOne(id_res);
+	}
+
+	public Iterable<Facultad> getFacultades() {
+		return facultad_repository.findAll();
+	}
+
+	public List<Edificio> getEdificiosPorIdFacultad(long id_facultad) {
+		return edificio_repository.findByFacultad_Id(id_facultad);
 	}
 
 

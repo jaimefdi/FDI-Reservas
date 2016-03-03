@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import es.fdi.reservas.users.business.boundary.UserService;
+import es.fdi.reservas.users.business.entity.User;
 
 @RestController
 public class ReservasRestController {
@@ -58,6 +60,32 @@ public class ReservasRestController {
 		return result;
 			
 	}
+	
+	
+	
+	@RequestMapping(value="/facultad/{id_facultad}", method=RequestMethod.GET)
+	public List<EdificioDTO> edificiosDeUnaFacultad(@PathVariable("id_facultad") long id_facultad){
+		List<EdificioDTO> result = new ArrayList<>();
+		List<Edificio> edificios = new ArrayList<>();
+		
+		
+		edificios = reserva_service.getEdificiosPorIdFacultad(id_facultad);
+		
+		
+		for(Edificio e : edificios) {
+			result.add(EdificioDTO.fromEdificioDTO(e));
+		}
+		 
+		return result;
+			
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	
 	
