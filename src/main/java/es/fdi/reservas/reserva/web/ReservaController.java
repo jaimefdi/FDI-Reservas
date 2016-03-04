@@ -96,7 +96,7 @@ public class ReservaController {
 		model.addObject("user", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
-		model.addObject("view", "reservas_aula_paso2");
+		model.addObject("view", "reservas_aula_paso2 :: contenido");
 		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
 		
         return model;
