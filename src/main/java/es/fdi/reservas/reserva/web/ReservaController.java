@@ -36,7 +36,7 @@ public class ReservaController {
 		User u = user_service.getCurrentUser();
 		model.addObject("user", u);
 		model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
-		model.addObject("view", "mis_reservas");
+		model.addObject("view", "mis_reservas :: contenido");
         return model;
     }
 	
