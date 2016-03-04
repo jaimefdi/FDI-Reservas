@@ -6,7 +6,13 @@
 
 	<display-name>fdi-reservas</display-name>
 
-	<!-- Configuration file for the root application context -->
+	<!-- -->
+	<!-- Configuración de la gestión de sesiones exclusivamente con cookies -->
+	<!-- -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+		<tracking-mode>COOKIE</tracking-mode>
+	</session-config>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
