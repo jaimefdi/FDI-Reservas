@@ -13,7 +13,35 @@
 		<session-timeout>30</session-timeout>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
+	
+	<!-- -->
+	<!-- Log4J 2 initialization -->
+	<!-- -->
 
+	<!-- Disable automatic Servlet 3.0 initializacion (ServletContainerInitializer) 
+		to avoid bugs in Tomcat behavior -->
+	<context-param>
+		<param-name>isLog4jAutoInitializationDisabled</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- Log4j 2 Servlet 2.5 (manual) initialization -->
+	<listener>
+		<listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+	</listener>
+	<filter>
+		<filter-name>Log4jServletFilter</filter-name>
+		<filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Log4jServletFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+	
 	<!-- -->
 	<!-- Configuración del root context de Spring -->
 	<!-- -->
