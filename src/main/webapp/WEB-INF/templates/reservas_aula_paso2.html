@@ -23,7 +23,7 @@
 			<div class="col-md-2 text-center">
 	            <div class="checkbox">
 				    <label>
-				      <input type="checkbox" /> Mis reservas
+				      <input id="checkReservas" type="checkbox" /> Mis reservas
 				    </label>
 				 </div>
 			</div>
@@ -42,7 +42,7 @@
 				 </div>
 			</div>
 			<div class="col-md-6 text-right">
-	           <button type="submit" class="btn-filtrar">Filtrar <i class="fa fa-arrow-right"></i></button>
+	           <button id="btn-filtro" type="button" class="btn-rec gray">FILTRAR <i class="fa fa-arrow-right"></i></button>
 			</div>
             <!--<div class="col-md-4">
                 <div class="form-group">
@@ -457,6 +457,33 @@
 			       	
 			    
 			});
+			
+			
+			$("#checkReservas").change(function(){
+				if (this.checked){
+					$("#calendar").fullCalendar('addEventSource',{
+
+						url: '/reservas/misEventos',							
+			            color: 'green',    
+			            textColor: 'black' 
+		
+					});
+				}
+				else{
+					$("#calendar").fullCalendar('removeEventSource',{
+
+						url: '/reservas/misEventos',							
+			            color: 'green',    
+			            textColor: 'black' 
+		
+					});
+					
+				}
+				
+				
+				
+			});
+			
 		});
 		
 		/*]]>*/

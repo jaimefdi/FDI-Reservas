@@ -368,6 +368,11 @@ button.yellow{
 	color: #D9534F;
 }
 
+.btn-rec.gray{
+	border: 2px solid #555;
+	color: #555;
+}
+
 .btn-rec.yellow:hover{
 	background: #EEA236;
 	color: #FFF;
@@ -385,6 +390,11 @@ button.yellow{
 
 .btn-rec.red:hover{
 	background: #D9534F;
+	color: #FFF;
+}
+
+.btn-rec.gray:hover{
+	background:#555;
 	color: #FFF;
 }
 

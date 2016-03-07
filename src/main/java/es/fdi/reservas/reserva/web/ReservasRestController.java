@@ -42,6 +42,18 @@ public class ReservasRestController {
 		return result;
 	}
 	
+	@RequestMapping(value="/misEventos", method=RequestMethod.GET)
+	public List<ReservaFullCalendarDTO> reservasUsuario(){
+		User user = user_service.getCurrentUser();
+		List<Reserva> userReser = reserva_service.getAllReservations(user.getUsername());
+		List<ReservaFullCalendarDTO> result = new ArrayList<>();
+		for(Reserva r : userReser) {
+			result.add(ReservaFullCalendarDTO.fromReserva(r));
+		}
+		 
+		return result;
+	}
+	
 	@RequestMapping(value="{id_edif}/tipoEspacio/{tipoEspacio}", method=RequestMethod.GET)
 	public List<EspacioTipoDTO> todosLosEspacios(@PathVariable("id_edif") long id_edif, @PathVariable("tipoEspacio") String tipoEspacio){
 		List<EspacioTipoDTO> result = new ArrayList<>();
