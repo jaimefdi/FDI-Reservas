@@ -32,7 +32,6 @@
                         <tr th:each="r : ${allReservations}" th:attr="data-idReserva=${r.id}">
                             <td th:text="${r.asunto}">Recuperacion de clase</td>
                             <td th:text="${r.espacio.nombre_espacio}">Aula 9</td>
-                            <input id="id_esp" type="hidden" th:value="${r.espacio.id}" />
                             <td th:text="${#joda.format(r.fecha_ini, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
                             <td th:text="${#joda.format(r.fecha_fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
                             <td th:if="${r.estado}" class=" text-center"><span class="label label-success">Confirmada</span></td>
@@ -106,8 +105,7 @@
                    <div class="form-group">
                       <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
                      <div class="col-md-10">
-                          <p id="nombre_espacio" class="form-control-static" >yyyy</p>     
-                          <!--  <input type="hidden" th:field="*{espacio.id}" />   -->                    
+                          <p id="nombre_espacio" class="form-control-static" >yyyy</p>                     
                      </div>
                    </div>
                  
