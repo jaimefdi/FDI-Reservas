@@ -29,7 +29,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="r : ${allReservations}" th:attr="data-el_id=${r.espacio.id}">
+                        <tr th:each="r : ${allReservations}" th:attr="data-idReserva=${r.id}">
                             <td th:text="${r.asunto}">Recuperacion de clase</td>
                             <td th:text="${r.espacio.nombre_espacio}">Aula 9</td>
                             <input id="id_esp" type="hidden" th:value="${r.espacio.id}" />
@@ -115,7 +115,7 @@
 
                  <div class="row">
                      <div class="col-xs-6 col-md-6">
-                      <a href="#"><button type="submit" class="btn-rec red">ELIMINAR</button></a>
+                      <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
                      </div>
                      <div class="col-xs-6 col-md-6 text-right">
                       <button type="submit" class="btn-rec blue">GUARDAR </button>
@@ -130,6 +130,8 @@
  
  <script>
  $(document).ready(function(){
+	 var idReserva;
+	 
 	 $('tr').click(function(){
 		 $('#modalEditarReserva').modal('show');
 		 var asunto = $(this).find("td").eq(0).html();
@@ -141,15 +143,31 @@
 		 $('#modalEditarReserva #datetimepicker1').attr("value",f_ini);
 	  	 $('#modalEditarReserva #datetimepicker2').attr("value",f_fin);
 	  	 $('#modalEditarReserva #nombre_espacio').text(espacio);
-	  	 var id_espacio = $(this).find("input").val();
+	  	
 	  	 
-	  	 var id = $(this).attr("data-el_id");
-	  	 console.log(id);
-	  	 
-	  	 
-		 
+	  	idReserva = $(this).attr("data-idReserva");
 	  	 
 	 });
+	 
+	 
+	 $("#btn-eliminar").click(function(){
+  		 
+	  		 console.log('/reservas/reserva/' + idReserva);
+	  		$.ajax({
+				url: '/reservas/reserva/' + idReserva,
+				type: 'DELETE',
+				success : function(datos) {
+					
+					alert("Reserva eliminada");
+				    
+				},    
+			    error : function(xhr, status) {
+			        alert('Disculpe, existió un problema');
+			    }
+			});
+	  		
+	  	 });
+	 
  });
  
  

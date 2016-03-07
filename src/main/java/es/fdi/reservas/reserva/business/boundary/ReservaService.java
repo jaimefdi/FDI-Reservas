@@ -79,6 +79,10 @@ public class ReservaService {
 		return edificio_repository.findByFacultad_Id(id_facultad);
 	}
 
+	public void eliminarReserva(long idReserva) {
+		reserva_repository.delete(idReserva);
+	}
+
 
 
 	
