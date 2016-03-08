@@ -38,16 +38,19 @@
                             
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr th:each="r : ${allReservations}" th:attr="data-idReserva=${r.id}">
-                            <td th:text="${r.asunto}">Recuperacion de clase</td>
-                            <td th:text="${r.espacio.nombre_espacio}">Aula 9</td>
-                            <td th:text="${#joda.format(r.fecha_ini, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
-                            <td th:text="${#joda.format(r.fecha_fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
-                            <td th:if="${r.estado}" class=" text-center"><span class="label label-success">Confirmada</span></td>
-                            <td th:unless="${r.estado}" class=" text-center"><span class="label label-danger">Denegada</span></td>
-                        </tr>     
-                    </tbody>
+					<tbody>
+						<tr th:each="r : ${allReservations}"
+							th:attr="id=${r.id},data-id=${r.id},data-start=${#joda.isoDateTime(r.comienzo)},data-end=${#joda.isoDateTime(r.fin)},data-espacio=${r.espacio.id}">
+							<td th:text="${r.asunto}">Recuperacion de clase</td>
+							<td th:text="${r.espacio.nombre_espacio}">Aula 9</td>
+							<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
+							<td th:text="${#joda.format(r.fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
+							<td th:if="${r.estado}" class=" text-center"><span
+								class="label label-success">Confirmada</span></td>
+							<td th:unless="${r.estado}" class=" text-center"><span
+								class="label label-danger">Denegada</span></td>
+						</tr>
+					</tbody>                    
                 </table>
             </div> 
             <!-- /.table-responsive-->
@@ -126,7 +129,7 @@
                       <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
                      </div>
                      <div class="col-xs-6 col-md-6 text-right">
-                      <button type="submit" class="btn-rec blue">GUARDAR </button>
+                      <button id="btn-guardar" type="button" class="btn-rec blue">GUARDAR </button>
                      </div>
                  </div>                
              </form>
@@ -136,26 +139,56 @@
       </div>
     </div>
  
- <script>
+ <script th:inline="javascript">
+ var baseURL = /*[[@{/}]]*/ '/';
+
  $(document).ready(function(){
-	 var idReserva;
-	 
-	 $('tr').click(function(){
-		 $('#modalEditarReserva').modal('show');
-		 var asunto = $(this).find("td").eq(0).html();
-		 var espacio = $(this).find("td").eq(1).html();
-		 var f_ini = $(this).find("td").eq(2).html();
-		 var f_fin = $(this).find("td").eq(3).html();
-		 
-		 $('#modalEditarReserva #idAsunto').attr("value",asunto);
-		 $('#modalEditarReserva #datetimepicker1').attr("value",f_ini);
-	  	 $('#modalEditarReserva #datetimepicker2').attr("value",f_fin);
-	  	 $('#modalEditarReserva #nombre_espacio').text(espacio);
-	  	
-	  	 
-	  	idReserva = $(this).attr("data-idReserva");
-	  	 
-	 });
+	 	var reserva = {};
+	 	var token = $("meta[name='_csrf']").attr("content");
+	 	var header = $("meta[name='_csrf_header']").attr("content");
+	 	var reqHeaders = [];
+	 	reqHeaders[header] = token;
+	 	
+	 	$('tr').click(function(){
+	 		$('#modalEditarReserva').modal('show');
+	 		
+	 		var espacio = $(this).find("td").eq(1).html();
+	 		reserva.id =  $(this).attr("data-id");
+	 		reserva.start = $(this).attr("data-start");
+	 		reserva.end = $(this).attr("data-end");
+	 		reserva.idEspacio = $(this).attr("data-espacio");
+	 		reserva.title = $(this).find("td").eq(0).html();
+
+	 		$('#modalEditarReserva #idAsunto').attr("value",reserva.title);
+	 		$('#modalEditarReserva #datetimepicker1').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
+	 		$('#modalEditarReserva #datetimepicker2').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
+	 		$('#modalEditarReserva #nombre_espacio').text(espacio);
+	 	});
+	 	
+	 	$("#btn-guardar").click(function(){
+	 		reserva.title = $("#modalEditarReserva #idAsunto").val();
+	 		reserva.start =	es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker1').val());
+	 		reserva.end = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker2').val());
+	 	
+
+	 		$.ajax({
+	 			url: baseURL+'reserva/' + reserva.id,
+	 			type: 'PUT',
+	 			headers : reqHeaders,
+	 			data: JSON.stringify(reserva),
+	 			contentType: 'application/json',
+	 			success : function(datos) {   
+	 				alert("Reserva actualizada");
+	 				$('#modalEditarReserva').modal('hide');
+	 				$("#"+reserva.id +" td:nth-child(1)").text(reserva.title);
+	 				$("#"+reserva.id +" td:nth-child(3)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
+	 				$("#"+reserva.id +" td:nth-child(4)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
+	 			},    
+	 			error : function(xhr, status) {
+	     			alert('Disculpe, existió un problema');
+	 			}
+	 		});
+	 	});
 	 
 	 
 	 $("#btn-eliminar").click(function(){

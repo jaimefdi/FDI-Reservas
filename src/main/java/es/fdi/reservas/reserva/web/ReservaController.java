@@ -52,17 +52,6 @@ public class ReservaController {
         return "redirect:/mis_reservas";
     }
 	
-	@RequestMapping(value="/reserva/editar/{id_res}",method=RequestMethod.PUT)
-    public String editarReserva(@PathVariable("id_res") long id_res, Reserva nuevaReserva) {
-		User u = user_service.getCurrentUser();
-		
-		Reserva viejaReserva = reserva_service.getReservaById(id_res);
-		//se copian las propiedades de la nuevaReserva a la vieja y se guarda
-		
-		//reserva_service.actualizarReserva(r,u.getUsername());
-		
-        return "redirect:/mis_reservas";
-    }
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
     public ModelAndView edificios() {
