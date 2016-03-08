@@ -16,6 +16,7 @@
 	
 	<mvc:resources location="/css/" mapping="/css/**" />
 	<mvc:resources location="/img/" mapping="/img/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
        
 	<!-- Enable scan for @Controller -->
     <context:component-scan base-package="es.fdi.reservas.reserva.web" />
@@ -52,10 +53,9 @@
 	<property name="converters">
 		<list>
 			<bean class="es.fdi.reservas.reserva.web.EspacioConverter" />
-			<bean class="es.fdi.reservas.reserva.web.DateTimeConverter" />
+<!-- 			<bean class="es.fdi.reservas.reserva.web.DateTimeConverter" /> -->
 		</list>
 	</property>
   </bean>
-
 
 </beans>
