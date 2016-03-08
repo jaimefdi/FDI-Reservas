@@ -23,7 +23,7 @@ public class Edificio {
 	@NotNull
 	private String nombre_edificio;
 	
-	@OneToMany(mappedBy="edificio", cascade= CascadeType.ALL)
+	@OneToMany(mappedBy="edificio")
 	private Set<Espacio> espacios;
 	
 	@ManyToOne(optional=true)

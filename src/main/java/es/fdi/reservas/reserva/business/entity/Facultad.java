@@ -24,10 +24,10 @@ public class Facultad {
 	@NotNull
 	private String nombreFacultad;
 	
-	@OneToMany(mappedBy="facultad", cascade= CascadeType.ALL)
+	@OneToMany(mappedBy="facultad")
 	private Set<Edificio> edificios;
 	
-	@ManyToMany(cascade = {CascadeType.ALL},mappedBy="facultades")
+	@ManyToMany(mappedBy="facultades")
 	private Set<User> usuarios;
 	
 	public Facultad(){
