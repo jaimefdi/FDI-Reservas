@@ -190,24 +190,21 @@
 	 		});
 	 	});
 	 
-	 
-	 $("#btn-eliminar").click(function(){
-  		 
-	  		 console.log('/reservas/reserva/' + idReserva);
-	  		$.ajax({
-				url: '/reservas/reserva/' + idReserva,
-				type: 'DELETE',
-				success : function(datos) {
-					
-					alert("Reserva eliminada");
-				    
-				},    
-			    error : function(xhr, status) {
-			        alert('Disculpe, existió un problema');
-			    }
-			});
-	  		
-	  	 });
+	 	$("#btn-eliminar").click(function(){
+	 		$.ajax({
+	 			url: baseURL+'reserva/' + reserva.id,
+	 			type: 'DELETE',
+	 			headers : reqHeaders,
+	 			success : function(datos) {
+	 				alert("Reserva eliminada");
+	 				$('#modalEditarReserva').modal('hide');
+	 				$("#"+reserva.id).remove();
+	 			},    
+	 			error : function(xhr, status) {
+	 				alert('Disculpe, existió un problema');
+	 			}
+	 		});
+	 	});
 	 
  });
  

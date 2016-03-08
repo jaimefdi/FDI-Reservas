@@ -93,7 +93,7 @@ public class ReservasRestController {
 			
 	}
 	
-	@RequestMapping(value="/reserva/{idReserva}",method=RequestMethod.GET)
+	@RequestMapping(value="/reserva/{idReserva}",method=RequestMethod.DELETE)
     public void eliminarReserva(@PathVariable("idReserva") long idReserva) {
 		
 		reserva_service.eliminarReserva(idReserva);
