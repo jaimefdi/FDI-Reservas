@@ -2,6 +2,7 @@ package es.fdi.reservas.reserva.business.boundary;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
+import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
 
 @Service
 public class ReservaService {
@@ -36,7 +38,7 @@ public class ReservaService {
 	}
 
 	public Reserva agregarReserva(Reserva r, String username) {
-		Reserva nuevaReserva = new Reserva(r.getAsunto(),r.getFecha_ini(),r.getFecha_fin(),username, r.getEspacio());
+		Reserva nuevaReserva = new Reserva(r.getAsunto(),r.getComienzo(),r.getFin(),username, r.getEspacio());
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		
 		return nuevaReserva;
@@ -79,11 +81,25 @@ public class ReservaService {
 		return edificio_repository.findByFacultad_Id(id_facultad);
 	}
 
+	public Reserva editaReserva(ReservaFullCalendarDTO reservaActualizada) {
+		DateTime start = reservaActualizada.getStart().withTime(0, 0, 0, 0);
+		DateTime end = start.plusDays(1);
+		List<Reserva> reservas = reserva_repository.findByEspacioIdAndComienzoBetween(reservaActualizada.getIdEspacio(), start, end);
+		for(Reserva r: reservas ){
+			if ( r.solapa(reservaActualizada.getStart(), reservaActualizada.getEnd()) && ! reservaActualizada.getId().equals(r.getId())) {
+				throw new ReservaSolapadaException(String.format("La reserva %d, solapa con la reserva %d", reservaActualizada.getId(), r.getId()));
+			}
+		}
+		Reserva r = reserva_repository.findOne(reservaActualizada.getId());
+		r.setComienzo(reservaActualizada.getStart());
+		r.setFin(reservaActualizada.getEnd());
+		r.setAsunto(reservaActualizada.getTitle());
+		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
+		return reserva_repository.save(r);
+	}
+
 	public void eliminarReserva(long idReserva) {
 		reserva_repository.delete(idReserva);
 	}
-
-
-
 	
 }

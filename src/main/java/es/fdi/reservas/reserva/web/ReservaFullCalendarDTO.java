@@ -1,34 +1,37 @@
 package es.fdi.reservas.reserva.web;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 
-import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 
 public class ReservaFullCalendarDTO {
 
-	private String id;
+	private Long id;
 	private String title;
 	private DateTime start;
 	private DateTime end;
 	private String nombreEspacio;
+	private Long idEspacio;
 
-	public ReservaFullCalendarDTO(String id, String title, DateTime start, DateTime end, String nombre_espacio) {
+	public ReservaFullCalendarDTO(){
+		
+	}
+	
+	public ReservaFullCalendarDTO(Long id, String title, DateTime start, DateTime end, String nombre_espacio, Long idEspacio) {
 		this.id = id;
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		this.nombreEspacio = nombre_espacio;
+		this.idEspacio = idEspacio;
 	}
 
 	
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -41,14 +44,12 @@ public class ReservaFullCalendarDTO {
 	}
 
 	
-	public String getStart() {
-		DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-		return fmt.print(start);
+	public DateTime getStart() {
+		return this.start;
 	}
 
-	public String getEnd() {
-		DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-		return fmt.print(end);
+	public DateTime getEnd() {
+		return this.end;
 	}
 
 
@@ -71,8 +72,18 @@ public class ReservaFullCalendarDTO {
 		this.end = end;
 	}
 
+  
+	public Long getIdEspacio() {
+		return idEspacio;
+	}
+
+
+	public void setIdEspacio(Long idEspacio) {
+		this.idEspacio = idEspacio;
+	}
+
 
 	public static ReservaFullCalendarDTO fromReserva(Reserva reserva) {
-		return new ReservaFullCalendarDTO(reserva.getId().toString(), reserva.getAsunto(), reserva.getFecha_ini(), reserva.getFecha_fin(), reserva.getEspacio().getNombre_espacio());
+		return new ReservaFullCalendarDTO(reserva.getId(), reserva.getAsunto(), reserva.getComienzo(), reserva.getFin(), reserva.getEspacio().getNombre_espacio(), reserva.getEspacio().getId());
 	}
 }

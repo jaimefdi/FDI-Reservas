@@ -12,18 +12,20 @@
 
 		<Logger name="org.springframework" level="info" />
 
+		<Logger name="org.springframework.security" level="info" />
+
 		<!-- -->
 		<!-- Hibernate Loggers -->
 		<!-- -->
 
 		<!-- Log all SQL DML statements as they are executed -->
-		<Logger name="org.hibernate.SQL" level="debug" />
+		<Logger name="org.hibernate.SQL" level="info" />
 
 		<!-- Log all JDBC parameters -->
-		<Logger name="org.hibernate.type.descriptor.sql" level="trace" />
+		<Logger name="org.hibernate.type.descriptor.sql" level="info" />
 
 		<!-- Log all SQL DDL statements as they are executed -->
-		<Logger name="org.hibernate.tool.hbm2ddl" level="debug" />
+		<Logger name="org.hibernate.tool.hbm2ddl" level="info" />
 
 		<!-- Log the state of all entities (max 20 entities) associated with the 
 			session at flush time -->
@@ -35,12 +37,11 @@
 		<!-- Log HQL and SQL ASTs during query parsing -->
 		<Logger name="org.hibernate.hql.ast.AST" level="info" />
 
-
 		<!-- Log all JDBC resource acquisition -->
-		<Logger name="org.hibernate.jdbc" level="debug" />
+		<Logger name="org.hibernate.jdbc" level="info" />
 
 		<!-- Log all JAAS authorization requests -->
-		<Logger name="org.hibernate.secure" level="debug" />
+		<Logger name="org.hibernate.secure" level="info" />
 
 		<!-- Log everything (a lot of information, but very useful for troubleshooting) -->
 		<Logger name="org.hibernate" level="info" />

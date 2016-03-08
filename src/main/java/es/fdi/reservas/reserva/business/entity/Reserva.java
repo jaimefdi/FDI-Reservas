@@ -21,18 +21,23 @@ public class Reserva {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="RESERVA_ID")
 	private Long id;
+	
 	@NotNull
 	private String asunto;
+	
 	@NotNull
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	private DateTime fecha_ini;
+	private DateTime comienzo;
+	
 	@NotNull
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	private DateTime fecha_fin;
+	private DateTime fin;
+	
 	@NotNull
 	private boolean estado;
+	
 	@NotNull
 	private String username;
 	//@NotNull
@@ -48,12 +53,12 @@ public class Reserva {
 	}
 	
 	public Reserva(String a, DateTime ini, DateTime fin, String user_name, Espacio esp){
-		asunto = a;
-		fecha_ini = ini;
-		fecha_fin = fin;
-		estado = true;
-		username = user_name;
-		espacio = esp;
+		this.asunto = a;
+		this.comienzo = ini;
+		this.fin = fin;
+		this.estado = true;
+		this.username = user_name;
+		this.espacio = esp;
 	}
 
 	public String getAsunto() {
@@ -64,20 +69,20 @@ public class Reserva {
 		this.asunto = asunto;
 	}
 	
-	public DateTime getFecha_ini() {
-		return fecha_ini;
+	public DateTime getComienzo() {
+		return comienzo;
 	}
 
-	public void setFecha_ini(DateTime fecha_ini) {
-		this.fecha_ini = fecha_ini;
+	public void setComienzo(DateTime fecha_ini) {
+		this.comienzo = fecha_ini;
 	}
 
-	public DateTime getFecha_fin() {
-		return fecha_fin;
+	public DateTime getFin() {
+		return fin;
 	}
 
-	public void setFecha_fin(DateTime fecha_fin) {
-		this.fecha_fin = fecha_fin;
+	public void setFin(DateTime fecha_fin) {
+		this.fin = fecha_fin;
 	}
 
 	public String getUsername() {
@@ -110,7 +115,32 @@ public class Reserva {
 		this.espacio = espacio;
 	}
 
+	public boolean solapa(DateTime start, DateTime end) {
+		/*
+		 *             fecha_ini          fecha_fin
+		 * --------------|------------------------|----------------
+		 *               --------------------------
+		 *   a)          |                        |
+		 *               --------------------------
+		 *           --------------------------------------
+		 *   b)      |                                    |
+		 *           --------------------------------------
+		 *                     ----------------------------
+		 *   c)                |                          |
+		 *                     ----------------------------
+		 *           -----------------
+		 *   d)      |               |
+		 *           -----------------
+		 *                   ----------------
+		 *   e)              |              |
+		 *                   ----------------
+		 */
+		
+		// a), b), d)
+		boolean solapa = (start.compareTo(comienzo)) <= 0 && !(end.compareTo(comienzo) < 0);
+		// c), d)
+		solapa = solapa || (start.compareTo(comienzo)>= 0 && start.compareTo(fin) <= 0);
+		return solapa;
+	}
 
-	
-	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -92,7 +93,7 @@ public class ReservasRestController {
 			
 	}
 	
-	@RequestMapping(value="/reserva/{idReserva}",method=RequestMethod.GET)
+	@RequestMapping(value="/reserva/{idReserva}",method=RequestMethod.DELETE)
     public void eliminarReserva(@PathVariable("idReserva") long idReserva) {
 		
 		reserva_service.eliminarReserva(idReserva);
@@ -100,8 +101,10 @@ public class ReservasRestController {
         
     }
 	
-	
-	
+	@RequestMapping(value = "/reserva/{idReserva}", method = RequestMethod.PUT)
+	public void editarReserva(@PathVariable("idReserva") long idReserva, @RequestBody ReservaFullCalendarDTO reservaActualizada) {
+		reserva_service.editaReserva(reservaActualizada);
+	}	
 	
 	
 

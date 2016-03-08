@@ -36,7 +36,7 @@ public class ReservaController {
 		User u = user_service.getCurrentUser();
 		model.addObject("user", u);
 		model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
-		model.addObject("view", "mis_reservas :: contenido");
+		model.addObject("view", "mis_reservas");
         return model;
     }
 	
@@ -52,17 +52,6 @@ public class ReservaController {
         return "redirect:/mis_reservas";
     }
 	
-	@RequestMapping(value="/reserva/editar/{id_res}",method=RequestMethod.PUT)
-    public String editarReserva(@PathVariable("id_res") long id_res, Reserva nuevaReserva) {
-		User u = user_service.getCurrentUser();
-		
-		Reserva viejaReserva = reserva_service.getReservaById(id_res);
-		//se copian las propiedades de la nuevaReserva a la vieja y se guarda
-		
-		//reserva_service.actualizarReserva(r,u.getUsername());
-		
-        return "redirect:/mis_reservas";
-    }
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
     public ModelAndView edificios() {
@@ -96,7 +85,7 @@ public class ReservaController {
 		model.addObject("user", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
-		model.addObject("view", "reservas_aula_paso2 :: contenido");
+		model.addObject("view", "reservas_aula_paso2");
 		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
 		
         return model;
