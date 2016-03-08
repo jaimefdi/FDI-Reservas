@@ -36,7 +36,7 @@ public class ReservaController {
 		User u = user_service.getCurrentUser();
 		model.addObject("user", u);
 		model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
-		model.addObject("view", "mis_reservas :: contenido");
+		model.addObject("view", "mis_reservas");
         return model;
     }
 	
@@ -96,7 +96,7 @@ public class ReservaController {
 		model.addObject("user", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
-		model.addObject("view", "reservas_aula_paso2 :: contenido");
+		model.addObject("view", "reservas_aula_paso2");
 		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
 		
         return model;
