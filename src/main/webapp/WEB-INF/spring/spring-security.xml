@@ -24,7 +24,7 @@
 		<intercept-url pattern="/login" access="permitAll" />
 		<intercept-url pattern="/nuevoUsuario" access="permitAll" />
 		<intercept-url pattern="/logout" access="isAuthenticated()" />
-		<intercept-url pattern="/**" access="permitAll" />
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 		<!-- <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />-->
 		<!-- para administracion usar las rutas /admin/** 
 			 para secretaria usar las rutas /accept/** -->

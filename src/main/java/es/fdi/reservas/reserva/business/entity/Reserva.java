@@ -3,6 +3,8 @@ package es.fdi.reservas.reserva.business.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,8 +37,8 @@ public class Reserva {
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	private DateTime fin;
 	
-	@NotNull
-	private boolean estado;
+	@Enumerated(EnumType.ORDINAL)
+	private EstadoReserva estadoReserva;
 	
 	@NotNull
 	private String username;
@@ -56,7 +58,7 @@ public class Reserva {
 		this.asunto = a;
 		this.comienzo = ini;
 		this.fin = fin;
-		this.estado = true;
+		this.estadoReserva = EstadoReserva.CONFIRMADA;
 		this.username = user_name;
 		this.espacio = esp;
 	}
@@ -88,14 +90,13 @@ public class Reserva {
 	public String getUsername() {
 		return username;
 	}
-	
-	
-	public boolean isEstado() {
-		return estado;
+
+	public EstadoReserva getEstadoReserva() {
+		return estadoReserva;
 	}
 
-	public void setEstado(boolean estado) {
-		this.estado = estado;
+	public void setEstadoReserva(EstadoReserva estadoReserva) {
+		this.estadoReserva = estadoReserva;
 	}
 
 	public void setUsername(String username) {
@@ -113,6 +114,12 @@ public class Reserva {
 
 	public void setEspacio(Espacio espacio) {
 		this.espacio = espacio;
+	}
+	
+	public boolean reservaAConfirmar(){
+		DateTime finEsperado;
+		finEsperado=comienzo.plusHours(2);
+		return fin.compareTo(finEsperado) >= 0;
 	}
 
 	public boolean solapa(DateTime start, DateTime end) {

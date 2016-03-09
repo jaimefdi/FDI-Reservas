@@ -49,14 +49,14 @@ INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector,
 INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(10,'Aula 1280',80,true,true,2,0);
 INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(11,'Aula 1290',80,true,true,2,0);
 
-INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estado, username, ESPACIO_ID) VALUES(1,'Charla Intel','2016-03-16 12:30:00','2016-03-16 14:30:00',true,'user',1);
-INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estado, username, ESPACIO_ID) VALUES(2,'Reunion TFG','2016-03-16 14:30:00','2016-03-16 16:30:00',false,'user',3);
-INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estado, username, ESPACIO_ID) VALUES(3,'Rvision examen','2016-03-18 14:30:00','2016-03-18 16:30:00',true,'user',4);
-INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estado, username, ESPACIO_ID) VALUES(4,'Tutoria','2016-03-17 14:30:00','2016-03-17 16:30:00',true,'user',3);
-INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estado, username, ESPACIO_ID) VALUES(5,'Clase de repaso','2016-03-23 14:30:00','2016-03-23 16:30:00',true,'user',5);
-INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estado, username, ESPACIO_ID) VALUES(6,'PL','2016-03-07 09:00:00','2016-03-07 11:00:00',true,'user',6);
-INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estado, username, ESPACIO_ID) VALUES(7,'PL','2016-03-09 09:00:00','2016-03-09 11:00:00',true,'user',6);
-INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estado, username, ESPACIO_ID) VALUES(8,'MAR','2016-03-09 11:00:00','2016-03-09 12:00:00',true,'user',6);
-INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estado, username, ESPACIO_ID) VALUES(9,'DVI','2016-03-09 14:00:00','2016-03-09 16:00:00',true,'user',6);
+INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(1,'Charla Intel','2016-03-16 12:30:00','2016-03-16 14:30:00',0,'user',1);
+INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(2,'Reunion TFG','2016-03-16 14:30:00','2016-03-16 16:30:00',2,'user',3);
+INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(3,'Rvision examen','2016-03-18 14:30:00','2016-03-18 16:30:00',0,'user',4);
+INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(4,'Tutoria','2016-03-17 14:30:00','2016-03-17 16:30:00',1,'user',3);
+INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(5,'Clase de repaso','2016-03-23 14:30:00','2016-03-23 16:30:00',1,'user',5);
+INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(6,'PL','2016-03-07 09:00:00','2016-03-07 11:00:00',0,'user',6);
+INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(7,'PL','2016-03-09 09:00:00','2016-03-09 11:00:00',0,'user',6);
+INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(8,'MAR','2016-03-09 11:00:00','2016-03-09 12:00:00',0,'user',6);
+INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(9,'DVI','2016-03-09 14:00:00','2016-03-09 16:00:00',0,'user',6);
 
 
