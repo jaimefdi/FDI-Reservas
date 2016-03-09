@@ -1,53 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/j2ee"
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:web="http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-	                   http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd">
+                  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-  <display-name>fdi-reservas</display-name>
+	<display-name>fdi-reservas</display-name>
 
-   <!-- Configuration file for the root application context -->
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/spring/root-context.xml,
+	<!-- -->
+	<!-- Configuración de la gestión de sesiones exclusivamente con cookies -->
+	<!-- -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+		<tracking-mode>COOKIE</tracking-mode>
+	</session-config>
+	
+	<!-- -->
+	<!-- Log4J 2 initialization -->
+	<!-- -->
+
+	<!-- Disable automatic Servlet 3.0 initializacion (ServletContainerInitializer) 
+		to avoid bugs in Tomcat behavior -->
+	<context-param>
+		<param-name>isLog4jAutoInitializationDisabled</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- Log4j 2 Servlet 2.5 (manual) initialization -->
+	<listener>
+		<listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+	</listener>
+	<filter>
+		<filter-name>Log4jServletFilter</filter-name>
+		<filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Log4jServletFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+	
+	<!-- -->
+	<!-- Configuración del root context de Spring -->
+	<!-- -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/root-context.xml,
                     /WEB-INF/spring/spring-security.xml
         </param-value>
-    </context-param>
-    
-  <servlet>
-    <servlet-name>FDIReservas</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/spring/webcontext/servlet-context.xml</param-value>
- 	</init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+	</context-param>
 
-  <servlet-mapping>
-    <servlet-name>FDIReservas</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
-  
-   <!-- -->
-    <filter>
-    	<filter-name>springSecurityFilterChain</filter-name>
-    	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	<!-- -->
+	<!-- Configuración de la codificación de las peticiones -->
+	<!-- -->
+
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
 	</filter>
-	
 	<filter-mapping>
-	    <filter-name>springSecurityFilterChain</filter-name>
-	    <url-pattern>/*</url-pattern>
-	</filter-mapping>  
- 
-  
-  <!--  <welcome-file-list>
-        <welcome-file>welcome</welcome-file>
-    </welcome-file-list> -->
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<servlet-name>FDIReservas</servlet-name>
+	</filter-mapping>
+
+
+	<!-- -->
+	<!-- Habilitando el método PUT utilizando el parámetro _method a través 
+		de un campo oculto de los formularios -->
+	<!-- -->
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<servlet-name>FDIReservas</servlet-name>
+	</filter-mapping>
+
+	<!-- -->
+	<!-- Habilita que el método PUT pueda utilizarse en formluarios x-www-urlencoded 
+		data -->
+	<!-- -->
+	<filter>
+		<filter-name>HttpPutFormContentFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HttpPutFormContentFilter</filter-name>
+		<servlet-name>FDIReservas</servlet-name>
+	</filter-mapping>
+
+	<!-- -->
+	<!-- Definición del filtro para Spring Security -->
+	<!-- -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<servlet-name>FDIReservas</servlet-name>
+	</filter-mapping>
+
+	<!-- -->
+	<!-- Configuración del Dispatcher servlet de Spring MVC -->
+	<!-- -->
+	<servlet>
+		<servlet-name>FDIReservas</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/webcontext/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FDIReservas</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 
 </web-app>
 

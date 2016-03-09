@@ -30,7 +30,7 @@ public class Espacio {
 	private boolean microfono, proyector;
 	//private String nombre_edificio;
 	
-	@OneToMany(mappedBy="espacio", cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="espacio", fetch=FetchType.EAGER)
 	private List<Reserva> reservas;
 	
 	@ManyToOne(optional=true)

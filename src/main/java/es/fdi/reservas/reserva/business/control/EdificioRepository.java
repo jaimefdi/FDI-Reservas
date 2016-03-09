@@ -1,10 +1,13 @@
 package es.fdi.reservas.reserva.business.control;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 
 @Repository
-public interface EdificioRepository extends CrudRepository<Edificio, Long>{
+public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 
+	public List<Edificio> findByFacultad_Id(Long id_facul);
 }

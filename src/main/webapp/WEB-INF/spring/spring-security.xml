@@ -5,7 +5,6 @@
 	xmlns:p="http://www.springframework.org/schema/p" 
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util"
-
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/util
@@ -19,6 +18,7 @@
 	<http pattern="/webjars/**" security="none" />
 	<http pattern="/css/**" security="none" />
 	<http pattern="/img/**" security="none" />
+	<http pattern="/js/**" security="none" />
 	
 	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/login" access="permitAll" />

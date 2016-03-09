@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Listado de espacios</title>
+</head>
+<body>
+
+            <div class="container-fluid" th:fragment="contenido">
 <!-- Page Heading -->
 <div class="row">
     <div class="col-lg-12">
@@ -36,7 +45,7 @@
 
  <div class="row">
     <div class="col-md-12 text-right page-header">
-         <a id="espacio_link" href="espacio/1"><button type="button" class="btn btn-primary blue">Siguiente <i class="fa fa-angle-right"></i></button></a>
+         <a id="espacio_link" href="espacio/1"><button type="button" class="btn-rec blue">SIGUIENTE <i class="fa fa-angle-right"></i></button></a>
     </div>                   
 </div>
 <!-- /.row -->
@@ -64,7 +73,7 @@
 			    
 			},    
 		    error : function(xhr, status) {
-		        alert('Disculpe, existió un problema');
+		        alert('Disculpe, existiÃ³ un problema');
 		    }
 		});
 		
@@ -83,7 +92,7 @@
 		var espacios = [];
 		var espacio = new Object();
 		var i = 0;
-		// no se bien cómo hacerlo
+		// no se bien cÃ³mo hacerlo
 		//for( /*[${allSpaces}]*/ in espacio){
 		//	if('${espacio.tipoEspacio}' == id_tipoEspacio)
 		//		espacios['${espacio.id}'].push(espacio);
@@ -107,3 +116,9 @@
 	});
 	/*]]>*/
 </script>
+ </div>
+
+            <!-- /.container-fluid -->
+
+</body>
+</html>	

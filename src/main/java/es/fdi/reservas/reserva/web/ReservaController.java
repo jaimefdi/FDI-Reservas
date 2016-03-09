@@ -1,7 +1,6 @@
 package es.fdi.reservas.reserva.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +29,7 @@ public class ReservaController {
 		user_service = us;
 	}
 	
-	@PreAuthorize("hasRole('ROLE_USER') && getAuthorities().size()==1")
+	
 	@RequestMapping({"/","","/mis_reservas"})
     public ModelAndView MisReservas() {
 		ModelAndView model = new ModelAndView("index");
@@ -41,40 +40,32 @@ public class ReservaController {
         return model;
     }
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping({"/","","/mis_reservas"})
-    public ModelAndView MisReservasAdmin() {
-		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
-		model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
-		model.addObject("view", "mis_reservas");
-        return model;
-    }
-	
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
-    public String crearReserva(@ModelAttribute Reserva r) {
-		//ModelAndView model = new ModelAndView("index");
+    public String crearReserva(Reserva r) {
 		User u = user_service.getCurrentUser();
-		//model.addObject("user", u);
+		long id_esp = r.getEspacio().getId();
+		Espacio e = reserva_service.getSpaceById(id_esp);
+		r.setEspacio(e);
+		
 		reserva_service.agregarReserva(r,u.getUsername());
-		//model.addObject("allReservations", reserva_service.getAllReservations(u.getUsername()));
-		//model.addObject("view", "mis_reservas");
-        return "redirect:mis_reservas";
+		
+        return "redirect:/mis_reservas";
     }
 	
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
-    public ModelAndView Edificios() {
+    public ModelAndView edificios() {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
+		model.addObject("Facultades", reserva_service.getFacultades());// todas las facultades
 		model.addObject("allBuildings", reserva_service.getAllBuildings());
 		model.addObject("view", "edificio");
         return model;
     }
 	
+	// Todos los espacios del edificio {id_edif}
 	@RequestMapping(value="/edificio/{id_edif}/espacios", method=RequestMethod.GET)
-    public ModelAndView Espacios(@PathVariable("id_edif") long id_edif) {
+    public ModelAndView espacios(@PathVariable("id_edif") long id_edif) {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
 		//model.addObject("typeSpaces",funcion);
@@ -84,23 +75,23 @@ public class ReservaController {
     }
 	
 	
-	//carga los eventos del espacio {id_espacio} del edificio {id_edif}
+	// Carga los eventos del espacio {id_espacio} del edificio {id_edif}
 	@RequestMapping(value="/edificio/{id_edif}/espacio/{id_espacio}", method=RequestMethod.GET) 
 	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio) {
 		ModelAndView model = new ModelAndView("index");
+		Espacio e = reserva_service.getSpaceById(id_espacio);
+		Reserva r = new Reserva();
+		r.setEspacio(e);
 		model.addObject("user", user_service.getCurrentUser());
-		//model.addObject("Espacio", reserva_service.getSpaceById(id_espacio));
-		Reserva r=new Reserva();
-		r.setEspacio(reserva_service.getSpaceById(id_espacio));
 		model.addObject("Reserva", r);
-		//model.addObject("id_espacio", id_espacio);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "reservas_aula_paso2");
 		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
+		
         return model;
     }
 	
-
+	
 	
 	@RequestMapping(value="/reservas_fecha", method=RequestMethod.GET)
     public ModelAndView ReservaPrFecha() {
@@ -110,11 +101,5 @@ public class ReservaController {
         return model;
     }
 	
-	@RequestMapping(value="/secre/all", method=RequestMethod.GET)
-	public ModelAndView muestraReservas()
-	{
-		ModelAndView model = new ModelAndView("index");
-		model.addObject("Reservas", reserva_service.getAllUnacceptedReservations());
-		return model;
-	}
+	
 }

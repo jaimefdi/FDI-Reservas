@@ -1,18 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Reservas por espacios</title>
+</head>
+<body>
+
+            <div class="container-fluid" th:fragment="contenido">
+            
 <!-- Page Heading -->
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header text-center">
-            <small>Reserva un espacio en tan s�lo 3 pasos.</small>
+            <small>Ya casi has terminado, seleccione la fecha y la hora.</small>
         </h1>
     </div>
 </div>
 <!-- /.row -->
-
+<!--  
 <div class="row">
     <div class="col-md-6">
-         <h3><span class="red">3</span> Elige un d�a.</h3><br/>
+         <h3><span class="red">3</span> Elige un día.</h3><br/>
     </div>                   
-</div>
+</div> -->
 <!-- /.row -->
 
 <!-- Filtro -->
@@ -23,14 +33,14 @@
 			<div class="col-md-2 text-center">
 	            <div class="checkbox">
 				    <label>
-				      <input type="checkbox" /> Mis reservas
+				      <input id="checkReservas" type="checkbox" /> Mis reservas
 				    </label>
 				 </div>
 			</div>
 			<div class="col-md-2 text-center">
 	            <div class="checkbox">
 				    <label>
-				      <input type="checkbox" /> De ma�ana
+				      <input type="checkbox" /> De mañana
 				    </label>
 				 </div>
 			</div>
@@ -42,7 +52,7 @@
 				 </div>
 			</div>
 			<div class="col-md-6 text-right">
-	           <button type="submit" class="btn-filtrar">Filtrar <i class="fa fa-arrow-right"></i></button>
+	           <button id="btn-filtro" type="button" class="btn-rec gray">FILTRAR <i class="fa fa-arrow-right"></i></button>
 			</div>
             <!--<div class="col-md-4">
                 <div class="form-group">
@@ -113,10 +123,10 @@
                    
                    <!-- Fecha inicio --> 
                    <div class="form-group">
-                       <label for="ejemplo_3" class="col-md-3 control-label">Fecha ini:</label>
+                       <label for="ejemplo_3" class="col-md-3 control-label">Desde:</label>
                         <div class="col-md-9">
                          <div class='input-group date' >
-			                <input name="fecha_ini" id="datetimepicker1" type='text' class="form-control" />
+			                <input name="comienzo" id="datetimepicker1" type='text' class="form-control" />
 			                <span class="input-group-addon">
 			                    <span class="fa fa-calendar"></span>
 			                </span>
@@ -126,23 +136,74 @@
                    
                    <!-- Fecha fin --> 
                    <div class="form-group">
-                       <label for="ejemplo_3" class="col-md-3 control-label">Fecha fin:</label>
+                       <label for="ejemplo_3" class="col-md-3 control-label">Hasta:</label>
                         <div class="col-md-9">
                          <div class='input-group date' >
-			                <input name="fecha_fin" id="datetimepicker2" type='text' class="form-control" />
+			                <input name="fin" id="datetimepicker2" type='text' class="form-control" />
 			                <span class="input-group-addon">
 			                    <span class="fa fa-calendar"></span>
 			                </span>
 			             </div>
                          </div>
                    </div>
-                    <!-- Tipo de espacio --> 
+                   
+                   
+                   <!-- Repetir -->
+					<div class="col-md-11">
+	   				   	<div class="form-group ">
+					        <div class="checkbox">
+								<label>
+								    <input id="checkRepetir" type="checkbox" /> Repetir
+								</label>
+							</div>
+						</div>
+					</div>
+   				   	
+   				   	
+   				   	<div id="repetir" class="row">
+   				   		
+	   				   		<div class="col-md-10">
+		   				   		<div class="form-group ">
+						            <label class="col-md-3 control-label">Se repite:</label>
+						            <div class="col-md-9">
+							            <select class="form-control">
+							            	<option>Cada semana</option>
+							            	<option>Cada dia</option>
+							            	<option>Cada mes</option>
+							            	<option>Cada año</option>
+							            	<option>Todos los dias laborables (de lunes a viernes)</option>
+							            	<option>Todos los lunes, miercoles y viernes</option>
+							            	<option>Todos los martes y jueves</option>
+							            </select>
+						            </div>
+								</div>
+							</div>
+						
+						
+							<div class="col-md-10">
+		   				   		<div class="form-group ">
+						            <label class="col-md-2 control-label">Repetir:</label>
+						            <div class="col-md-3">
+							            <select class="form-control">
+							            	<option>1</option>
+							            	<option>2</option>
+							            	<option>3</option>
+							            </select>
+						            </div>
+						            
+						            <label class="col-md-2 control-label">semana</label>
+								</div>
+							</div>
+						
+   				   </div>
+					
+					 <!-- Tipo de espacio --> 
                    <div class="col-md-4">
                      <div class="form-group">
                         <label for="ejemplo_1" class="col-md-3 control-label">Tipo:</label>
                          
                        <div class="col-md-9">
-                       	 <p class="form-control-static" th:text="*{espacio.tipoEspacio}">aaaa </p>
+                       	 <p class="form-control-static" th:text="*{espacio.tipoEspacio}"></p>
                        	<!-- <input type="hidden" th:value="${espacio.tipoEspacio}"/>
                              <select id="seleccionTipoEspacios" class="form-control">
                               <option>Sala</option>
@@ -172,14 +233,13 @@
                        </div> 
                      </div>
                    </div>
-   
-
+					
                    <div class="row">
                        <div class="col-xs-6 col-md-6">
-                        <a href="#"><button type="submit" class="btn btn-warning yellow">Vaciar</button></a>
+                        <a href="#"><button type="submit" class="btn-rec yellow">VACIAR</button></a>
                        </div>
                        <div class="col-xs-6 col-md-6 text-right">
-                        <button type="submit" class="btn btn-success green">Hecho </button>
+                        <button type="submit" class="btn-rec green">CREAR</button>
                        </div>
                    </div>                
                </form>
@@ -197,32 +257,7 @@
           <h4 class="modal-title" id="myModalLabel">Editar reserva</h4>
         </div>
         <div class="modal-body">
-        		<form class="form-horizontal" role="form" action="#" th:action="@{/app/mis_reservas}" th:object="${Reserva}" method="post">
-                 <!-- Tipo de espacio --> 
-                 <div class="col-md-4">
-                   <div class="form-group">
-                      <label for="ejemplo_1" class="col-md-3 control-label">Tipo:</label>
-                     <div class="col-md-9">
-                         <select id="seleccionEspacios" class="form-control">
-                            <option>Sala</option>
-                            <option>Aula</option> 
-                          </select>                        
-                     </div>
-                   </div>
-                 </div>
-                 
-                 <!-- Espacios --> 
-                 <div class="col-md-8">
-                   <div class="form-group">
-                      <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
-                     <div class="col-md-10">
-                         <select id="seleccionEspacios" class="form-control">
-                            <option>Sala de Grados</option>
-                            <option>Aula 9</option> 
-                          </select>                        
-                     </div>
-                   </div>
-                 </div>
+        		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Reserva}" method="post">             
 				
 				 <!-- Asunto --> 
                  <div class="form-group">
@@ -234,10 +269,10 @@
                  
                  <!-- Fecha inicio --> 
                  <div class="form-group">
-                     <label for="ejemplo_3" class="col-md-3 control-label">Fecha ini:</label>
+                     <label for="ejemplo_3" class="col-md-3 control-label">Desde:</label>
                      <div class="col-md-9">
 		                <div class='input-group date' >
-			               <input name="fecha_ini" id="datetimepicker1" type='text' class="form-control" />
+			               <input name="comienzo" id="datetimepicker1" type='text' class="form-control" />
 			               <span class="input-group-addon">
 			                   <span class="fa fa-calendar"></span>
 			               </span>
@@ -247,24 +282,45 @@
                  
                  <!-- Fecha fin --> 
                  <div class="form-group">
-                     <label for="ejemplo_3" class="col-md-3 control-label">Fecha fin:</label>
+                     <label for="ejemplo_3" class="col-md-3 control-label">Hasta:</label>
 		             <div class="col-md-9">
 		                 <div class='input-group date' >
-			                <input name="fecha_fin" id="datetimepicker2" type='text' class="form-control" />
+			                <input name="fin" id="datetimepicker2" type='text' class="form-control" />
 			                <span class="input-group-addon">
 			                    <span class="fa fa-calendar"></span>
 			                </span>
 			             </div>
                       </div>
                  </div>
+                 
+                 <!-- Tipo de espacio --> 
+                 <div class="col-md-4">
+                   <div class="form-group">
+                      <label for="ejemplo_1" class="col-md-3 control-label">Tipo:</label>
+                     <div class="col-md-9">
+                         <p class="form-control-static" th:text="*{espacio.tipoEspacio}"></p>                   
+                     </div>
+                   </div>
+                 </div>
+                 
+                 <!-- Espacios --> 
+                 <div class="col-md-8">
+                   <div class="form-group">
+                      <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
+                     <div class="col-md-10">
+                          <p class="form-control-static" th:text="*{espacio.nombre_espacio}"></p>     
+                          <input type="hidden" th:field="*{espacio.id}" />                       
+                     </div>
+                   </div>
+                 </div>
  
 
                  <div class="row">
                      <div class="col-xs-6 col-md-6">
-                      <a href="#"><button type="submit" class="btn btn-warning yellow">Vaciar</button></a>
+                      <a href="#"><button type="submit" class="btn-rec yellow">VACIAR</button></a>
                      </div>
                      <div class="col-xs-6 col-md-6 text-right">
-                      <button type="submit" class="btn btn-success green">Guardar </button>
+                      <button type="submit" class="btn-rec blue">GUARDAR </button>
                      </div>
                  </div>                
              </form>
@@ -273,14 +329,43 @@
       </div>
     </div>
   </div>
+  
+  <!-- Modal confirmación -->
+  <div class="modal fade bs-example-modal-sm" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Modal title</h4>
+		  </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+  </div>
 
 <script th:inline="javascript">
 	
 		/*<![CDATA[*/
 		
-		
-		
 		$(document).ready(function(){
+			
+			
+			$("#checkRepetir").change(function(){
+				if(this.checked){
+					$("#repetir").css("display","block");
+				}
+				else{
+					$("#repetir").css("display","none");
+				}
+			});
+			
+			var pathname = window.location.pathname;
+			var w = pathname.split("/");
+			var id_espacio = w[5]; 
+			
 			
 			$('#calendar').fullCalendar({
 				lang: 'es',
@@ -293,14 +378,14 @@
 					$('#modalEditarReserva').modal('show');
 					//$('#seleccionEspacios').val(calEvent.spacename);
 					$('#modalEditarReserva #idAsunto').attr("value",calEvent.title);
-					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("YYYY/MM/DD HH:mm"));
-					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("YYYY/MM/DD HH:mm"));
+					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
+					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
 
 					//$("#selectorEspacio").val(calEvent.espacio);
 					//$("#modalEditarReserva form").attr("action","${postURLactualizar}" + calEvent.idReserva);
 
 				},
-			    defaultDate: '2016-02-12',
+			    defaultDate: '2016-03-12',
 			    editable: true,
 			    eventLimit: true, // allow "more" link when too many events
 			    eventRender : function(event,element) {
@@ -311,20 +396,22 @@
 								trigger : 'hover',
 								animation : 'true',
 								container:'#calendar',
-								content : "<b>" + event.title + "</b><br/>" + "jjjjjjjjjjjjjj"
+								content : "<b>" + event.nombreEspacio +
+										  "</b><br/>" + event.start.format("HH:mm") + "-" + event.end.format("HH:mm") + 
+										  "<br/>" + event.title
 							});
-					/*
+					
 					$('body').on('hover',function(e) {
 										if (!element.is(e.target)&& element.has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
 											element.popover('hide');
-									});*/
+									});
 				},
 				selectable : true,
 			    select : function(start, end) {
 					$('#modalCrearReserva').modal('show');
 					var eventData;
-					$("#datetimepicker1").attr("value",start.format("YYYY/MM/DD HH:mm"));
-					$("#datetimepicker2").attr("value",end.format("YYYY/MM/DD HH:mm"));
+					$("#datetimepicker1").attr("value",start.format("DD/MM/YYYY HH:mm"));
+					$("#datetimepicker2").attr("value",end.format("DD/MM/YYYY HH:mm"));
 					/*
 					if (idSeleccionado != "todos") {
 						$("#selectorEspacioCrear").val(idSeleccionado);
@@ -340,21 +427,80 @@
 					//Desmarca el evento si no se ha creado
 					$('#calendar').fullCalendar('unselect');
 				},
-			    eventSources: [ // your event source
+				// para cambiar la duracion del evento
+				eventResize: function(event, delta, revertFunc) {
+
+			        var s = "El evento ahora durará hasta el " + event.end.format("DD/MM/YYYY HH:mm") +
+			        		" ¿Esta de acuerdo?";
+
+			        if (confirm(s)) {
+			        	//actualizar el evento
+			        }
+			        else{
+			        	 revertFunc();
+			        }
+
+			    },
+			    eventDrop: function(event, delta, revertFunc) {
+			    	var s = "El evento se va a cambiar al día " + event.end.format("DD/MM/YYYY") +
+		        		    " ¿Esta de acuerdo?";
+			   
+
+			        if (confirm(s)) {
+			            // modificar evento
+			            // metodo ajax
+			        }
+			        else{
+			           revertFunc();	
+			        }
+
+			    },
+			    eventSources: [ 
 				        {
-				            url: '/reservas/3/eventos', // use the `url` property
-				            color: 'yellow',    // an option!
-				            textColor: 'black'  // an option!
+				            url: '/reservas/' + id_espacio + '/eventos',
+				            color: 'yellow',    
+				            textColor: 'black'  
 				        }
 		
-				        // any other sources...
-					        
+		        
 			    ]
-			    
-			    	
+			       	
 			    
 			});
+			
+			
+			$("#checkReservas").change(function(){
+				if (this.checked){
+					$("#calendar").fullCalendar('addEventSource',{
+
+						url: '/reservas/misEventos',							
+			            color: 'green',    
+			            textColor: 'black' 
+		
+					});
+				}
+				else{
+					$("#calendar").fullCalendar('removeEventSource',{
+
+						url: '/reservas/misEventos',							
+			            color: 'green',    
+			            textColor: 'black' 
+		
+					});
+					
+				}
+				
+				
+				
+			});
+			
 		});
 		
 		/*]]>*/
 	</script>
+ </div>
+
+            <!-- /.container-fluid -->
+
+</body>
+</html>	

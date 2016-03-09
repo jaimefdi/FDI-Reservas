@@ -2,13 +2,14 @@ package es.fdi.reservas.reserva.business.control;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 
 @Repository
-public interface EspacioRepository extends CrudRepository<Espacio, Long>{
+public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 
 	public List<Espacio> findByEdificio_Id(Long id_edif);
 	
