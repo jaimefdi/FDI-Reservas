@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Espacio;
@@ -94,11 +95,13 @@ public class ReservaController {
 	
 	// Carga los eventos del espacio {id_espacio} del edificio {id_edif}
 	@RequestMapping(value="/edificio/{id_edif}/espacio/{id_espacio}", method=RequestMethod.GET) 
-	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio) {
+	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio,
+									 @RequestParam(required=false) boolean checked) {
 		ModelAndView model = new ModelAndView("index");
 		Espacio e = reserva_service.getSpaceById(id_espacio);
 		Reserva r = new Reserva();
-		r.setEspacio(e);
+		r.setEspacio(e);	
+		model.addObject("checked", checked);
 		model.addObject("user", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
