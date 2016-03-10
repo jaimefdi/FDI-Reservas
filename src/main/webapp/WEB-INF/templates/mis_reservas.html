@@ -21,12 +21,12 @@
 <div class="row">
 	<div class="col-md-8 col-md-offset-2">
         
-        <div class="jumbotron text-center" th:if="${#lists.isEmpty(allReservations)}">
+        <div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults)}">
                 <i class="fa fa-ban fa-5x"></i>
                 <h4>¡Uups! Todavía no has hecho ninguna reserva.</h4>
            </div> 
 
-            <div class="table-responsive" th:unless="${#lists.isEmpty(allReservations)}">
+            <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults)}">
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
@@ -39,7 +39,7 @@
                         </tr>
                     </thead>
 					<tbody>
-						<tr th:each="r : ${allReservations}"
+						<tr th:each="r : ${currentResults}"
 							th:attr="id=${r.id},data-id=${r.id},data-start=${#joda.isoDateTime(r.comienzo)},data-end=${#joda.isoDateTime(r.fin)},data-espacio=${r.espacio.id}">
 							<td th:text="${r.asunto}">Recuperacion de clase</td>
 							<td th:text="${r.espacio.nombre_espacio}">Aula 9</td>
@@ -58,6 +58,50 @@
     </div>
 </div>
  <!-- /.row -->
+ 
+ <!-- Pagination -->
+ 	<div class="row">
+    <div class="col-md-12 text-center">
+        <div class='pagination pagination-centered'>
+            <ul class="pagination">
+                <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{1}">← First</a>
+                </li>
+                <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                    <span th:if='${currentIndex == 1}'>«</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{${(currentIndex - 1)}}"
+                       title='Go to previous page'>«</a>
+                </li>
+
+                <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+                    th:class="${item == currentIndex ? 'active' : '' }">
+
+                    <span th:if='${item == currentIndex}' th:text='${item}'>1</span>
+
+                    <a th:if='${item != currentIndex}'
+                       th:href="@{${item}}">
+                        <span th:text='${item}'>1</span>
+                    </a>
+                </li>
+
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                </li>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+ <!-- /.Pagination -->
  
  <div class="modal fade" id="modalEditarReserva" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">

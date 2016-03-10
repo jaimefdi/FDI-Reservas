@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import es.fdi.reservas.reserva.business.control.EdificioRepository;
@@ -15,6 +16,7 @@ import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
+import org.springframework.data.domain.Page;
 import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
 
 @Service
@@ -100,6 +102,10 @@ public class ReservaService {
 
 	public void eliminarReserva(long idReserva) {
 		reserva_repository.delete(idReserva);
+	}
+
+	public Page<Reserva> getReservasPaginadas(PageRequest pageRequest) {
+		return reserva_repository.findAll(pageRequest);
 	}
 	
 }
