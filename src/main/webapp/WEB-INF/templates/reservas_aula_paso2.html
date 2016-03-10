@@ -33,21 +33,21 @@
 			<div class="col-md-2 text-center">
 	            <div class="checkbox">
 				    <label>
-				      <input id="checkReservas" type="checkbox" /> Mis reservas
+				      <input id="checkReservas" type="checkbox" th:checked="${checked}"/> Mis reservas
 				    </label>
 				 </div>
 			</div>
 			<div class="col-md-2 text-center">
 	            <div class="checkbox">
 				    <label>
-				      <input type="checkbox" /> De mañana
+				      <input id="checkMan" type="checkbox" /> De mañana
 				    </label>
 				 </div>
 			</div>
 			<div class="col-md-2 text-center">
 	            <div class="checkbox">
 				    <label>
-				      <input type="checkbox" /> De tarde
+				      <input id="checkTar" type="checkbox" /> De tarde
 				    </label>
 				 </div>
 			</div>
@@ -409,20 +409,19 @@
 				selectable : true,
 			    select : function(start, end) {
 					$('#modalCrearReserva').modal('show');
-					var eventData;
+					var d = new Date();
+					var eventData = {
+						start : start,
+						end : end.subtract(1,'day'),
+					};
+					// hora actual para start, +1 para end				
+					eventData.start.hours(d.getHours());
+					eventData.start.minutes(d.getMinutes());
+					eventData.end.hours(d.getHours()).add(1,'hour');
+					eventData.end.minutes(d.getMinutes());
+					
 					$("#datetimepicker1").attr("value",start.format("DD/MM/YYYY HH:mm"));
 					$("#datetimepicker2").attr("value",end.format("DD/MM/YYYY HH:mm"));
-					/*
-					if (idSeleccionado != "todos") {
-						$("#selectorEspacioCrear").val(idSeleccionado);
-					} else {
-						$('#selectorEspacioCrear option:first-child').attr("selected","selected");
-					}
-					*/
-					eventData = {
-						start : start,
-						end : end,
-					};
 
 					//Desmarca el evento si no se ha creado
 					$('#calendar').fullCalendar('unselect');
@@ -468,6 +467,16 @@
 			    
 			});
 			
+			
+			if($("#checkReservas").is(':checked')){
+				$("#calendar").fullCalendar('addEventSource',{
+
+					url: '/reservas/misEventos',							
+		            color: 'green',    
+		            textColor: 'black' 
+	
+				});
+			}
 			
 			$("#checkReservas").change(function(){
 				if (this.checked){

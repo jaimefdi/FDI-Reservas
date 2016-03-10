@@ -23,7 +23,7 @@
     <context:component-scan base-package="es.fdi.reservas.users.web" />
     
     <!-- Define Spring MVC configuration using java annotations -->   
-    <mvc:annotation-driven conversion-service="conversionService"/>
+    <mvc:annotation-driven/>
        
     <bean id="templateResolver"
         class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
@@ -49,13 +49,5 @@
      <property name="characterEncoding" value="UTF-8" />
   </bean> 
   
-  <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
-	<property name="converters">
-		<list>
-			<bean class="es.fdi.reservas.reserva.web.EspacioConverter" />
-<!-- 			<bean class="es.fdi.reservas.reserva.web.DateTimeConverter" /> -->
-		</list>
-	</property>
-  </bean>
 
 </beans>
