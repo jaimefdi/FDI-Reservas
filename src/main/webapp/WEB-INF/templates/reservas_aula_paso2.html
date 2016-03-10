@@ -409,20 +409,19 @@
 				selectable : true,
 			    select : function(start, end) {
 					$('#modalCrearReserva').modal('show');
-					var eventData;
+					var d = new Date();
+					var eventData = {
+						start : start,
+						end : end.subtract(1,'day'),
+					};
+					// hora actual para start, +1 para end				
+					eventData.start.hours(d.getHours());
+					eventData.start.minutes(d.getMinutes());
+					eventData.end.hours(d.getHours()).add(1,'hour');
+					eventData.end.minutes(d.getMinutes());
+					
 					$("#datetimepicker1").attr("value",start.format("DD/MM/YYYY HH:mm"));
 					$("#datetimepicker2").attr("value",end.format("DD/MM/YYYY HH:mm"));
-					/*
-					if (idSeleccionado != "todos") {
-						$("#selectorEspacioCrear").val(idSeleccionado);
-					} else {
-						$('#selectorEspacioCrear option:first-child').attr("selected","selected");
-					}
-					*/
-					eventData = {
-						start : start,
-						end : end,
-					};
 
 					//Desmarca el evento si no se ha creado
 					$('#calendar').fullCalendar('unselect');
