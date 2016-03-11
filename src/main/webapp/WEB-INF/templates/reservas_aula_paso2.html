@@ -414,14 +414,18 @@
 						start : start,
 						end : end.subtract(1,'day'),
 					};
+					// redondeo de minutos
+					var m = redondeoMinutos(d.getMinutes());
+					
+					
 					// hora actual para start, +1 para end				
 					eventData.start.hours(d.getHours());
-					eventData.start.minutes(d.getMinutes());
+					eventData.start.minutes(m);
 					eventData.end.hours(d.getHours()).add(1,'hour');
-					eventData.end.minutes(d.getMinutes());
+					eventData.end.minutes(m);
 					
-					$("#datetimepicker1").attr("value",start.format("DD/MM/YYYY HH:mm"));
-					$("#datetimepicker2").attr("value",end.format("DD/MM/YYYY HH:mm"));
+					$("#datetimepicker1").attr("value",eventData.start.format("DD/MM/YYYY HH:mm"));
+					$("#datetimepicker2").attr("value",eventData.end.format("DD/MM/YYYY HH:mm"));
 
 					//Desmarca el evento si no se ha creado
 					$('#calendar').fullCalendar('unselect');
