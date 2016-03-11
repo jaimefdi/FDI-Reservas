@@ -1,9 +1,10 @@
 package es.fdi.reservas.reserva.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaSolapadaException;
 import es.fdi.reservas.reserva.business.entity.Espacio;
@@ -21,6 +23,8 @@ import es.fdi.reservas.users.business.entity.User;
 
 @Controller
 public class ReservaController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ReservaController.class);
 	
 	private ReservaService reserva_service;
 	
@@ -69,7 +73,7 @@ public class ReservaController {
 			reserva_service.agregarReserva(r,u.getUsername());
 		}
 		catch(ReservaSolapadaException ex){
-			
+			logger.error("Problemas en la reserva", ex);
 		}
         return "redirect:/mis_reservas";
     }
@@ -126,7 +130,12 @@ public class ReservaController {
     }
 	
 	
-	
-	
-	
+		@RequestMapping(value="/gestion_reservas", method=RequestMethod.GET)
+    public ModelAndView GestionReservas() {
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("allReservations", reserva_service.getAllReservations());
+		model.addObject("view", "gestion_reservas");
+        return model;
+    }
+
 }

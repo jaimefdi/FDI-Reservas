@@ -24,6 +24,8 @@
 		<intercept-url pattern="/login" access="permitAll" />
 		<intercept-url pattern="/nuevoUsuario" access="permitAll" />
 		<intercept-url pattern="/logout" access="isAuthenticated()" />
+		<intercept-url pattern="/gestion_reservas" access="hasRole('ROLE_SECRE')" />
+		<intercept-url pattern="/gestion_reservas/**" access="hasRole('ROLE_SECRE')" />
 		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 		
 		

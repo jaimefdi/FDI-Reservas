@@ -1,9 +1,12 @@
 INSERT INTO User (USER_ID, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired) VALUES (1, 'root', 'root@ucm.es', '$2a$10$//HU8yTgOoLrZX6z9cgXhuR/IJki.BtS/ZM4Pr8s/zBDCFIT.I3P6', true, false, false, false);
 INSERT INTO User (USER_ID, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', true, false, false, false);
+INSERT INTO User (USER_ID, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired) VALUES (3, 'secre', 'secre@ucm.es', '$2a$10$fHAYSqISyxuhwcmWb3m1geDcMn5aGuXM.vvsN74v7JHwiUEYudgB6', true, false, false, false);
 
 INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_USER');
 INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_ADMIN');
 INSERT INTO UserRole (user, role) VALUES(2, 'ROLE_USER');
+INSERT INTO UserRole (user, role) VALUES(3, 'ROLE_USER');
+INSERT INTO UserRole (user, role) VALUES(3, 'ROLE_SECRE');
 
 INSERT INTO Facultad(FACULTAD_ID, nombreFacultad, dir) VALUES(1,'Facultad de Informática','C/ del Prof. José G! Santesmases, 9');
 INSERT INTO Facultad(FACULTAD_ID, nombreFacultad, dir) VALUES(2,'Facultad de Bellas Artes','C/ Pintor el Greco, 2');

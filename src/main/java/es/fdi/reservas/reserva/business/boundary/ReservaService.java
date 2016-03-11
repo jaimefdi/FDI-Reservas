@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,11 @@ import es.fdi.reservas.reserva.business.control.FacultadRepository;
 import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
-import org.springframework.data.domain.Page;
 import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
-import es.fdi.reservas.users.business.entity.User;
 
 @Service
 public class ReservaService {
@@ -50,6 +50,9 @@ public class ReservaService {
 		}
 		
 		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),username, reserva.getEspacio());
+		if(nuevaReserva.reservaAConfirmar()) {
+			nuevaReserva.setEstadoReserva(EstadoReserva.PENDIENTE);
+		}
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		
 		return nuevaReserva;
