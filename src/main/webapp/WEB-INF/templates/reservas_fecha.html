@@ -115,6 +115,24 @@
 </div>
 <!-- /.row -->
 
+<script>
+
+	var d = new Date();
+	var fecha = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+	var hora = d.getHours();
+	var minutos = redondeoMinutos(d.getMinutes());
+	var comienzo = hora + ':' + minutos;
+	var fin = hora + 1 + ':' + minutos;
+	var start = fecha + ' ' + comienzo;
+	var end = fecha + ' ' + fin;
+	
+	// inicialización de los datetimepickers
+	$("#datetimepicker1").attr("value",start);
+	$("#datetimepicker2").attr("value",end);
+	
+</script> 
+
+
         </div>
         <!-- /.container-fluid -->
 
@@ -126,5 +144,6 @@
                  </div>
             </div>
           </footer>
+                   
 </body>
 </html>
