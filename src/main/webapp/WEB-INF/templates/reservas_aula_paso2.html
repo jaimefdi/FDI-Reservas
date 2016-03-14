@@ -339,8 +339,8 @@
 		        <h4 class="modal-title">Modal title</h4>
 		  </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
+	        <button id="modalClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button id="modalConfirm" type="button" class="btn btn-primary">Save changes</button>
 	      </div>
 	    </div>
 	  </div>
@@ -349,9 +349,14 @@
 <script th:inline="javascript">
 	
 		/*<![CDATA[*/
+		var baseURL = /*[[@{/}]]*/ '/';
 		
 		$(document).ready(function(){
-			
+			var reserva = {};
+		 	var token = $("meta[name='_csrf']").attr("content");
+		 	var header = $("meta[name='_csrf_header']").attr("content");
+		 	var reqHeaders = [];
+		 	reqHeaders[header] = token;
 			
 			$("#checkRepetir").change(function(){
 				if(this.checked){
@@ -369,28 +374,28 @@
 			
 			$('#calendar').fullCalendar({
 				lang: 'es',
+				timezone: 'local',
 			    header: {
 			        left: 'prev,next today',
 			        center: 'title',
 			        right: 'month,agendaWeek,agendaDay'
 			    },
+			    
 			    eventClick : function(calEvent,jsEvent, view) {
 					$('#modalEditarReserva').modal('show');
-					//$('#seleccionEspacios').val(calEvent.spacename);
 					$('#modalEditarReserva #idAsunto').attr("value",calEvent.title);
 					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
 					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
 
-					//$("#selectorEspacio").val(calEvent.espacio);
-					//$("#modalEditarReserva form").attr("action","${postURLactualizar}" + calEvent.idReserva);
-
 				},
 			    defaultDate: '2016-03-12',
 			    editable: true,
-			    eventLimit: true, // allow "more" link when too many events
-			    eventRender : function(event,element) {
-					element.popover({
-		
+			    eventLimit: true,
+			    eventRender : function(event,element,view) {
+			    
+			    	if(view.name == 'month'){
+						element.popover({
+							
 								placement : 'auto',
 								html : true,
 								trigger : 'hover',
@@ -400,11 +405,8 @@
 										  "</b><br/>" + event.start.format("HH:mm") + "-" + event.end.format("HH:mm") + 
 										  "<br/>" + event.title
 							});
+			    	}
 					
-					$('body').on('hover',function(e) {
-										if (!element.is(e.target)&& element.has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
-											element.popover('hide');
-									});
 				},
 				selectable : true,
 			    select : function(start, end) {
@@ -431,27 +433,67 @@
 					$('#calendar').fullCalendar('unselect');
 				},
 				// para cambiar la duracion del evento
-				eventResize: function(event, delta, revertFunc) {
+				eventResize: function(event, delta, revertFunc, jsEvent) {
 
 			        var s = "El evento ahora durará hasta el " + event.end.format("DD/MM/YYYY HH:mm") +
 			        		" ¿Esta de acuerdo?";
-
+			      			        
 			        if (confirm(s)) {
-			        	//actualizar el evento
+			        	reserva.id = event.id;
+			        	reserva.title = event.title;
+			        	reserva.start = event.start;
+			        	reserva.end = event.end;
+			        	reserva.idEspacio = event.idEspacio;
+			        	$.ajax({
+				 			url: baseURL + 'reserva/' + reserva.id,
+				 			type: 'PUT',
+				 			headers : reqHeaders,
+				 			data: JSON.stringify(reserva),
+				 			contentType: 'application/json',
+				 			success : function(datos) {   
+				 				alert("Reserva actualizada");
+				 				
+				 			},    
+				 			error : function(xhr, status) {
+				 				revertFunc();
+				     			alert('Disculpe, existió un problema');
+				     			
+				 			}
+				 		});
+			        	
 			        }
 			        else{
 			        	 revertFunc();
 			        }
 
+
 			    },
 			    eventDrop: function(event, delta, revertFunc) {
-			    	var s = "El evento se va a cambiar al día " + event.end.format("DD/MM/YYYY") +
-		        		    " ¿Esta de acuerdo?";
+			    	var s = "El evento se va a cambiar al día " + event.start.format("DD/MM/YYYY") +
+		        		    " de " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + " ¿Esta de acuerdo?";
 			   
-
 			        if (confirm(s)) {
-			            // modificar evento
-			            // metodo ajax
+			        	reserva.id = event.id;
+			        	reserva.title = event.title;
+			        	reserva.start = event.start;
+			        	reserva.end = event.end;
+			        	reserva.idEspacio = event.idEspacio;
+			        	$.ajax({
+				 			url: baseURL + 'reserva/' + reserva.id,
+				 			type: 'PUT',
+				 			headers : reqHeaders,
+				 			data: JSON.stringify(reserva),
+				 			contentType: 'application/json',
+				 			success : function(datos) {   
+				 				alert("Reserva actualizada");
+				 				
+				 			},    
+				 			error : function(xhr, status) {
+				 				revertFunc();
+				     			alert('Disculpe, existió un problema');
+				     			
+				 			}
+				 		});
 			        }
 			        else{
 			           revertFunc();	
@@ -463,9 +505,7 @@
 				            url: '/reservas/' + id_espacio + '/eventos',
 				            color: 'yellow',    
 				            textColor: 'black'  
-				        }
-		
-		        
+				        }	        
 			    ]
 			       	
 			    
