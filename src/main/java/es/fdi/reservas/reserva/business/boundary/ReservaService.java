@@ -39,8 +39,16 @@ public class ReservaService {
 		return reserva_repository.findByUsername(username);
 	}
 
-	public Reserva agregarReserva(Reserva r, String username) {
-		Reserva nuevaReserva = new Reserva(r.getAsunto(),r.getComienzo(),r.getFin(),username, r.getEspacio());
+	public Reserva agregarReserva(Reserva reserva, String username) {
+		List<Reserva> reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), reserva.getComienzo(), reserva.getFin());
+		
+		for(Reserva r: reservas ){
+			if ( r.solapa(reserva.getComienzo(), reserva.getFin()) ) {
+				throw new ReservaSolapadaException(String.format("La reserva %d, solapa con la reserva %d", reserva.getId(), r.getId()));
+			}
+		}
+		
+		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),username, reserva.getEspacio());
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		
 		return nuevaReserva;
@@ -86,7 +94,7 @@ public class ReservaService {
 	public Reserva editaReserva(ReservaFullCalendarDTO reservaActualizada) {
 		DateTime start = reservaActualizada.getStart().withTime(0, 0, 0, 0);
 		DateTime end = start.plusDays(1);
-		List<Reserva> reservas = reserva_repository.findByEspacioIdAndComienzoBetween(reservaActualizada.getIdEspacio(), start, end);
+		List<Reserva> reservas = reserva_repository.findByEspacio_IdAndComienzoBetween(reservaActualizada.getIdEspacio(), start, end);
 		for(Reserva r: reservas ){
 			if ( r.solapa(reservaActualizada.getStart(), reservaActualizada.getEnd()) && ! reservaActualizada.getId().equals(r.getId())) {
 				throw new ReservaSolapadaException(String.format("La reserva %d, solapa con la reserva %d", reservaActualizada.getId(), r.getId()));
@@ -106,6 +114,11 @@ public class ReservaService {
 
 	public Page<Reserva> getReservasPaginadas(PageRequest pageRequest) {
 		return reserva_repository.findAll(pageRequest);
+	}
+
+
+	public List<Facultad> getFacultadesPorTagName(String tagName) {
+		return facultad_repository.getFacultadesPorTagName(tagName);
 	}
 	
 }
