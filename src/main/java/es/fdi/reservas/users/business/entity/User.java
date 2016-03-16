@@ -129,6 +129,10 @@ public class User implements UserDetails{
 	public boolean isEnabled() {
 		return enabled;
 	}
+	
+	public void setEnabled(boolean en){
+		this.enabled = en;
+	}
 
 	public Set<Facultad> getFacultades() {
 		return facultades;

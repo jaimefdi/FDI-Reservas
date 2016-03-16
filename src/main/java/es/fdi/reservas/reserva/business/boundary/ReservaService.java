@@ -18,6 +18,7 @@ import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import org.springframework.data.domain.Page;
 import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
+import es.fdi.reservas.users.business.entity.User;
 
 @Service
 public class ReservaService {
@@ -78,6 +79,10 @@ public class ReservaService {
 	public Iterable<Facultad> getFacultades() {
 		return facultad_repository.findAll();
 	}
+	
+	public Iterable<Espacio> getEspacios() {
+		return espacio_repository.findAll();
+	}
 
 	public List<Edificio> getEdificiosPorIdFacultad(long id_facultad) {
 		return edificio_repository.findByFacultad_Id(id_facultad);
@@ -106,6 +111,45 @@ public class ReservaService {
 
 	public Page<Reserva> getReservasPaginadas(PageRequest pageRequest) {
 		return reserva_repository.findAll(pageRequest);
+	}
+
+
+	public void eliminarEdificio(long idEdificio) {
+		edificio_repository.delete(idEdificio);
+		
+	}
+	
+	public Edificio editarEdificio(Edificio edificio){
+		Edificio e = edificio_repository.findOne(edificio.getId());
+		e.setNombre_edificio(edificio.getNombre_edificio());
+		e.setFacultad(edificio.getFacultad());
+		return edificio_repository.save(e);
+	}
+	
+	public void eliminarFacultad(long idFacultad) {
+		facultad_repository.delete(idFacultad);
+		
+	}
+	
+	public Facultad editarFacultad(Facultad facultad){
+		Facultad f = facultad_repository.findOne(facultad.getId());
+		f.setNombreFacultad(facultad.getNombreFacultad());
+		return facultad_repository.save(f);
+	}
+	
+	public void eliminarEspacio(long idEspacio) {
+		espacio_repository.delete(idEspacio);
+		
+	}
+	
+	public Espacio editarEspacio(Espacio espacio){
+		Espacio e = espacio_repository.findOne(espacio.getId());
+		e.setNombre_espacio(espacio.getNombre_espacio());
+		e.setCapacidad(espacio.getCapacidad());
+		e.setMicrofono(espacio.isMicrofono());
+		e.setProyector(espacio.isProyector());
+		e.setTipoEspacio(espacio.getTipoEspacio());
+		return espacio_repository.save(e);
 	}
 	
 }

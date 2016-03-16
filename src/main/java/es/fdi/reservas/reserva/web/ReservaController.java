@@ -3,6 +3,7 @@ package es.fdi.reservas.reserva.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +30,7 @@ public class ReservaController {
 		reserva_service = rs;
 		user_service = us;
 	}
-	
-	
+		
 	@RequestMapping({"/","","/mis_reservas"})
     public String misReservas() {
         return "redirect:/mis_reservas/page/1";

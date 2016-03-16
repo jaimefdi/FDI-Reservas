@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet"
+        href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+        th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"/>
+    <link rel="stylesheet"
+        href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0-3/css/font-awesome.min.css"
+        th:href="@{/webjars/font-awesome/4.3.0-3/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../../css/estilo.css" th:href="@{/css/estilo.css}"/>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
+	<title>UCM RESERVAS</title>
+     <!-- JS -->
+    <script 
+        src="//code.jquery.com/jquery-2.1.4.min.js"
+        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    <script
+        src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+        th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container-fluid" th:fragment="contenido">
+	<div class="row">
+	    <div class="col-md-12">
+	        <h1 class="page-header text-center">
+	            Administrar
+	        </h1>
+	    </div>
+	</div>
+<!-- /.row -->
+	<div class="row">
+    	<div class="col-md-12">
+            <h1 class="page-header text-center">
+                <small>Administrar facultades</small>
+            </h1>
+        </div>
+    </div>
+           <!-- /.row -->
+
+    <div class="row">
+		<div class="col-md-8 col-md-offset-2">
+    	
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(facultades)}">
+           			<i class="fa fa-ban fa-5x"></i>
+           			<h4>¡Uups! No hay ninguna facultad.</h4>
+      		</div> 
+
+          	<div class="table-responsive" th:unless="${#lists.isEmpty(facultades)}">
+              <table class="table table-bordered table-hover">
+                  <thead>
+                      <tr>
+                      	<th>Identificador</th>
+                          <th>Nombre</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr th:each="r : ${facultades}"
+                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}">
+                      	<td th:text="${r.id}"></td>
+                          <td th:text="${r.nombreFacultad}"></td>
+                          
+                      </tr>     
+                  </tbody>
+              </table>
+          	</div> 
+        <!-- /.table-responsive-->
+    
+		</div>
+	</div>
+	<div class="modal fade" id="modalEditarFacultad" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Editar facultad</h4>
+          </div>
+          <div class="modal-body">
+          		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="Facultad" method="put">             
+				
+				<!-- Identificador -->
+				<div class="form-group">
+                     <label for="ejemplo_2" class="col-md-2 control-label">Identificador:</label>
+                      <div class="col-md-10">
+                         <label id="idFacultad" class="form-control"></label>
+                      </div>
+                 </div>
+				 <!-- Nombre de facultad --> 
+                 <div class="form-group">
+                     <label for="ejemplo_2" class="col-md-2 control-label">Nombre:</label>
+                      <div class="col-md-10">
+                         <input id="idNombre" name="nombreEdif" type="text" class="form-control" placeholder="Introduce un nombre de facultad"/>
+                      </div>
+                 </div>
+                                  
+                 <div class="row">
+                     <div class="col-xs-6 col-md-6">
+                      <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
+                     </div>
+                     <div class="col-xs-6 col-md-6 text-right">
+                      <button id="btn-guardar" type="button" class="btn-rec blue">GUARDAR </button>
+                     </div>
+                 </div>                
+             </form>
+                 
+          </div>
+        </div>
+      </div>
+    </div>
+	<script th:inline="javascript">
+ var baseURL = /*[[@{/}]]*/ '/';
+
+ $(document).ready(function(){
+	 	var facultad = {};
+	 	var token = $("meta[name='_csrf']").attr("content");
+	 	var header = $("meta[name='_csrf_header']").attr("content");
+	 	var reqHeaders = [];
+	 	reqHeaders[header] = token;
+	 	
+	 	$('tr').click(function(){
+	 		$('#modalEditarFacultad').modal('show');
+	 		
+	 		facultad.id =  $(this).attr("data-id");
+	 		facultad.name = $(this).attr("name");
+
+	 		$('#modalEditarFacultad #idFacultad').text(facultad.id);
+	 		$('#modalEditarFacultad #idNombre').attr("value",facultad.name);
+	 		
+	 	});
+	 	
+	 	$("#btn-guardar").click(function(){
+	 		facultad.name = $("#modalEditarFacultad #idNombre").val();
+	 		facultad.facultad = $(this).attr("idFacultad");
+	 	
+
+	 		$.ajax({
+	 			url: baseURL + "facultad/" + facultad.id,
+	 			type: 'PUT',
+	 			headers : reqHeaders,
+	 			data: JSON.stringify(facultad),
+	 			contentType: 'application/json',
+	 			success : function(datos) {   
+	 				alert("Facultad actualizada");
+	 				$('#modalEditarFacultad').modal('hide');
+	 				$("#"+facultad.id +" td:nth-child(1)").text(facultad.id);
+	 				$("#"+facultad.id +" td:nth-child(2)").text(facultad.name);
+	 			},    
+	 			error : function(xhr, status) {
+	     			alert('Disculpe, existió un problema');
+	 			}
+	 		});
+	 	});
+	 
+	 	$("#btn-eliminar").click(function(){
+	 		$.ajax({
+	 			url: baseURL + "facultad/" + facultad.id,
+	 			type: 'DELETE',
+	 			headers : reqHeaders,
+	 			success : function(datos) {
+	 				alert("Facultad eliminada");
+	 				$('#modalEditarFacultad').modal('hide');
+	 				$("#"+facultad.id).remove();
+	 			},    
+	 			error : function(xhr, status) {
+	 				alert('Disculpe, existió un problema');
+	 			}
+	 		});
+	 	});
+	 
+ });
+ 
+ 
+ </script>			
+ </div>
+</body>
+</html>

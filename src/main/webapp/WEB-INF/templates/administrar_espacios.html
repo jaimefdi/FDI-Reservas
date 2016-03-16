@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet"
+        href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+        th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"/>
+    <link rel="stylesheet"
+        href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0-3/css/font-awesome.min.css"
+        th:href="@{/webjars/font-awesome/4.3.0-3/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../../css/estilo.css" th:href="@{/css/estilo.css}"/>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
+	<title>UCM RESERVAS</title>
+     <!-- JS -->
+    <script 
+        src="//code.jquery.com/jquery-2.1.4.min.js"
+        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    <script
+        src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+        th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container-fluid" th:fragment="contenido">
+	<div class="row">
+	    <div class="col-md-12">
+	        <h1 class="page-header text-center">
+	            Administrar
+	        </h1>
+	    </div>
+	</div>
+<!-- /.row -->
+	<div class="row">
+    	<div class="col-md-12">
+            <h1 class="page-header text-center">
+                <small>Administrar espacios</small>
+            </h1>
+        </div>
+    </div>
+           <!-- /.row -->
+
+    <div class="row">
+		<div class="col-md-8 col-md-offset-2">
+    	
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(espacios)}">
+           			<i class="fa fa-ban fa-5x"></i>
+           			<h4>¡Uups! No hay ningún espacio.</h4>
+      		</div> 
+
+          	<div class="table-responsive" th:unless="${#lists.isEmpty(espacios)}">
+              <table class="table table-bordered table-hover">
+                  <thead>
+                      <tr>
+                      	<th>Identificador</th>
+                          <th>Nombre</th>
+                          <th>Capacidad</th>
+                          <th>Micrófono</th>
+                          <th>Proyector</th>
+                          <th>Tipo de espacio</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr th:each="r : ${espacios}"
+                      	th:attr="data-id=${r.id},name=${r.nombre_espacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo}">
+                      	<td th:text="${r.id}"></td>
+                        <td th:text="${r.nombre_espacio}"></td>
+                        <td th:text="${r.capacidad}"></td>
+                        <td th:text="${r.microfono}"></td>
+                        <td th:text="${r.proyector}"></td>
+                        <td th:text="${r.tipoEspacio.tipo}"></td>  
+                      </tr>     
+                  </tbody>
+              </table>
+          	</div> 
+        <!-- /.table-responsive-->
+    
+		</div>
+	</div>
+	<div class="modal fade" id="modalEditarEspacio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Editar espacio</h4>
+          </div>
+          <div class="modal-body">
+          		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Espacio}" method="put">             
+				
+				<!-- Identificador -->
+				<div class="form-group">
+                     <label for="ejemplo_2" class="col-md-2 control-label">Identificador:</label>
+                      <div class="col-md-10">
+                         <label id="idEspacio" class="form-control"></label>
+                      </div>
+                 </div>
+				 <!-- Nombre de edificio --> 
+                 <div class="form-group">
+                     <label for="ejemplo_2" class="col-md-2 control-label">Nombre:</label>
+                      <div class="col-md-10">
+                         <input id="idNombre" name="nombreEsp" type="text" class="form-control" placeholder="Introduce un nombre de espacio"/>
+                      </div>
+                 </div>
+                 
+                 <!-- Capacidad --> 
+                 <div class="form-group">
+                     <label for="ejemplo_3" class="col-md-3 control-label">Capacidad:</label>
+                     <div class="col-md-9">
+		               <input id="idCapa" name="Capa" type="text" class="form-control" placeholder="Introduce su capacidad"/>
+		               
+                     </div>
+                 </div>
+                 
+                 <!-- Microfono --> 
+                 <div class="form-group">
+                     <label for="ejemplo_3" class="col-md-3 control-label">Microfono:</label>
+                     <div class="col-md-9">
+		               <input id="idMicro" name="micro" type="text" class="form-control" placeholder="¿Tiene microfono?"/>
+		               
+                     </div>
+                 </div>
+                 
+                 <!-- Microfono --> 
+                 <div class="form-group">
+                     <label for="ejemplo_3" class="col-md-3 control-label">Proyector:</label>
+                     <div class="col-md-9">
+		               <input id="idProy" name="proy" type="text" class="form-control" placeholder="¿Tiene proyector?"/>
+		               
+                     </div>
+                 </div>
+                 
+                 <!-- Tipo espacio --> 
+                 <div class="form-group">
+                     <label for="ejemplo_3" class="col-md-3 control-label">Tipo:</label>
+                     <div class="col-md-9">
+		               <input id="idTipo" name="tipo" type="text" class="form-control" placeholder="Tipo de espacio"/>
+		               
+                     </div>
+                 </div>
+                 
+                 <div class="row">
+                     <div class="col-xs-6 col-md-6">
+                      <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
+                     </div>
+                     <div class="col-xs-6 col-md-6 text-right">
+                      <button id="btn-guardar" type="button" class="btn-rec blue">GUARDAR </button>
+                     </div>
+                 </div>                
+             </form>
+                 
+          </div>
+        </div>
+      </div>
+    </div>
+	<script th:inline="javascript">
+ var baseURL = /*[[@{/}]]*/ '/';
+
+ $(document).ready(function(){
+	 	var espacio = {};
+	 	var token = $("meta[name='_csrf']").attr("content");
+	 	var header = $("meta[name='_csrf_header']").attr("content");
+	 	var reqHeaders = [];
+	 	reqHeaders[header] = token;
+	 	
+	 	$('tr').click(function(){
+	 		$('#modalEditarEspacio').modal('show');
+	 		
+	 		espacio.id =  $(this).attr("data-id");
+	 		espacio.name = $(this).attr("name");
+	 		espacio.capacidad = $(this).attr("capacidad");
+	 		espacio.micro = $(this).attr("micro");
+	 		espacio.proye = $(this).attr("proye");
+	 		espacio.tipo = $(this).attr("tipo");
+
+	 		$('#modalEditarEspacio #idEspacio').text(espacio.id);
+	 		$('#modalEditarEspacio #idNombre').attr("value",espacio.name);
+	 		$('#modalEditarEspacio #idCapa').attr("value",espacio.capacidad);
+	 		$('#modalEditarEspacio #idMicro').attr("value",espacio.micro);
+	 		$('#modalEditarEspacio #idProy').attr("value",espacio.proye);
+	 		$('#modalEditarEspacio #idTipo').attr("value",espacio.tipo);
+	 		
+	 	});
+	 	
+	 	$("#btn-guardar").click(function(){
+	 		espacio.name = $("#modalEditarEspacio #idNombre").val();
+	 		espacio.capacidad = $(this).attr("capacidad");
+	 		espacio.micro = $(this).attr("micro");
+	 		espacio.proye = $(this).attr("proye");
+	 		espacio.tipo = $(this).attr("tipo");
+	 		
+	 	
+
+	 		$.ajax({
+	 			url: baseURL + "espacio/" + espacio.id,
+	 			type: 'PUT',
+	 			headers : reqHeaders,
+	 			data: JSON.stringify(espacio),
+	 			contentType: 'application/json',
+	 			success : function(datos) {   
+	 				alert("Espacio actualizado");
+	 				$('#modalEditarEspacio').modal('hide');
+	 				$("#"+espacio.id +" td:nth-child(1)").text(espacio.id);
+	 				$("#"+espacio.id +" td:nth-child(2)").text(espacio.name);
+	 				$("#"+espacio.id +" td:nth-child(3)").text(espacio.capacidad);
+	 				$("#"+espacio.id +" td:nth-child(3)").text(espacio.micro);
+	 				$("#"+espacio.id +" td:nth-child(3)").text(espacio.proye);
+	 				$("#"+espacio.id +" td:nth-child(3)").text(espacio.tipo);
+	 			},    
+	 			error : function(xhr, status) {
+	     			alert('Disculpe, existió un problema');
+	 			}
+	 		});
+	 	});
+	 
+	 	$("#btn-eliminar").click(function(){
+	 		$.ajax({
+	 			url: baseURL + "espacio/" + espacio.id,
+	 			type: 'DELETE',
+	 			headers : reqHeaders,
+	 			success : function(datos) {
+	 				alert("Espacio eliminado");
+	 				$('#modalEditarEspacio').modal('hide');
+	 				$("#"+espacio.id).remove();
+	 			},    
+	 			error : function(xhr, status) {
+	 				alert('Disculpe, existió un problema');
+	 			}
+	 		});
+	 	});
+	 
+ });
+ 
+ 
+ </script>			
+ </div>
+</body>
+</html>

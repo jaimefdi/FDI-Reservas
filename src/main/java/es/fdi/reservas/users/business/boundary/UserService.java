@@ -1,6 +1,8 @@
 package es.fdi.reservas.users.business.boundary;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.control.UserRepository;
 import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.users.business.entity.UserRole;
@@ -58,6 +62,25 @@ public class UserService implements UserDetailsService{
 		newUser = user_ropository.save(newUser);
 		
 		return newUser;
+	}
+	
+	public Iterable<User> getUsuarios() {
+		return user_ropository.findAll();
+	}
+	
+	public void eliminarUsuario(long idUser) {
+		user_ropository.delete(idUser);
+	}
+
+	public User editaUsuario(User userActualizado) {
+		
+		User u = user_ropository.findOne(userActualizado.getId());
+		u.setUsername(userActualizado.getUsername());
+		u.setEmail(userActualizado.getUsername());
+		u.setEnabled(userActualizado.isEnabled());
+		return user_ropository.save(u);
+		
+		
 	}
 
 }
