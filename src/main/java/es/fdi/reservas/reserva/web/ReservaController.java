@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.boundary.ReservaSolapadaException;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.boundary.UserService;
@@ -59,14 +60,17 @@ public class ReservaController {
     }
 	
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
-    public String crearReserva(Reserva r) {
+    public String crearReserva(Reserva r) throws ReservaSolapadaException {
 		User u = user_service.getCurrentUser();
 		long id_esp = r.getEspacio().getId();
 		Espacio e = reserva_service.getSpaceById(id_esp);
 		r.setEspacio(e);
-		
-		reserva_service.agregarReserva(r,u.getUsername());
-		
+		try{
+			reserva_service.agregarReserva(r,u.getUsername());
+		}
+		catch(ReservaSolapadaException ex){
+			
+		}
         return "redirect:/mis_reservas";
     }
 	
@@ -75,8 +79,8 @@ public class ReservaController {
     public ModelAndView edificios() {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("Facultades", reserva_service.getFacultades());// todas las facultades
-		model.addObject("allBuildings", reserva_service.getAllBuildings());
+		//model.addObject("Facultades", reserva_service.getFacultades());// todas las facultades
+		//model.addObject("allBuildings", reserva_service.getAllBuildings());
 		model.addObject("view", "edificio");
         return model;
     }
