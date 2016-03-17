@@ -2,7 +2,7 @@ package es.fdi.reservas.reserva.business.entity;
 
 public enum TipoEspacio {
 
-	AULA("aula"), SALA("sala"), LABORATORIO("laboratorio");
+	AULA("Aula"), SALA("Sala"), LABORATORIO("Laboratorio");
 	
 	private String tipo;
 	

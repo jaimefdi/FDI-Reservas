@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import es.fdi.reservas.users.business.boundary.UserService;
@@ -104,7 +105,25 @@ public class ReservasRestController {
 	@RequestMapping(value = "/reserva/{idReserva}", method = RequestMethod.PUT)
 	public void editarReserva(@PathVariable("idReserva") long idReserva, @RequestBody ReservaFullCalendarDTO reservaActualizada) {
 		reserva_service.editaReserva(reservaActualizada);
-	}	
+	}
+	
+	
+	@RequestMapping(value = "/facultad/tag/{tagName}", method = RequestMethod.GET)
+	public List<FacultadDTO> facultadesFiltro(@PathVariable("tagName") String tagName) {
+		
+		List<FacultadDTO> result = new ArrayList<>();
+		List<Facultad> facultades = new ArrayList<>();
+		
+		
+		facultades = reserva_service.getFacultadesPorTagName(tagName);
+		
+		
+		for(Facultad f : facultades) {
+			result.add(FacultadDTO.fromFacultadDTO(f));
+		}
+		 
+		return result;
+	}
 	
 	
 

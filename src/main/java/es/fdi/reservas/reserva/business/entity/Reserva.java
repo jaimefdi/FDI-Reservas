@@ -1,6 +1,9 @@
 package es.fdi.reservas.reserva.business.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -49,6 +52,8 @@ public class Reserva {
 	@JoinColumn(name="ESPACIO_ID")
 	private Espacio espacio;
 	
+	private String[] recurrencia;
+	
 
 	public Reserva(){
 		
@@ -61,6 +66,18 @@ public class Reserva {
 		this.estadoReserva = EstadoReserva.CONFIRMADA;
 		this.username = user_name;
 		this.espacio = esp;
+	}
+
+	
+
+	
+
+	public String[] getRecurrencia() {
+		return recurrencia;
+	}
+
+	public void setRecurrencia(String[] recurrencia) {
+		this.recurrencia = recurrencia;
 	}
 
 	public String getAsunto() {
@@ -144,9 +161,9 @@ public class Reserva {
 		 */
 		
 		// a), b), d)
-		boolean solapa = (start.compareTo(comienzo)) <= 0 && !(end.compareTo(comienzo) < 0);
+		boolean solapa = (start.compareTo(comienzo)) <= 0 && !(end.compareTo(comienzo) <= 0);
 		// c), d)
-		solapa = solapa || (start.compareTo(comienzo)>= 0 && start.compareTo(fin) <= 0);
+		solapa = solapa || (start.compareTo(comienzo)>= 0 && start.compareTo(fin) < 0);
 		return solapa;
 	}
 

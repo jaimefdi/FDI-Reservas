@@ -28,8 +28,10 @@
  	Tipo:
  	<select id="selec_tipoEspacios">
  		<option value="Todos"> Todos </option>
-        <option value="Aula"> Aula </option>
-        <option value="Sala"> Sala </option>   
+ 		<option th:each="tipo : ${tipoEspacios}" 
+        		th:text="${tipo}"
+        		th:value="${tipo}">
+ 		</option>
     </select>
     Espacio:
     <select id="selec_espacios">
@@ -50,8 +52,9 @@
 </div>
 <!-- /.row -->
 
-<script>
-
+<script th:inline="javascript">
+/*<![CDATA[*/
+          
 	$("#selec_tipoEspacios").change(function(){
 		var tipoEspacio = $("#selec_tipoEspacios").val();
 		var pathname = window.location.pathname;
@@ -79,41 +82,13 @@
 		
 	});
 	
-
-</script>
-
-<script th:inline="javascript">
-/*<![CDATA[*/
-          
-	$("#selec_tipoEspacios").change(function(){
-		var id_tipoEspacio = $("#selec_tipoEspacios").val();
-		//var allSpaces = /*[${allSpaces}]*/;
-       // console.log(allSpaces);
-		var espacios = [];
-		var espacio = new Object();
-		var i = 0;
-		// no se bien cómo hacerlo
-		//for( /*[${allSpaces}]*/ in espacio){
-		//	if('${espacio.tipoEspacio}' == id_tipoEspacio)
-		//		espacios['${espacio.id}'].push(espacio);
-		//}
-		
-		//vaciar el select de espacios
-		// ...
-		
-		// rellenar el select de espacios
-		// ...
-		// $("#mySelect").append('<option value=1>My option</option>');
-		
-		
-	});
-	
 	$("#selec_espacios").change(function(){
 		var id_espacio = $("#selec_espacios").val();
 		var link = 'espacio/' + id_espacio;
 		$("#espacio_link").attr("href",link);
 		
 	});
+	
 	/*]]>*/
 </script>
  </div>

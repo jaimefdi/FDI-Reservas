@@ -2,7 +2,6 @@ package es.fdi.reservas.reserva.business.entity;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +22,8 @@ public class Facultad {
 	private Long id;
 	@NotNull
 	private String nombreFacultad;
+	@NotNull
+	private String dir;
 	
 	@OneToMany(mappedBy="facultad")
 	private Set<Edificio> edificios;
@@ -52,6 +53,14 @@ public class Facultad {
 
 	public void setNombreFacultad(String nombreFacultad) {
 		this.nombreFacultad = nombreFacultad;
+	}
+
+	public String getDir() {
+		return dir;
+	}
+
+	public void setDir(String dir) {
+		this.dir = dir;
 	}
 
 	public Set<Edificio> getEdificios() {
