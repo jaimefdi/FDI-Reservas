@@ -130,12 +130,26 @@ public class ReservaController {
     }
 	
 	
-		@RequestMapping(value="/gestion_reservas", method=RequestMethod.GET)
-    public ModelAndView GestionReservas() {
-		ModelAndView model = new ModelAndView("index");
-		model.addObject("allReservations", reserva_service.getAllReservations());
-		model.addObject("view", "gestion_reservas");
-        return model;
+	@RequestMapping(value="/gestion_reservas/page/{pageNumber}", method=RequestMethod.GET)
+    public String gestiona_reservas(@PathVariable Integer pageNumber, Model model) {
+		User u = user_service.getCurrentUser();
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest);
+        
+        model.addAttribute("currentResults", currentResults);
+    
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("user", u);
+		model.addAttribute("view", "gestion_reservas");
+		
+        return "index";
     }
 
 }
