@@ -31,7 +31,7 @@ public class Edificio {
 	private Facultad facultad;
 
 
-	Edificio(){
+	public Edificio(){
 		
 	}
 	

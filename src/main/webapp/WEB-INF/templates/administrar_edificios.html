@@ -2,24 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet"
-        href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-        th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"/>
-    <link rel="stylesheet"
-        href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0-3/css/font-awesome.min.css"
-        th:href="@{/webjars/font-awesome/4.3.0-3/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" type="text/css" media="all" href="../../css/estilo.css" th:href="@{/css/estilo.css}"/>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
-	<title>UCM RESERVAS</title>
-     <!-- JS -->
-    <script 
-        src="//code.jquery.com/jquery-2.1.4.min.js"
-        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-    <script
-        src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-        th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+    
+	<title>UCM RESERVAS - Administrar edificios</title>
+   
 </head>
 <body>
 <div class="container-fluid" th:fragment="contenido">
@@ -67,6 +52,7 @@
                       </tr>     
                   </tbody>
               </table>
+              <a th:href="@{'/administrar/administrar_facultad/nuevoEdificio'}"><input type="button" class="btn btn-default" value="Añadir edificio"/></a> 
           	</div> 
         <!-- /.table-responsive-->
     

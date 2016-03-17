@@ -35,6 +35,15 @@ public class Facultad {
 		
 	}
 	
+	
+	public Facultad(String nombreFacultad, String dir) {
+		super();
+		
+		this.nombreFacultad = nombreFacultad;
+		this.dir = dir;
+	}
+
+
 	public Facultad(String name){
 		this.nombreFacultad = name;
 	}

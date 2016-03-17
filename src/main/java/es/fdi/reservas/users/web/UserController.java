@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Edificio;
+import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -46,7 +49,7 @@ public class UserController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping({"/administrar"})
+	@RequestMapping(value="/administrar")
 	public ModelAndView administrar(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -55,7 +58,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping({"/administrar/administrar_usuarios"})
+	@RequestMapping(value="/administrar/administrar_usuarios")
 	public ModelAndView administrarUsuarios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -66,7 +69,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping({"/administrar/administrar_edificios"})
+	@RequestMapping(value="/administrar/administrar_edificios")
 	public ModelAndView administrarEdificios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -76,7 +79,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping({"/administrar/administrar_facultad"})
+	@RequestMapping(value="/administrar/administrar_facultad")
 	public ModelAndView administrarFacultades(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -86,7 +89,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping({"/administrar/administrar_espacios"})
+	@RequestMapping(value="/administrar/administrar_espacios")
 	public ModelAndView administrarEspacios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -96,4 +99,43 @@ public class UserController {
 		return model;
 	}
 	
+	@RequestMapping(value="/administrar/administrar_facultad/nuevaFacultad",method=RequestMethod.GET)
+	public ModelAndView nuevaFacultad(){
+		return new ModelAndView("nuevaFacultad", "Facultad", new Facultad());
+		//return model;
+	}
+	
+	@RequestMapping(value="/administrar/administrar_facultad/nuevaFacultad", method=RequestMethod.POST)
+	public String crearFacultad(Facultad f){
+		reserva_service.addNewFacultad(f);
+	   return "redirect:/administrar/administrar_facultad";
+		//return "nuevoUsuario";
+	}
+	
+	
+	@RequestMapping(value="/administrar/administrar_facultad/nuevoEspacio",method=RequestMethod.GET)
+	public ModelAndView nuevoEspacio(){
+		return new ModelAndView("nuevoEspacio", "Espacio", new Espacio());
+		//return model;
+	}
+	
+	@RequestMapping(value="/administrar/administrar_facultad/nuevoEspacio", method=RequestMethod.POST)
+	public String crearEspacio(Espacio f){
+		reserva_service.addNewEspacio(f);
+	   return "redirect:/administrar/administrar_facultad";
+		//return "nuevoUsuario";
+	}
+	
+	@RequestMapping(value="/administrar/administrar_facultad/nuevoEdificio",method=RequestMethod.GET)
+	public ModelAndView nuevoEdificio(){
+		return new ModelAndView("nuevoEdificio", "Edificio", new Edificio());
+		//return model;
+	}
+	
+	@RequestMapping(value="/administrar/administrar_facultad/nuevoEdificio", method=RequestMethod.POST)
+	public String crearEdificio(Edificio f){
+		reserva_service.addNewEdificio(f);
+	   return "redirect:/administrar/administrar_facultad";
+		//return "nuevoUsuario";
+	}
 }

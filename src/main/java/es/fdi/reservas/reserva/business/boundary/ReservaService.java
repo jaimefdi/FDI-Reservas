@@ -162,6 +162,21 @@ public class ReservaService {
 	public List<Facultad> getFacultadesPorTagName(String tagName) {
 		return facultad_repository.getFacultadesPorTagName(tagName);
 	}
+	
+	public Facultad addNewFacultad(Facultad facultad){
+		Facultad newFacultad = new Facultad(facultad.getNombreFacultad(), facultad.getDir());
+		newFacultad = facultad_repository.save(newFacultad);
+		
+		return newFacultad;
+	}
+	
+	public Espacio addNewEspacio(Espacio espacio){
+		Espacio newEspacio = new Espacio(espacio.getNombre_espacio(), espacio.getCapacidad(), espacio.isMicrofono(), espacio.isProyector(), 
+				TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio().getTipo()));
+		newEspacio = espacio_repository.save(newEspacio);
+		
+		return newEspacio;
+	}
 
 	public List<TipoEspacio> tiposDeEspacios(long idEdificio) {
 		return espacio_repository.tiposDeEspacios(idEdificio);

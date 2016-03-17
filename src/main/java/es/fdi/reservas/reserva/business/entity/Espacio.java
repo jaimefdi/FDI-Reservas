@@ -45,6 +45,20 @@ public class Espacio {
 		
 	}
 	
+	
+	
+	public Espacio(String nombre_espacio, int capacidad, boolean microfono, boolean proyector,
+			TipoEspacio tipoEspacio) {
+		super();
+		this.nombre_espacio = nombre_espacio;
+		this.capacidad = capacidad;
+		this.microfono = microfono;
+		this.proyector = proyector;
+		this.tipoEspacio = tipoEspacio;
+	}
+
+
+
 	public Espacio(Long id_espacio){
 		id = id_espacio;
 	}
