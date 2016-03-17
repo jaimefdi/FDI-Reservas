@@ -215,11 +215,11 @@
             <!-- Left bar menu -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                		<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                	<!--/*/<th:block sec:authorize="hasRole('ROLE_ADMIN')">/*/-->
                 		<li id="li_administrar">
                         	<a th:href="@{/administrar}"><i class="fa fa-cog"></i> Administrar</a>
                     	</li>
-                    	</th:block>
+                    <!--/*/  </th:block> /*/-->
                 	<!--/*/  <th:block sec:authorize="hasRole('ROLE_SECRE')"> /*/-->
                    	 	<li id="li_misreservas" >
                         	<a th:href="@{/mis_reservas}"><i class="fa fa-book"></i> Reservas</a>

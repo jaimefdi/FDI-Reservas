@@ -18,7 +18,6 @@ import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import org.springframework.data.domain.Page;
 import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
-import es.fdi.reservas.users.business.entity.User;
 
 @Service
 public class ReservaService {
@@ -141,6 +140,7 @@ public class ReservaService {
 	public Facultad editarFacultad(Facultad facultad){
 		Facultad f = facultad_repository.findOne(facultad.getId());
 		f.setNombreFacultad(facultad.getNombreFacultad());
+		f.setDir(facultad.getDir());
 		return facultad_repository.save(f);
 	}
 	
