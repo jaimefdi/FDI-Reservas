@@ -90,7 +90,7 @@ public class ReservaController {
     public ModelAndView espacios(@PathVariable("id_edif") long id_edif) {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
-		//model.addObject("typeSpaces",funcion);
+		model.addObject("tipoEspacios",reserva_service.tiposDeEspacios(id_edif));
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
 		model.addObject("view", "espacios");
         return model;

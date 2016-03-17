@@ -120,5 +120,9 @@ public class ReservaService {
 	public List<Facultad> getFacultadesPorTagName(String tagName) {
 		return facultad_repository.getFacultadesPorTagName(tagName);
 	}
+
+	public List<TipoEspacio> tiposDeEspacios(long idEdificio) {
+		return espacio_repository.tiposDeEspacios(idEdificio);
+	}
 	
 }
