@@ -41,7 +41,7 @@ public class ReservaController {
     public String misReservasPaginadas(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
-		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 7, new Sort(new Sort.Order(Sort.Direction.ASC,"comienzo")));
         Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest);
         
         model.addAttribute("currentResults", currentResults);

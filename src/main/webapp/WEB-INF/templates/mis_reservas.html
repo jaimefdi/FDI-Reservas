@@ -64,18 +64,18 @@
  <!-- Pagination -->
  	<div class="row">
     <div class="col-md-12 text-center">
-        <div class='pagination pagination-centered'>
+        <nav>
             <ul class="pagination">
                 <li th:class="${currentIndex == 1}? 'disabled' : ''">
-                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <span th:if='${currentIndex == 1}'>Primera</span>
                     <a th:if='${currentIndex != 1}'
-                       th:href="@{1}">← First</a>
+                       th:href="@{1}">Primera</a>
                 </li>
                 <li th:class="${currentIndex != 1}? '' : 'disabled'">
-                    <span th:if='${currentIndex == 1}'>«</span>
+                    <span th:if='${currentIndex == 1}'><i class='fa fa-angle-left'></i></span>
                     <a th:if='${currentIndex != 1}'
                        th:href="@{${(currentIndex - 1)}}"
-                       title='Go to previous page'>«</a>
+                       title='Go to previous page'><i class='fa fa-angle-left'></i></a>
                 </li>
 
                 <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
@@ -90,17 +90,17 @@
                 </li>
 
                 <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
+                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
                     <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
                 </li>
                 <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
                     <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                       th:href="@{${currentResults.totalPages}}">Última</a>
                 </li>
             </ul>
-        </div>
+        </nav>
     </div>
 </div>
  <!-- /.Pagination -->
@@ -121,7 +121,7 @@
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Reserva}" method="put">             
 				
-				 <!-- Asunto --> 
+                 <!-- Asunto --> 
                  <div class="form-group">
                      <label for="ejemplo_2" class="col-md-2 control-label">Asunto:</label>
                       <div class="col-md-10">
@@ -195,6 +195,7 @@
  var baseURL = /*[[@{/}]]*/ '/';
 
  $(document).ready(function(){
+	 
 	 	var reserva = {};
 	 	var token = $("meta[name='_csrf']").attr("content");
 	 	var header = $("meta[name='_csrf_header']").attr("content");
