@@ -1,16 +1,15 @@
 package es.fdi.reservas.reserva.web;
 
 import es.fdi.reservas.reserva.business.entity.Edificio;
-import es.fdi.reservas.reserva.business.entity.Espacio;
 
 public class EdificioDTO {
 
 	private String id;
-	private String nombre_edificio;
+	private String nombreEdificio;
 	
-	public EdificioDTO(String id, String spacename){
+	public EdificioDTO(String id, String nombre){
 		this.id = id;
-		this.nombre_edificio = spacename;
+		this.nombreEdificio = nombre;
 	}
 
 	public String getId() {
@@ -21,18 +20,15 @@ public class EdificioDTO {
 		this.id = id;
 	}
 
-	
-	
-
 	public String getNombre_edificio() {
-		return nombre_edificio;
+		return nombreEdificio;
 	}
 
-	public void setNombre_edificio(String nombre_edificio) {
-		this.nombre_edificio = nombre_edificio;
+	public void setNombreEdificio(String nombreEdificio) {
+		this.nombreEdificio = nombreEdificio;
 	}
 
 	public static EdificioDTO fromEdificioDTO(Edificio e){
-		return new EdificioDTO(e.getId().toString(), e.getNombre_edificio());
+		return new EdificioDTO(e.getId().toString(), e.getNombreEdificio());
 	}
 }

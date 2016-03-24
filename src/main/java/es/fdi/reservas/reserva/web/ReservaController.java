@@ -3,7 +3,7 @@ package es.fdi.reservas.reserva.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaSolapadaException;
 import es.fdi.reservas.reserva.business.entity.Espacio;
@@ -53,7 +54,7 @@ public class ReservaController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
+		model.addAttribute("User", u);
 		model.addAttribute("view", "mis_reservas");
 		
         return "index";
@@ -62,9 +63,10 @@ public class ReservaController {
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
     public String crearReserva(Reserva r) throws ReservaSolapadaException {
 		User u = user_service.getCurrentUser();
-		long id_esp = r.getEspacio().getId();
-		Espacio e = reserva_service.getSpaceById(id_esp);
+		long idEspacio = r.getEspacio().getId();
+		Espacio e = reserva_service.getEspacio(idEspacio);
 		r.setEspacio(e);
+		r.setRecurrencia("RRULE:FREQ=DAILY;COUNT=3");
 		try{
 			reserva_service.agregarReserva(r,u.getUsername());
 		}
@@ -78,50 +80,49 @@ public class ReservaController {
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
     public ModelAndView edificios() {
 		ModelAndView model = new ModelAndView("index");
-		model.addObject("user", user_service.getCurrentUser());
-		//model.addObject("Facultades", reserva_service.getFacultades());// todas las facultades
-		//model.addObject("allBuildings", reserva_service.getAllBuildings());
+		model.addObject("User", user_service.getCurrentUser());
 		model.addObject("view", "edificio");
-        return model;
-    }
-	
-	// Todos los espacios del edificio {id_edif}
-	@RequestMapping(value="/edificio/{id_edif}/espacios", method=RequestMethod.GET)
-    public ModelAndView espacios(@PathVariable("id_edif") long id_edif) {
-		ModelAndView model = new ModelAndView("index");
-		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("tipoEspacios",reserva_service.tiposDeEspacios(id_edif));
-		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
-		model.addObject("view", "espacios");
-        return model;
-    }
-	
-	
-	// Carga los eventos del espacio {id_espacio} del edificio {id_edif}
-	@RequestMapping(value="/edificio/{id_edif}/espacio/{id_espacio}", method=RequestMethod.GET) 
-	public ModelAndView ReservaPaso2(@PathVariable("id_edif") long id_edif,@PathVariable("id_espacio") long id_espacio,
-									 @RequestParam(required=false) boolean checked) {
-		ModelAndView model = new ModelAndView("index");
-		Espacio e = reserva_service.getSpaceById(id_espacio);
-		Reserva r = new Reserva();
-		r.setEspacio(e);	
-		model.addObject("checked", checked);
-		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("Reserva", r);
-		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
-		model.addObject("view", "reservas_aula_paso2");
-		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
 		
         return model;
     }
 	
 	
+	@RequestMapping(value="/edificio/{idEdificio}/espacios", method=RequestMethod.GET)
+    public ModelAndView espacios(@PathVariable("idEdificio") long idEdificio) {
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("User", user_service.getCurrentUser());
+		model.addObject("TiposEspacio",reserva_service.tiposDeEspacios(idEdificio));
+		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
+		model.addObject("view", "espacios");
+		
+        return model;
+    }
+	
+	
+	@RequestMapping(value="/edificio/{idEdificio}/espacio/{idEspacio}", method=RequestMethod.GET) 
+	public ModelAndView ReservaPaso2(@PathVariable("idEdificio") long idEdificio,@PathVariable("idEspacio") long idEspacio,
+									 @RequestParam(required=false) boolean checked) {
+		ModelAndView model = new ModelAndView("index");
+		Espacio e = reserva_service.getEspacio(idEspacio);
+		Reserva r = new Reserva();
+		r.setEspacio(e);	
+		model.addObject("checked", checked);
+		model.addObject("User", user_service.getCurrentUser());
+		model.addObject("Reserva", r);
+		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
+		model.addObject("view", "reservas_calendario");
+		model.addObject("url","/edificio/" + idEdificio + "/espacio/" + idEspacio );
+		
+        return model;
+    }
+	
 	
 	@RequestMapping(value="/reservas_fecha", method=RequestMethod.GET)
     public ModelAndView reservaPorFecha() {
 		ModelAndView model = new ModelAndView("index");
-		model.addObject("user", user_service.getCurrentUser());
+		model.addObject("User", user_service.getCurrentUser());
 		model.addObject("view", "reservas_fecha");
+		
         return model;
     }
 	

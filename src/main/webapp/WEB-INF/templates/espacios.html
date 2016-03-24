@@ -28,16 +28,16 @@
  	Tipo:
  	<select id="selec_tipoEspacios">
  		<option value="Todos"> Todos </option>
- 		<option th:each="tipo : ${tipoEspacios}" 
+ 		<option th:each="tipo : ${TiposEspacio}" 
         		th:text="${tipo}"
         		th:value="${tipo}">
  		</option>
     </select>
     Espacio:
     <select id="selec_espacios">
-        <option th:each="s : ${allSpaces}" 
-        		th:text="${s.nombre_espacio}" 
-        		th:value="${s.id}">
+        <option th:each="e : ${Espacios}" 
+        		th:text="${e.nombreEspacio}" 
+        		th:value="${e.id}">
         </option>
     </select>
 
@@ -69,7 +69,7 @@
 
 				$("#selec_espacios").empty();
 				for(var i in datos){
-					var text = datos[i].nombre_espacio;
+					var text = datos[i].nombreEspacio;
 					var value = datos[i].id;
 					$("#selec_espacios").append(new Option(text, value));	
 				}

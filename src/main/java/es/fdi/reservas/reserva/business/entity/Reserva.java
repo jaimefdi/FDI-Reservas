@@ -1,9 +1,5 @@
 package es.fdi.reservas.reserva.business.entity;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,17 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 public class Reserva {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="RESERVA_ID")
+	@Column(name="ReservaId")
 	private Long id;
 	
 	@NotNull
@@ -45,38 +41,39 @@ public class Reserva {
 	
 	@NotNull
 	private String username;
-	//@NotNull
-	//private String spacename;
 	
 	@ManyToOne(optional=true)
-	@JoinColumn(name="ESPACIO_ID")
+	@JoinColumn(name="EspacioId")
 	private Espacio espacio;
 	
-	private String[] recurrencia;
+	//@OneToMany(mappedBy="reserva")
+	//private Set<Reserva> reservasRecurrentes;
+	
+	private String recurrencia;
+	
 	
 
 	public Reserva(){
 		
 	}
 	
-	public Reserva(String a, DateTime ini, DateTime fin, String user_name, Espacio esp){
+	public Reserva(String a, DateTime ini, DateTime fin, String user_name, Espacio esp, String r){
 		this.asunto = a;
 		this.comienzo = ini;
 		this.fin = fin;
 		this.estadoReserva = EstadoReserva.CONFIRMADA;
 		this.username = user_name;
 		this.espacio = esp;
+		this.recurrencia = r;
+		
 	}
 
-	
 
-	
-
-	public String[] getRecurrencia() {
+	public String getRecurrencia() {
 		return recurrencia;
 	}
 
-	public void setRecurrencia(String[] recurrencia) {
+	public void setRecurrencia(String recurrencia) {
 		this.recurrencia = recurrencia;
 	}
 
@@ -167,4 +164,7 @@ public class Reserva {
 		return solapa;
 	}
 
+	
+
+	
 }

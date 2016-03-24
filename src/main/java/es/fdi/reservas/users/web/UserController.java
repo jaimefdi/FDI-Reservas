@@ -71,7 +71,7 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("user", u);
-		model.addObject("edificios", reserva_service.getAllBuildings());
+		model.addObject("edificios", reserva_service.getEdificios());
 		model.addObject("view", "administrar_edificios");
 		return model;
 	}
@@ -95,5 +95,13 @@ public class UserController {
 		model.addObject("view", "administrar_espacios");
 		return model;
 	}
-	
+
+	@RequestMapping(value="/perfil", method=RequestMethod.GET)
+	public ModelAndView verPerfil(){
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("User", user_service.getCurrentUser());
+		model.addObject("view", "perfil");
+		
+	   return model;
+	}
 }

@@ -5,11 +5,11 @@ import es.fdi.reservas.reserva.business.entity.Espacio;
 public class EspacioTipoDTO {
 	
 	private String id;
-	private String nombre_espacio;
+	private String nombreEspacio;
 	
-	public EspacioTipoDTO(String id, String spacename){
+	public EspacioTipoDTO(String id, String nombre){
 		this.id = id;
-		this.nombre_espacio = spacename;
+		this.nombreEspacio = nombre;
 	}
 
 	public String getId() {
@@ -20,15 +20,15 @@ public class EspacioTipoDTO {
 		this.id = id;
 	}
 
-	public String getNombre_espacio() {
-		return nombre_espacio;
+	public String getNombreEspacio() {
+		return nombreEspacio;
 	}
 
-	public void setNombre_espacio(String nombre_espacio) {
-		this.nombre_espacio = nombre_espacio;
+	public void setNombreEspacio(String nombreEspacio) {
+		this.nombreEspacio = nombreEspacio;
 	}
 	
 	public static EspacioTipoDTO fromEspacioTipoDTO(Espacio e){
-		return new EspacioTipoDTO(e.getId().toString(), e.getNombre_espacio());
+		return new EspacioTipoDTO(e.getId().toString(), e.getNombreEspacio());
 	}
 }

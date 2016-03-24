@@ -42,7 +42,7 @@
 						<tr th:each="r : ${currentResults}"
 							th:attr="id=${r.id},data-id=${r.id},data-start=${#joda.isoDateTime(r.comienzo)},data-end=${#joda.isoDateTime(r.fin)},data-espacio=${r.espacio.id}">
 							<td th:text="${r.asunto}">Recuperacion de clase</td>
-							<td th:text="${r.espacio.nombre_espacio}">Aula 9</td>
+							<td th:text="${r.espacio.nombreEspacio}">Aula 9</td>
 							<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
 							<td th:text="${#joda.format(r.fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
 							<td th:if="${r.estadoReserva.toString() == 'Confirmada'}" class=" text-center"><span

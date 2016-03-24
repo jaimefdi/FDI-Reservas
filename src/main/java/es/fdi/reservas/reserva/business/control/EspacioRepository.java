@@ -13,9 +13,9 @@ import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 @Repository
 public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 
-	public List<Espacio> findByEdificio_Id(Long id_edif);
+	public List<Espacio> findByEdificioId(Long idEdificio);
 	
-	public List<Espacio> findByEdificio_IdAndTipoEspacio(Long id_edif, TipoEspacio id_tipoEspacio);
+	public List<Espacio> findByEdificioIdAndTipoEspacio(Long idEdificio, TipoEspacio idTipoEspacio);
 	
 	@Query("SELECT DISTINCT e.tipoEspacio FROM Espacio e WHERE e.edificio.id = :idEdificio")
 	public List<TipoEspacio> tiposDeEspacios(@Param("idEdificio") long idEdificio);
