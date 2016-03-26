@@ -115,9 +115,9 @@ public class ReservaService {
 		reserva_repository.delete(idReserva);
 	}
 
-	public Page<Reserva> getReservasPaginadas(PageRequest pageRequest) {
-		return reserva_repository.findAll(pageRequest);
-	}
+	public Page<Reserva> getReservasUsuario(String username, PageRequest pageRequest) {
+		return reserva_repository.findByUsername(username, pageRequest);
+	} 
 
 	public void eliminarEdificio(long idEdificio) {
 		edificio_repository.delete(idEdificio);
@@ -126,7 +126,7 @@ public class ReservaService {
 	
 	public Edificio editarEdificio(Edificio edificio){
 		Edificio e = edificio_repository.findOne(edificio.getId());
-		e.setNombre_edificio(edificio.getNombre_edificio());
+		e.setNombreEdificio(edificio.getNombreEdificio());
 		e.setFacultad(edificio.getFacultad());
 		return edificio_repository.save(e);
 	}
@@ -149,7 +149,7 @@ public class ReservaService {
 	
 	public Espacio editarEspacio(Espacio espacio){
 		Espacio e = espacio_repository.findOne(espacio.getId());
-		e.setNombre_espacio(espacio.getNombre_espacio());
+		e.setNombreEspacio(espacio.getNombreEspacio());
 		e.setCapacidad(espacio.getCapacidad());
 		e.setMicrofono(espacio.isMicrofono());
 		e.setProyector(espacio.isProyector());
@@ -165,5 +165,12 @@ public class ReservaService {
 		return espacio_repository.tiposDeEspacios(idEdificio);
 	}
 
+
+	public Edificio getEdificio(long idEdificio) {
+		return edificio_repository.findOne(idEdificio);
+	}
+
+
+	
 	
 }

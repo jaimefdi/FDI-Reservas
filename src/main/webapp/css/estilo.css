@@ -454,7 +454,30 @@ button.yellow{
 	color: #212121;
 }
 
+.edificio{
+	padding: 15px 23px;
+	border-bottom: 1px solid #D5D5D5;
+	border-left: 4px solid transparent;
+	background-color: #F7F7F7;
+}
 
+.selectedEdif{
+	border-left-color: #F78F18;
+}
+
+.edificio i{
+	color: #777;
+}
+
+ol{
+	list-style: none;
+	padding: 0px;
+}
+
+.alert{
+	margin-top: 10px;
+	padding-bottom: 5px;
+}
 /**/
 .button {
 	background:#7f8c8d;

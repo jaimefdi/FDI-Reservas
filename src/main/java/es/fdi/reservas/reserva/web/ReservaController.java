@@ -1,5 +1,7 @@
 package es.fdi.reservas.reserva.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaSolapadaException;
+import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.boundary.UserService;
@@ -43,7 +46,7 @@ public class ReservaController {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 7, new Sort(new Sort.Order(Sort.Direction.ASC,"comienzo")));
-        Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest);
+        Page<Reserva> currentResults = reserva_service.getReservasUsuario(u.getUsername(),pageRequest);
         
         model.addAttribute("currentResults", currentResults);
     
@@ -78,12 +81,25 @@ public class ReservaController {
 	
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
-    public ModelAndView edificios() {
-		ModelAndView model = new ModelAndView("index");
-		model.addObject("User", user_service.getCurrentUser());
-		model.addObject("view", "edificio");
+    public String edificios(Model model) {
 		
-        return model;
+		User user = user_service.getCurrentUser();
+		model.addAttribute("User", user);
+		List<Edificio> edificios = reserva_service.getEdificiosFacultad(user.getFacultad().getId());
+		if(edificios.size() > 1){
+		   model.addAttribute("Edificios", edificios);
+		   model.addAttribute("view", "edificios");
+		   
+		   return "index";
+		}
+		else{
+		   long idEdificio = edificios.get(0).getId();
+		   
+		   return "redirect:/edificio/" + idEdificio + "/espacios";
+		}
+		
+
+        
     }
 	
 	
@@ -91,6 +107,7 @@ public class ReservaController {
     public ModelAndView espacios(@PathVariable("idEdificio") long idEdificio) {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("User", user_service.getCurrentUser());
+		model.addObject("Edificio", reserva_service.getEdificio(idEdificio));
 		model.addObject("TiposEspacio",reserva_service.tiposDeEspacios(idEdificio));
 		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
 		model.addObject("view", "espacios");

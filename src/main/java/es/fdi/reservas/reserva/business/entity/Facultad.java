@@ -22,7 +22,7 @@ public class Facultad {
 	@NotNull
 	private String nombreFacultad;
 	@NotNull
-	private String dir;
+	private String webFacultad;
 	
 	@OneToMany(mappedBy="facultad")
 	private Set<Edificio> edificios;
@@ -54,12 +54,13 @@ public class Facultad {
 		this.nombreFacultad = nombreFacultad;
 	}
 
-	public String getDir() {
-		return dir;
+
+	public String getWebFacultad() {
+		return webFacultad;
 	}
 
-	public void setDir(String dir) {
-		this.dir = dir;
+	public void setWebFacultad(String webFacultad) {
+		this.webFacultad = webFacultad;
 	}
 
 	public Set<Edificio> getEdificios() {

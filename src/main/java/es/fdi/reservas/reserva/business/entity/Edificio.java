@@ -20,6 +20,8 @@ public class Edificio {
 	private Long id;
 	@NotNull
 	private String nombreEdificio;
+	@NotNull
+	private String direccion;
 	
 	@OneToMany(mappedBy="edificio")
 	private Set<Espacio> espacios;
@@ -53,6 +55,14 @@ public class Edificio {
 		this.nombreEdificio = nombreEdificio;
 	}
 	
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
 	public Set<Espacio> getEspacios() {
 		return espacios;
 	}
