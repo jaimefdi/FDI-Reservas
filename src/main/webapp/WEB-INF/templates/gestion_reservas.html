@@ -35,7 +35,7 @@
                             <th>Desde</th>
                             <th>Hasta</th>
                             <th>Estado</th>
-                            
+                            <th>Operación</th>
                         </tr>
                     </thead>
 					<tbody>
@@ -51,12 +51,58 @@
 								class="label label-warning">Pendiente</span></td>
 							<td th:if="${r.estadoReserva.toString() == 'Denegada'}" class=" text-center"><span
 								class="label label-danger">Denegada</span></td>
+							<td class=" text-center"> 
+								<div>
+								<button th:if="${r.estadoReserva.toString() != 'Confirmada'}"
+								class="label label-success" style="display:inline">Confirmar</button>
+								<button th:if="${r.estadoReserva.toString() != 'Denegada'}"
+								class="label label-danger" style="display:inline">Denegar</button></div></td>	
 						</tr>
 					</tbody>                    
                 </table>
             </div> 
             <!-- /.table-responsive-->
-        
+        	<div class="row">
+    <div class="col-md-12 text-center">
+        <div class='pagination pagination-centered'>
+            <ul class="pagination">
+                <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{1}">← First</a>
+                </li>
+                <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                    <span th:if='${currentIndex == 1}'>«</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{${(currentIndex - 1)}}"
+                       title='Go to previous page'>«</a>
+                </li>
+
+                <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+                    th:class="${item == currentIndex ? 'active' : '' }">
+
+                    <span th:if='${item == currentIndex}' th:text='${item}'>1</span>
+
+                    <a th:if='${item != currentIndex}'
+                       th:href="@{${item}}">
+                        <span th:text='${item}'>1</span>
+                    </a>
+                </li>
+
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                </li>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
     </div>
 </div>
  <!-- /.row -->
@@ -170,6 +216,7 @@
 	 		$('#modalEditarReserva #idAsunto').attr("value",reserva.title);
 	 		$('#modalEditarReserva #datetimepicker1').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
 	 		$('#modalEditarReserva #datetimepicker2').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
+	 		
 	 		$('#modalEditarReserva #nombre_espacio').text(espacio);
 	 	});
 	 	
