@@ -28,8 +28,13 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long>{
 	@Query("FROM Reserva r WHERE (r.espacio.id = :idEspacio) AND (( :start BETWEEN r.comienzo AND r.fin) OR ( :end BETWEEN r.comienzo AND r.fin ) OR (r.comienzo BETWEEN :start AND :end) OR (r.fin BETWEEN :start AND :end) )")
 	public List<Reserva> reservasConflictivas(@Param("idEspacio")Long idEspacio, @Param("start") DateTime start, @Param("end") DateTime end);
 	
+	@Query("FROM Reserva r WHERE (r.espacio.id = :idEspacio) AND (r.recurrencia <> null) AND (r.comienzo < :endRecurrencia)")
+	public List<Reserva> reservasRecurrentes(@Param("idEspacio")Long idEspacio, @Param("endRecurrencia") DateTime endRecurrencia);
 	
+	@Query("FROM Reserva r WHERE (r.espacio.id = :idEspacio) AND (DATE_FORMAT(r.comienzo,'%H:%i') < '15:00')")
+	public List<Reserva> reservasEspacioDeMañana(@Param("idEspacio")Long idEspacio);
 	
-	
+	@Query("FROM Reserva r WHERE (r.espacio.id = :idEspacio) AND (DATE_FORMAT(r.comienzo,'%H:%i') >= '15:00')")
+	public List<Reserva> reservasEspacioDeTarde(@Param("idEspacio")Long idEspacio);
 	
 }

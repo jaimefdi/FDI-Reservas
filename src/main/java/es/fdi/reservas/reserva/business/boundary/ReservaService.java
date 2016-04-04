@@ -1,5 +1,6 @@
 package es.fdi.reservas.reserva.business.boundary;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.business.entity.RangoDateTime;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import org.springframework.data.domain.Page;
@@ -39,10 +41,22 @@ public class ReservaService {
 	}
 
 	public Reserva agregarReserva(Reserva reserva, String username) {
-		List<Reserva> reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), reserva.getComienzo(), reserva.getFin());
+		List<RangoDateTime> rangoResecurrencia = reserva.rangoRecurrencias();
+		List<Reserva> reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), 
+																		 reserva.getStartRecurrencia(),
+																		 reserva.getEndRecurrencia());
+		
+		List<Reserva> reservasRecurrentes = reserva_repository.reservasRecurrentes(reserva.getEspacio().getId(), 
+																				   reserva.getEndRecurrencia());
+		
+		List<Reserva> result = new ArrayList<Reserva>();
+		for(Reserva r: reservasRecurrentes){
+			result.addAll(r.getInstanciasEvento());
+		}
+		reservas.addAll(result);
 		
 		for(Reserva r: reservas ){
-			if ( r.solapa(reserva.getComienzo(), reserva.getFin()) ) {
+			if ( r.solapa(reserva) ) {
 				throw new ReservaSolapadaException(String.format("La reserva %d, solapa con la reserva %d", reserva.getId(), r.getId()));
 			}
 		}
@@ -93,7 +107,7 @@ public class ReservaService {
 	public List<Edificio> getEdificiosFacultad(long idFacultad) {
 		return edificio_repository.findByFacultadId(idFacultad);
 	}
-
+/*
 	public Reserva editaReserva(ReservaFullCalendarDTO reservaActualizada) {
 		DateTime start = reservaActualizada.getStart().withTime(0, 0, 0, 0);
 		DateTime end = start.plusDays(1);
@@ -110,6 +124,7 @@ public class ReservaService {
 		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
 		return reserva_repository.save(r);
 	}
+	*/
 
 	public void eliminarReserva(long idReserva) {
 		reserva_repository.delete(idReserva);
@@ -168,6 +183,14 @@ public class ReservaService {
 
 	public Edificio getEdificio(long idEdificio) {
 		return edificio_repository.findOne(idEdificio);
+	}
+
+	public List<Reserva> getReservasEspacioDeMañana(long idEspacio) {
+		return reserva_repository.reservasEspacioDeMañana(idEspacio);
+	}
+
+	public List<Reserva> getReservasEspacioDeTarde(long idEspacio) {
+		return reserva_repository.reservasEspacioDeTarde(idEspacio);
 	}
 
 

@@ -60,3 +60,5 @@ INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estado, username, EspacioI
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estado, username, EspacioId) VALUES(7,'PL','2016-03-09 09:00:00','2016-03-09 11:00:00',true,'user',6);
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estado, username, EspacioId) VALUES(8,'MAR','2016-03-09 11:00:00','2016-03-09 12:00:00',true,'user',6);
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estado, username, EspacioId) VALUES(9,'DVI','2016-03-09 14:00:00','2016-03-09 16:00:00',true,'user',6);
+INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estado, username, EspacioId) VALUES(10,'Charla ELP','2016-03-24 15:30:00','2016-03-24 17:00:00',true,'user',1);
+
