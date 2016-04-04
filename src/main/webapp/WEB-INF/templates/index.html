@@ -99,6 +99,15 @@
          			onChangeDateTime : logic,
          			onShow : logic
          	 });
+             
+             $('*>#datetimepicker3').datetimepicker({
+         		format : 'd/m/Y H:i',
+      			step : 30,
+      			minDate : '0',
+      			onChangeDateTime : logic,
+      			onShow : logic
+      	 });
+      	 
          });
      
        });
@@ -173,6 +182,7 @@
             <!-- Left bar menu -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+<<<<<<< HEAD
                 		<th:block sec:authorize="hasRole('ROLE_ADMIN')">
                 		<li id="li_administrar">
                         	<a th:href="@{/administrar}"><i class="fa fa-cog"></i> Administrar</a>
@@ -188,6 +198,11 @@
                         	<a th:href="@{/mis_reservas}"><i class="fa fa-book"></i> Mis Reservas</a>
                     	</li>
                     <!--/*/  </th:block> /*/-->
+=======
+                    <li id="li_misreservas">
+                        <a th:href="@{/mis-reservas}"><i class="fa fa-book"></i> Mis Reservas</a>
+                    </li>
+>>>>>>> 4f024e0... Renombrado de ficheros. Ahora en 'mis-reservas.html' se pueden ver las reservas en 2 formatos, lista y calendario.
                     <li>
                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-calendar-o"></i> Reservar <i class="fa fa-angle-down"></i></a>
                         <ul id="demo" class="collapse">
@@ -195,7 +210,7 @@
                                 <a th:href="@{/edificios}"> Por espacio</a>
                             </li>
                             <li id="li_porfecha">
-                                <a href="reservas_fecha" th:href="@{/reservas_fecha}">Por fecha</a>
+                                <a th:href="@{/reservas-fecha}">Por fecha</a>
                             </li>
                         </ul>
                     </li> 

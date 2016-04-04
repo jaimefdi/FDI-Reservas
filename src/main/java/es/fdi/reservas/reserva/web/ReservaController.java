@@ -1,7 +1,6 @@
 package es.fdi.reservas.reserva.web;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
@@ -35,13 +33,14 @@ public class ReservaController {
 		reserva_service = rs;
 		user_service = us;
 	}
-		
-	@RequestMapping({"/","","/mis_reservas"})
+	
+	
+	@RequestMapping({"/","","/mis-reservas"})
     public String misReservas() {
-        return "redirect:/mis_reservas/page/1";
+        return "redirect:/mis-reservas/page/1";
     }
 	
-	@RequestMapping(value="/mis_reservas/page/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/mis-reservas/page/{pageNumber}", method=RequestMethod.GET)
     public String misReservasPaginadas(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
@@ -58,7 +57,7 @@ public class ReservaController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
-		model.addAttribute("view", "mis_reservas");
+		model.addAttribute("view", "mis-reservas");
 		
         return "index";
     }
@@ -76,7 +75,7 @@ public class ReservaController {
 		catch(ReservaSolapadaException ex){
 			
 		}
-        return "redirect:/mis_reservas";
+        return "redirect:/mis-reservas";
     }
 	
 	
@@ -117,28 +116,25 @@ public class ReservaController {
 	
 	
 	@RequestMapping(value="/edificio/{idEdificio}/espacio/{idEspacio}", method=RequestMethod.GET) 
-	public ModelAndView ReservaPaso2(@PathVariable("idEdificio") long idEdificio,@PathVariable("idEspacio") long idEspacio,
-									 @RequestParam(required=false) boolean checked) {
+	public ModelAndView reservasEspacio(@PathVariable("idEdificio") long idEdificio,@PathVariable("idEspacio") long idEspacio) {
 		ModelAndView model = new ModelAndView("index");
 		Espacio e = reserva_service.getEspacio(idEspacio);
 		Reserva r = new Reserva();
 		r.setEspacio(e);	
-		model.addObject("checked", checked);
 		model.addObject("User", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
 		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
-		model.addObject("view", "reservas_calendario");
-		model.addObject("url","/edificio/" + idEdificio + "/espacio/" + idEspacio );
+		model.addObject("view", "reservas-calendario");
 		
         return model;
     }
 	
 	
-	@RequestMapping(value="/reservas_fecha", method=RequestMethod.GET)
-    public ModelAndView reservaPorFecha() {
+	@RequestMapping(value="/reservas-fecha", method=RequestMethod.GET)
+    public ModelAndView reservasFecha() {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("User", user_service.getCurrentUser());
-		model.addObject("view", "reservas_fecha");
+		model.addObject("view", "reservas-fecha");
 		
         return model;
     }

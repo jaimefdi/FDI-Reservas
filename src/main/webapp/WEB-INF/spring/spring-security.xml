@@ -32,7 +32,7 @@
 			 para secretaria usar las rutas /accept/** -->
 		
 		<form-login login-page="/login" username-parameter="username" password-parameter="password"
-		default-target-url="/mis_reservas" always-use-default-target="true"/>
+		default-target-url="/mis-reservas" always-use-default-target="true"/>
 		<logout logout-url="/logout" logout-success-url="/"  />		
 	</http>
 

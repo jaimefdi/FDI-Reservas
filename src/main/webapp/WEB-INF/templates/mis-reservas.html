@@ -6,20 +6,36 @@
 </head>
 <body>
 
-            <div class="container-fluid" th:fragment="contenido">
+<div class="container-fluid" th:fragment="contenido">
 
 <!-- Page Heading -->
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header text-center">
-            Lista <small>de reservas</small>
+            Mis <small>de reservas</small>
         </h1>
     </div>
 </div>
 <!-- /.row -->
 
+<!-- Vista -->
 <div class="row">
-	<div class="col-md-8 col-md-offset-2">
+	<div class="col-md-2 col-md-offset-10 text-center">
+	    Ver como: 
+	    <span id="view-list" class="red" title="Lista"><i class="fa fa-list-ul"> </i></span>
+	    <span id="view-calendar" title="Calendario"><i class="fa fa-calendar"> </i> </span>
+		<!-- 
+		<div class="col-md-5 text-left" style="padding:0px;">Ver como: </div>
+		<div class="col-md-3" style="padding:0px;"><i id="view-list" class="fa fa-list-ul"> </i></div>
+		<div class="col-md-3" style="padding:0px;"><i id="view-calendar" class="fa fa-calendar"> </i></div>
+		 -->
+		
+	</div>
+</div>
+<hr/>
+
+<div id="lista" class="row" >
+	<div  class="col-md-8 col-md-offset-2">
         
         <div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults.content)}">
                 <i class="fa fa-ban fa-5x"></i>
@@ -58,8 +74,7 @@
             <!-- /.table-responsive-->
         
     </div>
-</div>
- <!-- /.row -->
+
  
  <!-- Pagination -->
  	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
@@ -104,12 +119,14 @@
     </div>
 </div>
  <!-- /.Pagination -->
- 
- <div class="row">
- 	<div class="col-md-12 text-center">
- 	 <a th:href="@{/edificio/1/espacio/1?checked=true}"><button class="btn-rec blue">IR A CALENDARIO</button></a>
- 	</div>
- </div>
+
+</div>
+<!-- /.row -->
+
+<!-- Calendar -->
+<div class="row">
+   <div id="calendar" class="col-md-10 col-md-offset-1"></div>
+</div>
  
  <div class="modal fade" id="modalEditarReserva" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -195,12 +212,30 @@
  var baseURL = /*[[@{/}]]*/ '/';
 
  $(document).ready(function(){
-	 
+	  
 	 	var reserva = {};
 	 	var token = $("meta[name='_csrf']").attr("content");
 	 	var header = $("meta[name='_csrf_header']").attr("content");
 	 	var reqHeaders = [];
 	 	reqHeaders[header] = token;
+	 	
+	 	$("#view-list").click(function(){
+	 		$(this).addClass("red");
+	 		$("#view-calendar").removeClass("red");
+	 		$("#lista").show();
+	 		$("#calendar").hide();
+	 	});
+	 	
+		$("#view-calendar").click(function(){
+			$(this).addClass("red");
+	 		$("#view-list").removeClass("red");
+			$("#lista").hide();
+			loadCalendar();
+	 		$("#calendar").show();
+	 	});
+	 	
+	 	
+	 	
 	 	
 	 	$('tr').click(function(){
 	 		$('#modalEditarReserva').modal('show');
@@ -259,14 +294,143 @@
 	 		});
 	 	});
 	 
+	 	//fullcalendar
+	 	function loadCalendar(){
+		 	$('#calendar').fullCalendar({
+				lang: 'es',
+				timezone: 'local',
+			    header: {
+			        left: 'prev,next today',
+			        center: 'title',
+			        right: 'month,agendaWeek,agendaDay'
+			    },
+			    
+			    eventClick : function(calEvent,jsEvent, view) {
+					$('#modalEditarReserva').modal('show');
+					$('#modalEditarReserva #idAsunto').attr("value",calEvent.title);
+					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
+					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
+	
+				},
+			    defaultDate: '2016-03-12',
+			    editable: true,
+			    eventLimit: true,
+			    eventRender : function(event,element,view) {
+			    
+			    	if(view.name == 'month'){
+						element.popover({
+							
+								placement : 'auto',
+								html : true,
+								trigger : 'hover',
+								animation : 'true',
+								container:'#calendar',
+								content : "<b>" + event.nombreEspacio +
+										  "</b><br/>" + event.start.format("HH:mm") + "-" + event.end.format("HH:mm") + 
+										  "<br/>" + event.title
+							});
+			    	}
+					
+				},
+				eventResize: function(event, delta, revertFunc, jsEvent) {
+	
+			        var s = "El evento ahora durará hasta el " + event.end.format("DD/MM/YYYY HH:mm") +
+			        		" ¿Esta de acuerdo?";
+			      			        
+			        if (confirm(s)) {
+			        	reserva.id = event.id;
+			        	reserva.title = event.title;
+			        	reserva.start = event.start;
+			        	reserva.end = event.end;
+			        	reserva.idEspacio = event.idEspacio;
+			        	$.ajax({
+				 			url: baseURL + 'reserva/' + reserva.id,
+				 			type: 'PUT',
+				 			headers : reqHeaders,
+				 			data: JSON.stringify(reserva),
+				 			contentType: 'application/json',
+				 			success : function(datos) {   
+				 				alert("Reserva actualizada");
+				 				
+				 			},    
+				 			error : function(xhr, status) {
+				 				revertFunc();
+				     			alert('Disculpe, existió un problema');
+				     			
+				 			}
+				 		});
+			        	
+			        }
+			        else{
+			        	 revertFunc();
+			        }
+	
+	
+			    },
+			    eventDrop: function(event, delta, revertFunc) {
+			    	var s = "El evento se va a cambiar al día " + event.start.format("DD/MM/YYYY") +
+		        		    " de " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + " ¿Esta de acuerdo?";
+			   
+			        if (confirm(s)) {
+			        	reserva.id = event.id;
+			        	reserva.title = event.title;
+			        	reserva.start = event.start;
+			        	reserva.end = event.end;
+			        	reserva.idEspacio = event.idEspacio;
+			        	$.ajax({
+				 			url: baseURL + 'reserva/' + reserva.id,
+				 			type: 'PUT',
+				 			headers : reqHeaders,
+				 			data: JSON.stringify(reserva),
+				 			contentType: 'application/json',
+				 			success : function(datos) {   
+				 				alert("Reserva actualizada");
+				 				
+				 			},    
+				 			error : function(xhr, status) {
+				 				revertFunc();
+				     			alert('Disculpe, existió un problema');
+				     			
+				 			}
+				 		});
+			        }
+			        else{
+			           revertFunc();	
+			        }
+	
+			    },
+			    loading: function (bool) {
+			        if (bool) {
+			            $("#calendar").css({"visibility": "hidden"});		            
+			        } else {
+			            $("#calendar").css({"visibility": "visible"});		            
+			        }
+			    },
+			    eventSources: [ 
+				        {
+				        	url: '/reservas/misEventos',							
+				            color: 'green',    
+				            textColor: 'black'  
+				        }	        
+			    ]
+			       	
+			    
+			});
+	 	}	
+	 	
+	 	
+	 	
+	 	
  });
  
  
  </script>
  
+ 
+ 
  </div>
 
-            <!-- /.container-fluid -->
+<!-- /.container-fluid -->
 
 </body>
 </html>
