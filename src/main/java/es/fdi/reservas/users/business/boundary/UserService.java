@@ -14,6 +14,7 @@ import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.control.UserRepository;
 import es.fdi.reservas.users.business.entity.User;
+import es.fdi.reservas.users.business.entity.UserDTO;
 import es.fdi.reservas.users.business.entity.UserRole;
 
 
@@ -72,7 +73,7 @@ public class UserService implements UserDetailsService{
 		user_ropository.delete(idUser);
 	}
 
-	public User editaUsuario(User userActualizado) {
+	public User editaUsuario(UserDTO userActualizado) {
 		
 		User u = user_ropository.findOne(userActualizado.getId());
 		u.setUsername(userActualizado.getUsername());

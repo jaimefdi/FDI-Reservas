@@ -4,21 +4,23 @@ import es.fdi.reservas.reserva.business.entity.Facultad;
 
 public class FacultadDTO {
 
-	private String id;
+	private Long id;
 	private String nombreFacultad;
 	private String dir;
 	
-	public FacultadDTO(String id, String name, String dir){
+	public FacultadDTO(){}
+	
+	public FacultadDTO(Long id, String name, String dir){
 		this.id = id;
 		this.nombreFacultad = name;
 		this.dir = dir;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -40,6 +42,6 @@ public class FacultadDTO {
 	}
 
 	public static FacultadDTO fromFacultadDTO(Facultad f){
-		return new FacultadDTO(f.getId().toString(), f.getNombreFacultad(), f.getDir());
+		return new FacultadDTO(f.getId(), f.getNombreFacultad(), f.getDir());
 	}
 }

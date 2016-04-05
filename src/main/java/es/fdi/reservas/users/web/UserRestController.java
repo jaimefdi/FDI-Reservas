@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.*;
+import es.fdi.reservas.reserva.web.*;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
+import es.fdi.reservas.users.business.entity.UserDTO;
 
 @RestController
 public class UserRestController {
@@ -34,7 +36,7 @@ public class UserRestController {
 	}
 	
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.PUT)
-	public void editarUsuario(@PathVariable("idUsuario") long idUsuario, @RequestBody User userActualizado) {
+	public void editarUsuario(@PathVariable("idUsuario") long idUsuario, @RequestBody UserDTO userActualizado) {
 		user_service.editaUsuario(userActualizado);
 	}	
 	
@@ -47,7 +49,7 @@ public class UserRestController {
 	}
 	
 	@RequestMapping(value = "/edificio/{idEdificio}", method = RequestMethod.PUT)
-	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody Edificio edificioActualizado) {
+	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody EdificioDTO edificioActualizado) {
 		reserva_service.editarEdificio(edificioActualizado);
 	}
 	
@@ -56,11 +58,11 @@ public class UserRestController {
 	 */
 	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.DELETE)
 	public void eliminarFacultad(@PathVariable("idFacultad") long idFacultad) {
-		reserva_service.eliminarFacultad(idFacultad);
+		//reserva_service.eliminarFacultad(idFacultad);
 	}
 	
 	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.PUT)
-	public void editarFacultad(@PathVariable("idFacultad") long idFacultad, @RequestBody Facultad facultadActualizado) {
+	public void editarFacultad(@PathVariable("idFacultad") long idFacultad, @RequestBody FacultadDTO facultadActualizado) {
 		reserva_service.editarFacultad(facultadActualizado);
 	}
 	
@@ -73,7 +75,7 @@ public class UserRestController {
 	}
 	
 	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.PUT)
-	public void editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody Espacio espacioActualizado) {
+	public void editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioTipoDTO espacioActualizado) {
 		reserva_service.editarEspacio(espacioActualizado);
 	}
 }

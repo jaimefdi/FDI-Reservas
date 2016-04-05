@@ -4,19 +4,27 @@ import es.fdi.reservas.reserva.business.entity.Espacio;
 
 public class EspacioTipoDTO {
 	
-	private String id;
+	private Long id;
 	private String nombre_espacio;
+	private int capacidad;
+	private boolean microfono;
+	private boolean proyector;
+	private String tipoEspacio;
 	
-	public EspacioTipoDTO(String id, String spacename){
+	public EspacioTipoDTO(Long id, String spacename, int capacidad, boolean micro, boolean proyec, String tipoEspacio){
 		this.id = id;
 		this.nombre_espacio = spacename;
+		this.capacidad = capacidad;
+		this.microfono = micro;
+		this.proyector = proyec;
+		this.tipoEspacio = tipoEspacio;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -28,7 +36,39 @@ public class EspacioTipoDTO {
 		this.nombre_espacio = nombre_espacio;
 	}
 	
+	public int getCapacidad() {
+		return capacidad;
+	}
+
+	public void setCapacidad(int capacidad) {
+		this.capacidad = capacidad;
+	}
+
+	public boolean isMicrofono() {
+		return microfono;
+	}
+
+	public void setMicrofono(boolean microfono) {
+		this.microfono = microfono;
+	}
+
+	public boolean isProyector() {
+		return proyector;
+	}
+
+	public void setProyector(boolean proyector) {
+		this.proyector = proyector;
+	}
+
+	public String getTipoEspacio() {
+		return tipoEspacio;
+	}
+
+	public void setTipoEspacio(String tipoEspacio) {
+		this.tipoEspacio = tipoEspacio;
+	}
+
 	public static EspacioTipoDTO fromEspacioTipoDTO(Espacio e){
-		return new EspacioTipoDTO(e.getId().toString(), e.getNombre_espacio());
+		return new EspacioTipoDTO(e.getId(), e.getNombre_espacio(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo());
 	}
 }

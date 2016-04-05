@@ -5,39 +5,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Email;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import es.fdi.reservas.reserva.business.entity.Facultad;
 
-@Entity
-public class User implements UserDetails{
+public class UserDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="User_Id")
+	
 	private Long id;
-	@Size(min=3, max=20, message="La longitud debe estar entre 3 y 20")
+	
 	private String username;
 	
 	private String password;
-	@Email
+	
 	private String email;
 	
 	private boolean accountExpired;
@@ -48,23 +26,18 @@ public class User implements UserDetails{
 	
 	private boolean enabled;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="UserRole", joinColumns=@JoinColumn(name="user"),  uniqueConstraints=@UniqueConstraint(columnNames={"user", "role"}))
+	
 	private Collection<UserRole> roles;
 	
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name="UserFacultades", joinColumns={@JoinColumn(name="user")}, inverseJoinColumns={@JoinColumn(name="FACULTAD_ID")})
+	
 	private Set<Facultad> facultades;
 	
-
-	public User() {
-		
-	}
+	public UserDTO(){}
 	
-	public User(String username, String email) {
+	public UserDTO(String username, String email, boolean enabled) {
 		this.username = username;
 		this.email = email;
-		this.enabled = true;
+		this.enabled = enabled;
 		this.roles = new ArrayList<UserRole>();
 		this.facultades = new HashSet<Facultad>();
 	}
@@ -105,11 +78,7 @@ public class User implements UserDetails{
 		this.roles.remove(role);
 	}
 
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return roles;
-	}
-
-	
+		
 	public boolean isAccountNonExpired() {
 		return ! accountExpired;
 	}
@@ -149,5 +118,7 @@ public class User implements UserDetails{
 		this.facultades.remove(f);
 	}
 	
-	
+	public static UserDTO fromUserDTO(User user){
+		return new UserDTO(user.getUsername(), user.getEmail(), user.isEnabled());
+	}
 }

@@ -37,16 +37,16 @@
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
-                      	<th>Identificador</th>
                           <th>Nombre</th>
+                          <th>Dirección</th>
                       </tr>
                   </thead>
                   <tbody>
                       <tr th:each="r : ${facultades}"
-                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}">
-                      	<td th:text="${r.id}"></td>
+                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}, dir=${r.dir}">
+                      	
                           <td th:text="${r.nombreFacultad}"></td>
-                          
+                          <td th:text="${r.dir}"></td>
                       </tr>     
                   </tbody>
               </table>
@@ -66,13 +66,6 @@
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Facultad}" method="put">             
 				
-				<!-- Identificador -->
-				<div class="form-group">
-                     <label for="ejemplo_2" class="col-md-2 control-label">Identificador:</label>
-                      <div class="col-md-10">
-                         <label id="idFacultad" class="form-control"></label>
-                      </div>
-                 </div>
 				 <!-- Nombre de facultad --> 
                  <div class="form-group">
                      <label for="ejemplo_2" class="col-md-2 control-label">Nombre:</label>
@@ -80,7 +73,15 @@
                          <input id="idNombre" name="nombreEdif" type="text" class="form-control" placeholder="Introduce un nombre de facultad"/>
                       </div>
                  </div>
-                                  
+                 
+                 <!-- Direccion de facultad --> 
+                 <div class="form-group">
+                     <label for="ejemplo_2" class="col-md-2 control-label">Direccion:</label>
+                      <div class="col-md-10">
+                         <input id="idDir" name="direccion" type="text" class="form-control" placeholder="Introduce una direccion para la facultad"/>
+                      </div>
+                 </div>
+                              
                  <div class="row">
                      <div class="col-xs-6 col-md-6">
                       <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
@@ -110,10 +111,11 @@
 	 		
 	 		facultad.id =  $(this).attr("data-id");
 	 		facultad.name = $(this).attr("name");
-
+			facultad.dir = $(this).attr("dir");
+			
 	 		$('#modalEditarFacultad #idFacultad').text(facultad.id);
 	 		$('#modalEditarFacultad #idNombre').attr("value",facultad.name);
-	 		
+	 		$('#modalEditarFacultad #idDir').attr("value",facultad.dir);
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
@@ -130,8 +132,9 @@
 	 			success : function(datos) {   
 	 				alert("Facultad actualizada");
 	 				$('#modalEditarFacultad').modal('hide');
-	 				$("#"+facultad.id +" td:nth-child(1)").text(facultad.id);
-	 				$("#"+facultad.id +" td:nth-child(2)").text(facultad.name);
+	 				
+	 				$("#"+facultad.id +" td:nth-child(1)").text(facultad.name);
+	 				$("#"+facultad.id +" td:nth-child(2)").text(facultad.dir);
 	 			},    
 	 			error : function(xhr, status) {
 	     			alert('Disculpe, existió un problema');

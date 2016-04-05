@@ -58,7 +58,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value="/administrar/administrar_usuarios")
+	@RequestMapping(value="/administrar/usuarios")
 	public ModelAndView administrarUsuarios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -69,7 +69,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value="/administrar/administrar_edificios")
+	@RequestMapping(value="/administrar/edificios")
 	public ModelAndView administrarEdificios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -79,7 +79,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value="/administrar/administrar_facultad")
+	@RequestMapping(value="/administrar/facultad")
 	public ModelAndView administrarFacultades(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -89,7 +89,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value="/administrar/administrar_espacios")
+	@RequestMapping(value="/administrar/espacios")
 	public ModelAndView administrarEspacios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -135,7 +135,7 @@ public class UserController {
 	@RequestMapping(value="/administrar/administrar_facultad/nuevoEdificio", method=RequestMethod.POST)
 	public String crearEdificio(Edificio f){
 		reserva_service.addNewEdificio(f);
-	   return "redirect:/administrar/administrar_facultad";
+	    return "redirect:/administrar/administrar_facultad";
 		//return "nuevoUsuario";
 	}
 }

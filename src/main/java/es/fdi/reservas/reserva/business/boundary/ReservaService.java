@@ -17,6 +17,8 @@ import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import org.springframework.data.domain.Page;
+
+import es.fdi.reservas.reserva.web.*;
 import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
 
 @Service
@@ -125,19 +127,19 @@ public class ReservaService {
 		
 	}
 	
-	public Edificio editarEdificio(Edificio edificio){
+	public Edificio editarEdificio(EdificioDTO edificio){
 		Edificio e = edificio_repository.findOne(edificio.getId());
 		e.setNombre_edificio(edificio.getNombre_edificio());
-		e.setFacultad(edificio.getFacultad());
+		e.setFacultad(facultad_repository.findOne(edificio.getIdFacultad()));
 		return edificio_repository.save(e);
 	}
 	
-	public void eliminarFacultad(long idFacultad) {
-		facultad_repository.delete(idFacultad);
+	/*public void eliminarFacultad(long idFacultad) {
+		facultad_repository.softDelete(Long.toString(idFacultad));
 		
-	}
+	}*/
 	
-	public Facultad editarFacultad(Facultad facultad){
+	public Facultad editarFacultad(FacultadDTO facultad){
 		Facultad f = facultad_repository.findOne(facultad.getId());
 		f.setNombreFacultad(facultad.getNombreFacultad());
 		f.setDir(facultad.getDir());
@@ -149,13 +151,13 @@ public class ReservaService {
 		
 	}
 	
-	public Espacio editarEspacio(Espacio espacio){
+	public Espacio editarEspacio(EspacioTipoDTO espacio){
 		Espacio e = espacio_repository.findOne(espacio.getId());
 		e.setNombre_espacio(espacio.getNombre_espacio());
 		e.setCapacidad(espacio.getCapacidad());
 		e.setMicrofono(espacio.isMicrofono());
 		e.setProyector(espacio.isProyector());
-		e.setTipoEspacio(espacio.getTipoEspacio());
+		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
 		return espacio_repository.save(e);
 	}
 
@@ -180,6 +182,15 @@ public class ReservaService {
 
 	public List<TipoEspacio> tiposDeEspacios(long idEdificio) {
 		return espacio_repository.tiposDeEspacios(idEdificio);
+	}
+
+	public Edificio addNewEdificio(Edificio edificio) {
+		
+		Edificio newEdificio = new Edificio(edificio.getNombre_edificio());
+		newEdificio = edificio_repository.save(newEdificio);
+		
+		return newEdificio;
+		
 	}
 
 	

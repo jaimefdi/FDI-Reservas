@@ -31,6 +31,9 @@ public class Facultad {
 	@ManyToMany(mappedBy="facultades")
 	private Set<User> usuarios;
 	
+	@NotNull
+	private boolean deleted;
+	
 	public Facultad(){
 		
 	}
