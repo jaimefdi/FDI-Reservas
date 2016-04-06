@@ -99,7 +99,7 @@
                          </div>
                    </div>
                    
-                    <!-- Color  
+                    <!-- Color  -->
                    <div class="form-group">
                        <label for="ejemplo_3" class="col-md-2 control-label">Color:</label>
                         <div class="col-md-10">
@@ -109,7 +109,7 @@
                          		<div class="div-color" role="radio" data-color="red" style="background:red;display:inline-block;"></div>
                          	</div>
                         </div>
-                   </div> -->
+                   </div> 
                    
                    
                    <!-- Repetir -->
@@ -360,7 +360,7 @@
 	  </div>
   </div>
 
-<script th:inline="javascript">
+<script type="text/javascript" th:inline="javascript">
 	
 		/*<![CDATA[*/
 		var baseURL = /*[[@{/}]]*/ '/';
@@ -379,7 +379,8 @@
 		 			$(this).removeClass("color-selected");
 		 		});
 		 		$(this).addClass("color-selected");
-		 		colorEvent = $(this).attr("data-color");		 		
+		 		colorEvent = $(this).attr("data-color");
+		 		console.log(colorEvent);
 		 	});
 		 	
 		 	////////
@@ -526,8 +527,12 @@
 		 		var exdate = "EXDATE:";
 		 		
 		 		
-		 		
-		 		recurrencia.push(rrule);
+		 		if($("#checkRepetir").is(":checked")){
+		 			recurrencia.push(rrule);
+		 		}
+		 		else{
+		 			recurrencia.push(null);
+		 		}
 		 		console.log(recurrencia);
 		 		
 		 		
@@ -563,7 +568,7 @@
 		 		
 		 		reservaAJAX.idEspacio = $('#esp_hidden').val();;
 		 		reservaAJAX.recurrencia = recurrencia[0];
-		 		//reservaAJAX.color = colorEvent;
+		 		reservaAJAX.color = colorEvent;
 		 		
 		 		console.log(reservaAJAX);
 		 			
@@ -607,7 +612,7 @@
 			    
 			    eventClick : function(calEvent,jsEvent, view) {
 					$('#modalEditarReserva').modal('show');
-					$('#modalEditarReserva #idAsunto').attr("value",calEvent.title);
+					$('#modalEditarReserva #idAsunto').val(calEvent.title);
 					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
 					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
 
@@ -650,10 +655,11 @@
 					eventData.end.hours(d.getHours()).add(1,'hour');
 					eventData.end.minutes(m);
 					
-					$("#datetimepicker1").attr("value",eventData.start.format("DD/MM/YYYY HH:mm"));
-					$("#datetimepicker2").attr("value",eventData.end.format("DD/MM/YYYY HH:mm"));
+					$('#modalCrearReserva #idAsunto').val("");
+					$("#modalCrearReserva #datetimepicker1").val(eventData.start.format("DD/MM/YYYY HH:mm"));
+					$("#modalCrearReserva #datetimepicker2").val(eventData.end.format("DD/MM/YYYY HH:mm"));
 					
-					$("#empieza_el").attr("value",eventData.start.format("DD/MM/YYYY"));
+					$("#empieza_el").val(eventData.start.format("DD/MM/YYYY"));
 					var array = [];
 					var numDia = eventData.start.isoWeekday();
 					array.push(letraSemana(numDia));
@@ -664,7 +670,7 @@
 			    eventSources: [ 
 				        {
 				            url: '/reservas/' + id_espacio + '/eventos',
-				            color: 'yellow',    
+				            //color: 'yellow',    
 				            textColor: 'black'  
 				        }	        
 			    ]

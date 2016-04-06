@@ -41,19 +41,31 @@ public class ReservaService {
 	}
 
 	public Reserva agregarReserva(Reserva reserva, String username) {
-		List<RangoDateTime> rangoResecurrencia = reserva.rangoRecurrencias();
-		List<Reserva> reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), 
-																		 reserva.getStartRecurrencia(),
-																		 reserva.getEndRecurrencia());
-		
-		List<Reserva> reservasRecurrentes = reserva_repository.reservasRecurrentes(reserva.getEspacio().getId(), 
-																				   reserva.getEndRecurrencia());
-		
+		List<Reserva> reservasRecurrentes = new ArrayList<Reserva>();
+		List<Reserva> reservas = new ArrayList<Reserva>();
 		List<Reserva> result = new ArrayList<Reserva>();
-		for(Reserva r: reservasRecurrentes){
-			result.addAll(r.getInstanciasEvento());
+		
+		if(reserva.getRecurrencia() != null){
+			List<RangoDateTime> rangoResecurrencia = reserva.rangoRecurrencias();
+		    reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), 
+															   reserva.getStartRecurrencia(),
+															   reserva.getEndRecurrencia());
+			
+			reservasRecurrentes = reserva_repository.reservasRecurrentes(reserva.getEspacio().getId(), 
+																		 reserva.getEndRecurrencia());
+			
+			for(Reserva r: reservasRecurrentes){
+				result.addAll(r.getInstanciasEvento());
+			}
+			reservas.addAll(result);
+		
 		}
-		reservas.addAll(result);
+		else{
+			 reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), 
+					   reserva.getComienzo(),
+					   reserva.getFin());
+		}
+			
 		
 		for(Reserva r: reservas ){
 			if ( r.solapa(reserva) ) {

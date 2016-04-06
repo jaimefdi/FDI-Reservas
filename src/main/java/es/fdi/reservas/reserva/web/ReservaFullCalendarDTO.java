@@ -12,12 +12,20 @@ public class ReservaFullCalendarDTO {
 	private String nombreEspacio;
 	private Long idEspacio;
 	private String recurrencia;
-	//private String color;
+	private String color;
 
 	public ReservaFullCalendarDTO(){
-		
+		this.color = "pink";
 	}
 	
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
 	public ReservaFullCalendarDTO(Long id, String title, DateTime start, DateTime end,
 			                      String nombre_espacio, Long idEspacio) {
 		this.id = id;
@@ -26,7 +34,7 @@ public class ReservaFullCalendarDTO {
 		this.end = end;
 		this.nombreEspacio = nombre_espacio;
 		this.idEspacio = idEspacio;
-		//this.color = colorReserva;
+		this.color = "pink";
 	}
 
 	
