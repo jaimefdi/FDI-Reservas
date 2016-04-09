@@ -164,7 +164,7 @@ public class Reserva {
 		this.reservaColor = reservaColor;
 	}
 
-	public int diaSemana(String d){
+	private int diaSemana(String d){
 		switch(d){
 			case "L": return 1; 
 			case "M": return 2; 
@@ -174,6 +174,30 @@ public class Reserva {
 			case "S": return 6; 
 			default: return 7;
 		}
+	}
+	
+	private void rangoDateTimeDia(RangoDateTime newRango,DateTime start, DateTime end,
+								  int freq, int interval, int k){
+		newRango.setComienzo(start.plusDays((freq*interval*k) ));
+		newRango.setFin(end.plusDays((freq*interval*k) ));
+	}
+	
+	private void rangoDateTimeSemana(RangoDateTime newRango,DateTime start, DateTime end,
+								     int diasAsumar, int freq, int interval, int i){
+		newRango.setComienzo(start.plusDays( diasAsumar + (freq*interval*i) ));
+		newRango.setFin(end.plusDays(diasAsumar + (freq*interval*i) ));
+	}
+	
+	private void rangoDateTimeMes(RangoDateTime newRango,DateTime start, DateTime end,
+							      int interval, int i){
+		newRango.setComienzo(start.plusMonths(interval*i));
+		newRango.setFin(end.plusMonths(interval*i));
+	}
+	
+	private void rangoDateTimeAño(RangoDateTime newRango,DateTime start, DateTime end,
+								  int interval, int i){
+		newRango.setComienzo(start.plusYears(interval*i));
+		newRango.setFin(end.plusYears(interval*i));
 	}
 	
 	public List<RangoDateTime> rangoRecurrencias() {
@@ -244,8 +268,7 @@ public class Reserva {
 							
 							if(freq == 1){
 								for(int k = 0; count > 0  && newRango.getComienzo().compareTo(until) < 0; k++ ){
-									newRango.setComienzo(start.plusDays((freq*interval*k) ));
-									newRango.setFin(end.plusDays((freq*interval*k) ));
+									rangoDateTimeDia(newRango, start, end, freq, interval, k);
 															
 									recurrencias.add(new RangoDateTime(newRango.getComienzo(),newRango.getFin()));
 									count--;
@@ -259,8 +282,7 @@ public class Reserva {
 									int diasAsumar = nextDay - currentDay;
 									//este if sirve para que no calcule la primera reserva previa a la de comienzo
 									if(i != 0 || diasAsumar >= 0){	
-										newRango.setComienzo(start.plusDays( diasAsumar + (freq*interval*i) ));
-										newRango.setFin(end.plusDays(diasAsumar + (freq*interval*i) ));
+										rangoDateTimeSemana(newRango, start, end, diasAsumar, freq, interval, i);
 																
 										recurrencias.add(new RangoDateTime(newRango.getComienzo(),newRango.getFin()));
 										count--;
@@ -268,16 +290,12 @@ public class Reserva {
 								}
 							}
 							else if(freq == 30){
-								newRango.setComienzo(start.plusMonths(interval*i));
-								newRango.setFin(end.plusMonths(interval*i));
-								
+								rangoDateTimeMes(newRango, start, end, interval, i);
 								recurrencias.add(new RangoDateTime(newRango.getComienzo(),newRango.getFin()));
 								count--;
 							}
 							else{
-								newRango.setComienzo(start.plusYears(interval*i));
-								newRango.setFin(end.plusYears(interval*i));
-								
+								rangoDateTimeAño(newRango, start, end, interval, i);
 								recurrencias.add(new RangoDateTime(newRango.getComienzo(),newRango.getFin()));
 								count--;
 							}
@@ -306,8 +324,8 @@ public class Reserva {
 		List<Reserva> instancias = new ArrayList<Reserva>();
 		List<RangoDateTime> rango = rangoRecurrencias();
 		for(RangoDateTime r : rango){
-			instancias.add(new Reserva(asunto,r.getComienzo(),r.getFin(),
-									   username,espacio,recurrencia));
+			instancias.add(new Reserva(asunto, r.getComienzo(), r.getFin(), username,
+						               espacio, recurrencia));
 		}
 		
 		return instancias;
