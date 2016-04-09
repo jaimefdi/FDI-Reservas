@@ -46,7 +46,8 @@ public class ReservaService {
 		List<Reserva> result = new ArrayList<Reserva>();
 		
 		if(reserva.getRecurrencia() != null){
-			List<RangoDateTime> rangoResecurrencia = reserva.rangoRecurrencias();
+			//actualiza el startRecurrencia y el endRecurrencia
+			reserva.rangoRecurrencias();
 		    reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), 
 															   reserva.getStartRecurrencia(),
 															   reserva.getEndRecurrencia());
@@ -73,7 +74,10 @@ public class ReservaService {
 			}
 		}
 		
-		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),username, reserva.getEspacio(), reserva.getRecurrencia());
+		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),
+										   username, reserva.getEspacio(), reserva.getRecurrencia(),
+										   reserva.getStartRecurrencia(), reserva.getEndRecurrencia());
+		
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		
 		return nuevaReserva;

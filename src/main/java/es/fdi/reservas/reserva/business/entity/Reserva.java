@@ -59,13 +59,17 @@ public class Reserva {
 		
 	}
 	
-	public Reserva(String a, DateTime ini, DateTime fin, String user_name, Espacio esp, String r){
+	
+	public Reserva(String a, DateTime ini, DateTime fin, String userName, Espacio esp, String r,
+				   DateTime startR, DateTime endR){
 		this.asunto = a;
 		this.comienzo = ini;
 		this.fin = fin;
 		this.estadoReserva = EstadoReserva.CONFIRMADA;
-		this.username = user_name;
+		this.username = userName;
 		this.espacio = esp;
+		this.startRecurrencia = startR;
+		this.endRecurrencia = endR;
 		this.recurrencia = r;
 		
 	}
@@ -325,7 +329,7 @@ public class Reserva {
 		List<RangoDateTime> rango = rangoRecurrencias();
 		for(RangoDateTime r : rango){
 			instancias.add(new Reserva(asunto, r.getComienzo(), r.getFin(), username,
-						               espacio, recurrencia));
+						               espacio, recurrencia, startRecurrencia, endRecurrencia));
 		}
 		
 		return instancias;
