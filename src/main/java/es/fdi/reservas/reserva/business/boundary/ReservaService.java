@@ -2,7 +2,6 @@ package es.fdi.reservas.reserva.business.boundary;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -13,12 +12,9 @@ import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
-import es.fdi.reservas.reserva.business.entity.RangoDateTime;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import org.springframework.data.domain.Page;
-import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
-import es.fdi.reservas.users.business.entity.User;
 
 @Service
 public class ReservaService {
@@ -44,7 +40,7 @@ public class ReservaService {
 		List<Reserva> reservasRecurrentes = new ArrayList<Reserva>();
 		List<Reserva> reservas = new ArrayList<Reserva>();
 		List<Reserva> result = new ArrayList<Reserva>();
-		
+		// si la reserva es recurrente
 		if(reserva.getRecurrencia() != null){
 			//actualiza el startRecurrencia y el endRecurrencia
 			reserva.rangoRecurrencias();
@@ -53,8 +49,9 @@ public class ReservaService {
 															   reserva.getEndRecurrencia());
 			
 			reservasRecurrentes = reserva_repository.reservasRecurrentes(reserva.getEspacio().getId(), 
+																		 reserva.getStartRecurrencia(),
 																		 reserva.getEndRecurrencia());
-			
+			 
 			for(Reserva r: reservasRecurrentes){
 				result.addAll(r.getInstanciasEvento());
 			}
@@ -76,7 +73,8 @@ public class ReservaService {
 		
 		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),
 										   username, reserva.getEspacio(), reserva.getRecurrencia(),
-										   reserva.getStartRecurrencia(), reserva.getEndRecurrencia());
+										   reserva.getStartRecurrencia(), reserva.getEndRecurrencia(),
+										   reserva.getReservaColor());
 		
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		

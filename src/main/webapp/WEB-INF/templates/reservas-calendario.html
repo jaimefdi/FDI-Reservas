@@ -103,11 +103,10 @@
                    <div class="form-group">
                        <label for="ejemplo_3" class="col-md-2 control-label">Color:</label>
                         <div class="col-md-10">
-                         	<div role="radiogroup" style="display:inline-block;">
-                         		<div class="div-color" role="radio" data-color="yellow" style="background:yellow;display:inline-block;"></div>
-                         		<div class="div-color" role="radio" data-color="orange" style="background:orange;display:inline-block;"></div>
-                         		<div class="div-color" role="radio" data-color="red" style="background:red;display:inline-block;"></div>
-                         	</div>
+                         	<div id="cp2" class="input-group colorpicker-component">
+							    <input type="text" value="#00AABB" class="form-control" th:readonly="readonly"/>
+							    <span class="input-group-addon"><i></i></span>
+							</div>                        	                    	
                         </div>
                    </div> 
                    
@@ -371,17 +370,14 @@
 		 	var header = $("meta[name='_csrf_header']").attr("content");
 		 	var reqHeaders = [];
 		 	reqHeaders[header] = token;
-		 	var colorEvent;
+		
 					 	
 		 	
-		 	$(".div-color").click(function(){
-		 		$(".div-color").each(function(){
-		 			$(this).removeClass("color-selected");
-		 		});
-		 		$(this).addClass("color-selected");
-		 		colorEvent = $(this).attr("data-color");
-		 		console.log(colorEvent);
-		 	});
+		 	$(function(){
+		 		$('#cp2').colorpicker();		
+		    });
+		 	
+		 
 		 	
 		 	////////
 		 	var resumen = ["Cada","semana"];
@@ -568,7 +564,7 @@
 		 		
 		 		reservaAJAX.idEspacio = $('#esp_hidden').val();;
 		 		reservaAJAX.recurrencia = recurrencia[0];
-		 		reservaAJAX.color = colorEvent;
+		 		reservaAJAX.color = $('#cp2').colorpicker('getValue',"");
 		 		
 		 		console.log(reservaAJAX);
 		 			
@@ -669,8 +665,7 @@
 				},				
 			    eventSources: [ 
 				        {
-				            url: '/reservas/' + id_espacio + '/eventos',
-				            //color: 'yellow',    
+				            url: '/reservas/' + id_espacio + '/eventos',   
 				            textColor: 'black'  
 				        }	        
 			    ]
@@ -681,22 +676,19 @@
 			$("#checkMan").change(function(){
 				
 				$("#calendar").fullCalendar('removeEventSource',{
-					 url: '/reservas/' + id_espacio + '/eventos',
-			         color: 'yellow',    
+					 url: '/reservas/' + id_espacio + '/eventos',    
 			         textColor: 'black' 
 				});
 				
 				if(this.checked){
 					$("#calendar").fullCalendar('addEventSource',{
-						 url: '/reservas/' + id_espacio + '/eventosMan',
-				         color: 'yellow',    
+						 url: '/reservas/' + id_espacio + '/eventosMan',   
 				         textColor: 'black'
 					});
 				}
 				else{
 					$("#calendar").fullCalendar('removeEventSource',{
-						 url: '/reservas/' + id_espacio + '/eventosMan',
-				         color: 'yellow',    
+						 url: '/reservas/' + id_espacio + '/eventosMan',			           
 				         textColor: 'black'
 					});
 				}
@@ -705,22 +697,19 @@
 			$("#checkTar").change(function(){
 				
 				$("#calendar").fullCalendar('removeEventSource',{
-					 url: '/reservas/' + id_espacio + '/eventos',
-			         color: 'yellow',    
+					 url: '/reservas/' + id_espacio + '/eventos',  
 			         textColor: 'black' 
 				});
 				
 				if(this.checked){
 					$("#calendar").fullCalendar('addEventSource',{
-						 url: '/reservas/' + id_espacio + '/eventosTar',
-				         color: 'yellow',    
+						 url: '/reservas/' + id_espacio + '/eventosTar',   
 				         textColor: 'black'
 					});
 				}
 				else{
 					$("#calendar").fullCalendar('removeEventSource',{
-						 url: '/reservas/' + id_espacio + '/eventosTar',
-				         color: 'yellow',    
+						 url: '/reservas/' + id_espacio + '/eventosTar',				             
 				         textColor: 'black'
 					});
 				}

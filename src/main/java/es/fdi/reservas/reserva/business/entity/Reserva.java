@@ -61,7 +61,7 @@ public class Reserva {
 	
 	
 	public Reserva(String a, DateTime ini, DateTime fin, String userName, Espacio esp, String r,
-				   DateTime startR, DateTime endR){
+				   DateTime startR, DateTime endR, String color){
 		this.asunto = a;
 		this.comienzo = ini;
 		this.fin = fin;
@@ -71,6 +71,7 @@ public class Reserva {
 		this.startRecurrencia = startR;
 		this.endRecurrencia = endR;
 		this.recurrencia = r;
+		this.reservaColor = color;
 		
 	}
 
@@ -329,7 +330,7 @@ public class Reserva {
 		List<RangoDateTime> rango = rangoRecurrencias();
 		for(RangoDateTime r : rango){
 			instancias.add(new Reserva(asunto, r.getComienzo(), r.getFin(), username,
-						               espacio, recurrencia, startRecurrencia, endRecurrencia));
+						               espacio, recurrencia, startRecurrencia, endRecurrencia, reservaColor));
 		}
 		
 		return instancias;

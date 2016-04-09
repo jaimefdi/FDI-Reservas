@@ -73,8 +73,9 @@ public class ReservaController {
 			reserva_service.agregarReserva(r,u.getUsername());
 		}
 		catch(ReservaSolapadaException ex){
-			
+			System.out.println(ex.getMessage());
 		}
+		
         return "redirect:/mis-reservas";
     }
 	

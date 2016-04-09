@@ -15,26 +15,18 @@ public class ReservaFullCalendarDTO {
 	private String color;
 
 	public ReservaFullCalendarDTO(){
-		this.color = "pink";
 	}
 	
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
 
 	public ReservaFullCalendarDTO(Long id, String title, DateTime start, DateTime end,
-			                      String nombre_espacio, Long idEspacio) {
+			                      String nombre_espacio, Long idEspacio, String color) {
 		this.id = id;
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		this.nombreEspacio = nombre_espacio;
 		this.idEspacio = idEspacio;
-		this.color = "pink";
+		this.color = color;
 	}
 
 	
@@ -103,7 +95,7 @@ public class ReservaFullCalendarDTO {
 	}
 
 	
-	/*
+	
 	public String getColor() {
 		return color;
 	}
@@ -111,13 +103,13 @@ public class ReservaFullCalendarDTO {
 	public void setColor(String color) {
 		this.color = color;
 	}
-    */
+    
 	
 	
 	public static ReservaFullCalendarDTO fromReserva(Reserva reserva) {
 		return new ReservaFullCalendarDTO(reserva.getId(), reserva.getAsunto(), 
 				                          reserva.getComienzo(), reserva.getFin(),
 				                          reserva.getEspacio().getNombreEspacio(),
-				                          reserva.getEspacio().getId());
+				                          reserva.getEspacio().getId(), reserva.getReservaColor());
 	}
 }

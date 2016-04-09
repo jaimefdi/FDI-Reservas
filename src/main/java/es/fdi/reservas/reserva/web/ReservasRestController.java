@@ -185,12 +185,12 @@ public class ReservasRestController {
 		r.setEspacio(reserva_service.getEspacio(rf.getIdEspacio()));
 		String recur = rf.getRecurrencia();
 		r.setRecurrencia(recur);
-		//r.setReservaColor(rf.getColor());
+		r.setReservaColor(rf.getColor());
 		try{
 			reserva_service.agregarReserva(r,u.getUsername());
 		}
 		catch(ReservaSolapadaException ex){
-			System.out.println("Reserva solapada!!!");
+			System.out.println(ex.getMessage());
 		}
 		
     }

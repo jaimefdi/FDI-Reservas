@@ -7,12 +7,16 @@
     <meta name="_csrf" content="" th:content="${_csrf.token}"/>
 	<meta name="_csrf_header" content="" th:content="${_csrf.headerName}"/>
 
+	
 	<link rel="stylesheet"
         href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.min.css"
         th:href="@{/webjars/jquery-ui-themes/1.11.2/smoothness/jquery-ui.min.css}"/>
     <link rel="stylesheet"
         href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
         th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"/>
+    <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.0/css/bootstrap-colorpicker.min.css"
+        th:href="@{/webjars/mjolnic-bootstrap-colorpicker/2.3.0/dist/css/bootstrap-colorpicker.min.css}"/>
     <link rel="stylesheet"
         href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0-3/css/font-awesome.min.css"
         th:href="@{/webjars/font-awesome/4.3.0-3/css/font-awesome.min.css}"/>
@@ -27,9 +31,13 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
 	<title>UCM RESERVAS</title>
     <!-- JS -->
+   
     <script 
         src="//code.jquery.com/jquery-2.1.4.min.js"
         th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    <script 
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.0/js/bootstrap-colorpicker.min.js"
+        th:src="@{/webjars/mjolnic-bootstrap-colorpicker/2.3.0/dist/js/bootstrap-colorpicker.min.js}"></script>
     <script 
         src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"
         th:src="@{/webjars/jquery-ui/1.11.2/jquery-ui.min.js}"></script>
@@ -155,7 +163,7 @@
                     </ul>
                 </li>
                 <!-- Perfil -->
-                <!--/*/ <th:block sec:authorize="isAuthenticated()"> /*/-->
+               
                 <li class="dropdown">
                     <a href="javascript.;" class="dropdown-toggle" data-toggle="dropdown" th:inline="text"><i class='fa fa-user' ></i> [[${#strings.capitalize(User.username)}]] <i class='fa fa-angle-down'></i></a>
                     <ul class="dropdown-menu">
@@ -176,13 +184,12 @@
                         </li>
                     </ul>
                 </li>
-                <!--/*/ </th:block> /*/-->
+                
             </ul>
 
             <!-- Left bar menu -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-<<<<<<< HEAD
                 		<th:block sec:authorize="hasRole('ROLE_ADMIN')">
                 		<li id="li_administrar">
                         	<a th:href="@{/administrar}"><i class="fa fa-cog"></i> Administrar</a>
@@ -190,19 +197,14 @@
                     	</th:block>
                 	<!--/*/  <th:block sec:authorize="hasRole('ROLE_SECRE')"> /*/-->
                    	 	<li id="li_misreservas" >
-                        	<a th:href="@{/mis_reservas}"><i class="fa fa-book"></i> Reservas</a>
+                        	<a th:href="@{/mis-reservas}"><i class="fa fa-book"></i> Reservas</a>
                     	</li>
                     <!--/*/  </th:block> /*/-->
                     <!--/*/  <th:block sec:authorize="hasRole('ROLE_USER')"> /*/-->
                     	<li id="li_misreservas" >
-                        	<a th:href="@{/mis_reservas}"><i class="fa fa-book"></i> Mis Reservas</a>
+                        	<a th:href="@{/mis-reservas}"><i class="fa fa-book"></i> Mis Reservas</a>
                     	</li>
                     <!--/*/  </th:block> /*/-->
-=======
-                    <li id="li_misreservas">
-                        <a th:href="@{/mis-reservas}"><i class="fa fa-book"></i> Mis Reservas</a>
-                    </li>
->>>>>>> 4f024e0... Renombrado de ficheros. Ahora en 'mis-reservas.html' se pueden ver las reservas en 2 formatos, lista y calendario.
                     <li>
                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-calendar-o"></i> Reservar <i class="fa fa-angle-down"></i></a>
                         <ul id="demo" class="collapse">

@@ -87,6 +87,11 @@
 			<version>3.3.5</version>
 		</dependency>
 		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>mjolnic-bootstrap-colorpicker</artifactId>
+			<version>2.3.0</version>
+		</dependency>		
+		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>font-awesome</artifactId>
 			<version>4.3.0-3</version>
