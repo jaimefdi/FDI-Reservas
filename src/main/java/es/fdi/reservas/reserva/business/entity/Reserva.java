@@ -1,11 +1,15 @@
 package es.fdi.reservas.reserva.business.entity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
-public class Reserva {
+public class Reserva{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,10 +52,9 @@ public class Reserva {
 	@JoinColumn(name="EspacioId")
 	private Espacio espacio;
 	
-	//@OneToMany(mappedBy="reserva")
-	//private Set<Reserva> reglasRecurrecia;
-	
-	private String recurrencia;
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="reglasRecurrentes", joinColumns=@JoinColumn(name="reservaId"))
+	private List<String> reglasRecurrencia;
 	
 	private String reservaColor;
 
@@ -60,7 +63,7 @@ public class Reserva {
 	}
 	
 	
-	public Reserva(String a, DateTime ini, DateTime fin, String userName, Espacio esp, String r,
+	public Reserva(String a, DateTime ini, DateTime fin, String userName, Espacio esp,
 				   DateTime startR, DateTime endR, String color){
 		this.asunto = a;
 		this.comienzo = ini;
@@ -70,12 +73,26 @@ public class Reserva {
 		this.espacio = esp;
 		this.startRecurrencia = startR;
 		this.endRecurrencia = endR;
-		this.recurrencia = r;
+		//this.recurrencia = r;
 		this.reservaColor = color;
+		this.reglasRecurrencia = new ArrayList<String>();
 		
 	}
 
+    public void addReglaRecurrente(String regla){
+    	this.reglasRecurrencia.add(regla);
+    }
+	
+	public List<String> getReglasRecurrencia() {
+		return reglasRecurrencia;
+	}
 
+
+	public void setReglasRecurrencia(List<String> reglasRecurrencia) {
+		this.reglasRecurrencia = reglasRecurrencia;
+	}
+
+    /*
 	public String getRecurrencia() {
 		return recurrencia;
 	}
@@ -83,7 +100,7 @@ public class Reserva {
 	public void setRecurrencia(String recurrencia) {
 		this.recurrencia = recurrencia;
 	}
-
+*/
 	
 	public DateTime getStartRecurrencia() {
 		return startRecurrencia;
@@ -214,11 +231,10 @@ public class Reserva {
 		DateTime until = new DateTime().now().plusYears(1);
 		int count = Integer.MAX_VALUE;
 		
-		//Iterator it = recurrencia.iterator();
-		//int i = 0;
+		Iterator it = reglasRecurrencia.iterator();
 		
-		//while(it.hasNext()){
-			String[] w = recurrencia.split(":");
+		while(it.hasNext()){			
+		    String[] w = it.next().toString().split(":");
 			String[] v = w[1].split(";");
 			int j = 0;
 			switch(w[0]){
@@ -316,10 +332,12 @@ public class Reserva {
 				case "EXDATE": break;
 			}
 			
-			
-			//actualizamos el comienzo y el final de la recurrencia
-			startRecurrencia = recurrencias.get(0).getComienzo();
-			endRecurrencia = recurrencias.get(recurrencias.size()-1).getFin();
+		}
+		
+		
+		//actualizamos el comienzo y el final de la recurrencia
+		startRecurrencia = recurrencias.get(0).getComienzo();
+		endRecurrencia = recurrencias.get(recurrencias.size()-1).getFin();
 			
 		return recurrencias;
 	}
@@ -330,14 +348,14 @@ public class Reserva {
 		List<RangoDateTime> rango = rangoRecurrencias();
 		for(RangoDateTime r : rango){
 			instancias.add(new Reserva(asunto, r.getComienzo(), r.getFin(), username,
-						               espacio, recurrencia, startRecurrencia, endRecurrencia, reservaColor));
+						               espacio, startRecurrencia, endRecurrencia, reservaColor));
 		}
 		
 		return instancias;
 	}
 	
 	public boolean solapa(Reserva r){
-	  if (r.getRecurrencia() == null) {
+	  if (r.getReglasRecurrencia().isEmpty()) {
 		return solapaSimple(new RangoDateTime(r.getComienzo(), r.getFin()));
 	  } 
 	  else {

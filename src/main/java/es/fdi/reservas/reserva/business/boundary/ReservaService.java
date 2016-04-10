@@ -41,7 +41,7 @@ public class ReservaService {
 		List<Reserva> reservas = new ArrayList<Reserva>();
 		List<Reserva> result = new ArrayList<Reserva>();
 		// si la reserva es recurrente
-		if(reserva.getRecurrencia() != null){
+		if(!reserva.getReglasRecurrencia().isEmpty()){
 			//actualiza el startRecurrencia y el endRecurrencia
 			reserva.rangoRecurrencias();
 		    reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), 
@@ -67,14 +67,19 @@ public class ReservaService {
 		
 		for(Reserva r: reservas ){
 			if ( r.solapa(reserva) ) {
-				throw new ReservaSolapadaException(String.format("La reserva %d, solapa con la reserva %d", reserva.getId(), r.getId()));
+				throw new ReservaSolapadaException(String.format("La reserva %s, solapa con la reserva %s", 
+						  reserva.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" + 
+				          reserva.getFin().toString("HH:mm"), 
+				          r.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" +
+				          r.getFin().toString("HH:mm")));
 			}
 		}
 		
 		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),
-										   username, reserva.getEspacio(), reserva.getRecurrencia(),
-										   reserva.getStartRecurrencia(), reserva.getEndRecurrencia(),
-										   reserva.getReservaColor());
+										   username, reserva.getEspacio(),reserva.getStartRecurrencia(),
+										   reserva.getEndRecurrencia(),reserva.getReservaColor());
+		
+		nuevaReserva.setReglasRecurrencia(reserva.getReglasRecurrencia());
 		
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		

@@ -36,7 +36,7 @@ public class ReservasRestController {
 		List<Reserva> reservasEspacio = reserva_service.getReservasEspacio(idEspacio);
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : reservasEspacio) {
-			if(r.getRecurrencia() != null){
+			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
 			}
 			else
@@ -56,7 +56,7 @@ public class ReservasRestController {
 		List<Reserva> reservasEspacio = reserva_service.getReservasEspacioDeMañana(idEspacio);
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : reservasEspacio) {
-			if(r.getRecurrencia() != null){
+			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
 			}
 			else
@@ -76,7 +76,7 @@ public class ReservasRestController {
 		List<Reserva> reservasEspacio = reserva_service.getReservasEspacioDeTarde(idEspacio);
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : reservasEspacio) {
-			if(r.getRecurrencia() != null){
+			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
 			}
 			else
@@ -97,7 +97,7 @@ public class ReservasRestController {
 		List<Reserva> userReser = reserva_service.getReservasUsuario(user.getUsername());
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : userReser) {
-			if(r.getRecurrencia() != null){
+			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
 			}
 			else
@@ -183,9 +183,8 @@ public class ReservasRestController {
 		r.setFin(rf.getEnd());
 		r.setAsunto(rf.getTitle());
 		r.setEspacio(reserva_service.getEspacio(rf.getIdEspacio()));
-		String recur = rf.getRecurrencia();
-		r.setRecurrencia(recur);
 		r.setReservaColor(rf.getColor());
+		r.setReglasRecurrencia(rf.getReglasRecurrencia());
 		try{
 			reserva_service.agregarReserva(r,u.getUsername());
 		}

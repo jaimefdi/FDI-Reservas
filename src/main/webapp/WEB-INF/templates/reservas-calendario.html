@@ -526,9 +526,7 @@
 		 		if($("#checkRepetir").is(":checked")){
 		 			recurrencia.push(rrule);
 		 		}
-		 		else{
-		 			recurrencia.push(null);
-		 		}
+		 		
 		 		console.log(recurrencia);
 		 		
 		 		
@@ -563,8 +561,9 @@
 		 		
 		 		
 		 		reservaAJAX.idEspacio = $('#esp_hidden').val();;
-		 		reservaAJAX.recurrencia = recurrencia[0];
+		 		//reservaAJAX.recurrencia = recurrencia[0];
 		 		reservaAJAX.color = $('#cp2').colorpicker('getValue',"");
+		 		reservaAJAX.reglasRecurrencia = recurrencia;
 		 		
 		 		console.log(reservaAJAX);
 		 			

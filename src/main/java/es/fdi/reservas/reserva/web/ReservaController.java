@@ -61,7 +61,7 @@ public class ReservaController {
 		
         return "index";
     }
-	
+	 /*
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
     public String crearReserva(Reserva r) throws ReservaSolapadaException {
 		User u = user_service.getCurrentUser();
@@ -78,7 +78,7 @@ public class ReservaController {
 		
         return "redirect:/mis-reservas";
     }
-	
+	*/
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
     public String edificios(Model model) {

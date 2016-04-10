@@ -1,5 +1,7 @@
 package es.fdi.reservas.reserva.web;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 
@@ -11,22 +13,23 @@ public class ReservaFullCalendarDTO {
 	private DateTime end;
 	private String nombreEspacio;
 	private Long idEspacio;
-	private String recurrencia;
 	private String color;
+	private List<String> reglasRecurrencia;
 
-	public ReservaFullCalendarDTO(){
-	}
+
+	public ReservaFullCalendarDTO(){ }
 	
 
-	public ReservaFullCalendarDTO(Long id, String title, DateTime start, DateTime end,
-			                      String nombre_espacio, Long idEspacio, String color) {
+	public ReservaFullCalendarDTO(Long id, String title, DateTime start, DateTime end, String nombreEspacio,
+			                      Long idEspacio, String color, List<String> reglas) {
 		this.id = id;
 		this.title = title;
 		this.start = start;
 		this.end = end;
-		this.nombreEspacio = nombre_espacio;
+		this.nombreEspacio = nombreEspacio;
 		this.idEspacio = idEspacio;
 		this.color = color;
+		this.reglasRecurrencia = reglas;
 	}
 
 	
@@ -85,16 +88,6 @@ public class ReservaFullCalendarDTO {
 		this.idEspacio = idEspacio;
 	}
 
-
-	public String getRecurrencia() {
-		return recurrencia;
-	}
-
-	public void setRecurrencia(String recurrencia) {
-		this.recurrencia = recurrencia;
-	}
-
-	
 	
 	public String getColor() {
 		return color;
@@ -104,12 +97,20 @@ public class ReservaFullCalendarDTO {
 		this.color = color;
 	}
     
-	
+	public List<String> getReglasRecurrencia() {
+		return reglasRecurrencia;
+	}
+
+
+	public void setReglasRecurrencia(List<String> reglasRecurrencia) {
+		this.reglasRecurrencia = reglasRecurrencia;
+	}
 	
 	public static ReservaFullCalendarDTO fromReserva(Reserva reserva) {
 		return new ReservaFullCalendarDTO(reserva.getId(), reserva.getAsunto(), 
 				                          reserva.getComienzo(), reserva.getFin(),
 				                          reserva.getEspacio().getNombreEspacio(),
-				                          reserva.getEspacio().getId(), reserva.getReservaColor());
+				                          reserva.getEspacio().getId(), reserva.getReservaColor(),
+				                          reserva.getReglasRecurrencia());
 	}
 }
