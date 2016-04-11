@@ -56,7 +56,7 @@ public class Reserva {
 	
 
 	public Reserva(){
-		
+		this.estadoReserva = EstadoReserva.CONFIRMADA;		
 	}
 	
 	public Reserva(String a, DateTime ini, DateTime fin, String user_name, Espacio esp){

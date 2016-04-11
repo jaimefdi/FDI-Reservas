@@ -99,6 +99,14 @@ public class ReservaService {
 		return edificio_repository.findByFacultad_Id(id_facultad);
 	}
 
+	public void cambiaEstadoReserva(Long id, EstadoReserva estado) {
+		Reserva reserva= reserva_repository.findOne(id);
+		
+		reserva.setEstadoReserva(estado);
+		
+		reserva_repository.save(reserva);
+	}
+	
 	public Reserva editaReserva(ReservaFullCalendarDTO reservaActualizada) {
 		DateTime start = reservaActualizada.getStart().withTime(0, 0, 0, 0);
 		DateTime end = start.plusDays(1);

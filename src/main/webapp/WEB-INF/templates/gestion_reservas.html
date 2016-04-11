@@ -30,17 +30,19 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
+                        	<th>Usuario</th>
                             <th>Asunto</th>
                             <th>Espacio</th>
                             <th>Desde</th>
                             <th>Hasta</th>
                             <th>Estado</th>
-                            <th>Operación</th>
+                            <th colspan="2">Operación</th>
                         </tr>
                     </thead>
 					<tbody>
 						<tr th:each="r : ${currentResults}"
-							th:attr="id=${r.id},data-id=${r.id},data-start=${#joda.isoDateTime(r.comienzo)},data-end=${#joda.isoDateTime(r.fin)},data-espacio=${r.espacio.id}">
+							th:attr="id=${r.id},data-id=${r.id},data-start=${#joda.isoDateTime(r.comienzo)},data-end=${#joda.isoDateTime(r.fin)},data-espacio=${r.espacio.id}, data-estado=${r.estadoReserva}, data-username=${r.username}">
+							<td th:text="${r.username}"> Usuario </td>
 							<td th:text="${r.asunto}">Recuperacion de clase</td>
 							<td th:text="${r.espacio.nombre_espacio}">Aula 9</td>
 							<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
@@ -51,12 +53,14 @@
 								class="label label-warning">Pendiente</span></td>
 							<td th:if="${r.estadoReserva.toString() == 'Denegada'}" class=" text-center"><span
 								class="label label-danger">Denegada</span></td>
-							<td class=" text-center"> 
-								<div>
-								<button th:if="${r.estadoReserva.toString() != 'Confirmada'}"
-								class="label label-success" style="display:inline">Confirmar</button>
-								<button th:if="${r.estadoReserva.toString() != 'Denegada'}"
-								class="label label-danger" style="display:inline">Denegar</button></div></td>	
+							<td colspan="2"> 
+								<span th:if="${r.estadoReserva.toString() != 'Confirmada'}"
+								class="label label-success cambiaPermiso" style="display:inline-block">
+								<a th:href="@{{index}/aceptar/{id}(index=${currentIndex},id=${r.id})}">Confirmar</a></span>
+								<span th:if="${r.estadoReserva.toString() != 'Denegada'}"
+								class="label label-danger cambiaPermiso" style="display:inline-block">
+								<a th:href="@{{index}/denegar/{id}(index=${currentIndex},id=${r.id})}">Denegar</a></span>
+							</td>	
 						</tr>
 					</tbody>                    
                 </table>
@@ -117,6 +121,14 @@
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Reserva}" method="put">             
 				
+				 <div class="form-group">
+                     <label for="ejemplo_2" class="col-md-2 control-label">Usuario:</label>
+                      <div class="col-md-10">
+                         <input id="idUsuario" name="username" type="text" class="form-control" placeholder="Introduce un usuario"/>
+                      </div>
+                      
+                 </div>
+                 
 				 <!-- Asunto --> 
                  <div class="form-group">
                      <label for="ejemplo_2" class="col-md-2 control-label">Asunto:</label>
@@ -169,19 +181,11 @@
                           <p id="nombre_espacio" class="form-control-static" >yyyy</p>                     
                      </div>
                    </div>
-                 
- 
 
                  <div class="row">
                      <div class="col-xs-4 col-md-4">
                       <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
                      </div>
-                     <div th:unless="${estadoReserva == T(es.fdi.reservas.reserva.business.entity.EstadoReserva).DENEGADA}" class="col-xs-4 col-md-4 text-center">
-                      <button id="btn-denegar" type="button" class="btn-rec blue">DENEGAR</button>
-                     </div>
-                     <div th:unless="${estadoReserva == T(es.fdi.reservas.reserva.business.entity.EstadoReserva).CONFIRMADA}" class="col-xs-4 col-md-4 text-center">
-					 <button id="btn-confirmar" type="button" class="btn-rec blue">CONFIRMAR</button>
-					 </div>
                      <div class="col-xs-4 col-md-4 text-right">
                       <button id="btn-guardar" type="button" class="btn-rec blue">GUARDAR </button>
                      </div>
@@ -211,13 +215,17 @@
 	 		reserva.start = $(this).attr("data-start");
 	 		reserva.end = $(this).attr("data-end");
 	 		reserva.idEspacio = $(this).attr("data-espacio");
-	 		reserva.title = $(this).find("td").eq(0).html();
-
+	 		reserva.estadoReserva= $(this).attr("data-estado");
+	 		reserva.title = $(this).find("td").eq(1).html();
+	 		reserva.username = $(this).find("td").eq(0).html();
+	 		
 	 		$('#modalEditarReserva #idAsunto').attr("value",reserva.title);
+	 		$('#modalEditarReserva #idUsuario').attr("value",reserva.username);
 	 		$('#modalEditarReserva #datetimepicker1').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
 	 		$('#modalEditarReserva #datetimepicker2').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
 	 		
 	 		$('#modalEditarReserva #nombre_espacio').text(espacio);
+	 		$('#modalEditarReserva .sel-estado option:eq(1)').attr('selected', 'selected');
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
