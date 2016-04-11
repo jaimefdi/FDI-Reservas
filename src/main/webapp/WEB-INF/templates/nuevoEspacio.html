@@ -12,7 +12,7 @@
         th:href="@{/webjars/font-awesome/4.5.0/css/font-awesome.min.css}"/>
     <link rel="stylesheet" type="text/css" media="all" href="../../css/estilo.css" th:href="@{/css/estilo.css}"/>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
-	<title>UCM RESERVAS</title>
+	<title>UCM RESERVAS - Añadir espacio</title>
      <!-- JS -->
     <script 
         src="//code.jquery.com/jquery-2.1.4.min.js"
@@ -45,7 +45,7 @@
                          <h2 class=" page-header text-center">Añadir espacio</h2>
                          <form role="form" action="#" th:action="@{/nuevoEspacio}" th:object="${Espacio}" method="post">
                          	<div class="form-group">
-                                <label for="ejemplo_email_1">Nombre facultad</label>
+                                <label for="ejemplo_email_1">Nombre espacio</label>
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-building"></i></span>
                                   <input name="nombre_espacio" type="text" class="form-control" placeholder="Nombre del espacio"/>
@@ -61,7 +61,7 @@
                             
                             <div class="form-group">
                                 <label for="ejemplo_email_1">Microfono</label>
-                                    <select id="microfono" name="microfono" title="¿Tiene microfono?" onchange="presenci();" onclick="presenci();">
+                                    <select id="microfono" name="microfono" title="¿Tiene microfono?">
 							          
 							          <option value="true">Sí</option>
 							          <option value="false">No</option>
@@ -70,7 +70,7 @@
                             
                             <div class="form-group">
                                 <label for="ejemplo_email_1">Proyector</label>
-                                    <select id="proyector" name="proyector" title="¿Tiene proyector?" onchange="presenci();" onclick="presenci();">
+                                    <select id="proyector" name="proyector" title="¿Tiene proyector?">
 							          
 							          <option value="true">Sí</option>
 							          <option value="false">No</option>
@@ -78,14 +78,22 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="ejemplo_email_1">Proyector</label>
-                                    <select id="tipoEspacio" name="tipoEspacio" title="Tipo de espacio" onchange="presenci();" onclick="presenci();">
+                                <label for="ejemplo_email_1">Tipo espacio</label>
+                                    <select id="tipoEspacio" name="tipoEspacio" title="Tipo de espacio">
 							          
 							          <option value="Aula">Aula</option>
 							          <option value="Sala">Sala</option>
 							          <option value="Laboratorio">Laboratorio</option>
 							        </select>
                             </div>
+                            
+                            <div class="form-group">
+                                <label for="ejemplo_email_1">Edificio</label>
+	                            <select id="idEdif" name="idEdificio" title="Edificio">
+					          
+						          <option th:each="f : ${edificios}" th:value="${f.id}" th:text="${f.nombre_edificio}"/> 
+						        </select>
+					        </div>
                             <div class="text-center">
                                  <button type="submit" class="btn btn-default">Crear</button>
                             </div>

@@ -74,8 +74,8 @@
                         	
                             <td th:text="${r.username}"></td>
                             <td th:text="${r.email}"></td>
-                            <td th:if="${r.enabled.toString() == '0'}">No</td>
-                            <td th:if="${r.enabled.toString() == '1'}">Si</td>
+                            <td th:if="${!r.enabled}">No</td>
+                            <td th:if="${r.enabled}">Si</td>
                             
                         </tr>     
                     </tbody>
@@ -117,8 +117,12 @@
                  <div class="form-group">
                      <label for="ejemplo_3" class="col-md-3 control-label">Activado:</label>
                      <div class="col-md-9">
-		                
-		               <input id="idEnabled" name="enabled" type="text" class="form-control" placeholder="Activar(1) o desactivar(0)"/>
+		                <select id="idEnabled" name="enabled" title="Activado">
+							          
+				          <option value="true">Sí</option>
+				          <option value="false">No</option>
+				        </select>
+		               
 		               			            
                      </div>
                  </div>
@@ -168,9 +172,9 @@
 	 	
 	 	$("#btn-guardar").click(function(){
 	 		user.username = $("#modalEditarUsuario #idNombre").val();
-	 		alert('El nombre de usuario es ' + user.username);
+	 		
 	 		user.email = $('#modalEditarUsuario #idEmail').val();
-	 		//user.enabled = $('#modalEditarUsuario #idEnabled').val();
+	 		user.enabled = $('#modalEditarUsuario #idEnabled').val();
 	 	
 
 	 		$.ajax({
@@ -184,7 +188,7 @@
 	 				$('#modalEditarUsuario').modal('hide');
 	 				$("#"+user.id +" td:nth-child(1)").text(user.username);
 	 				$("#"+user.id +" td:nth-child(2)").text(user.email);
-	 				//$("#"+user.id +" td:nth-child(3)").text(user.enabled);
+	 				$("#"+user.id +" td:nth-child(3)").text(user.enabled);
 	 			},    
 	 			error : function(xhr, status) {
 	     			alert('Disculpe, existió un problema');

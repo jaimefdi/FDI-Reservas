@@ -75,7 +75,8 @@ public class UserRestController {
 	}
 	
 	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.PUT)
-	public void editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioTipoDTO espacioActualizado) {
+	public String editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioTipoDTO espacioActualizado) {
 		reserva_service.editarEspacio(espacioActualizado);
+		return "redirect:/administrar/espacios";
 	}
 }

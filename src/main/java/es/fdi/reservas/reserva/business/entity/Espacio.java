@@ -48,13 +48,14 @@ public class Espacio {
 	
 	
 	public Espacio(String nombre_espacio, int capacidad, boolean microfono, boolean proyector,
-			TipoEspacio tipoEspacio) {
+			TipoEspacio tipoEspacio, Edificio edificio) {
 		super();
 		this.nombre_espacio = nombre_espacio;
 		this.capacidad = capacidad;
 		this.microfono = microfono;
 		this.proyector = proyector;
 		this.tipoEspacio = tipoEspacio;
+		this.edificio = edificio;
 	}
 
 

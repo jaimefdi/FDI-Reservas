@@ -2,6 +2,8 @@ package es.fdi.reservas.reserva.business.boundary;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -131,6 +133,7 @@ public class ReservaService {
 		Edificio e = edificio_repository.findOne(edificio.getId());
 		e.setNombre_edificio(edificio.getNombre_edificio());
 		e.setFacultad(facultad_repository.findOne(edificio.getIdFacultad()));
+		
 		return edificio_repository.save(e);
 	}
 	
@@ -158,6 +161,7 @@ public class ReservaService {
 		e.setMicrofono(espacio.isMicrofono());
 		e.setProyector(espacio.isProyector());
 		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
+		e.setEdificio(edificio_repository.findOne(espacio.getIdEdificio()));
 		return espacio_repository.save(e);
 	}
 
@@ -169,12 +173,17 @@ public class ReservaService {
 		Facultad newFacultad = new Facultad(facultad.getNombreFacultad(), facultad.getDir());
 		newFacultad = facultad_repository.save(newFacultad);
 		
+		if (newFacultad != null){
+			System.out.println("Facultad añadida correctamente");
+			
+		}
+		
 		return newFacultad;
 	}
 	
-	public Espacio addNewEspacio(Espacio espacio){
+	public Espacio addNewEspacio(EspacioTipoDTO espacio){
 		Espacio newEspacio = new Espacio(espacio.getNombre_espacio(), espacio.getCapacidad(), espacio.isMicrofono(), espacio.isProyector(), 
-				TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio().getTipo()));
+				TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()), edificio_repository.findOne(espacio.getIdEdificio()));
 		newEspacio = espacio_repository.save(newEspacio);
 		
 		return newEspacio;
@@ -184,9 +193,9 @@ public class ReservaService {
 		return espacio_repository.tiposDeEspacios(idEdificio);
 	}
 
-	public Edificio addNewEdificio(Edificio edificio) {
+	public Edificio addNewEdificio(EdificioDTO edificio/*, Long idFacul*/) {
 		
-		Edificio newEdificio = new Edificio(edificio.getNombre_edificio());
+		Edificio newEdificio = new Edificio(edificio.getNombre_edificio(), facultad_repository.findOne(edificio.getIdFacultad()));
 		newEdificio = edificio_repository.save(newEdificio);
 		
 		return newEdificio;

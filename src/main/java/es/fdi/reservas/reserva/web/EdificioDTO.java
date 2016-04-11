@@ -1,13 +1,14 @@
 package es.fdi.reservas.reserva.web;
 
 import es.fdi.reservas.reserva.business.entity.Edificio;
-import es.fdi.reservas.reserva.business.entity.Espacio;
 
 public class EdificioDTO {
 
 	private Long id;
 	private String nombre_edificio;
 	private Long idFacultad;
+	
+	public EdificioDTO(){}
 	
 	public EdificioDTO(Long id, String spacename, Long idFacultad){
 		this.id = id;

@@ -18,12 +18,6 @@ public class UserDTO {
 	
 	private String email;
 	
-	private boolean accountExpired;
-
-	private boolean accountLocked;
-	
-	private boolean credentialsExpired;
-	
 	private boolean enabled;
 	
 	
@@ -77,22 +71,6 @@ public class UserDTO {
 	public void removeRole(UserRole role) {
 		this.roles.remove(role);
 	}
-
-		
-	public boolean isAccountNonExpired() {
-		return ! accountExpired;
-	}
-
-	
-	public boolean isAccountNonLocked() {
-		return ! accountLocked;
-	}
-
-	
-	public boolean isCredentialsNonExpired() {
-		return ! credentialsExpired;
-	}
-
 	
 	public boolean isEnabled() {
 		return enabled;

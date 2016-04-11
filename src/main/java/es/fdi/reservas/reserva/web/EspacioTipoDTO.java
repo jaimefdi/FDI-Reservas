@@ -10,14 +10,18 @@ public class EspacioTipoDTO {
 	private boolean microfono;
 	private boolean proyector;
 	private String tipoEspacio;
+	private Long idEdificio;
 	
-	public EspacioTipoDTO(Long id, String spacename, int capacidad, boolean micro, boolean proyec, String tipoEspacio){
+	public EspacioTipoDTO(){}
+	
+	public EspacioTipoDTO(Long id, String spacename, int capacidad, boolean micro, boolean proyec, String tipoEspacio, Long idEdificio){
 		this.id = id;
 		this.nombre_espacio = spacename;
 		this.capacidad = capacidad;
 		this.microfono = micro;
 		this.proyector = proyec;
 		this.tipoEspacio = tipoEspacio;
+		this.idEdificio = idEdificio;
 	}
 
 	public Long getId() {
@@ -67,8 +71,16 @@ public class EspacioTipoDTO {
 	public void setTipoEspacio(String tipoEspacio) {
 		this.tipoEspacio = tipoEspacio;
 	}
+	
+	public Long getIdEdificio() {
+		return idEdificio;
+	}
+
+	public void setIdEdificio(Long idEdificio) {
+		this.idEdificio = idEdificio;
+	}
 
 	public static EspacioTipoDTO fromEspacioTipoDTO(Espacio e){
-		return new EspacioTipoDTO(e.getId(), e.getNombre_espacio(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo());
+		return new EspacioTipoDTO(e.getId(), e.getNombre_espacio(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo(), e.getEdificio().getId());
 	}
 }

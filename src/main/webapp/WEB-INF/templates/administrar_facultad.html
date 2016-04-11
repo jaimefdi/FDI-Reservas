@@ -50,7 +50,7 @@
                       </tr>     
                   </tbody>
               </table>
-              <a th:href="@{'/administrar/administrar_facultad/nuevaFacultad'}"><input type="button" class="btn btn-default" value="Añadir facultad"/></a> 
+              <a th:href="@{'/nuevaFacultad'}"><input type="button" class="btn btn-default" value="Añadir facultad"/></a> 
           	</div> 
         <!-- /.table-responsive-->
     
@@ -110,17 +110,17 @@
 	 		$('#modalEditarFacultad').modal('show');
 	 		
 	 		facultad.id =  $(this).attr("data-id");
-	 		facultad.name = $(this).attr("name");
+	 		facultad.nombreFacultad = $(this).attr("name");
 			facultad.dir = $(this).attr("dir");
 			
-	 		$('#modalEditarFacultad #idFacultad').text(facultad.id);
-	 		$('#modalEditarFacultad #idNombre').attr("value",facultad.name);
+	 		//$('#modalEditarFacultad #idFacultad').text(facultad.id);
+	 		$('#modalEditarFacultad #idNombre').attr("value",facultad.nombreFacultad);
 	 		$('#modalEditarFacultad #idDir').attr("value",facultad.dir);
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
-	 		facultad.name = $("#modalEditarFacultad #idNombre").val();
-	 		facultad.facultad = $(this).attr("idFacultad");
+	 		facultad.nombreFacultad = $("#modalEditarFacultad #idNombre").val();
+	 		facultad.dir = $("#modalEditarFacultad #idDir").val();
 	 	
 
 	 		$.ajax({
@@ -133,7 +133,7 @@
 	 				alert("Facultad actualizada");
 	 				$('#modalEditarFacultad').modal('hide');
 	 				
-	 				$("#"+facultad.id +" td:nth-child(1)").text(facultad.name);
+	 				$("#"+facultad.id +" td:nth-child(1)").text(facultad.nombreFacultad);
 	 				$("#"+facultad.id +" td:nth-child(2)").text(facultad.dir);
 	 			},    
 	 			error : function(xhr, status) {

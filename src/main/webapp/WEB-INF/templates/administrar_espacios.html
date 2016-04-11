@@ -37,27 +37,30 @@
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
-                      	<th>Identificador</th>
                           <th>Nombre</th>
                           <th>Capacidad</th>
                           <th>Micrófono</th>
                           <th>Proyector</th>
                           <th>Tipo de espacio</th>
+                          <th>Edificio</th>
                       </tr>
                   </thead>
                   <tbody>
                       <tr th:each="r : ${espacios}"
-                      	th:attr="data-id=${r.id},name=${r.nombre_espacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo}">
-                      	<td th:text="${r.id}"></td>
+                      	th:attr="data-id=${r.id},name=${r.nombre_espacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo}, edificio = ${r.edificio.nombre_edificio}">
+                      	
                         <td th:text="${r.nombre_espacio}"></td>
                         <td th:text="${r.capacidad}"></td>
-                        <td th:text="${r.microfono}"></td>
-                        <td th:text="${r.proyector}"></td>
-                        <td th:text="${r.tipoEspacio.tipo}"></td>  
+                        <td th:if="${!r.microfono}">No</td>
+                        <td th:if="${r.microfono}">Si</td>
+                        <td th:if="${!r.proyector}">No</td>
+                        <td th:if="${r.proyector}">Si</td>
+                        <td th:text="${r.tipoEspacio.tipo}"></td> 
+                        <td th:text="${r.edificio.nombre_edificio}"></td> 
                       </tr>     
                   </tbody>
               </table>
-              <a th:href="@{'/administrar/administrar_facultad/nuevoEspacio'}"><input type="button" class="btn btn-default" value="Añadir espacio"/></a> 
+              <a th:href="@{'/nuevoEspacio'}"><input type="button" class="btn btn-default" value="Añadir espacio"/></a> 
           	</div> 
         <!-- /.table-responsive-->
     
@@ -73,13 +76,6 @@
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Espacio}" method="put">             
 				
-				<!-- Identificador -->
-				<div class="form-group">
-                     <label for="ejemplo_2" class="col-md-2 control-label">Identificador:</label>
-                      <div class="col-md-10">
-                         <label id="idEspacio" class="form-control"></label>
-                      </div>
-                 </div>
 				 <!-- Nombre de edificio --> 
                  <div class="form-group">
                      <label for="ejemplo_2" class="col-md-2 control-label">Nombre:</label>
@@ -101,8 +97,12 @@
                  <div class="form-group">
                      <label for="ejemplo_3" class="col-md-3 control-label">Microfono:</label>
                      <div class="col-md-9">
-		               <input id="idMicro" name="micro" type="text" class="form-control" placeholder="¿Tiene microfono?"/>
 		               
+		               <select id = "idMicro" title="¿Tiene microfono">
+                     		<option value="true">Si</option>
+				          	<option value="false">No</option>
+				          	
+                     	</select>
                      </div>
                  </div>
                  
@@ -110,8 +110,12 @@
                  <div class="form-group">
                      <label for="ejemplo_3" class="col-md-3 control-label">Proyector:</label>
                      <div class="col-md-9">
-		               <input id="idProy" name="proy" type="text" class="form-control" placeholder="¿Tiene proyector?"/>
-		               
+                     	<select id = "idProy" title="¿Tiene proyector?">
+                     		<option value="true">Si</option>
+				          	<option value="false">No</option>
+				          	
+                     	</select>
+		               		               
                      </div>
                  </div>
                  
@@ -119,7 +123,25 @@
                  <div class="form-group">
                      <label for="ejemplo_3" class="col-md-3 control-label">Tipo:</label>
                      <div class="col-md-9">
-		               <input id="idTipo" name="tipo" type="text" class="form-control" placeholder="Tipo de espacio"/>
+                     	<select id = "idTipo" title="Tipo de espacio">
+                     		<option value="Sala">Sala</option>
+				          	<option value="Aula">Aula</option>
+				          	<option value="Laboratorio">Laboratorio</option>
+                     	</select>
+		               
+		               
+                     </div>
+                 </div>
+                 
+                 <div class="form-group">
+                     <label for="ejemplo_3" class="col-md-3 control-label">Edificio:</label>
+                     <div class="col-md-9">
+                     
+                     	<select id="idEdif" name="facul" title="Facultad">
+				          
+				          <option th:each="f : ${edificios}" th:value="${f.id}" th:text="${f.nombre_edificio}"/> 
+				        </select>
+		               
 		               
                      </div>
                  </div>
@@ -152,30 +174,31 @@
 	 		$('#modalEditarEspacio').modal('show');
 	 		
 	 		espacio.id =  $(this).attr("data-id");
-	 		espacio.name = $(this).attr("name");
+	 		espacio.nombre_espacio = $(this).attr("name");
 	 		espacio.capacidad = $(this).attr("capacidad");
-	 		espacio.micro = $(this).attr("micro");
-	 		espacio.proye = $(this).attr("proye");
-	 		espacio.tipo = $(this).attr("tipo");
+	 		espacio.microfono = $(this).attr("micro");
+	 		espacio.proyector = $(this).attr("proye");
+	 		espacio.tipoEspacio = $(this).attr("tipo");
+	 		espacio.idEdificio = $(this).attr("edificio");
 
-	 		$('#modalEditarEspacio #idEspacio').text(espacio.id);
-	 		$('#modalEditarEspacio #idNombre').attr("value",espacio.name);
+	 		//$('#modalEditarEspacio #idEspacio').text(espacio.id);
+	 		$('#modalEditarEspacio #idNombre').attr("value",espacio.nombre_espacio);
 	 		$('#modalEditarEspacio #idCapa').attr("value",espacio.capacidad);
-	 		$('#modalEditarEspacio #idMicro').attr("value",espacio.micro);
-	 		$('#modalEditarEspacio #idProy').attr("value",espacio.proye);
-	 		$('#modalEditarEspacio #idTipo').attr("value",espacio.tipo);
+	 		$('#modalEditarEspacio #idMicro').attr("value",espacio.microfono);
+	 		$('#modalEditarEspacio #idProy').attr("value",espacio.proyector);
+	 		$('#modalEditarEspacio #idTipo').attr("value",espacio.tipoEspacio);
+	 		$('#modalEditarEspacio #idEdif').attr("value", espacio.idEdificio);
 	 		
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
-	 		espacio.name = $("#modalEditarEspacio #idNombre").val();
-	 		espacio.capacidad = $(this).attr("capacidad");
-	 		espacio.micro = $(this).attr("micro");
-	 		espacio.proye = $(this).attr("proye");
-	 		espacio.tipo = $(this).attr("tipo");
+	 		espacio.nombre_espacio = $("#modalEditarEspacio #idNombre").val();
+	 		espacio.capacidad = $('#modalEditarEspacio #idCapa').val();
+	 		espacio.microfono = $('#modalEditarEspacio #idMicro').val();
+	 		espacio.proyector = $('#modalEditarEspacio #idProy').val();
+	 		espacio.tipoEspacio = $('#modalEditarEspacio #idTipo').val();
+	 		espacio.idEdificio = $('#modalEditarEspacio #idEdif').val();
 	 		
-	 	
-
 	 		$.ajax({
 	 			url: baseURL + "espacio/" + espacio.id,
 	 			type: 'PUT',
@@ -185,12 +208,13 @@
 	 			success : function(datos) {   
 	 				alert("Espacio actualizado");
 	 				$('#modalEditarEspacio').modal('hide');
-	 				$("#"+espacio.id +" td:nth-child(1)").text(espacio.id);
-	 				$("#"+espacio.id +" td:nth-child(2)").text(espacio.name);
-	 				$("#"+espacio.id +" td:nth-child(3)").text(espacio.capacidad);
-	 				$("#"+espacio.id +" td:nth-child(3)").text(espacio.micro);
-	 				$("#"+espacio.id +" td:nth-child(3)").text(espacio.proye);
-	 				$("#"+espacio.id +" td:nth-child(3)").text(espacio.tipo);
+	 				//$("#"+espacio.id +" td:nth-child(1)").text(espacio.id);
+	 				$("#"+espacio.id +" td:nth-child(1)").text(espacio.nombre_espacio);
+	 				$("#"+espacio.id +" td:nth-child(2)").text(espacio.capacidad);
+	 				$("#"+espacio.id +" td:nth-child(3)").text(espacio.microfono);
+	 				$("#"+espacio.id +" td:nth-child(4)").text(espacio.proyector);
+	 				$("#"+espacio.id +" td:nth-child(5)").text(espacio.tipoEspacio);
+	 				$("#"+espacio.id +" td:nth-child(6)").text(espacio.idEdificio);
 	 			},    
 	 			error : function(xhr, status) {
 	     			alert('Disculpe, existió un problema');

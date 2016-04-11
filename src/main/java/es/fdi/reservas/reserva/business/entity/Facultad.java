@@ -44,6 +44,7 @@ public class Facultad {
 		
 		this.nombreFacultad = nombreFacultad;
 		this.dir = dir;
+		this.deleted = false;
 	}
 
 

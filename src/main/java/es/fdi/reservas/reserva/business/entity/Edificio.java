@@ -35,8 +35,9 @@ public class Edificio {
 		
 	}
 	
-	public Edificio(String name){
+	public Edificio(String name, Facultad facul){
 		nombre_edificio = name;
+		this.facultad = facul;
 	}
 
 	public Long getId() {
