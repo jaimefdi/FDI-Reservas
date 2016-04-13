@@ -156,12 +156,12 @@ public class ReservaController {
 	
 	@PreAuthorize("hasRole('ROLE_SECRE')")
 	@RequestMapping(value="/gestion_reservas/page/{page}/aceptar/{id}", method=RequestMethod.GET)
-    public String confirma_reservas(@PathVariable Long page, @PathVariable Long id, Model model) {
+    public String confirma_reservas(@PathVariable Integer page, @PathVariable Long id, Model model) {
 		User u = user_service.getCurrentUser();
 		
 		reserva_service.cambiaEstadoReserva(id,EstadoReserva.CONFIRMADA);
 		
-		PageRequest pageRequest = new PageRequest(0, 5);
+		PageRequest pageRequest = new PageRequest(page-1, 5);
         Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest);
         
         model.addAttribute("currentResults", currentResults);
@@ -181,12 +181,12 @@ public class ReservaController {
 	
 	@PreAuthorize("hasRole('ROLE_SECRE')")
 	@RequestMapping(value="/gestion_reservas/page/{page}/denegar/{id}", method=RequestMethod.GET)
-    public String deniega_reservas(@PathVariable Long page, @PathVariable Long id, Model model) {
+    public String deniega_reservas(@PathVariable Integer page, @PathVariable Long id, Model model) {
 		User u = user_service.getCurrentUser();
 		
 		reserva_service.cambiaEstadoReserva(id,EstadoReserva.DENEGADA);
 		
-		PageRequest pageRequest = new PageRequest(0, 5);
+		PageRequest pageRequest = new PageRequest(page-1, 5);
         Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest);
         
         model.addAttribute("currentResults", currentResults);

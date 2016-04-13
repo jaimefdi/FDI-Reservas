@@ -39,6 +39,7 @@
                             <th colspan="2">Operación</th>
                         </tr>
                     </thead>
+                   <!-- Añadir formulario para busqueda por usuario(correcta) y Espacio -->
 					<tbody>
 						<tr th:each="r : ${currentResults}"
 							th:attr="id=${r.id},data-id=${r.id},data-start=${#joda.isoDateTime(r.comienzo)},data-end=${#joda.isoDateTime(r.fin)},data-espacio=${r.espacio.id}, data-estado=${r.estadoReserva}, data-username=${r.username}">
@@ -183,10 +184,10 @@
                    </div>
 
                  <div class="row">
-                     <div class="col-xs-4 col-md-4">
+                     <div class="col-xs-6 col-md-6">
                       <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
                      </div>
-                     <div class="col-xs-4 col-md-4 text-right">
+                     <div class="col-xs-6 col-md-6 text-right">
                       <button id="btn-guardar" type="button" class="btn-rec blue">GUARDAR </button>
                      </div>
                  </div>                
@@ -210,7 +211,7 @@
 	 	$('tr').click(function(){
 	 		$('#modalEditarReserva').modal('show');
 	 		
-	 		var espacio = $(this).find("td").eq(1).html();
+	 		var espacio = $(this).find("td").eq(2).html();
 	 		reserva.id =  $(this).attr("data-id");
 	 		reserva.start = $(this).attr("data-start");
 	 		reserva.end = $(this).attr("data-end");
@@ -270,8 +271,79 @@
 	 	});
 	 
  });
- 
- 
+ /*
+ $("#idUsuario").autocomplete({
+		source:function(request, response){
+				var tag = request.term;
+				
+				$.ajax({
+					url: '/reservas/facultad/tag/' + tag,
+					type: 'GET',
+					contentType: 'application/json',
+					success : function(datos) {
+										
+						response($.map(datos,function(item){
+							
+								var obj = new Object();
+								obj.label = item.id; 
+								obj.value = item.nombreFacultad;
+								obj.dir = item.dir;
+								return obj;
+			
+						}))
+						
+					},    
+				    error : function(xhr, status) {
+				        alert('Disculpe, existió un problema');
+				    }
+				});
+		},
+		select: function(event, ui){
+			
+			$.ajax({
+				url: '/reservas/facultad/' + ui.item.label,
+				type: 'GET',
+				contentType: 'application/json',
+				success : function(datos) {
+					
+					$("#selec_edificios").empty();
+					for(var i in datos){
+						var text = datos[i].nombre_edificio;
+						var value = datos[i].id;
+						$("#selec_edificios").append(new Option(text, value));	
+					}
+				    
+				},    
+			    error : function(xhr, status) {
+			        alert('Disculpe, existió un problema');
+			    }
+			});
+		},
+		minLength: 2
+
+	}).autocomplete("instance")._renderItem = function(ul,item){
+		
+			var inner_html = '<div class="col-md-2" style="padding-top:3px;">' + 
+			                  '<img class="media-object" src="http://placehold.it/50x50"/>' + 
+			                  '</div>' + 
+			                  '<div class="col-md-10">' + 
+			                  '<p>'+ item.value +'</p>' + 
+			                  '<p class="small text-muted">'+ item.dir +'</p>' + 
+			                  '</div>';
+	            return $("<li></li>")
+	                    .data("item.autocomplete", item)
+	                    .append(inner_html)
+	                    .appendTo(ul);
+		
+	};
+		
+		$("#selec_edificios").change(function(){
+			var id_edificio = $("#selec_edificios").val();
+			var link = 'edificio/' + id_edificio + '/espacios';
+			$("#edificio_link").attr("href",link);
+			
+		});
+ */
  </script>
  
  </div>
