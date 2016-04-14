@@ -125,8 +125,8 @@ public class ReservaService {
 	}
 
 	public void eliminarEdificio(long idEdificio) {
-		edificio_repository.delete(idEdificio);
-		
+		//edificio_repository.delete(idEdificio);
+		edificio_repository.softDelete(Long.toString(idEdificio));
 	}
 	
 	public Edificio editarEdificio(EdificioDTO edificio){
@@ -137,8 +137,15 @@ public class ReservaService {
 		return edificio_repository.save(e);
 	}
 	
-	/*public void eliminarFacultad(long idFacultad) {
+	public void eliminarFacultad(long idFacultad) {
 		facultad_repository.softDelete(Long.toString(idFacultad));
+		
+	}
+	
+	/*public Facultad eliminarFacultad(FacultadDTO facultad) {
+		Facultad f = facultad_repository.findOne(facultad.getId());
+		f.setDeleted(true);
+		return facultad_repository.save(f);
 		
 	}*/
 	
@@ -150,8 +157,8 @@ public class ReservaService {
 	}
 	
 	public void eliminarEspacio(long idEspacio) {
-		espacio_repository.delete(idEspacio);
-		
+		//espacio_repository.delete(idEspacio);
+		espacio_repository.softDelete(Long.toString(idEspacio));
 	}
 	
 	public Espacio editarEspacio(EspacioTipoDTO espacio){
@@ -193,7 +200,7 @@ public class ReservaService {
 		return espacio_repository.tiposDeEspacios(idEdificio);
 	}
 
-	public Edificio addNewEdificio(EdificioDTO edificio/*, Long idFacul*/) {
+	public Edificio addNewEdificio(EdificioDTO edificio) {
 		
 		Edificio newEdificio = new Edificio(edificio.getNombre_edificio(), facultad_repository.findOne(edificio.getIdFacultad()));
 		newEdificio = edificio_repository.save(newEdificio);

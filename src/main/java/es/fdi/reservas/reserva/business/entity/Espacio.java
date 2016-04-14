@@ -40,12 +40,12 @@ public class Espacio {
 	@Enumerated(EnumType.ORDINAL)
 	private TipoEspacio tipoEspacio;
 
-
+	@NotNull
+	private boolean deleted;
+	
 	public Espacio(){
 		
 	}
-	
-	
 	
 	public Espacio(String nombre_espacio, int capacidad, boolean microfono, boolean proyector,
 			TipoEspacio tipoEspacio, Edificio edificio) {
@@ -56,6 +56,7 @@ public class Espacio {
 		this.proyector = proyector;
 		this.tipoEspacio = tipoEspacio;
 		this.edificio = edificio;
+		this.deleted = false;
 	}
 
 

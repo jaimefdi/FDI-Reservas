@@ -58,14 +58,14 @@ public class UserRestController {
 	 */
 	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.DELETE)
 	public void eliminarFacultad(@PathVariable("idFacultad") long idFacultad) {
-		//reserva_service.eliminarFacultad(idFacultad);
+		//reserva_service.eliminarFacultad(facultad);
+		reserva_service.eliminarFacultad(idFacultad);
 	}
 	
 	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.PUT)
 	public void editarFacultad(@PathVariable("idFacultad") long idFacultad, @RequestBody FacultadDTO facultadActualizado) {
 		reserva_service.editarFacultad(facultadActualizado);
 	}
-	
 	/*
 	 * Administracion espacios
 	 */

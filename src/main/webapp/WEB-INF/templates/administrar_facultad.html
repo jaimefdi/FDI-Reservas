@@ -113,7 +113,7 @@
 	 		facultad.nombreFacultad = $(this).attr("name");
 			facultad.dir = $(this).attr("dir");
 			
-	 		//$('#modalEditarFacultad #idFacultad').text(facultad.id);
+	 		$('#modalEditarFacultad #idFacultad').text(facultad.id);
 	 		$('#modalEditarFacultad #idNombre').attr("value",facultad.nombreFacultad);
 	 		$('#modalEditarFacultad #idDir').attr("value",facultad.dir);
 	 	});
@@ -150,9 +150,11 @@
 	 			success : function(datos) {
 	 				alert("Facultad eliminada");
 	 				$('#modalEditarFacultad').modal('hide');
+	 				
 	 				$("#"+facultad.id).remove();
 	 			},    
 	 			error : function(xhr, status) {
+	 				alert(facultad.id);
 	 				alert('Disculpe, existió un problema');
 	 			}
 	 		});
@@ -161,7 +163,8 @@
  });
  
  
- </script>			
+ </script>	
+ 		
  </div>
 </body>
 </html>

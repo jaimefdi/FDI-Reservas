@@ -34,20 +34,20 @@ INSERT INTO Facultad(FACULTAD_ID, nombreFacultad, dir, deleted) VALUES(26,'Facul
 
 INSERT INTO UserFacultades(user,FACULTAD_ID) VALUES(2,1);
 
-INSERT INTO Edificio(EDIFICIO_ID, nombre_edificio, FACULTAD_ID) VALUES(1,'FDI',1);
-INSERT INTO Edificio(EDIFICIO_ID, nombre_edificio, FACULTAD_ID) VALUES(2,'Multiusos',1);
+INSERT INTO Edificio(EDIFICIO_ID, nombre_edificio, FACULTAD_ID, deleted) VALUES(1,'FDI',1, false);
+INSERT INTO Edificio(EDIFICIO_ID, nombre_edificio, FACULTAD_ID, deleted) VALUES(2,'Multiusos',1, false);
 
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(1,'Sala de Grados',70,true,true,1,1);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(2,'Sala de Conferencias',180,true,true,1,1);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(3,'Sala de Reuniones',20,true,true,1,1);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(4,'Aula 1',80,true,true,1,0);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(5,'Aula 2',80,true,true,1,0);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(6,'Aula 3',80,true,true,1,0);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(7,'Aula 4',80,true,true,1,0);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(8,'Aula 5',80,true,true,1,0);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(9,'Lab. 1',50,true,true,1,2);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(10,'Aula 1280',80,true,true,2,0);
-INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio) VALUES(11,'Aula 1290',80,true,true,2,0);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(1,'Sala de Grados',70,true,true,1,1,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(2,'Sala de Conferencias',180,true,true,1,1,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(3,'Sala de Reuniones',20,true,true,1,1,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(4,'Aula 1',80,true,true,1,0,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(5,'Aula 2',80,true,true,1,0,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(6,'Aula 3',80,true,true,1,0,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(7,'Aula 4',80,true,true,1,0,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(8,'Aula 5',80,true,true,1,0,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(9,'Lab. 1',50,true,true,1,2,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(10,'Aula 1280',80,true,true,2,0,false);
+INSERT INTO Espacio(ESPACIO_ID, nombre_espacio, capacidad, microfono, proyector, EDIFICIO_ID, tipoEspacio, deleted) VALUES(11,'Aula 1290',80,true,true,2,0,false);
 
 INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(1,'Charla Intel','2016-03-16 12:30:00','2016-03-16 14:30:00',0,'user',1);
 INSERT INTO Reserva(RESERVA_ID, asunto, comienzo, fin, estadoReserva, username, ESPACIO_ID) VALUES(2,'Reunion TFG','2016-03-16 14:30:00','2016-03-16 16:30:00',2,'user',3);

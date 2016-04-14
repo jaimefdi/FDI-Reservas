@@ -52,6 +52,26 @@ public class Facultad {
 		this.nombreFacultad = name;
 	}
 
+	public Set<User> getUsuarios() {
+		return usuarios;
+	}
+
+
+	public void setUsuarios(Set<User> usuarios) {
+		this.usuarios = usuarios;
+	}
+
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+
 	public Long getId() {
 		return id;
 	}

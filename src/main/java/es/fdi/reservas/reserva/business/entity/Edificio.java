@@ -30,7 +30,9 @@ public class Edificio {
 	@JoinColumn(name="FACULTAD_ID")
 	private Facultad facultad;
 
-
+	@NotNull
+	private boolean deleted;
+	
 	public Edificio(){
 		
 	}
@@ -38,6 +40,7 @@ public class Edificio {
 	public Edificio(String name, Facultad facul){
 		nombre_edificio = name;
 		this.facultad = facul;
+		this.deleted = false;
 	}
 
 	public Long getId() {
