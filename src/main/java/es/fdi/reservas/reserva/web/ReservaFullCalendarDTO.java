@@ -12,6 +12,9 @@ public class ReservaFullCalendarDTO {
 	private DateTime end;
 	private String nombreEspacio;
 	private Long idEspacio;
+	private String estadoReserva;
+
+	
 
 	public ReservaFullCalendarDTO(){
 		
@@ -82,6 +85,13 @@ public class ReservaFullCalendarDTO {
 		this.idEspacio = idEspacio;
 	}
 
+	public String getEstadoReserva() {
+		return estadoReserva;
+	}
+
+	public void setEstadoReserva(String estadoReserva) {
+		this.estadoReserva = estadoReserva;
+	}
 
 	public static ReservaFullCalendarDTO fromReserva(Reserva reserva) {
 		return new ReservaFullCalendarDTO(reserva.getId(), reserva.getAsunto(), reserva.getComienzo(), reserva.getFin(), reserva.getEspacio().getNombre_espacio(), reserva.getEspacio().getId());

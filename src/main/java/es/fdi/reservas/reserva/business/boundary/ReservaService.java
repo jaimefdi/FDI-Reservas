@@ -5,6 +5,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -121,6 +122,7 @@ public class ReservaService {
 		r.setFin(reservaActualizada.getEnd());
 		r.setAsunto(reservaActualizada.getTitle());
 		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
+		r.setEstadoReserva(EstadoReserva.fromEstadoReserva(reservaActualizada.getEstadoReserva()));
 		return reserva_repository.save(r);
 	}
 
@@ -128,10 +130,22 @@ public class ReservaService {
 		reserva_repository.delete(idReserva);
 	}
 
+	public Page<Reserva> getReservasPaginadasUser(PageRequest pageRequest, String user) {
+		List<Reserva> lista = reserva_repository.findByUsername(user);
+		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
+		return pagina;
+	}
+	
+	public Page<Reserva> getReservasPaginadas(PageRequest pageRequest, Long sala) {
+		List<Reserva> lista = reserva_repository.findByEspacio_Id(sala);
+		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
+		return pagina;
+	}
+	
 	public Page<Reserva> getReservasPaginadas(PageRequest pageRequest) {
 		return reserva_repository.findAll(pageRequest);
 	}
-
+	
 	public void eliminarEdificio(long idEdificio) {
 		edificio_repository.delete(idEdificio);
 		

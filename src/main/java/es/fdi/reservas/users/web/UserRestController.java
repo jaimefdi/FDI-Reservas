@@ -1,5 +1,8 @@
 package es.fdi.reservas.users.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.*;
+import es.fdi.reservas.reserva.web.EdificioDTO;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -28,6 +32,23 @@ public class UserRestController {
 	/*
 	 * Administracion usuarios
 	 */
+	/*@RequestMapping(value="/user/{id_user}", method=RequestMethod.GET)
+	public List<UserDTO> edificiosDeUnaFacultad(@PathVariable("id_user") String id_user){
+		List<UserDTO> result = new ArrayList<>();
+		List<User> users = new ArrayList<>();
+		
+		
+		users = user_service.getUsers(id_user);
+		
+		
+		for(User u : users) {
+			result.add(UserDTO.fromUserDTO(u));
+		}
+		 
+		return result;
+			
+	}*/
+	
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.DELETE)
 	public void eliminarUsuario(@PathVariable("idUsuario") long idUser) {
 		user_service.eliminarUsuario(idUser);
@@ -37,6 +58,8 @@ public class UserRestController {
 	public void editarUsuario(@PathVariable("idUsuario") long idUsuario, @RequestBody User userActualizado) {
 		user_service.editaUsuario(userActualizado);
 	}	
+	
+	
 	
 	/*
 	 * Administracion edificios

@@ -1,5 +1,8 @@
 package es.fdi.reservas.reserva.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +41,12 @@ public class ReservaController {
 		user_service = us;
 	}
 		
-	@RequestMapping({"/","","/mis_reservas"})
+	@RequestMapping({"/","","/mis-reservas"})
     public String misReservas() {
-        return "redirect:/mis_reservas/page/1";
+        return "redirect:/mis-reservas/page/1";
     }
 	
-	@RequestMapping(value="/mis_reservas/page/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/mis-reservas/page/{pageNumber}", method=RequestMethod.GET)
     public String misReservasPaginadas(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
@@ -60,7 +63,7 @@ public class ReservaController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("user", u);
-		model.addAttribute("view", "mis_reservas");
+		model.addAttribute("view", "mis-reservas");
 		
         return "index";
     }
@@ -77,7 +80,7 @@ public class ReservaController {
 		catch(ReservaSolapadaException ex){
 			logger.error("Problemas en la reserva", ex);
 		}
-        return "redirect:/mis_reservas";
+        return "redirect:/mis-reservas";
     }
 	
 	
@@ -115,7 +118,7 @@ public class ReservaController {
 		model.addObject("user", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
 		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
-		model.addObject("view", "reservas_aula_paso2");
+		model.addObject("view", "reservas-aula-paso2");
 		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
 		
         return model;
@@ -123,16 +126,16 @@ public class ReservaController {
 	
 	
 	
-	@RequestMapping(value="/reservas_fecha", method=RequestMethod.GET)
+	@RequestMapping(value="/reservas-fecha", method=RequestMethod.GET)
     public ModelAndView reservaPorFecha() {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("view", "reservas_fecha");
+		model.addObject("view", "reservas-fecha");
         return model;
     }
 	
 	
-	@RequestMapping(value="/gestion_reservas/page/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/secre/gestion-reservas/page/{pageNumber}", method=RequestMethod.GET)
     public String gestiona_reservas(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
@@ -149,20 +152,22 @@ public class ReservaController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("user", u);
-		model.addAttribute("view", "gestion_reservas");
+		List<EstadoReserva> lista=new ArrayList<EstadoReserva>();
+		lista.add(EstadoReserva.CONFIRMADA);
+		lista.add(EstadoReserva.PENDIENTE);
+		lista.add(EstadoReserva.DENEGADA);
+		model.addAttribute("estadoReserva", lista);
+		model.addAttribute("view", "secre/gestion-reservas");
 		
         return "index";
     }
 	
-	@PreAuthorize("hasRole('ROLE_SECRE')")
-	@RequestMapping(value="/gestion_reservas/page/{page}/aceptar/{id}", method=RequestMethod.GET)
-    public String confirma_reservas(@PathVariable Integer page, @PathVariable Long id, Model model) {
+	@RequestMapping(value="/secre/gestion-reservas/page/{pageNumber}/user/{user}", method=RequestMethod.GET)
+    public String gestiona_reservas_usuario(@PathVariable String user, @PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
-		reserva_service.cambiaEstadoReserva(id,EstadoReserva.CONFIRMADA);
-		
-		PageRequest pageRequest = new PageRequest(page-1, 5);
-        Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest);
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<Reserva> currentResults = reserva_service.getReservasPaginadasUser(pageRequest, user);
         
         model.addAttribute("currentResults", currentResults);
     
@@ -174,20 +179,17 @@ public class ReservaController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("user", u);
-		model.addAttribute("view", "gestion_reservas");
+		model.addAttribute("view", "secre/gestion-reservas");
 		
-        return "redirect:/gestion_reservas/page/"+current;
+        return "index";
     }
 	
-	@PreAuthorize("hasRole('ROLE_SECRE')")
-	@RequestMapping(value="/gestion_reservas/page/{page}/denegar/{id}", method=RequestMethod.GET)
-    public String deniega_reservas(@PathVariable Integer page, @PathVariable Long id, Model model) {
+	@RequestMapping(value="/secre/gestion-reservas/page/{pageNumber}/sala/{sala}", method=RequestMethod.GET)
+    public String gestiona_reservas_usuario(@PathVariable Long sala, @PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
-		reserva_service.cambiaEstadoReserva(id,EstadoReserva.DENEGADA);
-		
-		PageRequest pageRequest = new PageRequest(page-1, 5);
-        Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest);
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest, sala);
         
         model.addAttribute("currentResults", currentResults);
     
@@ -199,9 +201,8 @@ public class ReservaController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("user", u);
-		model.addAttribute("view", "gestion_reservas");
+		model.addAttribute("view", "secre/gestion-reservas");
 		
-		return "redirect:/gestion_reservas/page/"+current;
+        return "index";
     }
-
 }

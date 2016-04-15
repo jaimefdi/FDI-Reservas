@@ -24,8 +24,8 @@
 		<intercept-url pattern="/login" access="permitAll" />
 		<intercept-url pattern="/nuevoUsuario" access="permitAll" />
 		<intercept-url pattern="/logout" access="isAuthenticated()" />
-		<intercept-url pattern="/gestion_reservas" access="hasRole('ROLE_SECRE')" />
-		<intercept-url pattern="/gestion_reservas/**" access="hasRole('ROLE_SECRE')" />
+		<intercept-url pattern="/secre/**" access="hasRole('ROLE_SECRE')" />
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 		
 		
@@ -34,7 +34,7 @@
 			 para secretaria usar las rutas /accept/** -->
 		
 		<form-login login-page="/login" username-parameter="username" password-parameter="password"
-		default-target-url="/mis_reservas" always-use-default-target="true"/>
+		default-target-url="/welcome.html" always-use-default-target="true"/>
 		<logout logout-url="/logout" logout-success-url="/"  />		
 	</http>
 

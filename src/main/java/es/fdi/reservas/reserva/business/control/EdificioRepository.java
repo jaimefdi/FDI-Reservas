@@ -10,4 +10,5 @@ import es.fdi.reservas.reserva.business.entity.Edificio;
 public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 
 	public List<Edificio> findByFacultad_Id(Long id_facul);
+	
 }

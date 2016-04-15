@@ -36,7 +36,6 @@
                             <th>Desde</th>
                             <th>Hasta</th>
                             <th>Estado</th>
-                            <th colspan="2">Operación</th>
                         </tr>
                     </thead>
                    <!-- Añadir formulario para busqueda por usuario(correcta) y Espacio -->
@@ -53,15 +52,7 @@
 							<td th:if="${r.estadoReserva.toString() == 'Pendiente'}" class=" text-center"><span
 								class="label label-warning">Pendiente</span></td>
 							<td th:if="${r.estadoReserva.toString() == 'Denegada'}" class=" text-center"><span
-								class="label label-danger">Denegada</span></td>
-							<td colspan="2"> 
-								<span th:if="${r.estadoReserva.toString() != 'Confirmada'}"
-								class="label label-success cambiaPermiso" style="display:inline-block">
-								<a th:href="@{{index}/aceptar/{id}(index=${currentIndex},id=${r.id})}">Confirmar</a></span>
-								<span th:if="${r.estadoReserva.toString() != 'Denegada'}"
-								class="label label-danger cambiaPermiso" style="display:inline-block">
-								<a th:href="@{{index}/denegar/{id}(index=${currentIndex},id=${r.id})}">Denegar</a></span>
-							</td>	
+								class="label label-danger">Denegada</span></td>	
 						</tr>
 					</tbody>                    
                 </table>
@@ -182,6 +173,18 @@
                           <p id="nombre_espacio" class="form-control-static" >yyyy</p>                     
                      </div>
                    </div>
+                   
+                   <div class="form-group">
+                      <label for="ejemplo_1" class="col-md-2 control-label">Estado de la Reserva:</label>
+                     <div class="col-md-10">
+                         <select name="estadoReserva" id="selec_estadoReserva">
+ 							<option th:each="tipo : ${estadoReserva}" 
+        							th:text="${tipo}"
+					        		th:value="${tipo}">
+					 		</option>
+					    </select>                   
+                     </div>
+                   </div>
 
                  <div class="row">
                      <div class="col-xs-6 col-md-6">
@@ -226,15 +229,19 @@
 	 		$('#modalEditarReserva #datetimepicker2').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
 	 		
 	 		$('#modalEditarReserva #nombre_espacio').text(espacio);
-	 		$('#modalEditarReserva .sel-estado option:eq(1)').attr('selected', 'selected');
+	 		$("#selec_estadoReserva option").filter(function() {
+	 		    //may want to use $.trim in here
+	 		    return $(this).text() == reserva.estadoReserva; 
+	 		}).prop('selected', true);
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
+	 		reserva.user = $("#modalEditarReserva #idUsuario").val();
 	 		reserva.title = $("#modalEditarReserva #idAsunto").val();
 	 		reserva.start =	es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker1').val());
 	 		reserva.end = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker2').val());
-	 	
-
+	 		reserva.estadoReserva = $("#modalEditarReserva #selec_estadoReserva").val();
+			console.log(reserva);
 	 		$.ajax({
 	 			url: baseURL+'reserva/' + reserva.id,
 	 			type: 'PUT',
@@ -242,11 +249,8 @@
 	 			data: JSON.stringify(reserva),
 	 			contentType: 'application/json',
 	 			success : function(datos) {   
-	 				alert("Reserva actualizada");
-	 				$('#modalEditarReserva').modal('hide');
-	 				$("#"+reserva.id +" td:nth-child(1)").text(reserva.title);
-	 				$("#"+reserva.id +" td:nth-child(3)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
-	 				$("#"+reserva.id +" td:nth-child(4)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
+	 				//alert("Reserva actualizada");
+	 				location.reload();
 	 			},    
 	 			error : function(xhr, status) {
 	     			alert('Disculpe, existió un problema');
@@ -271,13 +275,13 @@
 	 	});
 	 
  });
- /*
+ 
  $("#idUsuario").autocomplete({
 		source:function(request, response){
 				var tag = request.term;
 				
 				$.ajax({
-					url: '/reservas/facultad/tag/' + tag,
+					url: '/reservas/usuario/tag/' + tag,
 					type: 'GET',
 					contentType: 'application/json',
 					success : function(datos) {
@@ -286,8 +290,8 @@
 							
 								var obj = new Object();
 								obj.label = item.id; 
-								obj.value = item.nombreFacultad;
-								obj.dir = item.dir;
+								obj.value = item.username;
+								obj.mail = item.email;
 								return obj;
 			
 						}))
@@ -301,14 +305,14 @@
 		select: function(event, ui){
 			
 			$.ajax({
-				url: '/reservas/facultad/' + ui.item.label,
+				url: '/reservas/usuario/' + ui.item.label,
 				type: 'GET',
 				contentType: 'application/json',
 				success : function(datos) {
 					
 					$("#selec_edificios").empty();
 					for(var i in datos){
-						var text = datos[i].nombre_edificio;
+						var text = datos[i].username;
 						var value = datos[i].id;
 						$("#selec_edificios").append(new Option(text, value));	
 					}
@@ -328,7 +332,7 @@
 			                  '</div>' + 
 			                  '<div class="col-md-10">' + 
 			                  '<p>'+ item.value +'</p>' + 
-			                  '<p class="small text-muted">'+ item.dir +'</p>' + 
+			                  '<p class="small text-muted">'+ item.email +'</p>' + 
 			                  '</div>';
 	            return $("<li></li>")
 	                    .data("item.autocomplete", item)
@@ -338,12 +342,12 @@
 	};
 		
 		$("#selec_edificios").change(function(){
-			var id_edificio = $("#selec_edificios").val();
-			var link = 'edificio/' + id_edificio + '/espacios';
+			var id_usuario = $("#selec_edificios").val();
+			var link = 'edificio/' + id_usuario + '/espacios';
 			$("#edificio_link").attr("href",link);
 			
 		});
- */
+ 
  </script>
  
  </div>
