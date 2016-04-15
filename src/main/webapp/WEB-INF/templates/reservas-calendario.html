@@ -110,7 +110,22 @@
                         </div>
                    </div> 
                    
+                   <!-- Asignar a grupo -->
                    
+	   				   	<div class="form-group ">
+					         <label class="col-md-3 control-label">Asignar a Grupo:</label>
+					          <div class="col-md-9">
+	                         	   <select id="selec_grupo" class="form-control">
+	                         	   	<option value="0">Ninguno</option>
+	                         	   	<option th:each="g : ${GruposReservas}"
+	                         	   			th:text="${g.nombreGrupo}"
+	                         	   			th:value="${g.id}">
+	                         	   	</option>
+	                         	   </select>                     	                    	
+                        	  </div>
+						</div>
+					
+					
                    <!-- Repetir -->
 					<div class="col-md-11">
 	   				   	<div class="form-group ">
@@ -123,7 +138,7 @@
 					</div>
    				   	
    				   	
-   				   	<div id="repetir" class="row">
+   				   	<div id="repetir" class="row" style="background:#ddf06c;">
    				   		
 	   				   		<div class="col-md-10">
 		   				   		<div class="form-group ">
@@ -275,17 +290,7 @@
 									</div>
 								</div>
 							</div>
-							
-							
-							
-							<div class="col-md-10">
-								<div class="form-group">
-									<label class="col-md-2 control-label"> Resumen:</label>
-									<div class="col-md-10">
-										<p id="resumen" class="form-control-static">cada semana los martes</p>
-									</div>
-								</div>
-							</div>
+												
 						
    				   </div>
 					
@@ -295,12 +300,7 @@
                         <label for="ejemplo_1" class="col-md-3 control-label">Tipo:</label>
                          
                        <div class="col-md-9">
-                       	 <p class="form-control-static" th:text="*{espacio.tipoEspacio}"></p>
-                       	<!-- <input type="hidden" th:value="${espacio.tipoEspacio}"/>
-                             <select id="seleccionTipoEspacios" class="form-control">
-                              <option>Sala</option>
-                              <option>Aula</option> 
-                            </select>   -->                    
+                       	 <p class="form-control-static" th:text="*{espacio.tipoEspacio}"></p>                                     
                        </div>
                      </div>
                    </div>
@@ -311,18 +311,9 @@
                         <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
                         
                       <div class="col-md-10">
-                       	   <p class="form-control-static" th:text="*{espacio.nombreEspacio}"></p>
-                       	   
-                           <input id="esp_hidden" type="hidden" th:field="*{espacio.id}" />
-                            <!-- <select id="seleccionEspacios" class="form-control">
-						        <option th:each="s : ${allSpaces}" 
-						        		th:text="${s.nombre_espacio}" 
-						        		th:value="${s.id}"
-						        		th:selected="espacio.nombre_espacio"
-						        		name="espacio.nombre_espacio">
-						        </option>
-						   </select>   -->                  
-                       </div> 
+                       	   <p class="form-control-static" th:text="*{espacio.nombreEspacio}"></p>                      	   
+                           <input id="esp_hidden" type="hidden" th:field="*{espacio.id}" />                                    
+                      </div> 
                      </div>
                    </div>
 					
@@ -379,10 +370,6 @@
 		 	
 		 
 		 	
-		 	////////
-		 	var resumen = ["Cada","semana"];
-		 	console.log(resumen.join(" "));
-		 	
 		 	
 		 	$("#checkRepetir").change(function(){
 				if(this.checked){
@@ -406,8 +393,7 @@
 		 			
 		 			var dow = ["L","X","V"];
 		 			marcarChecks(dow);
-		 			resumen = "Cada semana los lunes, miercoles y viernes";
-		 			$("#resumen").text(resumen);
+		 			
 		 		}
 		 		else if(t == 'Todos los martes y jueves'){	 			
 		 			$("#repetirCada").addClass("hidden");
@@ -416,8 +402,7 @@
 		 			
 		 			var dow = ["M","J"];
 		 			marcarChecks(dow);
-		 			resumen = "Cada semana los martes y jueves";
-		 			$("#resumen").text(resumen);
+		 			
 		 		}
 				else if(t == 'Todos los dias laborables (de lunes a viernes)'){				
 		 			$("#repetirCada").addClass("hidden");
@@ -426,8 +411,7 @@
 		 			
 		 			var dow = ["L","M","X","J","V"];
 		 			marcarChecks(dow);
-		 			resumen = "Cada semana los dias laborables";
-		 			$("#resumen").text(resumen);
+		 			
 		 		}
 				else if(t == 'Cada dia'){
 					
@@ -439,8 +423,7 @@
 					var w = t.split(' ');
 					$("#lb_repetirCada").text(w[1] + 's');
 					
-   				    resumen = "Cada día los ...";				
-		 			$("#resumen").text(resumen);
+   				   
 		 		}
 				else if(t == 'Cada semana'){
 					
@@ -449,11 +432,7 @@
 					$("#diasSemana").removeClass("hidden");
 					var w = t.split(' ');
 					$("#lb_repetirCada").text(w[1] + 's');
-		 		
-					resumen = "Cada semana los ...";				
-		 			$("#resumen").text(resumen);
-					
-					
+		
 		 		}
 				else if(t == 'Cada mes'){
 					
@@ -463,10 +442,7 @@
 					// añadir nuevo div
 					var w = t.split(' ');
 					$("#lb_repetirCada").text(w[1] + 'es');
-					
-					resumen = "Cada mes el día ...";					
-					$("#resumen").text(resumen);
-		 		}
+	 		    }
 				else{
 					$("#repetirCadaMes").addClass("hidden");
 					$("#diasSemana").addClass("hidden");
@@ -604,16 +580,7 @@
 			        center: 'title',
 			        right: 'month,agendaWeek,agendaDay'
 			    },
-			    
-			    eventClick : function(calEvent,jsEvent, view) {
-					$('#modalEditarReserva').modal('show');
-					$('#modalEditarReserva #idAsunto').val(calEvent.title);
-					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
-					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
-
-				},
-			    defaultDate: '2016-03-12',
-			    editable: true,
+			    defaultDate: '2016-03-12',			    
 			    eventLimit: true,
 			    eventRender : function(event,element,view) {
 			    
@@ -660,7 +627,7 @@
 					array.push(letraSemana(numDia));
 					marcarChecks(array);
 					//Desmarca el evento si no se ha creado
-					$('#calendar').fullCalendar('unselect');
+					//$('#calendar').fullCalendar('unselect');
 				},				
 			    eventSources: [ 
 				        {

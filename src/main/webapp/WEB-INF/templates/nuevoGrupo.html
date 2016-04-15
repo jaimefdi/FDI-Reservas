@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Grupos</title>
+</head>
+<body>
+
+<div class="container-fluid" th:fragment="contenido">
+
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="page-header text-center">
+           Grupo de reservas
+        </h2>
+    </div>
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+        <form role="form" action="#" th:action="@{/nuevoGrupo}" th:object="${GrupoReserva}" method="POST">
+        	<div class="form-group">
+                <label>Nombre</label>
+                <div class="form-group">           
+                  <input name="nombreGrupo" type="text" class="form-control" placeholder="Nombre del grupo"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Descripcion</label>
+                <div class="form-group">           
+                  <textarea name="descripcion" class="form-control">
+                  </textarea>
+                </div>
+            </div>
+            <div class="row text-center">
+            <button type="submit" class="btn-rec blue"> CREAR </button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- /.row -->
+
+
+ <script th:inline="javascript">
+ var baseURL = /*[[@{/}]]*/ '/';
+
+ $(document).ready(function(){
+	  
+	
+	 	
+ });
+ 
+ 
+ </script>
+ 
+ 
+ 
+ </div>
+
+<!-- /.container-fluid -->
+
+</body>
+</html>

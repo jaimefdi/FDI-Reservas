@@ -15,13 +15,14 @@ public class ReservaFullCalendarDTO {
 	private Long idEspacio;
 	private String color;
 	private List<String> reglasRecurrencia;
+	private String recurrenteId;
 
 
 	public ReservaFullCalendarDTO(){ }
 	
 
 	public ReservaFullCalendarDTO(Long id, String title, DateTime start, DateTime end, String nombreEspacio,
-			                      Long idEspacio, String color, List<String> reglas) {
+			                      Long idEspacio, String color, List<String> reglas, String recurId) {
 		this.id = id;
 		this.title = title;
 		this.start = start;
@@ -30,6 +31,7 @@ public class ReservaFullCalendarDTO {
 		this.idEspacio = idEspacio;
 		this.color = color;
 		this.reglasRecurrencia = reglas;
+		this.recurrenteId = recurId;
 	}
 
 	
@@ -106,11 +108,23 @@ public class ReservaFullCalendarDTO {
 		this.reglasRecurrencia = reglasRecurrencia;
 	}
 	
+
+	public String getRecurrenteId() {
+		return recurrenteId;
+	}
+
+
+	public void setRecurrenteId(String recurrenteId) {
+		this.recurrenteId = recurrenteId;
+	}
+	
 	public static ReservaFullCalendarDTO fromReserva(Reserva reserva) {
 		return new ReservaFullCalendarDTO(reserva.getId(), reserva.getAsunto(), 
 				                          reserva.getComienzo(), reserva.getFin(),
 				                          reserva.getEspacio().getNombreEspacio(),
 				                          reserva.getEspacio().getId(), reserva.getReservaColor(),
-				                          reserva.getReglasRecurrencia());
+				                          reserva.getReglasRecurrencia(), reserva.getRecurrenteId());
 	}
+
+
 }

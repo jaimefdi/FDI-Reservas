@@ -33,6 +33,11 @@
 	</div>
 </div>
 <hr/>
+<!-- 
+<div class="col-md-10 col-md-offset-1 alert alert-danger alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <p class="text-muted"> Better check yourself, you're not looking too good.</p>
+</div> -->
 
 <div id="lista" class="row" >
 	<div  class="col-md-8 col-md-offset-2">
@@ -128,6 +133,7 @@
    <div id="calendar" class="col-md-10 col-md-offset-1"></div>
 </div>
  
+ <!-- Modal Editar Reserva -->
  <div class="modal fade" id="modalEditarReserva" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -208,6 +214,23 @@
       </div>
     </div>
  
+ <!-- Modal Reserva Recurrente -->
+ <div class="modal fade" id="modalRecurrente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Eliminar reserva</h4>
+          </div>
+          <div class="modal-body">
+          	<button id="solo_esta">Solo esta</button>
+          	<button id="toda_la_serie">Toda la serie</button>
+          </div>
+       </div>
+     </div>
+</div>
+
+
  <script th:inline="javascript">
  var baseURL = /*[[@{/}]]*/ '/';
 
@@ -279,19 +302,60 @@
 	 	});
 	 
 	 	$("#btn-eliminar").click(function(){
+	 		
+	 		if(reserva.recurrenteId != null){
+	 			$('#modalEditarReserva').modal('hide');
+	 			$("#modalRecurrente").modal('show');
+	 		}
+	 		else{
+	 			$.ajax({
+		 			url: baseURL + 'reserva/' + reserva.id,
+		 			type: 'DELETE',
+		 			headers : reqHeaders,
+		 			success : function(datos) {
+		 				alert("Reserva eliminada");
+		 				$('#modalEditarReserva').modal('hide');
+		 				$("#"+reserva.id).remove();
+		 				$("#calendar").fullCalendar('refetchEvents');
+		 			},    
+		 			error : function(xhr, status) {
+		 				alert('Disculpe, existió un problema');
+		 			}
+		 		});
+	 		}
+	 		
+	 	});
+	 	
+	 	
+	 	$('#solo_esta').click(function(){
+	 		
+	 		var w = reserva.recurrenteId.split("_");
+	 		var reservaPadre = w[0];
+	 		var exDate = "EXDATE:";
+	 		exDate += "VALUE=" + w[1]; 
+	 		reserva.id = reservaPadre;
+	 		var recurrencia = [];
+	 		recurrencia.push(exDate);
+	 		reserva.reglasRecurrencia = recurrencia;
+	 			 		
 	 		$.ajax({
-	 			url: baseURL+'reserva/' + reserva.id,
-	 			type: 'DELETE',
+	 			url: baseURL + 'editarReserRecurrente',
 	 			headers : reqHeaders,
-	 			success : function(datos) {
-	 				alert("Reserva eliminada");
-	 				$('#modalEditarReserva').modal('hide');
-	 				$("#"+reserva.id).remove();
+	 			type: 'POST',		 				 			
+	 			data: JSON.stringify(reserva),
+	 			contentType: 'application/json',
+	 			success : function(datos) {  
+	 				$("#modalRecurrente").modal('hide');	 				
+	 				$("#calendar").fullCalendar('refetchEvents');
+	 				
 	 			},    
 	 			error : function(xhr, status) {
-	 				alert('Disculpe, existió un problema');
+	 				
+	     			alert('Disculpe, existió un problema');
+	     			
 	 			}
 	 		});
+	 		
 	 	});
 	 
 	 	//fullcalendar
@@ -306,11 +370,14 @@
 			    },
 			    
 			    eventClick : function(calEvent,jsEvent, view) {
+			    	console.log(calEvent);
+			    	reserva.id = calEvent.id;
+			    	reserva.recurrenteId = calEvent.recurrenteId;
 					$('#modalEditarReserva').modal('show');
 					$('#modalEditarReserva #idAsunto').attr("value",calEvent.title);
 					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
 					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
-	
+					
 				},
 			    defaultDate: '2016-03-12',
 			    editable: true,

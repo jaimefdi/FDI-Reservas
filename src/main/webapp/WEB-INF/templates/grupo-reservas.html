@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Grupos</title>
+</head>
+<body>
+
+<div class="container-fluid" th:fragment="contenido">
+
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="page-header text-center">
+           Grupo: <small> GII-1ºA </small>
+        </h2>
+    </div>
+</div>
+<!-- /.row -->
+
+
+<!-- Calendar -->
+<div class="row">
+   <div id="calendar" class="col-md-10 col-md-offset-1"></div>
+</div>
+ 
+
+
+ <script th:inline="javascript">
+ var baseURL = /*[[@{/}]]*/ '/';
+
+ $(document).ready(function(){
+	  
+	 	var reserva = {};
+	 	var token = $("meta[name='_csrf']").attr("content");
+	 	var header = $("meta[name='_csrf_header']").attr("content");
+	 	var reqHeaders = [];
+	 	reqHeaders[header] = token;
+	 	
+	 
+	 	
+	 	
+	 	$("#btn-guardar").click(function(){
+	 		reserva.title = $("#modalEditarReserva #idAsunto").val();
+	 		reserva.start =	es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker1').val());
+	 		reserva.end = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker2').val());
+	 	
+
+	 		$.ajax({
+	 			url: baseURL+'reserva/' + reserva.id,
+	 			type: 'PUT',
+	 			headers : reqHeaders,
+	 			data: JSON.stringify(reserva),
+	 			contentType: 'application/json',
+	 			success : function(datos) {   
+	 				alert("Reserva actualizada");
+	 				$('#modalEditarReserva').modal('hide');
+	 				$("#"+reserva.id +" td:nth-child(1)").text(reserva.title);
+	 				$("#"+reserva.id +" td:nth-child(3)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
+	 				$("#"+reserva.id +" td:nth-child(4)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
+	 			},    
+	 			error : function(xhr, status) {
+	     			alert('Disculpe, existió un problema');
+	 			}
+	 		});
+	 	});
+	 
+	 	$("#btn-eliminar").click(function(){
+	 		
+	 		if(reserva.recurrenteId != null){
+	 			$('#modalEditarReserva').modal('hide');
+	 			$("#modalRecurrente").modal('show');
+	 		}
+	 		else{
+	 			$.ajax({
+		 			url: baseURL + 'reserva/' + reserva.id,
+		 			type: 'DELETE',
+		 			headers : reqHeaders,
+		 			success : function(datos) {
+		 				alert("Reserva eliminada");
+		 				$('#modalEditarReserva').modal('hide');
+		 				$("#"+reserva.id).remove();
+		 				$("#calendar").fullCalendar('refetchEvents');
+		 			},    
+		 			error : function(xhr, status) {
+		 				alert('Disculpe, existió un problema');
+		 			}
+		 		});
+	 		}
+	 		
+	 	});
+	 	
+	 	
+	 	$('#solo_esta').click(function(){
+	 		
+	 		var w = reserva.recurrenteId.split("_");
+	 		var reservaPadre = w[0];
+	 		var exDate = "EXDATE:";
+	 		exDate += "VALUE=" + w[1]; 
+	 		reserva.id = reservaPadre;
+	 		var recurrencia = [];
+	 		recurrencia.push(exDate);
+	 		reserva.reglasRecurrencia = recurrencia;
+	 			 		
+	 		$.ajax({
+	 			url: baseURL + 'editarReserRecurrente',
+	 			headers : reqHeaders,
+	 			type: 'POST',		 				 			
+	 			data: JSON.stringify(reserva),
+	 			contentType: 'application/json',
+	 			success : function(datos) {  
+	 				$("#modalRecurrente").modal('hide');	 				
+	 				$("#calendar").fullCalendar('refetchEvents');
+	 				
+	 			},    
+	 			error : function(xhr, status) {
+	 				
+	     			alert('Disculpe, existió un problema');
+	     			
+	 			}
+	 		});
+	 		
+	 	});
+	 
+	 	
+	 	var pathname = window.location.pathname;
+		var w = pathname.split("/");
+		var idGrupo = w[3]; 
+		
+	 	//fullcalendar
+	 	
+		 	$('#calendar').fullCalendar({
+				lang: 'es',
+				timezone: 'local',
+			    header: {
+			        left: 'prev,next today',
+			        center: 'title',
+			        right: 'month,agendaWeek,agendaDay'
+			    },
+			    
+			    eventClick : function(calEvent,jsEvent, view) {
+			    	console.log(calEvent);
+			    	reserva.id = calEvent.id;
+			    	reserva.recurrenteId = calEvent.recurrenteId;
+					$('#modalEditarReserva').modal('show');
+					$('#modalEditarReserva #idAsunto').attr("value",calEvent.title);
+					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
+					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
+					
+				},
+			    defaultDate: '2016-03-12',
+			    editable: true,
+			    eventLimit: true,
+			    eventRender : function(event,element,view) {
+			    
+			    	if(view.name == 'month'){
+						element.popover({
+							
+								placement : 'auto',
+								html : true,
+								trigger : 'hover',
+								animation : 'true',
+								container:'#calendar',
+								content : "<b>" + event.nombreEspacio +
+										  "</b><br/>" + event.start.format("HH:mm") + "-" + event.end.format("HH:mm") + 
+										  "<br/>" + event.title
+							});
+			    	}
+					
+				},
+				eventResize: function(event, delta, revertFunc, jsEvent) {
+	
+			        var s = "El evento ahora durará hasta el " + event.end.format("DD/MM/YYYY HH:mm") +
+			        		" ¿Esta de acuerdo?";
+			      			        
+			        if (confirm(s)) {
+			        	reserva.id = event.id;
+			        	reserva.title = event.title;
+			        	reserva.start = event.start;
+			        	reserva.end = event.end;
+			        	reserva.idEspacio = event.idEspacio;
+			        	$.ajax({
+				 			url: baseURL + 'reserva/' + reserva.id,
+				 			type: 'PUT',
+				 			headers : reqHeaders,
+				 			data: JSON.stringify(reserva),
+				 			contentType: 'application/json',
+				 			success : function(datos) {   
+				 				alert("Reserva actualizada");
+				 				
+				 			},    
+				 			error : function(xhr, status) {
+				 				revertFunc();
+				     			alert('Disculpe, existió un problema');
+				     			
+				 			}
+				 		});
+			        	
+			        }
+			        else{
+			        	 revertFunc();
+			        }
+	
+	
+			    },
+			    eventDrop: function(event, delta, revertFunc) {
+			    	var s = "El evento se va a cambiar al día " + event.start.format("DD/MM/YYYY") +
+		        		    " de " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + " ¿Esta de acuerdo?";
+			   
+			        if (confirm(s)) {
+			        	reserva.id = event.id;
+			        	reserva.title = event.title;
+			        	reserva.start = event.start;
+			        	reserva.end = event.end;
+			        	reserva.idEspacio = event.idEspacio;
+			        	$.ajax({
+				 			url: baseURL + 'reserva/' + reserva.id,
+				 			type: 'PUT',
+				 			headers : reqHeaders,
+				 			data: JSON.stringify(reserva),
+				 			contentType: 'application/json',
+				 			success : function(datos) {   
+				 				alert("Reserva actualizada");
+				 				
+				 			},    
+				 			error : function(xhr, status) {
+				 				revertFunc();
+				     			alert('Disculpe, existió un problema');
+				     			
+				 			}
+				 		});
+			        }
+			        else{
+			           revertFunc();	
+			        }
+	
+			    },
+			    loading: function (bool) {
+			        if (bool) {
+			            $("#calendar").css({"visibility": "hidden"});		            
+			        } else {
+			            $("#calendar").css({"visibility": "visible"});		            
+			        }
+			    },
+			    eventSources: [ 
+				        {
+				        	url: '/reservas/' + idGrupo + '/reservasGrupo',							   
+				            textColor: 'black'  
+				        }	        
+			    ]
+			       	
+			    
+			});
+	 		
+	 	
+	 	
+	 	
+	 	
+ });
+ 
+ 
+ </script>
+ 
+ 
+ 
+ </div>
+
+<!-- /.container-fluid -->
+
+</body>
+</html>

@@ -12,8 +12,11 @@ import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.business.entity.GrupoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
+import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
+
 import org.springframework.data.domain.Page;
 
 @Service
@@ -77,7 +80,8 @@ public class ReservaService {
 		
 		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),
 										   username, reserva.getEspacio(),reserva.getStartRecurrencia(),
-										   reserva.getEndRecurrencia(),reserva.getReservaColor());
+										   reserva.getEndRecurrencia(),reserva.getReservaColor(),
+										   reserva.getRecurrenteId());
 		
 		nuevaReserva.setReglasRecurrencia(reserva.getReglasRecurrencia());
 		
@@ -211,6 +215,31 @@ public class ReservaService {
 	public List<Reserva> getReservasEspacioDeTarde(long idEspacio) {
 		return reserva_repository.reservasEspacioDeTarde(idEspacio);
 	}
+
+	public void editarReservaRecurrente(ReservaFullCalendarDTO rf) {
+		Reserva r = reserva_repository.findOne(rf.getId());
+		List<String> s = rf.getReglasRecurrencia();
+		int i = 0;
+		while(i < s.size()){
+			String[] w = s.get(i).split(":");
+			if(r.getRegla(w[0]) != -1){
+				r.addValorRegla(w[0], w[1]);
+			}
+			else{
+				r.addReglaRecurrente(s.get(i));
+			}
+			
+			i++;
+		}
+		
+		reserva_repository.save(r);
+		
+	}
+
+	public List<Reserva> getReservasGrupo(long idGrupo) {
+		return reserva_repository.findByGrupoReservaId(idGrupo);
+	}
+
 
 
 	

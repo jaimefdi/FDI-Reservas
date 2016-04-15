@@ -80,11 +80,72 @@
             	$("#li_porfecha").addClass("active");
             	$("#demo").collapse();
             }
+            else if(pathname.indexOf("grupo") >= 0){
+            	//$("#li_porfecha").addClass("active");
+            	$("#demo1").collapse();
+            }
             else{
             	$("#li_misreservas").addClass("active");
             }
             
+		
+         $("#demo1 > li").hover(
+           function(){           	  
+        	 $(this).find(".fa-times").css("visibility","visible");
+           },
+           function(){      	  
+        	 $(this).find(".fa-times").css("visibility","hidden");
+          });
+            
+         $("#autoGrupo").autocomplete({
+        		source:function(request, response){
+        				var tag = request.term;
+        				
+        				$.ajax({
+        					url: '/reservas/grupo/tag/' + tag,
+        					type: 'GET',
+        					contentType: 'application/json',
+        					success : function(datos) {
+        										
+        						response($.map(datos,function(item){
+        							
+        								var obj = new Object();
+        								obj.label = item.id; 
+        								obj.value = item.nombreGrupo;      								
+        								return obj;
+        			
+        						}))
+        						
+        						console.log(datos);
+        						
+        						$("#demo1 > li").each(function(index,value){
+        							console.log(index);
+        							if(index > 0){
+        								$(this).remove();
+        							}
+        							
+        						});
+        					
+								
+        						for(var i in datos){
+        							$("#demo1").append('<li><a th:href="@{/grupo/'+ datos[i].id +'}">'
+        									+ datos[i].nombreGrupo 												
+        									+ '<div class="pull-right"> <i class="fa fa-times" aria-hidden="true" title="Eliminar" style="visibility:hidden;"></i>'
+        									+ '</div></a></li>');
+        						}
+        						
+        					},    
+        				    error : function(xhr, status) {
+        				        alert('Disculpe, existió un problema');
+        				    }
+        				});
+        		},     		
+        		minLength: 2
 
+        	});   
+         
+         
+         
          $(function () {
         	 var logic = function(currentDateTime) {
         			this.setOptions({
@@ -145,21 +206,15 @@
             <ul class="nav navbar-right top-nav">
                 <!-- Notificaciones  -->
                 <li class="dropdown">
-                    <a href="javascript.;" class="dropdown-toggle" data-toggle="dropdown"><span class="badge">3</span> <i class="fa fa-bell"></i> <i class="fa fa-angle-down"></i></a>
+                    <a href="javascript.;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-plus"> </i> <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu alert-dropdown">
                         <li>
-                            <a href="#">Aula 9 <i class="fa fa-check-circle-o color-green" style="font-size:1.4em;"></i></a>
+                            <a th:href="@{/edificios}">Nueva reserva</a>
                         </li> 
                         <li>
-                            <a href="#">Sala de Reuniones <i class="fa fa-check-circle-o color-green" style="font-size:1.4em;"></i></a>
+                            <a th:href="@{/grupo/nuevo}">Nuevo grupo </a>
                         </li>
-                        <li>
-                            <a href="#">Sala de Grados <i class="fa fa-times-circle-o color-red" style="font-size:1.4em;"></i></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li class="text-center">
-                            <a href="#">Ver todas</a>
-                        </li>
+                        
                     </ul>
                 </li>
                 <!-- Perfil -->
@@ -197,16 +252,20 @@
                     	</th:block>
                 	<!--/*/  <th:block sec:authorize="hasRole('ROLE_SECRE')"> /*/-->
                    	 	<li id="li_misreservas" >
-                        	<a th:href="@{/mis-reservas}"><i class="fa fa-book"></i> Reservas</a>
+                        	<a th:href="@{/mis-reservas}"><i class="fa fa-book"> </i> Reservas</a>
                     	</li>
                     <!--/*/  </th:block> /*/-->
                     <!--/*/  <th:block sec:authorize="hasRole('ROLE_USER')"> /*/-->
                     	<li id="li_misreservas" >
-                        	<a th:href="@{/mis-reservas}"><i class="fa fa-book"></i> Mis Reservas</a>
+                        	<a th:href="@{/mis-reservas}">
+                        	<i class="fa fa-book"> </i> Mis Reservas
+                        	<div class="pull-right"><span class="label label-primary" th:text="${Reservas.size()}"></span>
+                    		</div>
+                        	</a>
                     	</li>
                     <!--/*/  </th:block> /*/-->
                     <li>
-                       <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-calendar-o"></i> Reservar <i class="fa fa-angle-down"></i></a>
+                       <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-calendar-o"> </i> Reservar <i class="fa fa-angle-down"></i></a>
                         <ul id="demo" class="collapse">
                             <li id="li_porespacios">
                                 <a th:href="@{/edificios}"> Por espacio</a>
@@ -215,6 +274,27 @@
                                 <a th:href="@{/reservas-fecha}">Por fecha</a>
                             </li>
                         </ul>
+                    </li>
+                    <li>
+                    	<a href="javascript:;" data-toggle="collapse" data-target="#demo1">
+                    	<i class="fa fa-th"></i> Grupos <i class="fa fa-angle-down"></i>
+                    	<div class="pull-right"><span class="label label-primary" th:text="${GruposReservas.size()}"></span>
+                    	</div>
+                    	</a>
+                    	<ul id="demo1" class="collapse">
+                    		<li>
+                    		<a>
+	                    		<div>
+	                    			<input id="autoGrupo" type="text" />
+	                    		</div>
+	                    	</a>
+                    		</li>
+                    		<li th:each="g : ${GruposReservas}">
+                    			<a th:href="@{'/grupo/'+ ${g.id}}" th:inline="text">[[${g.nombreGrupo}]]
+		                    		<div class="pull-right"> <i class="fa fa-times" aria-hidden="true" title="Eliminar" style="visibility:hidden;"></i></div>
+                    			</a>
+                    		</li>
+                    	</ul>
                     </li> 
                 </ul>
             </div>
