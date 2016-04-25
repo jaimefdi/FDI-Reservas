@@ -61,6 +61,14 @@ public class Espacio {
 
 
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Espacio(Long id_espacio){
 		id = id_espacio;
 	}

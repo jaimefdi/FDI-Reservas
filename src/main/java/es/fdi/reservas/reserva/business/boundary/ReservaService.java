@@ -2,8 +2,6 @@ package es.fdi.reservas.reserva.business.boundary;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -129,6 +127,16 @@ public class ReservaService {
 		edificio_repository.softDelete(Long.toString(idEdificio));
 	}
 	
+	public Edificio editarEdificioDeleted(Long idEdificio){
+		Edificio f = edificio_repository.findOne(idEdificio);
+		f.setDeleted(true);
+		return edificio_repository.save(f);
+	}
+	
+	public Page<Edificio> getEdificiosPaginados(PageRequest pageRequest) {
+		return edificio_repository.findAll(pageRequest);
+	}
+	
 	public Edificio editarEdificio(EdificioDTO edificio){
 		Edificio e = edificio_repository.findOne(edificio.getId());
 		e.setNombre_edificio(edificio.getNombre_edificio());
@@ -137,9 +145,14 @@ public class ReservaService {
 		return edificio_repository.save(e);
 	}
 	
-	public void eliminarFacultad(long idFacultad) {
-		facultad_repository.softDelete(Long.toString(idFacultad));
+	public void eliminarFacultad(Long idFacultad) {
+		//String aux = Long.toString(idFacultad);
+		facultad_repository.softDelete(idFacultad);
 		
+	}
+	
+	public Page<Facultad> getFacultadesPaginadas(PageRequest pageRequest) {
+		return facultad_repository.findAll(pageRequest);
 	}
 	
 	/*public Facultad eliminarFacultad(FacultadDTO facultad) {
@@ -156,9 +169,25 @@ public class ReservaService {
 		return facultad_repository.save(f);
 	}
 	
+	public Facultad editarFacultadDeleted(Long idFacultad){
+		Facultad f = facultad_repository.findOne(idFacultad);
+		f.setDeleted(true);
+		return facultad_repository.save(f);
+	}
+	
 	public void eliminarEspacio(long idEspacio) {
 		//espacio_repository.delete(idEspacio);
 		espacio_repository.softDelete(Long.toString(idEspacio));
+	}
+	
+	public Page<Espacio> getEspaciosPaginados(PageRequest pageRequest) {
+		return espacio_repository.findAll(pageRequest);
+	}
+	
+	public Espacio editarEspacioDeleted(Long idEspacio){
+		Espacio e = espacio_repository.findOne(idEspacio);
+		e.setDeleted(true);
+		return espacio_repository.save(e);
 	}
 	
 	public Espacio editarEspacio(EspacioTipoDTO espacio){

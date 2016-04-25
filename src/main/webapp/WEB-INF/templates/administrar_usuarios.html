@@ -2,24 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet"
-        href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-        th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"/>
-    <link rel="stylesheet"
-        href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0-3/css/font-awesome.min.css"
-        th:href="@{/webjars/font-awesome/4.3.0-3/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" type="text/css" media="all" href="../../css/estilo.css" th:href="@{/css/estilo.css}"/>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
-	<title>UCM RESERVAS</title>
-     <!-- JS -->
-    <script 
-        src="//code.jquery.com/jquery-2.1.4.min.js"
-        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-    <script
-        src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-        th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+    
+	<title>UCM RESERVAS - Administrar usuarios</title>
+    
 </head>
 <body>
 <div class="container-fluid" th:fragment="contenido">
@@ -41,7 +26,7 @@
 	<div class="row">
     	<div class="col-md-8 col-md-offset-2">
          	
-			<div class="jumbotron text-center" th:if="${#lists.isEmpty(userList)}">
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults)}">
                 <i class="fa fa-ban fa-5x"></i>
                 <h4>¡Uups! No hay ningún usuario.</h4>
            </div> 
@@ -58,7 +43,7 @@
 			    </div>
 			    			                  
 			</div> -->
-            <div class="table-responsive" th:unless="${#lists.isEmpty(userList)}">
+            <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults)}">
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
@@ -69,7 +54,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="r : ${userList}"
+                        <tr th:each="r : ${currentResults}"
                         	th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},en=${r.enabled}">
                         	
                             <td th:text="${r.username}"></td>
@@ -85,6 +70,49 @@
          
      	</div>
  	</div>
+ 	<!-- Pagination -->
+ 	<div class="row">
+    <div class="col-md-12 text-center">
+        <div class='pagination pagination-centered'>
+            <ul class="pagination">
+                <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{1}">← First</a>
+                </li>
+                <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                    <span th:if='${currentIndex == 1}'>«</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{${(currentIndex - 1)}}"
+                       title='Go to previous page'>«</a>
+                </li>
+
+                <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+                    th:class="${item == currentIndex ? 'active' : '' }">
+
+                    <span th:if='${item == currentIndex}' th:text='${item}'>1</span>
+
+                    <a th:if='${item != currentIndex}'
+                       th:href="@{${item}}">
+                        <span th:text='${item}'>1</span>
+                    </a>
+                </li>
+
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                </li>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+ <!-- /.Pagination -->
  	<div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

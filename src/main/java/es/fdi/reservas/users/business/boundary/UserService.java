@@ -1,6 +1,9 @@
 package es.fdi.reservas.users.business.boundary;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.users.business.control.UserRepository;
 import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.users.business.entity.UserDTO;
@@ -68,6 +72,12 @@ public class UserService implements UserDetailsService{
 	public void eliminarUsuario(long idUser) {
 		user_ropository.delete(idUser);
 	}
+	
+	public User editarUserDeleted(Long idUser){
+		User f = user_ropository.findOne(idUser);
+		f.setEnabled(false);
+		return user_ropository.save(f);
+	}
 
 	public User editaUsuario(UserDTO userActualizado) {
 		
@@ -79,5 +89,10 @@ public class UserService implements UserDetailsService{
 		
 		
 	}
+	
+	public Page<User> getUsuariosPaginados(PageRequest pageRequest) {
+		return user_ropository.findAll(pageRequest);
+	}
+
 
 }

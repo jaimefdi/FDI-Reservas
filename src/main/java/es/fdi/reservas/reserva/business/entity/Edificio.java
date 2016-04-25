@@ -43,6 +43,14 @@ public class Edificio {
 		this.deleted = false;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -5,7 +5,7 @@ INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_USER');
 INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_ADMIN');
 INSERT INTO UserRole (user, role) VALUES(2, 'ROLE_USER');
 
-INSERT INTO Facultad(FACULTAD_ID, nombreFacultad, dir, deleted) VALUES(1,'Facultad de Informática','C/ del Prof. José G! Santesmases, 9', false);
+INSERT INTO Facultad(FACULTAD_ID, nombreFacultad, dir, deleted) VALUES(1,'Facultad de Informática','C/ del Prof. José G! Santesmases, 9', true);
 INSERT INTO Facultad(FACULTAD_ID, nombreFacultad, dir, deleted) VALUES(2,'Facultad de Bellas Artes','C/ Pintor el Greco, 2', false);
 INSERT INTO Facultad(FACULTAD_ID, nombreFacultad, dir, deleted) VALUES(3,'Facultad de Ciencias Biológicas','C/ José Antonio Novais, 12', false);
 INSERT INTO Facultad(FACULTAD_ID, nombreFacultad, dir, deleted) VALUES(4,'Facultad de Ciencias de la Documentación','C/ Santísima Trinidad, 37', false);

@@ -32,7 +32,7 @@ public class UserRestController {
 	 */
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.DELETE)
 	public void eliminarUsuario(@PathVariable("idUsuario") long idUser) {
-		user_service.eliminarUsuario(idUser);
+		user_service.editarUserDeleted(idUser);
 	}
 	
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.PUT)
@@ -45,7 +45,7 @@ public class UserRestController {
 	 */
 	@RequestMapping(value = "/edificio/{idEdificio}", method = RequestMethod.DELETE)
 	public void eliminarEdificio(@PathVariable("idEdificio") long idEdificio) {
-		reserva_service.eliminarEdificio(idEdificio);
+		reserva_service.editarEdificioDeleted(idEdificio);
 	}
 	
 	@RequestMapping(value = "/edificio/{idEdificio}", method = RequestMethod.PUT)
@@ -57,9 +57,9 @@ public class UserRestController {
 	 * Administracion Facultades
 	 */
 	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.DELETE)
-	public void eliminarFacultad(@PathVariable("idFacultad") long idFacultad) {
+	public void eliminarFacultad(@PathVariable("idFacultad") Long idFacultad) {
 		//reserva_service.eliminarFacultad(facultad);
-		reserva_service.eliminarFacultad(idFacultad);
+		reserva_service.editarFacultadDeleted(idFacultad);
 	}
 	
 	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.PUT)
@@ -71,7 +71,7 @@ public class UserRestController {
 	 */
 	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.DELETE)
 	public void eliminarEspacios(@PathVariable("idEspacio") long idEspacio) {
-		reserva_service.eliminarEspacio(idEspacio);
+		reserva_service.editarEspacioDeleted(idEspacio);
 	}
 	
 	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.PUT)

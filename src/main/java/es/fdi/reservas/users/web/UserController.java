@@ -5,8 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,7 @@ import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.web.EdificioDTO;
 import es.fdi.reservas.reserva.web.EspacioTipoDTO;
 import es.fdi.reservas.users.business.boundary.UserService;
@@ -64,7 +68,29 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value="/administrar/usuarios")
+	@RequestMapping(value="/administrar/usuarios/{pageNumber}", method=RequestMethod.GET)
+    public String misUsuariosPaginados(@PathVariable Integer pageNumber, Model model) {
+		User u = user_service.getCurrentUser();
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<User> currentResults = user_service.getUsuariosPaginados(pageRequest);
+                
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("user", u);
+		model.addAttribute("view", "administrar_usuarios");
+		
+        return "index";
+    }
+	
+	/*@RequestMapping(value="/administrar/usuarios")
 	public ModelAndView administrarUsuarios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -85,39 +111,105 @@ public class UserController {
 		model.addObject("view", "administrar_usuarios");
 		model.addObject("url","/administrar/usuarios" );
 		return model;
-	}
+	}*/
 	
-	@RequestMapping(value="/administrar/edificios")
-	public ModelAndView administrarEdificios(){
-		ModelAndView model = new ModelAndView("index");
+	@RequestMapping(value="/administrar/edificios/{pageNumber}", method=RequestMethod.GET)
+    public String misEdificiosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
-		model.addObject("edificios", reserva_service.getAllBuildings());
-		model.addObject("facultades", reserva_service.getFacultades());
-		model.addObject("view", "administrar_edificios");
-		return model;
-	}
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<Edificio> currentResults = reserva_service.getEdificiosPaginados(pageRequest);
+                
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("user", u);
+		model.addAttribute("view", "administrar_edificios");
+		
+        return "index";
+    }
 	
-	@RequestMapping(value="/administrar/facultad")
-	public ModelAndView administrarFacultades(){
-		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
-		model.addObject("facultades", reserva_service.getFacultades());
-		model.addObject("view", "administrar_facultad");
-		return model;
-	}
+//	@RequestMapping(value="/administrar/edificios")
+//	public ModelAndView administrarEdificios(){
+//		ModelAndView model = new ModelAndView("index");
+//		User u = user_service.getCurrentUser();
+//		model.addObject("user", u);
+//		model.addObject("edificios", reserva_service.getAllBuildings());
+//		model.addObject("facultades", reserva_service.getFacultades());
+//		model.addObject("view", "administrar_edificios");
+//		return model;
+//	}
 	
-	@RequestMapping(value="/administrar/espacios")
-	public ModelAndView administrarEspacios(){
-		ModelAndView model = new ModelAndView("index");
+	@RequestMapping(value="/administrar/facultad/{pageNumber}", method=RequestMethod.GET)
+    public String misFacultadesPaginadas(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
-		model.addObject("edificios", reserva_service.getAllBuildings());
-		model.addObject("espacios", reserva_service.getEspacios());
-		model.addObject("view", "administrar_espacios");
-		return model;
-	}
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<Facultad> currentResults = reserva_service.getFacultadesPaginadas(pageRequest);
+                
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("user", u);
+		model.addAttribute("view", "administrar_facultad");
+		
+        return "index";
+    }
+	
+//	@RequestMapping(value="/administrar/facultad/1")
+//	public ModelAndView administrarFacultades(){
+//		ModelAndView model = new ModelAndView("index");
+//		User u = user_service.getCurrentUser();
+//		model.addObject("user", u);
+//		model.addObject("facultades", reserva_service.getFacultades());
+//		model.addObject("view", "administrar_facultad");
+//		return model;
+//	}
+	
+	@RequestMapping(value="/administrar/espacios/{pageNumber}", method=RequestMethod.GET)
+    public String misEspaciosPaginados(@PathVariable Integer pageNumber, Model model) {
+		User u = user_service.getCurrentUser();
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<Espacio> currentResults = reserva_service.getEspaciosPaginados(pageRequest);
+                
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("user", u);
+		model.addAttribute("view", "administrar_espacios");
+		
+        return "index";
+    }
+	
+//	@RequestMapping(value="/administrar/espacios")
+//	public ModelAndView administrarEspacios(){
+//		ModelAndView model = new ModelAndView("index");
+//		User u = user_service.getCurrentUser();
+//		model.addObject("user", u);
+//		model.addObject("edificios", reserva_service.getAllBuildings());
+//		model.addObject("espacios", reserva_service.getEspacios());
+//		model.addObject("view", "administrar_espacios");
+//		return model;
+//	}
 	
 	@RequestMapping(value="/nuevaFacultad",method=RequestMethod.GET)
 	public ModelAndView nuevaFacultad(){
