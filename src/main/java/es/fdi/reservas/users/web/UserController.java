@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -23,10 +24,13 @@ public class UserController {
 	
 	private ReservaService reserva_service;
 	
+	private GrupoReservaService grupo_service;
+	
 	@Autowired
-	public UserController(UserService userService, ReservaService reservaservice){
+	public UserController(UserService userService, ReservaService reservaservice, GrupoReservaService grr){
 		user_service = userService;
 		reserva_service = reservaservice;
+		grupo_service = grr;
 	}
 	
 
@@ -90,7 +94,7 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("user", u);
-		model.addObject("edificios", reserva_service.getAllBuildings());
+		model.addObject("edificios", reserva_service.getEdificios());
 		model.addObject("view", "admin/administrar_edificios");
 		return model;
 	}
@@ -114,5 +118,16 @@ public class UserController {
 		model.addObject("view", "admin/administrar_espacios");
 		return model;
 	}
-	
+
+	@RequestMapping(value="/perfil", method=RequestMethod.GET)
+	public ModelAndView verPerfil(){
+		ModelAndView model = new ModelAndView("index");
+		User user = user_service.getCurrentUser();
+		model.addObject("User", user);
+		model.addObject("Reservas", reserva_service.getReservasUsuario(user.getUsername()));
+		model.addObject("GruposReservas", grupo_service.gruposReservas());
+		model.addObject("view", "perfil");
+		
+	   return model;
+	}
 }

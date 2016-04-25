@@ -2,7 +2,6 @@ package es.fdi.reservas.reserva.business.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,20 +20,19 @@ public class Espacio {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="ESPACIO_ID")
+	@Column(name="EspacioId")
 	private Long id;
 	@NotNull
-	private String nombre_espacio;
+	private String nombreEspacio;
 	@NotNull
 	private int capacidad;
 	private boolean microfono, proyector;
-	//private String nombre_edificio;
 	
 	@OneToMany(mappedBy="espacio", fetch=FetchType.EAGER)
 	private List<Reserva> reservas;
 	
 	@ManyToOne(optional=true)
-	@JoinColumn(name="EDIFICIO_ID")
+	@JoinColumn(name="EdificioId")
 	private Edificio edificio;
 	
 	@Enumerated(EnumType.ORDINAL)
@@ -45,12 +43,12 @@ public class Espacio {
 		
 	}
 	
-	public Espacio(Long id_espacio){
-		id = id_espacio;
+	public Espacio(Long idEspacio){
+		id = idEspacio;
 	}
 
-	public String getNombre_espacio() {
-		return nombre_espacio;
+	public String getNombreEspacio() {
+		return nombreEspacio;
 	}
 
 	
@@ -86,8 +84,9 @@ public class Espacio {
 		this.proyector = proyector;
 	}
 
-	public void setNombre_espacio(String nombre_espacio) {
-		this.nombre_espacio = nombre_espacio;
+
+	public void setNombreEspacio(String nombreEspacio) {
+		this.nombreEspacio = nombreEspacio;
 	}
 
 	public int getCapacidad() {

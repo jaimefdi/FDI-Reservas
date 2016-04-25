@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Listado de espacios</title>
+</head>
+<body>
+
+<div class="container-fluid" th:fragment="contenido">
+
+<!-- Page Heading -->
+<div class="row">  
+	<div class="col-md-12">
+	    <div class="alert alert-info" role="alert">
+	        <div class="media">
+			  <div class="media-left">			    
+			      <i class="fa fa-building fa-3x"> </i>			   
+			  </div>
+			  <div class="media-body">
+			    <h4 class="media-heading" th:text="${User.Facultad.nombreFacultad}"></h4>
+			    <p class="text-muted" th:text="${User.Facultad.webFacultad}"></p>
+			  </div>
+			</div>	
+	    </div> 
+    </div>                  
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+	    <h4 class="text-center">Selecciona un edificio</h4>
+	    
+	   <ol>
+ 		<li th:each="e : ${Edificios}">
+		   <div class="edificio" th:attr="data-id=${e.id}">
+			<div class="media">
+			  <div class="media-left media-middle">			    
+			      <img class="media-object" src="http://placehold.it/50x50"/>		   
+			  </div>
+			  <div class="media-body">
+			    <h4 class="media-heading" th:text="${e.nombreEdificio}"></h4>
+			    <p class="small text-muted" th:text="${e.direccion}"></p>
+			  </div>
+			  <div class="media-right media-middle">			    
+			     <i class="fa fa-angle-right fa-2x"> </i>		   
+			  </div>
+			</div>
+		   </div>
+ 		</li>
+	   </ol>
+   </div>                  
+</div>
+<!-- /.row -->
+	
+	 <div class="row">
+	    <div class="col-md-12 text-right page-header">
+	         <a id="edificio_link" th:href="@{''}"><button type="button" class="btn-rec blue">SIGUIENTE <i class="fa fa-angle-right"></i></button></a>
+	    </div>                   
+	</div>
+	<!-- /.row -->
+
+
+<script>
+	
+	$("li>div").click(function(){
+		var idEdificio = $(this).attr("data-id");
+		
+		$("li>div").each(function(){
+			$(this).removeClass("selectedEdif");
+		});
+		
+		$(this).addClass("selectedEdif");
+		var link = 'edificio/' + idEdificio + '/espacios';
+		$("#edificio_link").attr("href",link);
+	});
+	
+	$("#edificio_link").click(function(){
+		var link = $("#edificio_link").attr('href');
+		if(link == '')
+		   alert("Debes seleccionar un edificio.");
+		
+	});
+	
+</script>
+ </div>
+
+            <!-- /.container-fluid -->
+
+</body>
+</html>	

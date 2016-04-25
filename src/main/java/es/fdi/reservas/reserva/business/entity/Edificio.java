@@ -1,8 +1,6 @@
 package es.fdi.reservas.reserva.business.entity;
 
 import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,16 +16,18 @@ public class Edificio {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="EDIFICIO_ID")
+	@Column(name="EdificioId")
 	private Long id;
 	@NotNull
-	private String nombre_edificio;
+	private String nombreEdificio;
+	@NotNull
+	private String direccion;
 	
 	@OneToMany(mappedBy="edificio")
 	private Set<Espacio> espacios;
 	
 	@ManyToOne(optional=true)
-	@JoinColumn(name="FACULTAD_ID")
+	@JoinColumn(name="FacultadId")
 	private Facultad facultad;
 
 
@@ -36,7 +36,7 @@ public class Edificio {
 	}
 	
 	public Edificio(String name){
-		nombre_edificio = name;
+		nombreEdificio = name;
 	}
 
 	public Long getId() {
@@ -47,14 +47,22 @@ public class Edificio {
 		this.id = id;
 	}
 
-	public String getNombre_edificio() {
-		return nombre_edificio;
+	public String getNombreEdificio() {
+		return nombreEdificio;
 	}
 
-	public void setNombre_edificio(String nombre_edificio) {
-		this.nombre_edificio = nombre_edificio;
+	public void setNombreEdificio(String nombreEdificio) {
+		this.nombreEdificio = nombreEdificio;
 	}
 	
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
 	public Set<Espacio> getEspacios() {
 		return espacios;
 	}

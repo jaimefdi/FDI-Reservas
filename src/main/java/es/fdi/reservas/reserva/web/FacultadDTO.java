@@ -6,12 +6,12 @@ public class FacultadDTO {
 
 	private String id;
 	private String nombreFacultad;
-	private String dir;
+	private String webFacultad;
 	
-	public FacultadDTO(String id, String name, String dir){
+	public FacultadDTO(String id, String name, String web){
 		this.id = id;
 		this.nombreFacultad = name;
-		this.dir = dir;
+		this.webFacultad = web;
 	}
 
 	public String getId() {
@@ -31,15 +31,16 @@ public class FacultadDTO {
 		this.nombreFacultad = nombreFacultad;
 	}
 
-	public String getDir() {
-		return dir;
+
+	public String getWebFacultad() {
+		return webFacultad;
 	}
 
-	public void setDir(String dir) {
-		this.dir = dir;
+	public void setWebFacultad(String webFacultad) {
+		this.webFacultad = webFacultad;
 	}
 
 	public static FacultadDTO fromFacultadDTO(Facultad f){
-		return new FacultadDTO(f.getId().toString(), f.getNombreFacultad(), f.getDir());
+		return new FacultadDTO(f.getId().toString(), f.getNombreFacultad(), f.getWebFacultad());
 	}
 }
