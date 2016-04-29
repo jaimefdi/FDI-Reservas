@@ -67,7 +67,7 @@
                 </table>
             </div>
              <!-- /.table-responsive-->
-         
+         <a th:href="@{'/administrar/usuarios/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar usuarios"/></a>
      	</div>
  	</div>
  	<!-- Pagination -->
@@ -156,12 +156,13 @@
                  </div>
                  
                  <div class="row">
-                     <div class="col-xs-6 col-md-6">
+                     <div class="col-xs-4 col-md-4">
                       <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
                      </div>
-                     <div class="col-xs-6 col-md-6 text-right">
+                     <div class="col-xs-4 col-md-4 text-center">
                       <button id="btn-guardar" type="button" class="btn-rec blue">GUARDAR </button>
                      </div>
+                     
                  </div>                
              </form>
                  
@@ -191,7 +192,7 @@
 	 		user.enabled = $(this).attr("en");
 	 		//usuario.title = $(this).find("td").eq(0).html();
 
-	 		//$('#modalEditarUsuario #idUser').text(usuario.id);
+	 		$('#modalEditarUsuario #idUser').text(usuario.id);
 	 		$('#modalEditarUsuario #idNombre').attr("value",user.username);
 	 		$('#modalEditarUsuario #idEmail').attr("value",user.email);
 	 		$('#modalEditarUsuario #idEnabled').attr("value",user.enabled);
@@ -223,7 +224,7 @@
 	 			}
 	 		});
 	 	});
-	 
+	 	 	
 	 	$("#btn-eliminar").click(function(){
 	 		$.ajax({
 	 			url: baseURL + "user/" + user.id,

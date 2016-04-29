@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
-import es.fdi.reservas.reserva.business.entity.*;
 import es.fdi.reservas.reserva.web.*;
 import es.fdi.reservas.users.business.boundary.UserService;
-import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.users.business.entity.UserDTO;
 
 @RestController
@@ -35,6 +35,21 @@ public class UserRestController {
 		user_service.editarUserDeleted(idUser);
 	}
 	
+	@RequestMapping(value = "/administrar/usuarios/{numPag}/restaurar/{idUsuario}", method = RequestMethod.GET)
+	public String restaurarUsuario(@PathVariable("idUsuario") Long idUser, @PathVariable("numPag") Long numPag){
+		user_service.restaurarUser(idUser);
+		return "redirect:/administrar/usuarios/{numPag}";
+	}
+	
+	@RequestMapping(value = "/administrar/usuarios/{numPag}/restaurar")
+	public ModelAndView restaurarUsers(@PathVariable("numPag") Long numPag){
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("usuarios", user_service.getEliminados());
+		model.addObject("pagina", numPag);
+		model.addObject("view", "papelera_usuarios");
+		return model;
+	}
+	
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.PUT)
 	public void editarUsuario(@PathVariable("idUsuario") long idUsuario, @RequestBody UserDTO userActualizado) {
 		user_service.editaUsuario(userActualizado);
@@ -53,6 +68,19 @@ public class UserRestController {
 		reserva_service.editarEdificio(edificioActualizado);
 	}
 	
+	@RequestMapping(value = "/administrar/edificio/restaurar")
+	public ModelAndView restaurarEdificios(){
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("edificios", reserva_service.getEdificiosEliminados());
+		model.addObject("view", "papelera_edificios");
+		return model;
+	}
+	
+	@RequestMapping(value = "/administrar/edificio/restaurar/{idEdificio}", method = RequestMethod.GET)
+	public String restaurarEdificio(@PathVariable("idEdificio") Long idEdificio){
+		reserva_service.restaurarEdificio(idEdificio);
+		return "redirect:/administrar/edificio/restaurar";
+	}
 	/*
 	 * Administracion Facultades
 	 */
@@ -66,6 +94,20 @@ public class UserRestController {
 	public void editarFacultad(@PathVariable("idFacultad") long idFacultad, @RequestBody FacultadDTO facultadActualizado) {
 		reserva_service.editarFacultad(facultadActualizado);
 	}
+	
+	@RequestMapping(value = "/administrar/facultad/restaurar")
+	public ModelAndView restaurarFacultades(){
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("facultades", reserva_service.getFacultadesEliminadas());
+		model.addObject("view", "papelera_facultades");
+		return model;
+	}
+	
+	@RequestMapping(value = "/administrar/facultad/restaurar/{idFacultad}", method = RequestMethod.GET)
+	public String restaurarFacultad(@PathVariable("idFacultad") Long idFacultad){
+		reserva_service.restaurarFacultad(idFacultad);
+		return "redirect:/administrar/facultad";
+	}
 	/*
 	 * Administracion espacios
 	 */
@@ -78,5 +120,19 @@ public class UserRestController {
 	public String editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioTipoDTO espacioActualizado) {
 		reserva_service.editarEspacio(espacioActualizado);
 		return "redirect:/administrar/espacios";
+	}
+	
+	@RequestMapping(value = "/administrar/espacio/restaurar")
+	public ModelAndView restaurarEspacios(){
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("espacios", reserva_service.getEspaciosEliminados());
+		model.addObject("view", "papelera_espacios");
+		return model;
+	}
+	
+	@RequestMapping(value = "/administrar/espacio/restaurar/{idEspacio}", method = RequestMethod.GET)
+	public String restaurarEspacio(@PathVariable("idEspacio") Long idEspacio){
+		reserva_service.restaurarEspacio(idEspacio);
+		return "redirect:/administrar/espacio/restaurar";
 	}
 }

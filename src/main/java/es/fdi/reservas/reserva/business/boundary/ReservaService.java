@@ -238,5 +238,41 @@ public class ReservaService {
 		
 	}
 
+	public List<Edificio> getEdificiosEliminados() {
+		
+		return edificio_repository.recycleBin();
+	}
+
+	public List<Facultad> getFacultadesEliminadas() {
+		
+		return facultad_repository.recycleBin();
+	}
+	
+	public List<Espacio> getEspaciosEliminados() {
+		
+		return espacio_repository.recycleBin();
+	}
+
+	public Edificio restaurarEdificio(Long idEdificio) {
+		Edificio e = edificio_repository.findOne(idEdificio);
+		e.setDeleted(false);		
+		return edificio_repository.save(e);
+		
+	}
+	
+	public Facultad restaurarFacultad(Long idFacultad) {
+		Facultad e = facultad_repository.findOne(idFacultad);
+		e.setDeleted(false);		
+		return facultad_repository.save(e);
+		
+	}
+	
+	public Espacio restaurarEspacio(Long idEspacio) {
+		Espacio e = espacio_repository.findOne(idEspacio);
+		e.setDeleted(false);		
+		return espacio_repository.save(e);
+		
+	}
+
 	
 }

@@ -37,15 +37,15 @@
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
-                      	
-                          <th>Nombre</th>
-                          <th>Facultad</th>
+                      		<th></th>
+                          	<th>Nombre</th>
+                          	<th>Facultad</th>
                       </tr>
                   </thead>
                   <tbody>
                       <tr th:each="r : ${currentResults}"
                       	th:attr="id=${r.id},data-id=${r.id},name=${r.nombre_edificio},idFacultad=${r.facultad.id}">
-                      	
+                      	  <td><img alt="${r.nombre_edificio}" th:src="@{/img/+${r.nombre_edificio}+.png}" width="50" height="50"></img></td>
                           <td th:text="${r.nombre_edificio}"></td>
                           <td th:text="${r.facultad.nombreFacultad}"></td>
                           
@@ -61,7 +61,7 @@
                 
           	</div> 
         <!-- /.table-responsive-->
-    
+    	<a th:href="@{'/administrar/edificio/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar edificios"/></a>
 		</div>
 	</div>
 	

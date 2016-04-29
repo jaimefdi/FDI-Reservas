@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+    
+	<title>UCM RESERVAS - Restaurar usuarios</title>
+    
+</head>
+<body>
+<div class="container-fluid" th:fragment="contenido">
+	<div class="row">
+	    <div class="col-md-12">
+	        <h1 class="page-header text-center">
+	            Administrar
+	        </h1>
+	    </div>
+	</div>
+	<!-- /.row -->
+	<div class="row">
+        <div class="col-md-12">
+            <h1 class="page-header text-center">
+                <small>Restaurar usuarios</small>
+            </h1>
+        </div>
+    </div>
+	<div class="row">
+    	<div class="col-md-8 col-md-offset-2">
+         	
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(usuarios)}">
+                <i class="fa fa-ban fa-5x"></i>
+                <h4>¡Uups! No hay ningún usuario.</h4>
+           </div> 
+			
+            <div class="table-responsive" th:unless="${#lists.isEmpty(usuarios)}">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                        	
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r : ${usuarios}"
+                        	th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email}">
+                        	
+                            <td th:text="${r.username}"></td>
+                            <td th:text="${r.email}"></td>
+                            <td><a th:href="@{'/administrar/usuarios/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
+                        </tr>     
+                    </tbody>
+                </table>
+            </div>
+             <!-- /.table-responsive-->
+         
+     	</div>
+ 	</div>
+
+ 
+</div>
+</body>
+</html>

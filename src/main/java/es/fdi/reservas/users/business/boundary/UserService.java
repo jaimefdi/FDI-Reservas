@@ -1,5 +1,7 @@
 package es.fdi.reservas.users.business.boundary;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import es.fdi.reservas.reserva.business.entity.Edificio;
+import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.users.business.control.UserRepository;
 import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.users.business.entity.UserDTO;
@@ -92,6 +95,17 @@ public class UserService implements UserDetailsService{
 	
 	public Page<User> getUsuariosPaginados(PageRequest pageRequest) {
 		return user_ropository.findAll(pageRequest);
+	}
+
+	public User restaurarUser(long idUser) {
+		User f = user_ropository.findOne(idUser);
+		f.setEnabled(true);
+		return user_ropository.save(f);		
+	}
+
+	public List<User> getEliminados() {
+		
+		return user_ropository.recycleBin();
 	}
 
 
