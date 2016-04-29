@@ -20,28 +20,28 @@
 
 <!-- Filtro -->
 <div class="row">
-    <div id="filtro" class="col-md-10 col-md-offset-1">
-        <form class="form-horizontal" role="form">
-        
-			<div class="col-md-2 text-center">
-	            <div class="checkbox">
-				    <label>
-				      <input id="checkMan" type="checkbox"/> De mañana
-				    </label>
-				 </div>
-			</div>
-			<div class="col-md-2 text-center">
-	            <div class="checkbox">
-				    <label>
-				      <input id="checkTar" type="checkbox"/> De tarde
-				    </label>
-				 </div>
-			</div>
-			<div class="col-md-8 text-right">
-	           <button id="btn-filtro" type="button" class="btn-rec gray">FILTRAR <i class="fa fa-arrow-right"></i></button>
-			</div>
-       </form>
-    </div>
+	<div class="col-xs-10 col-xs-offset-1 filtro">
+	    <div class="col-md-4 text-center">
+	         <div class="checkbox">		   
+			       FILTROS:		    
+			 </div>
+		</div>   
+		<div class="col-md-4 text-center">
+	         <div class="checkbox">
+			    <label>
+			      <input id="checkMan" type="checkbox"/> De mañana
+			    </label>
+			 </div>
+		</div>
+		<div class="col-md-4 text-center">
+	         <div class="checkbox">
+			    <label>
+			      <input id="checkTar" type="checkbox"/> De tarde
+			    </label>
+			 </div>
+		</div>
+	</div>		
+    
 </div><br/>
 <!-- /.row -->
 
@@ -110,7 +110,22 @@
                         </div>
                    </div> 
                    
+                   <!-- Asignar a grupo -->
                    
+	   				   	<div class="form-group ">
+					         <label class="col-md-3 control-label">Asignar a Grupo:</label>
+					          <div class="col-md-9">
+	                         	   <select id="selec_grupo" class="form-control">
+	                         	   	<option value="0">Ninguno</option>
+	                         	   	<option th:each="g : ${GruposReservas}"
+	                         	   			th:text="${g.nombreGrupo}"
+	                         	   			th:value="${g.id}">
+	                         	   	</option>
+	                         	   </select>                     	                    	
+                        	  </div>
+						</div>
+					
+					
                    <!-- Repetir -->
 					<div class="col-md-11">
 	   				   	<div class="form-group ">
@@ -123,7 +138,7 @@
 					</div>
    				   	
    				   	
-   				   	<div id="repetir" class="row">
+   				   	<div id="repetir" class="row" style="background:#ddf06c;">
    				   		
 	   				   		<div class="col-md-10">
 		   				   		<div class="form-group ">
@@ -275,17 +290,7 @@
 									</div>
 								</div>
 							</div>
-							
-							
-							
-							<div class="col-md-10">
-								<div class="form-group">
-									<label class="col-md-2 control-label"> Resumen:</label>
-									<div class="col-md-10">
-										<p id="resumen" class="form-control-static">cada semana los martes</p>
-									</div>
-								</div>
-							</div>
+												
 						
    				   </div>
 					
@@ -295,12 +300,7 @@
                         <label for="ejemplo_1" class="col-md-3 control-label">Tipo:</label>
                          
                        <div class="col-md-9">
-                       	 <p class="form-control-static" th:text="*{espacio.tipoEspacio}"></p>
-                       	<!-- <input type="hidden" th:value="${espacio.tipoEspacio}"/>
-                             <select id="seleccionTipoEspacios" class="form-control">
-                              <option>Sala</option>
-                              <option>Aula</option> 
-                            </select>   -->                    
+                       	 <p class="form-control-static" th:text="*{espacio.tipoEspacio}"></p>                                     
                        </div>
                      </div>
                    </div>
@@ -311,18 +311,9 @@
                         <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
                         
                       <div class="col-md-10">
-                       	   <p class="form-control-static" th:text="*{espacio.nombreEspacio}"></p>
-                       	   
-                           <input id="esp_hidden" type="hidden" th:field="*{espacio.id}" />
-                            <!-- <select id="seleccionEspacios" class="form-control">
-						        <option th:each="s : ${allSpaces}" 
-						        		th:text="${s.nombre_espacio}" 
-						        		th:value="${s.id}"
-						        		th:selected="espacio.nombre_espacio"
-						        		name="espacio.nombre_espacio">
-						        </option>
-						   </select>   -->                  
-                       </div> 
+                       	   <p class="form-control-static" th:text="*{espacio.nombreEspacio}"></p>                      	   
+                           <input id="esp_hidden" type="hidden" th:field="*{espacio.id}" />                                    
+                      </div> 
                      </div>
                    </div>
 					
@@ -371,17 +362,26 @@
 		 	var reqHeaders = [];
 		 	reqHeaders[header] = token;
 		
-					 	
+		 	////////
+			$("#op_1").click(function(){
+				$("#count_repet").val("");
+				$("#datetimepicker3").val("");
+			});
+			
+			$("#op_2").click(function(){				
+				$("#datetimepicker3").val("");
+			});
+			
+			$("#op_3").click(function(){
+				$("#count_repet").val("");				
+			});
+		 	/////////
 		 	
 		 	$(function(){
 		 		$('#cp2').colorpicker();		
 		    });
 		 	
 		 
-		 	
-		 	////////
-		 	var resumen = ["Cada","semana"];
-		 	console.log(resumen.join(" "));
 		 	
 		 	
 		 	$("#checkRepetir").change(function(){
@@ -406,8 +406,7 @@
 		 			
 		 			var dow = ["L","X","V"];
 		 			marcarChecks(dow);
-		 			resumen = "Cada semana los lunes, miercoles y viernes";
-		 			$("#resumen").text(resumen);
+		 			
 		 		}
 		 		else if(t == 'Todos los martes y jueves'){	 			
 		 			$("#repetirCada").addClass("hidden");
@@ -416,8 +415,7 @@
 		 			
 		 			var dow = ["M","J"];
 		 			marcarChecks(dow);
-		 			resumen = "Cada semana los martes y jueves";
-		 			$("#resumen").text(resumen);
+		 			
 		 		}
 				else if(t == 'Todos los dias laborables (de lunes a viernes)'){				
 		 			$("#repetirCada").addClass("hidden");
@@ -426,8 +424,7 @@
 		 			
 		 			var dow = ["L","M","X","J","V"];
 		 			marcarChecks(dow);
-		 			resumen = "Cada semana los dias laborables";
-		 			$("#resumen").text(resumen);
+		 			
 		 		}
 				else if(t == 'Cada dia'){
 					
@@ -439,8 +436,7 @@
 					var w = t.split(' ');
 					$("#lb_repetirCada").text(w[1] + 's');
 					
-   				    resumen = "Cada día los ...";				
-		 			$("#resumen").text(resumen);
+   				   
 		 		}
 				else if(t == 'Cada semana'){
 					
@@ -449,11 +445,7 @@
 					$("#diasSemana").removeClass("hidden");
 					var w = t.split(' ');
 					$("#lb_repetirCada").text(w[1] + 's');
-		 		
-					resumen = "Cada semana los ...";				
-		 			$("#resumen").text(resumen);
-					
-					
+		
 		 		}
 				else if(t == 'Cada mes'){
 					
@@ -463,10 +455,7 @@
 					// añadir nuevo div
 					var w = t.split(' ');
 					$("#lb_repetirCada").text(w[1] + 'es');
-					
-					resumen = "Cada mes el día ...";					
-					$("#resumen").text(resumen);
-		 		}
+	 		    }
 				else{
 					$("#repetirCadaMes").addClass("hidden");
 					$("#diasSemana").addClass("hidden");
@@ -561,10 +550,10 @@
 		 		
 		 		
 		 		reservaAJAX.idEspacio = $('#esp_hidden').val();;
-		 		//reservaAJAX.recurrencia = recurrencia[0];
 		 		reservaAJAX.color = $('#cp2').colorpicker('getValue',"");
 		 		reservaAJAX.reglasRecurrencia = recurrencia;
-		 		
+				reservaAJAX.idGrupo = $("#selec_grupo").val();
+		 			 		
 		 		console.log(reservaAJAX);
 		 			
 		 		$.ajax({
@@ -604,21 +593,33 @@
 			        center: 'title',
 			        right: 'month,agendaWeek,agendaDay'
 			    },
-			    
-			    eventClick : function(calEvent,jsEvent, view) {
-					$('#modalEditarReserva').modal('show');
-					$('#modalEditarReserva #idAsunto').val(calEvent.title);
-					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
-					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
-
-				},
-			    defaultDate: '2016-03-12',
-			    editable: true,
+			    defaultDate: '2016-03-12',			    
 			    eventLimit: true,
+			    editable: true,
+			    eventClick: function(event, jsEvent, view){
+			    		
+			    		$('[role="tooltip"]').popover('hide');
+				    	$(this).popover({						
+							placement : 'auto',
+							html : true,
+						    //trigger: 'focus',
+							animation : 'true',
+							container:'#calendar',
+							content : "<div>Donde: <b>" + event.nombreEspacio + "</b><br/>"+
+									  "De " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + 
+									  "<br/>Asunto: " + event.title + "<br/><br/></div>" +
+									  "<div class='row'>" +
+									  "<div class='col-md-6 text-left'><a href='/reservas/reserva/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
+									  "<div class='col-md-6 text-right'><a href='/reservas/reserva/eliminar/" + event.id + "'>" + 'Eliminar' + "</a></div>" +
+									  "</div>"
+									  
+						}).popover('show');
+			    },
+			    /*
 			    eventRender : function(event,element,view) {
 			    
 			    	if(view.name == 'month'){
-						element.popover({
+			    		element.popover({
 							
 								placement : 'auto',
 								html : true,
@@ -632,8 +633,10 @@
 			    	}
 					
 				},
+				*/
 				selectable : true,
 			    select : function(start, end) {
+			    	$('[role="tooltip"]').popover('hide'); 
 					$('#modalCrearReserva').modal('show');
 					var d = new Date();
 					var eventData = {
@@ -660,7 +663,7 @@
 					array.push(letraSemana(numDia));
 					marcarChecks(array);
 					//Desmarca el evento si no se ha creado
-					$('#calendar').fullCalendar('unselect');
+					//$('#calendar').fullCalendar('unselect');
 				},				
 			    eventSources: [ 
 				        {
@@ -713,6 +716,8 @@
 					});
 				}
 			});
+			
+			
 			
 			
 		});
