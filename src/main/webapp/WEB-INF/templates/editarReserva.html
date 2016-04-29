@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Listado de espacios</title>
+</head>
+<body>
+
+<div class="container-fluid" th:fragment="contenido">
+
+<!-- Page Heading -->
+<div class="row">  
+	<div class="col-md-12">
+        <h1 class="page-header text-center">
+            <small>Editar</small>
+        </h1>
+    </div>                  
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-md-12">
+	   <form role="form" action="#" th:action="@{/editar/ + ${Reserva.id}}" th:object="${Reserva}" method="put">
+	   		<div class="col-md-6">
+	   		
+	   		<!-- Asunto --> 
+                 <div class="form-group">
+                     <label for="ejemplo_2">Asunto:</label>
+                      <div>
+                         <input id="idAsunto" name="asunto" type="text" class="form-control" th:value="${Reserva.asunto}"/>
+                      </div>
+                 </div>
+                 
+                 <!-- Fecha inicio --> 
+                 <div class="form-group">
+                     <label for="ejemplo_3">Desde:</label>                  
+		                <div class='input-group date' >
+			               <input th:value="${#joda.format(Reserva.comienzo, 'dd/MM/yyyy HH:mm')}" name="fecha_ini" id="datetimepicker1" type='text' class="form-control" />
+			               <span class="input-group-addon">
+			                   <span class="fa fa-calendar"></span>
+			               </span>
+			            </div>                   
+                 </div>
+                 
+                 <!-- Fecha fin --> 
+                 <div class="form-group">
+                     <label for="ejemplo_3">Hasta:</label>		        
+		                 <div class='input-group date' >
+			                <input th:value="${#joda.format(Reserva.fin, 'dd/MM/yyyy HH:mm')}" name="fecha_fin" id="datetimepicker2" type='text' class="form-control" />
+			                <span class="input-group-addon">
+			                    <span class="fa fa-calendar"></span>
+			                </span>
+			             </div>                     
+                 </div>
+                 
+                 <!-- Grupo de Reservas --> 
+                 <div class="form-group">
+                     <label for="ejemplo_2">Grupo:</label>                    
+                     <select id="selec_grupo" class="form-control">
+                   	   	<option value="0">Ninguno</option>
+                   	   	<option th:each="g : ${GruposReservas}"
+                   	   			th:text="${g.nombreGrupo}"
+                   	   			th:value="${g.id}">
+                   	   	</option>
+                   	 </select>
+                    <p class="small help-block">Agrega esta reserva a un grupo de reservas.</p>
+                 </div>
+               </div> 
+                 
+                <div class="col-md-6">
+                	<!-- Color  -->
+                   <div class="form-group">
+                       <label for="ejemplo_3">Color:</label>
+                        <div >
+                         	<div id="cp2" class="input-group colorpicker-component">
+							    <input type="text" th:value="${Reserva.reservaColor}" class="form-control" th:readonly="readonly"/>
+							    <span class="input-group-addon"><i></i></span>
+							</div>                        	                    	
+                        </div>
+                   </div>
+               
+                    <!-- Asistentes  -->
+                   <div class="form-group">
+                       <label for="ejemplo_3">Asistentes:</label>
+                        <div class="ui-widget">                      
+						    <input id="autoUsuarios" type="text"  class="form-control" placeholder="Agrega invitados"/>				    							                       	                    	
+                        </div>
+                   </div>
+                   
+                   <div id="asistencia"></div>
+                  </div> 
+                  
+                   
+                   <div class="row">
+                   	
+					    <div class="col-md-12 text-center">
+					         <button type="submit" class="btn-rec blue">GUARDAR</button>
+					    </div>                   
+				   </div>
+				   <!-- /.row -->
+	   </form>
+   </div>                  
+</div>
+<!-- /.row -->
+	
+
+
+<script th:inline="javascript">
+	$(document).ready(function(){
+		
+		$(function(){
+				$('#cp2').colorpicker();		
+		});
+		
+		$("#autoUsuarios").autocomplete({
+			source:function(request, response){
+					var tag = request.term;
+					
+					$.ajax({
+						url: '/reservas/usuarios/tag/' + tag,
+						type: 'GET',
+						contentType: 'application/json',
+						success : function(datos) {
+							console.log(datos);
+							
+							response($.map(datos,function(item){
+								
+									var obj = new Object();
+									obj.label = item.id; 
+									obj.value = item.username;
+									obj.email = item.email;
+									return obj;
+				
+							}))
+							
+						},    
+					    error : function(xhr, status) {
+					        alert('Disculpe, existió un problema');
+					    }
+					});
+			},
+			select: function(event, ui){
+				var img = '<img class="img-circle" src="http://placehold.it/30x30" data-toggle="tooltip" data-placement="bottom" title="' + ui.item.value + '" />' ;
+				$("#asistencia").append(img);
+				$('[data-toggle="tooltip"]').tooltip();
+				
+			},
+			minLength: 3
+
+		}).autocomplete("instance")._renderItem = function(ul,item){
+			
+				var inner_html = '<div class="media"><div class="media-left">' + 
+				                  '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
+				                  '</div>' + 
+				                  '<div class="media-body">' + 
+				                  '<h5 class="media-heading">'+ item.value +'</h5>' + 
+				                  '<p class="small text-muted">'+ item.email +'</p>' + 
+				                  '</div></div>';
+				                  
+				        
+				                  
+		            return $('<li></li>')
+		                    .data("item.autocomplete", item)
+		                    .append(inner_html)
+		                    .appendTo(ul);
+			
+		};
+		
+	});	
+</script>
+ </div>
+
+            <!-- /.container-fluid -->
+
+</body>
+</html>	

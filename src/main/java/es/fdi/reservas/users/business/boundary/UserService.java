@@ -1,5 +1,7 @@
 package es.fdi.reservas.users.business.boundary;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,6 +83,10 @@ public class UserService implements UserDetailsService{
 		return user_ropository.save(u);
 		
 		
+	}
+
+	public List<User> getUsuariosPorTagName(String tagName) {
+		return user_ropository.getUsuariosPorTagName(tagName);
 	}
 
 }
