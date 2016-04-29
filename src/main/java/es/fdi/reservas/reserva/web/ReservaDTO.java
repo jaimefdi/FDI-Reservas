@@ -5,7 +5,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 
-public class ReservaFullCalendarDTO {
+public class ReservaDTO {
 
 	private Long id;
 	private String title;
@@ -15,13 +15,16 @@ public class ReservaFullCalendarDTO {
 	private Long idEspacio;
 	private String color;
 	private List<String> reglasRecurrencia;
+	private String recurrenteId;
+	private Long idGrupo;
 
 
-	public ReservaFullCalendarDTO(){ }
+	public ReservaDTO(){ }
 	
 
-	public ReservaFullCalendarDTO(Long id, String title, DateTime start, DateTime end, String nombreEspacio,
-			                      Long idEspacio, String color, List<String> reglas) {
+	public ReservaDTO(Long id, String title, DateTime start, DateTime end, String nombreEspacio,
+			                      Long idEspacio, String color, List<String> reglas, String recurId,
+			                      Long idGrupo) {
 		this.id = id;
 		this.title = title;
 		this.start = start;
@@ -30,9 +33,10 @@ public class ReservaFullCalendarDTO {
 		this.idEspacio = idEspacio;
 		this.color = color;
 		this.reglasRecurrencia = reglas;
+		this.recurrenteId = recurId;
+		this.idGrupo = idGrupo;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -106,11 +110,46 @@ public class ReservaFullCalendarDTO {
 		this.reglasRecurrencia = reglasRecurrencia;
 	}
 	
-	public static ReservaFullCalendarDTO fromReserva(Reserva reserva) {
-		return new ReservaFullCalendarDTO(reserva.getId(), reserva.getAsunto(), 
+
+	public String getRecurrenteId() {
+		return recurrenteId;
+	}
+
+
+	public void setRecurrenteId(String recurrenteId) {
+		this.recurrenteId = recurrenteId;
+	}
+	
+	
+	public Long getIdGrupo() {
+		return idGrupo;
+	}
+
+	public void setIdGrupo(Long idGrupo) {
+		this.idGrupo = idGrupo;
+	}
+
+
+	public boolean esRecurrente(){
+		return this.recurrenteId != null;
+	}
+	
+	
+	public static Long getGrupoId(Reserva r){
+		if(r.getGrupoReserva() != null)
+			return r.getGrupoReserva().getId();
+		else
+			return null;
+	}
+	
+	public static ReservaDTO fromReserva(Reserva reserva) {
+		return new ReservaDTO(reserva.getId(), reserva.getAsunto(), 
 				                          reserva.getComienzo(), reserva.getFin(),
 				                          reserva.getEspacio().getNombreEspacio(),
 				                          reserva.getEspacio().getId(), reserva.getReservaColor(),
-				                          reserva.getReglasRecurrencia());
+				                          reserva.getReglasRecurrencia(), reserva.getRecurrenteId(),
+				                          getGrupoId(reserva));
 	}
+
+
 }
