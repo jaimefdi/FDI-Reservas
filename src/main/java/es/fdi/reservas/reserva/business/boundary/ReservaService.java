@@ -2,6 +2,7 @@ package es.fdi.reservas.reserva.business.boundary;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
+import es.fdi.reservas.reserva.web.ReservaDTO;
 import org.springframework.data.domain.Page;
 
 @Service
@@ -25,45 +27,54 @@ public class ReservaService {
 	private EspacioRepository espacio_repository;
 	
 	@Autowired
-	public ReservaService(ReservaRepository rr, FacultadRepository fr, EdificioRepository er, EspacioRepository sr){
+	public ReservaService(ReservaRepository rr, FacultadRepository fr, EdificioRepository er, 
+							EspacioRepository sr){
 		reserva_repository = rr;
 		facultad_repository = fr;
 		edificio_repository = er;
 		espacio_repository = sr;
 	}
 
+	private List<Reserva> getAllReservasConflictivas(Long idEspacio, DateTime start, DateTime end){
+		List<Reserva> resRecurrentes = new ArrayList<Reserva>();
+		List<Reserva> resConflictivas = new ArrayList<Reserva>();
+		List<Reserva> resAux = new ArrayList<Reserva>();
+		
+		resConflictivas = reserva_repository.reservasConflictivas(idEspacio, start, end); 
+
+		resRecurrentes = reserva_repository.reservasRecurrentes(idEspacio, start, end);
+		
+		for(Reserva r: resRecurrentes){
+			resAux.addAll(r.getInstanciasEvento());
+		}
+		resConflictivas.addAll(resAux);
+		
+		return resConflictivas;
+	}
+	
+	
 	public List<Reserva> getReservasUsuario(String username) {
 		return reserva_repository.findByUsername(username);
 	}
 
-	public Reserva agregarReserva(Reserva reserva, String username) {
-		List<Reserva> reservasRecurrentes = new ArrayList<Reserva>();
-		List<Reserva> reservas = new ArrayList<Reserva>();
-		List<Reserva> result = new ArrayList<Reserva>();
+	public Reserva agregarReserva(Reserva reserva, String username) {		
+		List<Reserva> reservas = new ArrayList<Reserva>();		
+		Long idEspacio = reserva.getEspacio().getId();
+		DateTime start, end;
 		// si la reserva es recurrente
 		if(!reserva.getReglasRecurrencia().isEmpty()){
-			//actualiza el startRecurrencia y el endRecurrencia
+			//calcula el startRecurrencia y el endRecurrencia
 			reserva.rangoRecurrencias();
-		    reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), 
-															   reserva.getStartRecurrencia(),
-															   reserva.getEndRecurrencia());
-			
-			reservasRecurrentes = reserva_repository.reservasRecurrentes(reserva.getEspacio().getId(), 
-																		 reserva.getStartRecurrencia(),
-																		 reserva.getEndRecurrencia());
-			 
-			for(Reserva r: reservasRecurrentes){
-				result.addAll(r.getInstanciasEvento());
-			}
-			reservas.addAll(result);
-		
-		}
+			start = reserva.getStartRecurrencia();
+			end = reserva.getEndRecurrencia();	   
+		} 
+		// si la reserva es simple
 		else{
-			 reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), 
-					   reserva.getComienzo(),
-					   reserva.getFin());
+			start = reserva.getComienzo();
+			end = reserva.getFin();
 		}
-			
+		
+		reservas = getAllReservasConflictivas(idEspacio, start, end);
 		
 		for(Reserva r: reservas ){
 			if ( r.solapa(reserva) ) {
@@ -77,10 +88,13 @@ public class ReservaService {
 		
 		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),
 										   username, reserva.getEspacio(),reserva.getStartRecurrencia(),
-										   reserva.getEndRecurrencia(),reserva.getReservaColor());
+										   reserva.getEndRecurrencia(),reserva.getReservaColor(),
+										   reserva.getRecurrenteId());
 		
 		nuevaReserva.setReglasRecurrencia(reserva.getReglasRecurrencia());
-		
+		if(reserva.getGrupoReserva() != null){
+			nuevaReserva.setGrupoReserva(reserva.getGrupoReserva());
+		}
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		
 		return nuevaReserva;
@@ -126,16 +140,27 @@ public class ReservaService {
 	public List<Edificio> getEdificiosFacultad(long idFacultad) {
 		return edificio_repository.findByFacultadId(idFacultad);
 	}
-/*
-	public Reserva editaReserva(ReservaFullCalendarDTO reservaActualizada) {
-		DateTime start = reservaActualizada.getStart().withTime(0, 0, 0, 0);
-		DateTime end = start.plusDays(1);
-		List<Reserva> reservas = reserva_repository.findByEspacioIdAndComienzoBetween(reservaActualizada.getIdEspacio(), start, end);
+
+	public Reserva editarReservaSimple(ReservaDTO reservaActualizada) {
+		Reserva reserva = new Reserva();
+		reserva.setComienzo(reservaActualizada.getStart());
+		reserva.setFin(reservaActualizada.getEnd());
+		
+		Long idEspacio = reservaActualizada.getIdEspacio();
+		DateTime start = reservaActualizada.getStart();
+		DateTime end = reservaActualizada.getEnd();
+		
+		List<Reserva> reservas = getAllReservasConflictivas(idEspacio, start, end);
 		for(Reserva r: reservas ){
-			if ( r.solapa(reservaActualizada.getStart(), reservaActualizada.getEnd()) && ! reservaActualizada.getId().equals(r.getId())) {
-				throw new ReservaSolapadaException(String.format("La reserva %d, solapa con la reserva %d", reservaActualizada.getId(), r.getId()));
+			if ( r.solapa(reserva) && ! reservaActualizada.getId().equals(r.getId())) {
+				throw new ReservaSolapadaException(	String.format("La reserva %s, solapa con la reserva %s", 
+								  					reserva.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" + 
+								  					reserva.getFin().toString("HH:mm"), 
+								  					r.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" +
+								  					r.getFin().toString("HH:mm")));
 			}
 		}
+		
 		Reserva r = reserva_repository.findOne(reservaActualizada.getId());
 		r.setComienzo(reservaActualizada.getStart());
 		r.setFin(reservaActualizada.getEnd());
@@ -143,7 +168,7 @@ public class ReservaService {
 		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
 		return reserva_repository.save(r);
 	}
-	*/
+	
 
 	public void eliminarReserva(long idReserva) {
 		reserva_repository.delete(idReserva);
@@ -211,6 +236,31 @@ public class ReservaService {
 	public List<Reserva> getReservasEspacioDeTarde(long idEspacio) {
 		return reserva_repository.reservasEspacioDeTarde(idEspacio);
 	}
+
+	public void editarReglasRecurrencia(ReservaDTO rf) {
+		Reserva r = reserva_repository.findOne(rf.getId());
+		List<String> s = rf.getReglasRecurrencia();
+		int i = 0;
+		while(i < s.size()){
+			String[] w = s.get(i).split(":");
+			if(r.getRegla(w[0]) != -1){
+				r.addValorRegla(w[0], w[1]);
+			}
+			else{
+				r.addReglaRecurrente(s.get(i));
+			}
+			
+			i++;
+		}
+		
+		reserva_repository.save(r);
+		
+	}
+
+	public List<Reserva> getReservasGrupo(long idGrupo) {
+		return reserva_repository.findByGrupoReservaId(idGrupo);
+	}
+
 
 
 	

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Grupos</title>
+</head>
+<body>
+
+<div class="container-fluid" th:fragment="contenido">
+
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="page-header text-center">
+           Grupo: <small th:text="${GrupoReservas.nombreGrupo}"> GII-1ºA </small>     
+        <div class="pull-right"> 
+        	<i th:attr="data-idGrupo=${GrupoReservas.id}" class="fa fa-trash-o" aria-hidden="true" title="Eliminar grupo" data-toggle="modal" data-target="modalEliminarGrupo"></i>
+        </div>
+        </h2>
+    </div>
+</div>
+<!-- /.row -->
+
+<!-- Vista -->
+<div class="row">
+	<div class="col-md-2 col-md-offset-10 text-center">
+	  *Calendarios: 
+	  <select id="selec_calen">
+	  	<option value="1">1</option>
+	  	<option value="2">2</option>
+	  </select>	
+	</div>
+</div>
+<hr/>
+
+<!-- 1 Calendario -->
+<div id="1_calendario" class="row">
+   <div id="calendar11" class="col-md-10 col-md-offset-1"></div>
+</div> 
+ 
+<!-- 2 Calendarios -->
+<div id="2_calendario" class="row">
+   <div class="col-md-6 text-center">
+   	 <div class="selec_C1 row">
+   		<p th:text="${GrupoReservas.nombreGrupo}"></p>
+     </div>
+   	 <div id="calendar21" class="col-md-10 col-md-offset-1"></div>
+   </div>
+   
+   <div class="col-md-6 text-center">
+    <div class=" selec_C2 row">
+   		<select id="selec_C2_grupo">
+   			<option th:each="g : ${GruposReservas}"
+   					th:text="${g.nombreGrupo}"
+   					th:value="${g.id}"
+   					th:if="${GrupoReservas.id != g.id}">
+   			</option>
+   		</select>
+     </div>
+   	 <div id="calendar22" class="col-md-10 col-md-offset-1"></div>	 
+   </div>
+</div> 
+ 
+ 
+ <div class="modal fade" id="modalEliminarGrupo" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Eliminar</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="media">
+		  <div class="media-left">
+		      <i class="zmdi zmdi-alert-circle-o zmdi-hc-3x"> </i>
+		  </div>
+		  <div class="media-body">
+		   
+		    <p th:inline="text">Al eliminar un grupo se eliminarán también todas las reservas que contenga
+        	 ¿Desea eliminar el grupo <b>[[${GrupoReservas.nombreGrupo}]]</b> de todas formas?</p>
+		  </div>
+		</div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-rec gray" data-dismiss="modal">CANCELAR</button>
+        <button id="btn-elimGrupo" type="button" class="btn-rec blue">ACEPTAR</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+ <script th:inline="javascript">
+ var baseURL = /*[[@{/}]]*/ '/';
+ var idGroup = /*[[${GrupoReservas.id}]]*/ '1';
+ $(document).ready(function(){
+	  
+	 	var reserva = {};
+	 	var events = [];
+	 	var token = $("meta[name='_csrf']").attr("content");
+	 	var header = $("meta[name='_csrf_header']").attr("content");
+	 	var reqHeaders = [];
+	 	reqHeaders[header] = token;
+	 	var idGrupo;
+	 	var idGrupo2;
+	 	
+	 	var pathname = window.location.pathname;
+		var w = pathname.split("/");
+		idGrupo = Number(w[3]);
+		idGrupo2 = idGrupo + 1;
+		console.log(idGrupo);
+		console.log(idGrupo2);
+		
+	 	calendario($("#calendar11"), idGrupo);
+	 	$("#2_calendario .selec_C1").hide();
+	 	$("#2_calendario .selec_C2").hide();
+	 	
+	 	$("#selec_calen").change(function(){
+	 		var numCalen = $("#selec_calen").val();
+	 		if(numCalen == 1){
+	 			$("#2_calendario").hide();	 			
+	 			calendario($("#calendar11"), idGrupo);
+	 			$("#1_calendario").show();
+	 		}
+	 		else{
+	 			$("#1_calendario").hide();	 			
+	 			calendario($("#calendar21"), idGrupo2);
+	 			calendario($("#calendar22"), idGrupo2);
+	 			$("#2_calendario").show();
+	 			$("#2_calendario .selec_C1").show();
+	 		 	$("#2_calendario .selec_C2").show();
+	 		}
+	 		
+	 		
+	 	});
+	 	
+	 	$("#selec_C2_grupo").change(function(){
+	 		idGrupo2 = $("#selec_C2_grupo").val();
+	 		$("#calendar22").fullCalendar('removeEventSource', []);
+	 		$("#calendar22").fullCalendar('destroy');
+	 		calendario($("calendar22"),idGrupo2);
+	 		$("#calendar22").fullCalendar('refetchEvents');
+	 	});
+	 	
+	 	
+	 	$(".pull-right i").click(function(){
+	 		idGrupo = $(this).attr("data-idGrupo");
+	 		$("#modalEliminarGrupo").modal('show');
+	 	});
+	 	
+	 	$("#btn-elimGrupo").click(function(){
+	 		$.ajax({
+	 			url: baseURL + 'grupo/' + idGrupo,
+	 			type: 'DELETE',
+	 			headers : reqHeaders,
+	 			contentType: 'application/json',
+	 			success : function(datos) {   
+	 				alert("Reserva actualizada");
+	 				$('#modalEliminarGrupo').modal('hide');
+	 			
+	 			},    
+	 			error : function(xhr, status) {
+	     			alert('Disculpe, existió un problema');
+	 			}
+	 		});
+	 		
+	 		$("#modalEliminarGrupo").modal('hide');
+	 	});
+	 	
+	 	///
+	 	var calEventStatus = [];
+ 
+	 
+	 	////
+	 	
+	 	$("#btn-guardar").click(function(){
+	 		reserva.title = $("#modalEditarReserva #idAsunto").val();
+	 		reserva.start =	es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker1').val());
+	 		reserva.end = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker2').val());
+	 	
+
+	 		$.ajax({
+	 			url: baseURL+'reserva/' + reserva.id,
+	 			type: 'PUT',
+	 			headers : reqHeaders,
+	 			data: JSON.stringify(reserva),
+	 			contentType: 'application/json',
+	 			success : function(datos) {   
+	 				alert("Reserva actualizada");
+	 				$('#modalEditarReserva').modal('hide');
+	 				$("#"+reserva.id +" td:nth-child(1)").text(reserva.title);
+	 				$("#"+reserva.id +" td:nth-child(3)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
+	 				$("#"+reserva.id +" td:nth-child(4)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
+	 			},    
+	 			error : function(xhr, status) {
+	     			alert('Disculpe, existió un problema');
+	 			}
+	 		});
+	 	});
+	 
+	 	$("#btn-eliminar").click(function(){
+	 		
+	 		if(reserva.recurrenteId != null){
+	 			$('#modalEditarReserva').modal('hide');
+	 			$("#modalRecurrente").modal('show');
+	 		}
+	 		else{
+	 			$.ajax({
+		 			url: baseURL + 'reserva/' + reserva.id,
+		 			type: 'DELETE',
+		 			headers : reqHeaders,
+		 			success : function(datos) {
+		 				alert("Reserva eliminada");
+		 				$('#modalEditarReserva').modal('hide');
+		 				$("#"+reserva.id).remove();
+		 				$("#calendar").fullCalendar('refetchEvents');
+		 			},    
+		 			error : function(xhr, status) {
+		 				alert('Disculpe, existió un problema');
+		 			}
+		 		});
+	 		}
+	 		
+	 	});
+	 	
+	 	
+	 	$('#solo_esta').click(function(){
+	 		
+	 		var w = reserva.recurrenteId.split("_");
+	 		var reservaPadre = w[0];
+	 		var exDate = "EXDATE:";
+	 		exDate += "VALUE=" + w[1]; 
+	 		reserva.id = reservaPadre;
+	 		var recurrencia = [];
+	 		recurrencia.push(exDate);
+	 		reserva.reglasRecurrencia = recurrencia;
+	 			 		
+	 		$.ajax({
+	 			url: baseURL + 'editarReserRecurrente',
+	 			headers : reqHeaders,
+	 			type: 'POST',		 				 			
+	 			data: JSON.stringify(reserva),
+	 			contentType: 'application/json',
+	 			success : function(datos) {  
+	 				$("#modalRecurrente").modal('hide');	 				
+	 				$("#calendar").fullCalendar('refetchEvents');
+	 				
+	 			},    
+	 			error : function(xhr, status) {
+	 				
+	     			alert('Disculpe, existió un problema');
+	     			
+	 			}
+	 		});
+	 		
+	 	});
+
+	 	//fullcalendar
+	 	function calendario(calendar, idGrupo){
+		 	calendar.fullCalendar({
+				lang: 'es',
+				timezone: 'local',
+			    header: {
+			        left: 'prev,next today',
+			        center: 'title',
+			        right: 'month,agendaWeek,agendaDay'
+			    },
+			    defaultDate: '2016-03-12',
+			    editable: true,
+				droppable: true, // this allows things to be dropped onto the calendar
+				dragRevertDuration: 0,
+				eventLimit: true, // allow "more" link when too many events
+				eventRender: function(event, element){
+					element.data('event',{
+						title: event.title,
+						start: event.start,
+						end: event.end
+					});
+					
+					element.draggable({
+						zIndex: 999,
+						revert: true,      // will cause the event to go back to its
+						revertDuration: 0
+					});
+					
+					
+				},				
+				eventDragStart: function( event, jsEvent, ui, view ) {
+
+					// Add dragging event in global var 
+					calEventStatus['calendar'] = '#calendar1';
+					calEventStatus['event_id'] = event.id;
+					console.log('calendar 1 eventDragStart');
+					console.log(event);
+				},
+				eventDragStop: function( event, jsEvent, ui, view ) { 
+					console.log('calendar 1 eventDragStop');	
+					// Dirty fix to remove highlighted blue background
+					$("td").removeClass("fc-highlight");
+				},
+				drop: function(date, jsEvent, ui) { 
+					
+// 					// if event dropped from another calendar, remove from that calendar
+// 					if (calEventStatus['calendar'] != 'undefined') {
+// 						console.log('calendar 1 drop'); 
+// 						$(calEventStatus['calendar']).fullCalendar('removeEvents', calEventStatus['event_id']);		
+// 						//$(calEventStatus['calendar']).fullCalendar('refetchEvents');	
+// 						calEventStatus = []; // Empty
+// 					}
+
+				},
+				eventReceive: function( event ) {  
+					console.log('calendar 1 eventReceive');
+					console.log(event);
+				},
+			    eventSources: [ 
+				        {
+				        	url: '/reservas/' + idGrupo + '/reservasGrupo',							   
+				            textColor: 'black'  
+				        }	        
+			    ]
+			       	
+			    
+			});
+	 	}	
+	 	
+ });
+ 
+ 
+ </script>
+ 
+ 
+ 
+ </div>
+
+<!-- /.container-fluid -->
+
+</body>
+</html>

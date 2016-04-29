@@ -52,11 +52,19 @@ public class Reserva{
 	@JoinColumn(name="EspacioId")
 	private Espacio espacio;
 	
+	@ManyToOne(optional=true)
+	@JoinColumn(name="GrupoReservaId")
+	private GrupoReserva grupoReserva;
+	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="reglasRecurrentes", joinColumns=@JoinColumn(name="reservaId"))
 	private List<String> reglasRecurrencia;
 	
 	private String reservaColor;
+	
+	private String recurrenteId;
+	
+
 
 	public Reserva(){
 		
@@ -64,7 +72,7 @@ public class Reserva{
 	
 	
 	public Reserva(String a, DateTime ini, DateTime fin, String userName, Espacio esp,
-				   DateTime startR, DateTime endR, String color){
+				   DateTime startR, DateTime endR, String color, String recurrId){
 		this.asunto = a;
 		this.comienzo = ini;
 		this.fin = fin;
@@ -73,9 +81,9 @@ public class Reserva{
 		this.espacio = esp;
 		this.startRecurrencia = startR;
 		this.endRecurrencia = endR;
-		//this.recurrencia = r;
 		this.reservaColor = color;
 		this.reglasRecurrencia = new ArrayList<String>();
+		this.recurrenteId = recurrId;
 		
 	}
 
@@ -92,15 +100,6 @@ public class Reserva{
 		this.reglasRecurrencia = reglasRecurrencia;
 	}
 
-    /*
-	public String getRecurrencia() {
-		return recurrencia;
-	}
-
-	public void setRecurrencia(String recurrencia) {
-		this.recurrencia = recurrencia;
-	}
-*/
 	
 	public DateTime getStartRecurrencia() {
 		return startRecurrencia;
@@ -163,6 +162,10 @@ public class Reserva{
 		return id;
 	}
 	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Espacio getEspacio() {
 		return espacio;
 	}
@@ -185,7 +188,44 @@ public class Reserva{
 	public void setReservaColor(String reservaColor) {
 		this.reservaColor = reservaColor;
 	}
+	
+	public String getRecurrenteId() {
+		return recurrenteId;
+	}
 
+
+	public void setRecurrenteId(String recurrenteId) {
+		this.recurrenteId = recurrenteId;
+	}
+	
+
+	
+	public GrupoReserva getGrupoReserva() {
+		return grupoReserva;
+	}
+
+
+	public void setGrupoReserva(GrupoReserva grupoReserva) {
+		this.grupoReserva = grupoReserva;
+	}
+
+
+	public int getRegla(String regla){
+		for(int i = 0; i < reglasRecurrencia.size(); i++){
+			String[] w = reglasRecurrencia.get(i).split(":");
+			if(w[0].equals(regla))
+				return i;
+		}
+		
+		return -1;
+	}
+	
+	public void addValorRegla(String regla, String valor){
+		int index = getRegla(regla);
+		String currentValue = reglasRecurrencia.get(index);
+		reglasRecurrencia.set(index, currentValue + ";" + valor);
+	}
+	
 	private int diaSemana(String d){
 		switch(d){
 			case "L": return 1; 
@@ -329,7 +369,19 @@ public class Reserva{
 					break;
 				
 				case "RDATE": break;
-				case "EXDATE": break;
+				case "EXDATE": 
+						while(j < v.length){
+							String[] f = v[j].split("=");
+							if(f[0].equals("VALUE")){
+								for(int q = 0; q < recurrencias.size(); q++){
+									if(recurrencias.get(q).getComienzo().toString("dd/MM/yyyy").equals(f[1])){
+										recurrencias.remove(q);
+									}
+								}
+							}
+							j++;
+						}
+						break;
 			}
 			
 		}
@@ -346,16 +398,22 @@ public class Reserva{
 	public List<Reserva> getInstanciasEvento(){
 		List<Reserva> instancias = new ArrayList<Reserva>();
 		List<RangoDateTime> rango = rangoRecurrencias();
+		
 		for(RangoDateTime r : rango){
-			instancias.add(new Reserva(asunto, r.getComienzo(), r.getFin(), username,
-						               espacio, startRecurrencia, endRecurrencia, reservaColor));
+			Reserva reserva = new Reserva(asunto, r.getComienzo(), r.getFin(), username,
+							              espacio, startRecurrencia, endRecurrencia, reservaColor,
+							              id + "_" + r.getComienzo().toString("dd/MM/yyyy"));
+								
+			reserva.setId(id);
+			instancias.add(reserva);
 		}
 		
 		return instancias;
 	}
-	
+
+
 	public boolean solapa(Reserva r){
-	  if (r.getReglasRecurrencia().isEmpty()) {
+	  if (r.getReglasRecurrencia() == null) {
 		return solapaSimple(new RangoDateTime(r.getComienzo(), r.getFin()));
 	  } 
 	  else {
