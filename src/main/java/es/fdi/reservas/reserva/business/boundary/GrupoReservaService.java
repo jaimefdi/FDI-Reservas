@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.fdi.reservas.reserva.business.control.GrupoReservaRepository;
 import es.fdi.reservas.reserva.business.entity.GrupoReserva;
+import es.fdi.reservas.users.business.entity.User;
 
 @Service
 public class GrupoReservaService {
@@ -18,14 +19,14 @@ public class GrupoReservaService {
 		this.grupo_repository = grr;
 	}
 	
-	public GrupoReserva addNuevoGrupo(GrupoReserva grupo){
-		GrupoReserva newGrupo = new GrupoReserva(grupo.getNombreGrupo(), grupo.getDescripcion());
+	public GrupoReserva addNuevoGrupo(GrupoReserva grupo, User user){
+		GrupoReserva newGrupo = new GrupoReserva(grupo.getNombreGrupo(), grupo.getDescripcion(), user);
 		newGrupo = grupo_repository.save(newGrupo);
 		
 		return newGrupo;
 	}
 	
-	public List<GrupoReserva> gruposReservas(){
+	public List<GrupoReserva> getGruposReservas(){
 		return grupo_repository.findAll();
 	}
 
@@ -40,6 +41,10 @@ public class GrupoReservaService {
 	public void eliminarGrupo(long idGrupo) {
 		grupo_repository.delete(idGrupo);
 		
+	}
+
+	public List<GrupoReserva> getGruposUsuario(Long idUsuario) {
+		return grupo_repository.findByUserId(idUsuario);
 	}
 	
 }

@@ -13,8 +13,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+
+import es.fdi.reservas.users.business.entity.User;
 
 @Entity
 public class GrupoReserva {
@@ -32,14 +35,19 @@ public class GrupoReserva {
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="grupoReserva")
 	private Set<Reserva> reservasGrupo;
 	
+	@ManyToOne(optional=true)
+	@JoinColumn(name="UserId")
+	private User user;
+	
 	public GrupoReserva(){
 		
 	}
 	
-	public GrupoReserva(String nombre, String des){
+	public GrupoReserva(String nombre, String des, User user){
 		this.nombreGrupo = nombre;
 		this.descripcion = des;
-		reservasGrupo = new HashSet<Reserva>();
+		this.reservasGrupo = new HashSet<Reserva>();
+		this.user = user;
 	}
 
 
@@ -79,6 +87,14 @@ public class GrupoReserva {
 
 	public void setReservasGrupo(Set<Reserva> reservasGrupo) {
 		this.reservasGrupo = reservasGrupo;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	

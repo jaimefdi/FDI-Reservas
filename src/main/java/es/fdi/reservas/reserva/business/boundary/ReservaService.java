@@ -53,8 +53,8 @@ public class ReservaService {
 	}
 	
 	
-	public List<Reserva> getReservasUsuario(String username) {
-		return reserva_repository.findByUsername(username);
+	public List<Reserva> getReservasUsuario(Long idUsuario) {
+		return reserva_repository.findByUserId(idUsuario);
 	}
 
 	public Reserva agregarReserva(Reserva reserva, String username) {		
@@ -87,7 +87,7 @@ public class ReservaService {
 		}
 		
 		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),
-										   username, reserva.getEspacio(),reserva.getStartRecurrencia(),
+										   reserva.getUser(), reserva.getEspacio(),reserva.getStartRecurrencia(),
 										   reserva.getEndRecurrencia(),reserva.getReservaColor(),
 										   reserva.getRecurrenteId());
 		
@@ -174,8 +174,8 @@ public class ReservaService {
 		reserva_repository.delete(idReserva);
 	}
 
-	public Page<Reserva> getReservasUsuario(String username, PageRequest pageRequest) {
-		return reserva_repository.findByUsername(username, pageRequest);
+	public Page<Reserva> getReservasUsuario(Long idUsuario, PageRequest pageRequest) {
+		return reserva_repository.findByUserId(idUsuario, pageRequest);
 	} 
 
 	public void eliminarEdificio(long idEdificio) {

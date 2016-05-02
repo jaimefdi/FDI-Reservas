@@ -2,6 +2,7 @@ package es.fdi.reservas.users.business.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -12,14 +13,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.business.entity.GrupoReserva;
+import es.fdi.reservas.reserva.business.entity.Reserva;
 
 
+@SuppressWarnings("serial")
 @Entity
 public class User implements UserDetails{
 
@@ -27,6 +32,7 @@ public class User implements UserDetails{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="UserId")
 	private Long id;
+	
 	@Size(min=3, max=20, message="La longitud debe estar entre 3 y 20")
 	private String username;
 	
@@ -45,11 +51,12 @@ public class User implements UserDetails{
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="UserRole", joinColumns=@JoinColumn(name="user"),  uniqueConstraints=@UniqueConstraint(columnNames={"user", "role"}))
 	private Collection<UserRole> roles;
-	/*
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name="UserFacultades", joinColumns={@JoinColumn(name="user")}, inverseJoinColumns={@JoinColumn(name="FACULTAD_ID")})
-	private Set<Facultad> facultades;
-	*/
+	
+	@OneToMany(mappedBy="user")
+	private Set<Reserva> reservas;
+	
+	@OneToMany(mappedBy="user")
+	private Set<GrupoReserva> gruposReservas;
 	
 	@ManyToOne(optional=true)
 	@JoinColumn(name="FacultadId")
@@ -95,6 +102,25 @@ public class User implements UserDetails{
 		return id;
 	}
 	
+	
+	public Set<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(Set<Reserva> reservas) {
+		this.reservas = reservas;
+	}
+	
+	
+
+	public Set<GrupoReserva> getGruposReservas() {
+		return gruposReservas;
+	}
+
+	public void setGruposReservas(Set<GrupoReserva> gruposReservas) {
+		this.gruposReservas = gruposReservas;
+	}
+
 	public void addRole(UserRole role) {
 		this.roles.add(role);
 	}
