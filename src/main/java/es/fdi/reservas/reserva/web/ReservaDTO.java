@@ -17,6 +17,7 @@ public class ReservaDTO {
 	private List<String> reglasRecurrencia;
 	private String recurrenteId;
 	private Long idGrupo;
+	private boolean editable;
 
 
 	public ReservaDTO(){ }
@@ -24,7 +25,7 @@ public class ReservaDTO {
 
 	public ReservaDTO(Long id, String title, DateTime start, DateTime end, String nombreEspacio,
 			                      Long idEspacio, String color, List<String> reglas, String recurId,
-			                      Long idGrupo) {
+			                      Long idGrupo, Boolean editable) {
 		this.id = id;
 		this.title = title;
 		this.start = start;
@@ -35,6 +36,7 @@ public class ReservaDTO {
 		this.reglasRecurrencia = reglas;
 		this.recurrenteId = recurId;
 		this.idGrupo = idGrupo;
+		this.editable = editable;
 	}
 
 	public Long getId() {
@@ -135,6 +137,16 @@ public class ReservaDTO {
 	}
 	
 	
+	public boolean isEditable() {
+		return editable;
+	}
+
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+
 	public static Long getGrupoId(Reserva r){
 		if(r.getGrupoReserva() != null)
 			return r.getGrupoReserva().getId();
@@ -148,7 +160,16 @@ public class ReservaDTO {
 				                          reserva.getEspacio().getNombreEspacio(),
 				                          reserva.getEspacio().getId(), reserva.getReservaColor(),
 				                          reserva.getReglasRecurrencia(), reserva.getRecurrenteId(),
-				                          getGrupoId(reserva));
+				                          getGrupoId(reserva), false);
+	}
+	
+	public static ReservaDTO fromReservaEditable(Reserva reserva) {
+		return new ReservaDTO(reserva.getId(), reserva.getAsunto(), 
+				                          reserva.getComienzo(), reserva.getFin(),
+				                          reserva.getEspacio().getNombreEspacio(),
+				                          reserva.getEspacio().getId(), reserva.getReservaColor(),
+				                          reserva.getReglasRecurrencia(), reserva.getRecurrenteId(),
+				                          getGrupoId(reserva), true);
 	}
 
 

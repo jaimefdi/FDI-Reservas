@@ -595,23 +595,26 @@
 			    },
 			    defaultDate: '2016-03-12',			    
 			    eventLimit: true,
-			    editable: true,
+			    
 			    eventClick: function(event, jsEvent, view){
+			    		var cuerpo = "<div>Donde: <b>" + event.nombreEspacio + "</b><br/>"+
+						  			 "De " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + 
+						  			 "<br/>Asunto: " + event.title + "</div>";
+						 
+			    		if(event.editable){
+			    			cuerpo += "<br/><div class='row'>" +
+									  "<div class='col-md-6 text-left'><a href='/reservas/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
+									  "<div class='col-md-6 text-right'><a href='/reservas/eliminar/" + event.id + "'>" + 'Eliminar' + "</a></div>" +
+									  "</div>";
+			    		}
 			    		
 			    		$('[role="tooltip"]').popover('hide');
 				    	$(this).popover({						
 							placement : 'auto',
 							html : true,
-						    //trigger: 'focus',
 							animation : 'true',
 							container:'#calendar',
-							content : "<div>Donde: <b>" + event.nombreEspacio + "</b><br/>"+
-									  "De " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + 
-									  "<br/>Asunto: " + event.title + "<br/><br/></div>" +
-									  "<div class='row'>" +
-									  "<div class='col-md-6 text-left'><a href='/reservas/reserva/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
-									  "<div class='col-md-6 text-right'><a href='/reservas/reserva/eliminar/" + event.id + "'>" + 'Eliminar' + "</a></div>" +
-									  "</div>"
+							content : cuerpo
 									  
 						}).popover('show');
 			    },

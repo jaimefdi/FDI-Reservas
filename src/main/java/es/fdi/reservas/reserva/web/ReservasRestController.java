@@ -41,6 +41,7 @@ public class ReservasRestController {
 	public List<ReservaDTO> reservasEspacio(@PathVariable("idEspacio") long idEspacio){
 		List<Reserva> reservasEspacio = reserva_service.getReservasEspacio(idEspacio);
 		List<Reserva> reservasTotales = new ArrayList<>();
+		User user = user_service.getCurrentUser();
 		for(Reserva r : reservasEspacio) {
 			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
@@ -51,7 +52,13 @@ public class ReservasRestController {
 		
 		List<ReservaDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
-			result.add(ReservaDTO.fromReserva(r));
+			if(user.getUsername().equals(r.getUser().getUsername())){
+				result.add(ReservaDTO.fromReservaEditable(r));
+			}
+			else{
+				result.add(ReservaDTO.fromReserva(r));
+			}
+			
 		}
 		 
 		return result;
@@ -59,6 +66,7 @@ public class ReservasRestController {
 	
 	@RequestMapping(value="{idGrupo}/reservasGrupo", method=RequestMethod.GET)
 	public List<ReservaDTO> reservasGrupo(@PathVariable("idGrupo") long idGrupo){
+		User user = user_service.getCurrentUser();
 		List<Reserva> reservasGrupo = reserva_service.getReservasGrupo(idGrupo);
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : reservasGrupo) {
@@ -71,7 +79,7 @@ public class ReservasRestController {
 		
 		List<ReservaDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
-			result.add(ReservaDTO.fromReserva(r));
+			result.add(ReservaDTO.fromReservaEditable(r));
 		}
 		 
 		return result;
@@ -81,6 +89,7 @@ public class ReservasRestController {
 	public List<ReservaDTO> reservasEspacioDeMañana(@PathVariable("idEspacio") long idEspacio){
 		List<Reserva> reservasEspacio = reserva_service.getReservasEspacioDeMañana(idEspacio);
 		List<Reserva> reservasTotales = new ArrayList<>();
+		User user = user_service.getCurrentUser();
 		for(Reserva r : reservasEspacio) {
 			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
@@ -91,7 +100,12 @@ public class ReservasRestController {
 		
 		List<ReservaDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
-			result.add(ReservaDTO.fromReserva(r));
+			if(user.getUsername().equals(r.getUser().getUsername())){
+				result.add(ReservaDTO.fromReservaEditable(r));
+			}
+			else{
+				result.add(ReservaDTO.fromReserva(r));
+			}
 		}
 		 
 		return result;
@@ -101,6 +115,7 @@ public class ReservasRestController {
 	public List<ReservaDTO> reservasEspacioDeTarde(@PathVariable("idEspacio") long idEspacio){
 		List<Reserva> reservasEspacio = reserva_service.getReservasEspacioDeTarde(idEspacio);
 		List<Reserva> reservasTotales = new ArrayList<>();
+		User user = user_service.getCurrentUser();
 		for(Reserva r : reservasEspacio) {
 			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
@@ -111,7 +126,12 @@ public class ReservasRestController {
 		
 		List<ReservaDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
-			result.add(ReservaDTO.fromReserva(r));
+			if(user.getUsername().equals(r.getUser().getUsername())){
+				result.add(ReservaDTO.fromReservaEditable(r));
+			}
+			else{
+				result.add(ReservaDTO.fromReserva(r));
+			}
 		}
 		 
 		return result;
@@ -120,7 +140,7 @@ public class ReservasRestController {
 	@RequestMapping(value="/misEventos", method=RequestMethod.GET)
 	public List<ReservaDTO> reservasUsuario(){
 		User user = user_service.getCurrentUser();
-		List<Reserva> userReser = reserva_service.getReservasUsuario(user.getUsername());
+		List<Reserva> userReser = reserva_service.getReservasUsuario(user.getId());
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : userReser) {
 			if(!r.getReglasRecurrencia().isEmpty()){
@@ -132,7 +152,7 @@ public class ReservasRestController {
 		
 		List<ReservaDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
-			result.add(ReservaDTO.fromReserva(r));
+			result.add(ReservaDTO.fromReservaEditable(r));
 		}
 		 
 		return result;
