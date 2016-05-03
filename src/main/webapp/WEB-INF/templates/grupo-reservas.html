@@ -156,8 +156,9 @@
 	 			headers : reqHeaders,
 	 			contentType: 'application/json',
 	 			success : function(datos) {   
-	 				alert("Reserva actualizada");
+	 				
 	 				$('#modalEliminarGrupo').modal('hide');
+	 				 window.location = "/reservas/mis-reservas";
 	 			
 	 			},    
 	 			error : function(xhr, status) {
@@ -262,10 +263,12 @@
 				lang: 'es',
 				timezone: 'local',
 			    header: {
-			        left: 'prev,next today',
-			        center: 'title',
-			        right: 'month,agendaWeek,agendaDay'
+			        left: '',
+			        center: '',
+			        right: 'month,agendaWeek'
 			    },
+			    columnFormat: 'ddd',
+			    defaultView: 'agendaWeek',
 			    defaultDate: '2016-03-12',
 			    editable: true,
 				droppable: true, // this allows things to be dropped onto the calendar

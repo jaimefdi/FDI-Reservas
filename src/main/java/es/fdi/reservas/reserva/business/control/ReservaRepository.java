@@ -37,6 +37,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long>{
 	@Query("FROM Reserva r WHERE (r.espacio.id = :idEspacio) AND (DATE_FORMAT(r.comienzo,'%H:%i') >= '15:00')")
 	public List<Reserva> reservasEspacioDeTarde(@Param("idEspacio")Long idEspacio);
 		
-	public List<Reserva> findByGrupoReservaId(Long idGrupo);
+	public List<Reserva> findByGrupoReservaIdAndUserId(Long idGrupo, Long idUsuario);
 	
 }

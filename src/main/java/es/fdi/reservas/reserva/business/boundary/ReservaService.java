@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import es.fdi.reservas.reserva.business.control.EdificioRepository;
 import es.fdi.reservas.reserva.business.control.EspacioRepository;
 import es.fdi.reservas.reserva.business.control.FacultadRepository;
+import es.fdi.reservas.reserva.business.control.GrupoReservaRepository;
 import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
@@ -25,14 +26,16 @@ public class ReservaService {
 	private FacultadRepository facultad_repository;
 	private EdificioRepository edificio_repository;
 	private EspacioRepository espacio_repository;
+	private GrupoReservaRepository grupo_repository;
 	
 	@Autowired
 	public ReservaService(ReservaRepository rr, FacultadRepository fr, EdificioRepository er, 
-							EspacioRepository sr){
+							EspacioRepository sr, GrupoReservaRepository gr){
 		reserva_repository = rr;
 		facultad_repository = fr;
 		edificio_repository = er;
 		espacio_repository = sr;
+		grupo_repository = gr;
 	}
 
 	private List<Reserva> getAllReservasConflictivas(Long idEspacio, DateTime start, DateTime end){
@@ -166,6 +169,9 @@ public class ReservaService {
 		r.setFin(reservaActualizada.getEnd());
 		r.setAsunto(reservaActualizada.getTitle());
 		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
+		r.setReservaColor(reservaActualizada.getColor());
+		r.setGrupoReserva(grupo_repository.findOne(reservaActualizada.getIdGrupo()));
+		
 		return reserva_repository.save(r);
 	}
 	
@@ -257,8 +263,8 @@ public class ReservaService {
 		
 	}
 
-	public List<Reserva> getReservasGrupo(long idGrupo) {
-		return reserva_repository.findByGrupoReservaId(idGrupo);
+	public List<Reserva> getReservasGrupo(long idGrupo, long idUsuario) {
+		return reserva_repository.findByGrupoReservaIdAndUserId(idGrupo, idUsuario);
 	}
 
 

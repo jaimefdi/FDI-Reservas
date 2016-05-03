@@ -547,7 +547,8 @@ ol{
 	padding:5px 10px;
 }
 
-.modal-content{
+.modal-content,
+.popover{
 	border-radius: 0;	
 }
 
@@ -584,4 +585,10 @@ ol{
 	border: none;
 	border-radius: 0px;
 }
+
+td i{
+  margin: 0px 7px;	
+}
+
+
 

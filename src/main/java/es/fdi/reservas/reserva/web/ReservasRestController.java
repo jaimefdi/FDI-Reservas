@@ -67,7 +67,7 @@ public class ReservasRestController {
 	@RequestMapping(value="{idGrupo}/reservasGrupo", method=RequestMethod.GET)
 	public List<ReservaDTO> reservasGrupo(@PathVariable("idGrupo") long idGrupo){
 		User user = user_service.getCurrentUser();
-		List<Reserva> reservasGrupo = reserva_service.getReservasGrupo(idGrupo);
+		List<Reserva> reservasGrupo = reserva_service.getReservasGrupo(idGrupo, user.getId());
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : reservasGrupo) {
 			if(!r.getReglasRecurrencia().isEmpty()){
@@ -208,7 +208,7 @@ public class ReservasRestController {
     }
 	
 	
-	@RequestMapping(value = "/reserva/{idReserva}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/reserva/editar/{idReserva}", method = RequestMethod.PUT)
 	public void editarReserva(@PathVariable("idReserva") long idReserva, @RequestBody ReservaDTO reservaActualizada) {
 		try{
 			if(reservaActualizada.esRecurrente()){
