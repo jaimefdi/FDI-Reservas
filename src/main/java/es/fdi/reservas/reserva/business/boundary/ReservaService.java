@@ -57,7 +57,7 @@ public class ReservaService {
 		return reserva_repository.findByUserId(idUsuario);
 	}
 
-	public Reserva agregarReserva(Reserva reserva, String username) {		
+	public Reserva agregarReserva(Reserva reserva) {		
 		List<Reserva> reservas = new ArrayList<Reserva>();		
 		Long idEspacio = reserva.getEspacio().getId();
 		DateTime start, end;

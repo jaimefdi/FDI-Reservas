@@ -257,7 +257,7 @@ public class ReservasRestController {
 	
 	@RequestMapping(value="/nuevaReservaAJAX",method=RequestMethod.POST)
     public void crearReservaAJAX(@RequestBody ReservaDTO rf) throws ReservaSolapadaException {
-		User u = user_service.getCurrentUser();
+		User user = user_service.getCurrentUser();
 		Reserva r = new Reserva();
 		r.setComienzo(rf.getStart());
 		r.setFin(rf.getEnd());
@@ -265,13 +265,14 @@ public class ReservasRestController {
 		r.setEspacio(reserva_service.getEspacio(rf.getIdEspacio()));
 		r.setReservaColor(rf.getColor());
 		r.setReglasRecurrencia(rf.getReglasRecurrencia());
+		r.setUser(user);
 		Long idGrupo = rf.getIdGrupo();
 		if(idGrupo != 0){
 			r.setGrupoReserva(grupo_service.getGrupoReserva(idGrupo));
 		}
 		
 		try{
-			reserva_service.agregarReserva(r,u.getUsername());		
+			reserva_service.agregarReserva(r);		
 		}
 		catch(ReservaSolapadaException ex){
 			System.out.println(ex.getMessage());
