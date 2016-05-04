@@ -21,10 +21,10 @@ public class Espacio {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="ESPACIO_ID")
+	@Column(name="EspacioId")
 	private Long id;
 	@NotNull
-	private String nombre_espacio;
+	private String nombreEspacio;
 	@NotNull
 	private int capacidad;
 	private boolean microfono, proyector;
@@ -34,7 +34,7 @@ public class Espacio {
 	private List<Reserva> reservas;
 	
 	@ManyToOne(optional=true)
-	@JoinColumn(name="EDIFICIO_ID")
+	@JoinColumn(name="EdificioId")
 	private Edificio edificio;
 	
 	@Enumerated(EnumType.ORDINAL)
@@ -50,7 +50,7 @@ public class Espacio {
 	public Espacio(String nombre_espacio, int capacidad, boolean microfono, boolean proyector,
 			TipoEspacio tipoEspacio, Edificio edificio) {
 		super();
-		this.nombre_espacio = nombre_espacio;
+		this.nombreEspacio = nombre_espacio;
 		this.capacidad = capacidad;
 		this.microfono = microfono;
 		this.proyector = proyector;
@@ -69,12 +69,12 @@ public class Espacio {
 		this.deleted = deleted;
 	}
 
-	public Espacio(Long id_espacio){
-		id = id_espacio;
+	public Espacio(Long idEspacio){
+		id = idEspacio;
 	}
 
-	public String getNombre_espacio() {
-		return nombre_espacio;
+	public String getNombreEspacio() {
+		return nombreEspacio;
 	}
 
 	
@@ -110,8 +110,9 @@ public class Espacio {
 		this.proyector = proyector;
 	}
 
-	public void setNombre_espacio(String nombre_espacio) {
-		this.nombre_espacio = nombre_espacio;
+
+	public void setNombreEspacio(String nombreEspacio) {
+		this.nombreEspacio = nombreEspacio;
 	}
 
 	public int getCapacidad() {

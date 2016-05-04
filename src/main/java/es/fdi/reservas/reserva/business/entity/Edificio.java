@@ -18,16 +18,18 @@ public class Edificio {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="EDIFICIO_ID")
+	@Column(name="EdificioId")
 	private Long id;
 	@NotNull
-	private String nombre_edificio;
+	private String nombreEdificio;
+	@NotNull
+	private String direccion;
 	
 	@OneToMany(mappedBy="edificio")
 	private Set<Espacio> espacios;
 	
 	@ManyToOne(optional=true)
-	@JoinColumn(name="FACULTAD_ID")
+	@JoinColumn(name="FacultadId")
 	private Facultad facultad;
 
 	@NotNull
@@ -37,9 +39,9 @@ public class Edificio {
 		
 	}
 	
-	public Edificio(String name, Facultad facul){
-		nombre_edificio = name;
-		this.facultad = facul;
+	public Edificio(String name){
+		nombreEdificio = name;
+		
 		this.deleted = false;
 	}
 
@@ -59,14 +61,22 @@ public class Edificio {
 		this.id = id;
 	}
 
-	public String getNombre_edificio() {
-		return nombre_edificio;
+	public String getNombreEdificio() {
+		return nombreEdificio;
 	}
 
-	public void setNombre_edificio(String nombre_edificio) {
-		this.nombre_edificio = nombre_edificio;
+	public void setNombreEdificio(String nombreEdificio) {
+		this.nombreEdificio = nombreEdificio;
 	}
 	
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
 	public Set<Espacio> getEspacios() {
 		return espacios;
 	}

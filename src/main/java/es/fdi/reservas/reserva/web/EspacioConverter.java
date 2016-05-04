@@ -16,11 +16,11 @@ public class EspacioConverter implements Converter<Long, Espacio>{
 	} 
 	
 	@Override
-	public Espacio convert(Long id_espacio) {	
-		if(id_espacio == null)
+	public Espacio convert(Long idEspacio) {	
+		if(idEspacio == null)
 			throw new IllegalArgumentException();
 		
-		return reserva_service.getSpaceById(id_espacio);
+		return reserva_service.getEspacio(idEspacio);
 	}
 
 }

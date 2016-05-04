@@ -1,5 +1,8 @@
 package es.fdi.reservas.users.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.web.*;
 import es.fdi.reservas.users.business.boundary.UserService;
+import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.users.business.entity.UserDTO;
 
 @RestController
@@ -135,4 +139,24 @@ public class UserRestController {
 		reserva_service.restaurarEspacio(idEspacio);
 		return "redirect:/administrar/espacio/restaurar";
 	}
+	
+	
+	@RequestMapping(value = "/usuarios/tag/{tagName}", method = RequestMethod.GET)
+	public List<UserDTO> usuariosFiltro(@PathVariable("tagName") String tagName) {
+		
+		List<UserDTO> result = new ArrayList<>();
+		List<User> usuarios = new ArrayList<>();
+
+		usuarios = user_service.getUsuariosPorTagName(tagName);
+				
+		for(User u : usuarios) {
+			result.add(UserDTO.fromUserDTO(u));
+		}
+		 
+		return result;
+	}
+	
+	
+	
+	
 }

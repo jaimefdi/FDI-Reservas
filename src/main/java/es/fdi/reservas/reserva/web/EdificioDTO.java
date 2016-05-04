@@ -5,15 +5,15 @@ import es.fdi.reservas.reserva.business.entity.Edificio;
 public class EdificioDTO {
 
 	private Long id;
-	private String nombre_edificio;
-	private Long idFacultad;
+	private String nombreEdificio;
+	private String direccion;
 	
 	public EdificioDTO(){}
 	
-	public EdificioDTO(Long id, String spacename, Long idFacultad){
+	public EdificioDTO(Long id, String nombre, String dir){
 		this.id = id;
-		this.nombre_edificio = spacename;
-		this.idFacultad = idFacultad;
+		this.nombreEdificio = nombre;
+		this.direccion = dir;
 	}
 
 	public Long getId() {
@@ -25,23 +25,23 @@ public class EdificioDTO {
 	}
 
 
-	public Long getIdFacultad() {
-		return idFacultad;
+	public String getNombreEdificio() {
+		return nombreEdificio;
 	}
 
-	public void setIdFacultad(Long idFacultad) {
-		this.idFacultad = idFacultad;
+	public void setNombreEdificio(String nombreEdificio) {
+		this.nombreEdificio = nombreEdificio;
 	}
 
-	public String getNombre_edificio() {
-		return nombre_edificio;
-	}
 
-	public void setNombre_edificio(String nombre_edificio) {
-		this.nombre_edificio = nombre_edificio;
-	}
+	public String getDireccion() {
+		return direccion;
+		}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+}
 
 	public static EdificioDTO fromEdificioDTO(Edificio e){
-		return new EdificioDTO(e.getId(), e.getNombre_edificio(), e.getFacultad().getId());
+		return new EdificioDTO(e.getId(), e.getNombreEdificio(), e.getDireccion());
 	}
 }

@@ -222,7 +222,7 @@ public class UserController {
 	@RequestMapping(value="/nuevoEspacio",method=RequestMethod.GET)
 	public ModelAndView nuevoEspacio(){
 		ModelAndView model = new ModelAndView("nuevoEspacio", "Espacio", new Espacio());
-		model.addObject("edificios", reserva_service.getAllBuildings());
+		model.addObject("edificios", reserva_service.getEdificios());
 		return model;
 	}
 	
@@ -245,5 +245,15 @@ public class UserController {
 		reserva_service.addNewEdificio(f);
 	    return "redirect:/administrar/edificios";
 		//return "nuevoUsuario";
+	}
+
+
+	@RequestMapping(value="/perfil", method=RequestMethod.GET)
+	public ModelAndView verPerfil(){
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("User", user_service.getCurrentUser());
+		model.addObject("view", "perfil");
+		
+	   return model;
 	}
 }

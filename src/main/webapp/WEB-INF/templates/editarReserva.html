@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Listado de espacios</title>
+</head>
+<body>
+
+<div class="container-fluid" th:fragment="contenido">
+
+<!-- Page Heading -->
+<div class="row">  
+	<div class="col-md-12">
+        <h1 class="page-header text-center">
+            <small>Editar</small>
+        </h1>
+    </div>                  
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-md-12">
+	   <form role="form" action="#" method="put">
+	   		<div class="col-md-6">
+	   		
+	   		<!-- Asunto --> 
+                 <div class="form-group">
+                     <label>Asunto:</label>
+                      <div>
+                         <input id="idAsunto" name="asunto" type="text" class="form-control" th:value="${Reserva.asunto}"/>
+                      </div>
+                 </div>
+                 
+                 <!-- Fecha inicio --> 
+                 <div class="form-group">
+                     <label>Desde:</label>                  
+		                <div class='input-group date' >
+			               <input th:value="${#joda.format(Reserva.comienzo, 'dd/MM/yyyy HH:mm')}" 
+			               		  th:readonly="readonly" name="comienzo" id="datetimepicker1" type='text' class="form-control" />
+			               <span class="input-group-addon">
+			                   <span class="fa fa-calendar"></span>
+			               </span>
+			            </div>                   
+                 </div>
+                 
+                 <!-- Fecha fin --> 
+                 <div class="form-group">
+                     <label>Hasta:</label>		        
+		                 <div class='input-group date' >
+			                <input th:value="${#joda.format(Reserva.fin, 'dd/MM/yyyy HH:mm')}" 
+			                	   th:readonly="readonly" name="fin" id="datetimepicker2" type='text' class="form-control" />
+			                <span class="input-group-addon">
+			                    <span class="fa fa-calendar"></span>
+			                </span>
+			             </div>                     
+                 </div>
+                 
+                 <!-- Grupo de Reservas --> 
+                 <div class="form-group">
+                     <label>Grupo:</label>                    
+                     <select id="selec_grupo" class="form-control" >            
+                   	   	<option value="0">Ninguno</option>
+                   	   	<option th:each="g : ${GruposReservas}"
+                   	   			th:text="${g.nombreGrupo}"
+                   	   			th:value="${g.id}"
+                   	   			th:selected="${Reserva.grupoReserva.id}==${g.id}">
+                   	   	</option>
+                   	 </select>
+                    <p class="small help-block">Agrega esta reserva a un grupo de reservas.</p>
+                 </div>
+               </div> 
+                 
+                <div class="col-md-6">
+	                <!-- Espacio  -->
+                    <div class="form-group">
+                       <label>Espacio: </label>
+                       <input type="text" th:value="${Reserva.espacio.nombreEspacio}" class="form-control" th:readonly="readonly"/>	
+                    </div>
+                    
+                	<!-- Color  -->
+                   <div class="form-group">
+                       <label>Color:</label>
+                        <div >
+                         	<div id="cp2" class="input-group colorpicker-component">
+							    <input name="reservaColor" type="text" th:value="${Reserva.reservaColor}" class="form-control" th:readonly="readonly"/>
+							    <span class="input-group-addon"><i></i></span>
+							</div>                        	                    	
+                        </div>
+                   </div>
+               
+                    <!-- Asistentes  -->
+                   <div class="form-group">
+                       <label>Asistentes:</label>
+                        <div class="ui-widget">                      
+						    <input id="autoUsuarios" type="text"  class="form-control" placeholder="Agrega invitados"/>				    							                       	                    	
+                        </div>
+                   </div>
+                   
+                   <div id="asistencia"></div>
+                  </div> 
+                  
+                   
+                   <div class="row">              	
+					    <div class="col-md-12 text-center">
+					         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>
+					    </div>                   
+				   </div>
+				   <!-- /.row -->
+	   </form>
+   </div>                  
+</div>
+<!-- /.row -->
+	
+
+
+<script th:inline="javascript">
+	var baseURL = /*[[@{/}]]*/ '/';
+	var idReserva = /*[[${Reserva.id}]]*/ '1';
+	var idEspacio = /*[[${Reserva.espacio.id}]]*/ '1';
+	var recurrenteId = /*[[${Reserva.recurrenteId}]]*/ '1';
+	var reglas = /*[[${Reserva.reglasRecurrencia}]]*/ '1';
+</script>
+<script src="../../js/editarReserva.js" th:src="@{/js/editarReserva.js}"></script>
+</div>
+
+            <!-- /.container-fluid -->
+
+</body>
+</html>	

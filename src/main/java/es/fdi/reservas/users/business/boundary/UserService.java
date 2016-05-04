@@ -109,4 +109,8 @@ public class UserService implements UserDetailsService{
 	}
 
 
+	public List<User> getUsuariosPorTagName(String tagName) {
+		return user_ropository.getUsuariosPorTagName(tagName);
+	}
+
 }

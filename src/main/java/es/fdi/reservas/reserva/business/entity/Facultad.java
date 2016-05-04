@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -18,17 +17,17 @@ public class Facultad {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="FACULTAD_ID")
+	@Column(name="FacultadId")
 	private Long id;
 	@NotNull
 	private String nombreFacultad;
 	@NotNull
-	private String dir;
+	private String webFacultad;
 	
 	@OneToMany(mappedBy="facultad")
 	private Set<Edificio> edificios;
 	
-	@ManyToMany(mappedBy="facultades")
+	@OneToMany(mappedBy="facultad")
 	private Set<User> usuarios;
 	
 	@NotNull
@@ -39,18 +38,12 @@ public class Facultad {
 	}
 	
 	
-	public Facultad(String nombreFacultad, String dir) {
-		super();
+	public Facultad(String nombreFacultad) {
 		
 		this.nombreFacultad = nombreFacultad;
-		this.dir = dir;
 		this.deleted = false;
 	}
 
-
-	public Facultad(String name){
-		this.nombreFacultad = name;
-	}
 
 	public Set<User> getUsuarios() {
 		return usuarios;
@@ -88,12 +81,13 @@ public class Facultad {
 		this.nombreFacultad = nombreFacultad;
 	}
 
-	public String getDir() {
-		return dir;
+
+	public String getWebFacultad() {
+		return webFacultad;
 	}
 
-	public void setDir(String dir) {
-		this.dir = dir;
+	public void setWebFacultad(String webFacultad) {
+		this.webFacultad = webFacultad;
 	}
 
 	public Set<Edificio> getEdificios() {

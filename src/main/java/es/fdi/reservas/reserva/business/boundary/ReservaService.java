@@ -1,25 +1,27 @@
 package es.fdi.reservas.reserva.business.boundary;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import es.fdi.reservas.reserva.business.control.EdificioRepository;
 import es.fdi.reservas.reserva.business.control.EspacioRepository;
 import es.fdi.reservas.reserva.business.control.FacultadRepository;
+import es.fdi.reservas.reserva.business.control.GrupoReservaRepository;
 import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
+import es.fdi.reservas.reserva.web.ReservaDTO;
 import org.springframework.data.domain.Page;
 
+
 import es.fdi.reservas.reserva.web.*;
-import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
+
 
 @Service
 public class ReservaService {
@@ -28,61 +30,110 @@ public class ReservaService {
 	private FacultadRepository facultad_repository;
 	private EdificioRepository edificio_repository;
 	private EspacioRepository espacio_repository;
+	private GrupoReservaRepository grupo_repository;
 	
 	@Autowired
-	public ReservaService(ReservaRepository rr, FacultadRepository fr, EdificioRepository er, EspacioRepository sr){
+	public ReservaService(ReservaRepository rr, FacultadRepository fr, EdificioRepository er, 
+							EspacioRepository sr, GrupoReservaRepository gr){
 		reserva_repository = rr;
 		facultad_repository = fr;
 		edificio_repository = er;
 		espacio_repository = sr;
+		grupo_repository = gr;
 	}
 
-	public List<Reserva> getAllReservations(String username) {
-		return reserva_repository.findByUsername(username);
+	private List<Reserva> getAllReservasConflictivas(Long idEspacio, DateTime start, DateTime end){
+		List<Reserva> resRecurrentes = new ArrayList<Reserva>();
+		List<Reserva> resConflictivas = new ArrayList<Reserva>();
+		List<Reserva> resAux = new ArrayList<Reserva>();
+		
+		resConflictivas = reserva_repository.reservasConflictivas(idEspacio, start, end); 
+
+		resRecurrentes = reserva_repository.reservasRecurrentes(idEspacio, start, end);
+		
+		for(Reserva r: resRecurrentes){
+			resAux.addAll(r.getInstanciasEvento());
+		}
+		resConflictivas.addAll(resAux);
+		
+		return resConflictivas;
+	}
+	
+	
+	public List<Reserva> getReservasUsuario(Long idUsuario) {
+		return reserva_repository.findByUserId(idUsuario);
 	}
 
-	public Reserva agregarReserva(Reserva reserva, String username) {
-		List<Reserva> reservas = reserva_repository.reservasConflictivas(reserva.getEspacio().getId(), reserva.getComienzo(), reserva.getFin());
+	public Reserva agregarReserva(Reserva reserva) {		
+		List<Reserva> reservas = new ArrayList<Reserva>();		
+		Long idEspacio = reserva.getEspacio().getId();
+		DateTime start, end;
+		// si la reserva es recurrente
+		if(!reserva.getReglasRecurrencia().isEmpty()){
+			//calcula el startRecurrencia y el endRecurrencia
+			reserva.rangoRecurrencias();
+			start = reserva.getStartRecurrencia();
+			end = reserva.getEndRecurrencia();	   
+		} 
+		// si la reserva es simple
+		else{
+			start = reserva.getComienzo();
+			end = reserva.getFin();
+		}
+		
+		reservas = getAllReservasConflictivas(idEspacio, start, end);
 		
 		for(Reserva r: reservas ){
-			if ( r.solapa(reserva.getComienzo(), reserva.getFin()) ) {
-				throw new ReservaSolapadaException(String.format("La reserva %d, solapa con la reserva %d", reserva.getId(), r.getId()));
+			if ( r.solapa(reserva) ) {
+				throw new ReservaSolapadaException(String.format("La reserva %s, solapa con la reserva %s", 
+						  reserva.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" + 
+				          reserva.getFin().toString("HH:mm"), 
+				          r.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" +
+				          r.getFin().toString("HH:mm")));
 			}
 		}
 		
-		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),username, reserva.getEspacio());
+		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),
+										   reserva.getUser(), reserva.getEspacio(),reserva.getStartRecurrencia(),
+										   reserva.getEndRecurrencia(),reserva.getReservaColor(),
+										   reserva.getRecurrenteId());
+		
+		nuevaReserva.setReglasRecurrencia(reserva.getReglasRecurrencia());
+		if(reserva.getGrupoReserva() != null){
+			nuevaReserva.setGrupoReserva(reserva.getGrupoReserva());
+		}
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		
 		return nuevaReserva;
 	}
 
-	public List<Reserva> getAllReservations() {
+	public List<Reserva> getReservas() {
 		return reserva_repository.findAll();
 	}
 
-	public Iterable<Edificio> getAllBuildings(){
+	public Iterable<Edificio> getEdificios(){
 		return edificio_repository.findAll();
 	}
 
 	// todas las reservas de un espacio
-	public List<Reserva> getReservations(long id_espacio) {
-		return reserva_repository.findByEspacio_Id(id_espacio);
+	public List<Reserva> getReservasEspacio(long idEspacio) {
+		return reserva_repository.findByEspacioId(idEspacio);
 	}
 	// todos los espacios de un edificio 
-	public List<Espacio> getAllSpaces(long id_edif) {
-		return espacio_repository.findByEdificio_Id(id_edif);
+	public List<Espacio> getEspaciosEdificio(long idEdificio) {
+		return espacio_repository.findByEdificioId(idEdificio);
 	}
 
-	public Espacio getSpaceById(long id_espacio) {
+	public Espacio getEspacio(long id_espacio) {
 		return espacio_repository.findOne(id_espacio);
 	}
 
-	public List<Espacio> getTypeSpaces(long id_edif, TipoEspacio id_tipoEspacio) {
-		return espacio_repository.findByEdificio_IdAndTipoEspacio(id_edif, id_tipoEspacio);
+	public List<Espacio> getTiposEspacio(long idEdificio, TipoEspacio idTipoEspacio) {
+		return espacio_repository.findByEdificioIdAndTipoEspacio(idEdificio, idTipoEspacio);
 	}
 
-	public Reserva getReservaById(long id_res) {
-		return reserva_repository.findOne(id_res);
+	public Reserva getReserva(long idReserva) {
+		return reserva_repository.findOne(idReserva);
 	}
 
 	public Iterable<Facultad> getFacultades() {
@@ -93,34 +144,49 @@ public class ReservaService {
 		return espacio_repository.findAll();
 	}
 
-	public List<Edificio> getEdificiosPorIdFacultad(long id_facultad) {
-		return edificio_repository.findByFacultad_Id(id_facultad);
+	public List<Edificio> getEdificiosFacultad(long idFacultad) {
+		return edificio_repository.findByFacultadId(idFacultad);
 	}
 
-	public Reserva editaReserva(ReservaFullCalendarDTO reservaActualizada) {
-		DateTime start = reservaActualizada.getStart().withTime(0, 0, 0, 0);
-		DateTime end = start.plusDays(1);
-		List<Reserva> reservas = reserva_repository.findByEspacio_IdAndComienzoBetween(reservaActualizada.getIdEspacio(), start, end);
+	public Reserva editarReservaSimple(ReservaDTO reservaActualizada) {
+		Reserva reserva = new Reserva();
+		reserva.setComienzo(reservaActualizada.getStart());
+		reserva.setFin(reservaActualizada.getEnd());
+		
+		Long idEspacio = reservaActualizada.getIdEspacio();
+		DateTime start = reservaActualizada.getStart();
+		DateTime end = reservaActualizada.getEnd();
+		
+		List<Reserva> reservas = getAllReservasConflictivas(idEspacio, start, end);
 		for(Reserva r: reservas ){
-			if ( r.solapa(reservaActualizada.getStart(), reservaActualizada.getEnd()) && ! reservaActualizada.getId().equals(r.getId())) {
-				throw new ReservaSolapadaException(String.format("La reserva %d, solapa con la reserva %d", reservaActualizada.getId(), r.getId()));
+			if ( r.solapa(reserva) && ! reservaActualizada.getId().equals(r.getId())) {
+				throw new ReservaSolapadaException(	String.format("La reserva %s, solapa con la reserva %s", 
+								  					reserva.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" + 
+								  					reserva.getFin().toString("HH:mm"), 
+								  					r.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" +
+								  					r.getFin().toString("HH:mm")));
 			}
 		}
+		
 		Reserva r = reserva_repository.findOne(reservaActualizada.getId());
 		r.setComienzo(reservaActualizada.getStart());
 		r.setFin(reservaActualizada.getEnd());
 		r.setAsunto(reservaActualizada.getTitle());
 		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
+		r.setReservaColor(reservaActualizada.getColor());
+		r.setGrupoReserva(grupo_repository.findOne(reservaActualizada.getIdGrupo()));
+		
 		return reserva_repository.save(r);
 	}
+	
 
 	public void eliminarReserva(long idReserva) {
 		reserva_repository.delete(idReserva);
 	}
 
-	public Page<Reserva> getReservasPaginadas(PageRequest pageRequest) {
-		return reserva_repository.findAll(pageRequest);
-	}
+	public Page<Reserva> getReservasUsuario(Long idUsuario, PageRequest pageRequest) {
+		return reserva_repository.findByUserId(idUsuario, pageRequest);
+	} 
 
 	public void eliminarEdificio(long idEdificio) {
 		//edificio_repository.delete(idEdificio);
@@ -139,8 +205,9 @@ public class ReservaService {
 	
 	public Edificio editarEdificio(EdificioDTO edificio){
 		Edificio e = edificio_repository.findOne(edificio.getId());
-		e.setNombre_edificio(edificio.getNombre_edificio());
-		e.setFacultad(facultad_repository.findOne(edificio.getIdFacultad()));
+
+		e.setNombreEdificio(edificio.getNombreEdificio());
+		
 		
 		return edificio_repository.save(e);
 	}
@@ -165,7 +232,6 @@ public class ReservaService {
 	public Facultad editarFacultad(FacultadDTO facultad){
 		Facultad f = facultad_repository.findOne(facultad.getId());
 		f.setNombreFacultad(facultad.getNombreFacultad());
-		f.setDir(facultad.getDir());
 		return facultad_repository.save(f);
 	}
 	
@@ -192,12 +258,10 @@ public class ReservaService {
 	
 	public Espacio editarEspacio(EspacioTipoDTO espacio){
 		Espacio e = espacio_repository.findOne(espacio.getId());
-		e.setNombre_espacio(espacio.getNombre_espacio());
-		e.setCapacidad(espacio.getCapacidad());
-		e.setMicrofono(espacio.isMicrofono());
-		e.setProyector(espacio.isProyector());
-		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
-		e.setEdificio(edificio_repository.findOne(espacio.getIdEdificio()));
+		e.setNombreEspacio(espacio.getNombreEspacio());
+		
+		//e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
+		//e.setEdificio(edificio_repository.findOne(espacio.getIdEdificio()));
 		return espacio_repository.save(e);
 	}
 
@@ -206,7 +270,7 @@ public class ReservaService {
 	}
 	
 	public Facultad addNewFacultad(Facultad facultad){
-		Facultad newFacultad = new Facultad(facultad.getNombreFacultad(), facultad.getDir());
+		Facultad newFacultad = new Facultad(facultad.getNombreFacultad());
 		newFacultad = facultad_repository.save(newFacultad);
 		
 		if (newFacultad != null){
@@ -218,11 +282,11 @@ public class ReservaService {
 	}
 	
 	public Espacio addNewEspacio(EspacioTipoDTO espacio){
-		Espacio newEspacio = new Espacio(espacio.getNombre_espacio(), espacio.getCapacidad(), espacio.isMicrofono(), espacio.isProyector(), 
-				TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()), edificio_repository.findOne(espacio.getIdEdificio()));
-		newEspacio = espacio_repository.save(newEspacio);
+		//Espacio newEspacio = new Espacio(espacio.getNombreEspacio(),true, true,null); 
+				//TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()), edificio_repository.findOne(espacio.getIdEdificio()));
+		//newEspacio = espacio_repository.save(newEspacio);
 		
-		return newEspacio;
+		return null;
 	}
 
 	public List<TipoEspacio> tiposDeEspacios(long idEdificio) {
@@ -231,10 +295,10 @@ public class ReservaService {
 
 	public Edificio addNewEdificio(EdificioDTO edificio) {
 		
-		Edificio newEdificio = new Edificio(edificio.getNombre_edificio(), facultad_repository.findOne(edificio.getIdFacultad()));
-		newEdificio = edificio_repository.save(newEdificio);
-		
-		return newEdificio;
+//		Edificio newEdificio = new Edificio(edificio.getNombre_edificio(), facultad_repository.findOne(edificio.getIdFacultad()));
+//		newEdificio = edificio_repository.save(newEdificio);
+//		
+		return null;
 		
 	}
 
@@ -272,6 +336,42 @@ public class ReservaService {
 		e.setDeleted(false);		
 		return espacio_repository.save(e);
 		
+	}
+
+	public Edificio getEdificio(long idEdificio) {
+		return edificio_repository.findOne(idEdificio);
+	}
+
+	public List<Reserva> getReservasEspacioDeMañana(long idEspacio) {
+		return reserva_repository.reservasEspacioDeMañana(idEspacio);
+	}
+
+	public List<Reserva> getReservasEspacioDeTarde(long idEspacio) {
+		return reserva_repository.reservasEspacioDeTarde(idEspacio);
+	}
+
+	public void editarReglasRecurrencia(ReservaDTO rf) {
+		Reserva r = reserva_repository.findOne(rf.getId());
+		List<String> s = rf.getReglasRecurrencia();
+		int i = 0;
+		while(i < s.size()){
+			String[] w = s.get(i).split(":");
+			if(r.getRegla(w[0]) != -1){
+				r.addValorRegla(w[0], w[1]);
+			}
+			else{
+				r.addReglaRecurrente(s.get(i));
+			}
+			
+			i++;
+		}
+		
+		reserva_repository.save(r);
+		
+	}
+
+	public List<Reserva> getReservasGrupo(long idGrupo, long idUsuario) {
+		return reserva_repository.findByGrupoReservaIdAndUserId(idGrupo, idUsuario);
 	}
 
 	

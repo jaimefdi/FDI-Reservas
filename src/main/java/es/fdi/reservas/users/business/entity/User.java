@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
@@ -25,14 +27,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.business.entity.GrupoReserva;
+import es.fdi.reservas.reserva.business.entity.Reserva;
 
+
+@SuppressWarnings("serial")
 @Entity
 public class User implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="User_Id")
+	@Column(name="UserId")
 	private Long id;
+	
 	@Size(min=3, max=20, message="La longitud debe estar entre 3 y 20")
 	private String username;
 	
@@ -52,10 +59,16 @@ public class User implements UserDetails{
 	@CollectionTable(name="UserRole", joinColumns=@JoinColumn(name="user"),  uniqueConstraints=@UniqueConstraint(columnNames={"user", "role"}))
 	private Collection<UserRole> roles;
 	
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name="UserFacultades", joinColumns={@JoinColumn(name="user")}, inverseJoinColumns={@JoinColumn(name="FACULTAD_ID")})
-	private Set<Facultad> facultades;
+	@OneToMany(mappedBy="user")
+	private Set<Reserva> reservas;
 	
+	@OneToMany(mappedBy="user")
+	private Set<GrupoReserva> gruposReservas;
+	
+	@ManyToOne(optional=true)
+	@JoinColumn(name="FacultadId")
+	private Facultad facultad;
+
 
 	public User() {
 		
@@ -66,7 +79,6 @@ public class User implements UserDetails{
 		this.email = email;
 		this.enabled = true;
 		this.roles = new ArrayList<UserRole>();
-		this.facultades = new HashSet<Facultad>();
 	}
 	
 	public String getPassword() {
@@ -97,6 +109,25 @@ public class User implements UserDetails{
 		return id;
 	}
 	
+	
+	public Set<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(Set<Reserva> reservas) {
+		this.reservas = reservas;
+	}
+	
+	
+
+	public Set<GrupoReserva> getGruposReservas() {
+		return gruposReservas;
+	}
+
+	public void setGruposReservas(Set<GrupoReserva> gruposReservas) {
+		this.gruposReservas = gruposReservas;
+	}
+
 	public void addRole(UserRole role) {
 		this.roles.add(role);
 	}
@@ -133,21 +164,14 @@ public class User implements UserDetails{
 		this.enabled = en;
 	}
 
-	public Set<Facultad> getFacultades() {
-		return facultades;
+	public Facultad getFacultad() {
+		return facultad;
 	}
 
-	public void setFacultades(Set<Facultad> facultades) {
-		this.facultades = facultades;
+	public void setFacultad(Facultad facultad) {
+		this.facultad = facultad;
 	}
 	
-	public void addFacultad(Facultad f){
-		this.facultades.add(f);
-	}
-	
-	public void removeFacultad(Facultad f){
-		this.facultades.remove(f);
-	}
 	
 	
 }

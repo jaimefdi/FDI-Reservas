@@ -1,7 +1,6 @@
 package es.fdi.reservas.reserva.business.control;
 
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +12,6 @@ import es.fdi.reservas.reserva.business.entity.Facultad;
 @Repository
 public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 
-	public List<Edificio> findByFacultad_Id(Long id_facul);
 	
 	@Query("select f from #{#entityName} f where f.deleted=false")
 	List<Edificio> findAll();
@@ -24,4 +22,7 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 	@Modifying
 	@Query("update #{#entityName} e set e.deleted=true where e.id= :idEdificio")
 	void softDelete(@Param("idEdificio") String idEdificio);
+
+	public List<Edificio> findByFacultadId(Long idFacultad);
+
 }
