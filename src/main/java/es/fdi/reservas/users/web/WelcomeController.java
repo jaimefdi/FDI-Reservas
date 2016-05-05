@@ -18,8 +18,8 @@ public class WelcomeController {
         if (roles.contains("ROLE_ADMIN")) {
             return "redirect:/admin/administrar";
         }
-        if (roles.contains("ROLE_SECRE")) {
-            return "redirect:/secre/gestion-reservas/page/1";
+        if (roles.contains("ROLE_GESTOR")) {
+            return "redirect:/gestor/gestion-reservas/page/1";
         }
         return "redirect:/mis-reservas/page/1";
     }

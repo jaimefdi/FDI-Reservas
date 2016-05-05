@@ -144,9 +144,9 @@ public class ReservaController {
 		r.setEspacio(e);	
 		model.addObject("User", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
-		model.addObject("allSpaces", reserva_service.getAllSpaces(id_edif));
+		model.addObject("allSpaces", reserva_service.getEspacio(idEdificio));
 		model.addObject("view", "reservas-aula-paso2");
-		model.addObject("url","/edificio/" + id_edif + "/espacio/" + id_espacio );
+		model.addObject("url","/edificio/" + idEdificio + "/espacio/" + idEspacio );
 		model.addObject("Reservas", reserva_service.getReservasUsuario(user.getUsername()));
 		model.addObject("GruposReservas", grupo_service.gruposReservas());
 		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
@@ -168,9 +168,11 @@ public class ReservaController {
         return model;
     }
 	
-	
+	/*
 	@RequestMapping(value="/reservas-fecha", method=RequestMethod.GET)
     public ModelAndView reservaPorFecha() {
+		return new ModelAndView();
+	}*/
 	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.GET)
     public ModelAndView verGrupo(@PathVariable("idGrupo") long idGrupo) {
 		ModelAndView model = new ModelAndView("index");
@@ -185,33 +187,6 @@ public class ReservaController {
         return model;
     }
 	
-	
-	@RequestMapping(value="/secre/gestion-reservas/page/{pageNumber}", method=RequestMethod.GET)
-    public String gestiona_reservas(@PathVariable Integer pageNumber, Model model) {
-		User u = user_service.getCurrentUser();
-		
-		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest);
-        
-        model.addAttribute("currentResults", currentResults);
-    
-        int current = currentResults.getNumber() + 1;
-        int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
-
-        model.addAttribute("beginIndex", begin);
-        model.addAttribute("endIndex", end);
-        model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
-		List<EstadoReserva> lista=new ArrayList<EstadoReserva>();
-		lista.add(EstadoReserva.CONFIRMADA);
-		lista.add(EstadoReserva.PENDIENTE);
-		lista.add(EstadoReserva.DENEGADA);
-		model.addAttribute("estadoReserva", lista);
-		model.addAttribute("view", "secre/gestion-reservas");
-		
-        return "secre/index";
-    }
 	
 	@RequestMapping(value="/grupo/nuevo", method=RequestMethod.GET)
     public ModelAndView crearGrupo() {
@@ -244,47 +219,4 @@ public class ReservaController {
         return "index";
     }
 	
-	@RequestMapping(value="/secre/gestion-reservas/page/{pageNumber}/user/{user}", method=RequestMethod.GET)
-    public String gestiona_reservas_usuario(@PathVariable String user, @PathVariable Integer pageNumber, Model model) {
-		User u = user_service.getCurrentUser();
-		
-		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Reserva> currentResults = reserva_service.getReservasPaginadasUser(pageRequest, user);
-        
-        model.addAttribute("currentResults", currentResults);
-    
-        int current = currentResults.getNumber() + 1;
-        int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
-
-        model.addAttribute("beginIndex", begin);
-        model.addAttribute("endIndex", end);
-        model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
-		model.addAttribute("view", "secre/gestion-reservas");
-		
-        return "secre/index";
-    }
-	
-	@RequestMapping(value="/secre/gestion-reservas/page/{pageNumber}/sala/{sala}", method=RequestMethod.GET)
-    public String gestiona_reservas_usuario(@PathVariable Long sala, @PathVariable Integer pageNumber, Model model) {
-		User u = user_service.getCurrentUser();
-		
-		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest, sala);
-        
-        model.addAttribute("currentResults", currentResults);
-    
-        int current = currentResults.getNumber() + 1;
-        int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
-
-        model.addAttribute("beginIndex", begin);
-        model.addAttribute("endIndex", end);
-        model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
-		model.addAttribute("view", "secre/gestion-reservas");
-		
-        return "secre/index";
-    }
 }

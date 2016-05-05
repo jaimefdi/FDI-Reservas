@@ -168,6 +168,12 @@ public class ReservaService {
 		reserva_repository.delete(idReserva);
 	}
 
+	public Page<Reserva> getTodasReservasPaginadas(PageRequest pageRequest) {
+		List<Reserva> lista = reserva_repository.findAll();
+		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
+		return pagina;
+	}
+	
 	public Page<Reserva> getReservasPaginadasUser(PageRequest pageRequest, String user) {
 		List<Reserva> lista = reserva_repository.findByUsername(user);
 		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
@@ -175,7 +181,7 @@ public class ReservaService {
 	}
 	
 	public Page<Reserva> getReservasPaginadas(PageRequest pageRequest, Long sala) {
-		List<Reserva> lista = reserva_repository.findByEspacio_Id(sala);
+		List<Reserva> lista = reserva_repository.findByEspacioId(sala);
 		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
 		return pagina;
 	}

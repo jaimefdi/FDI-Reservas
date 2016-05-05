@@ -44,7 +44,7 @@
 							th:attr="id=${r.id},data-id=${r.id},data-start=${#joda.isoDateTime(r.comienzo)},data-end=${#joda.isoDateTime(r.fin)},data-espacio=${r.espacio.id}, data-estado=${r.estadoReserva}, data-username=${r.username}">
 							<td th:text="${r.username}"> Usuario </td>
 							<td th:text="${r.asunto}">Recuperacion de clase</td>
-							<td th:text="${r.espacio.nombre_espacio}">Aula 9</td>
+							<td th:text="${r.espacio.nombreEspacio}">Aula 9</td>
 							<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
 							<td th:text="${#joda.format(r.fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
 							<td th:if="${r.estadoReserva.toString() == 'Confirmada'}" class=" text-center"><span
@@ -170,7 +170,7 @@
                    <div class="form-group">
                       <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
                      <div class="col-md-10">
-                          <p id="nombre_espacio" class="form-control-static" >yyyy</p>                     
+                          <p id="nombreEspacio" class="form-control-static" >yyyy</p>                     
                      </div>
                    </div>
                    
@@ -228,7 +228,7 @@
 	 		$('#modalEditarReserva #datetimepicker1').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
 	 		$('#modalEditarReserva #datetimepicker2').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
 	 		
-	 		$('#modalEditarReserva #nombre_espacio').text(espacio);
+	 		$('#modalEditarReserva #nombreEspacio').text(espacio);
 	 		$("#selec_estadoReserva option").filter(function() {
 	 		    //may want to use $.trim in here
 	 		    return $(this).text() == reserva.estadoReserva; 
