@@ -11,6 +11,8 @@ import es.fdi.reservas.reserva.business.entity.GrupoReserva;
 public interface GrupoReservaRepository extends JpaRepository<GrupoReserva, Long>{
 
 	@Query("from GrupoReserva g where lower(g.nombreGrupo) like lower(concat('%',:nombreGrupo, '%'))")
-	List<GrupoReserva> getGruposPorTagName(@Param("nombreGrupo") String nombreGrupo);
+	public List<GrupoReserva> getGruposPorTagName(@Param("nombreGrupo") String nombreGrupo);
+	
+	public List<GrupoReserva> findByUserId(Long idUsuario);
 
 }

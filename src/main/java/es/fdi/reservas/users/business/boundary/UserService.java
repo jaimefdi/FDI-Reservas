@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,10 +13,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
-import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.control.UserRepository;
 import es.fdi.reservas.users.business.entity.User;
+import es.fdi.reservas.users.business.entity.UserDTO;
 import es.fdi.reservas.users.business.entity.UserRole;
 
 
@@ -77,16 +79,42 @@ public class UserService implements UserDetailsService{
 	public void eliminarUsuario(long idUser) {
 		user_ropository.delete(idUser);
 	}
+	
+	public User editarUserDeleted(Long idUser){
+		User f = user_ropository.findOne(idUser);
+		f.setEnabled(false);
+		return user_ropository.save(f);
+	}
 
-	public User editaUsuario(User userActualizado) {
+	public User editaUsuario(UserDTO userActualizado) {
 		
 		User u = user_ropository.findOne(userActualizado.getId());
 		u.setUsername(userActualizado.getUsername());
-		u.setEmail(userActualizado.getUsername());
+		u.setEmail(userActualizado.getEmail());
 		u.setEnabled(userActualizado.isEnabled());
 		return user_ropository.save(u);
 		
 		
+	}
+	
+	public Page<User> getUsuariosPaginados(PageRequest pageRequest) {
+		return user_ropository.findAll(pageRequest);
+	}
+
+	public User restaurarUser(long idUser) {
+		User f = user_ropository.findOne(idUser);
+		f.setEnabled(true);
+		return user_ropository.save(f);		
+	}
+
+	public List<User> getEliminados() {
+		
+		return user_ropository.recycleBin();
+	}
+
+
+	public List<User> getUsuariosPorTagName(String tagName) {
+		return user_ropository.getUsuariosPorTagName(tagName);
 	}
 
 	public List<User> getUsuariosPorTagName(String tagName) {

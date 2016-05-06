@@ -14,11 +14,11 @@ import es.fdi.reservas.reserva.business.entity.Reserva;
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Long>{
 
-	public List<Reserva> findByUsername(String username);  
+	public List<Reserva> findByUserId(long idUsuario);  
 
 	public List<Reserva> findByEspacioId(long idEspacio);
 	
-	public Page<Reserva> findByUsername(String username, Pageable pageable); 
+	public Page<Reserva> findByUserId(long idUsuario, Pageable pageable); 
 
   // http://stackoverflow.com/questions/18082276/spring-data-querying-datetime-with-only-date
 	public List<Reserva> findByEspacioIdAndComienzoBetween(Long idEspacio, DateTime start, DateTime end); 
@@ -37,7 +37,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long>{
 	@Query("FROM Reserva r WHERE (r.espacio.id = :idEspacio) AND (DATE_FORMAT(r.comienzo,'%H:%i') >= '15:00')")
 	public List<Reserva> reservasEspacioDeTarde(@Param("idEspacio")Long idEspacio);
 
-	public List<Reserva> findByGrupoReservaId(long idGrupo);
+	public List<Reserva> findByGrupoReservaIdAndUserId(Long idGrupo, Long idUsuario);
 	
 	
 }

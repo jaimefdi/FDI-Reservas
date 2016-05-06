@@ -2,6 +2,7 @@ package es.fdi.reservas.reserva.business.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,6 +28,7 @@ public class Espacio {
 	@NotNull
 	private int capacidad;
 	private boolean microfono, proyector;
+	//private String nombre_edificio;
 	
 	@OneToMany(mappedBy="espacio", fetch=FetchType.EAGER)
 	private List<Reserva> reservas;
@@ -38,11 +40,35 @@ public class Espacio {
 	@Enumerated(EnumType.ORDINAL)
 	private TipoEspacio tipoEspacio;
 
-
+	@NotNull
+	private boolean deleted;
+	
 	public Espacio(){
 		
 	}
 	
+	public Espacio(String nombre_espacio, int capacidad, boolean microfono, boolean proyector,
+			TipoEspacio tipoEspacio, Edificio edificio) {
+		super();
+		this.nombreEspacio = nombre_espacio;
+		this.capacidad = capacidad;
+		this.microfono = microfono;
+		this.proyector = proyector;
+		this.tipoEspacio = tipoEspacio;
+		this.edificio = edificio;
+		this.deleted = false;
+	}
+
+
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Espacio(Long idEspacio){
 		id = idEspacio;
 	}

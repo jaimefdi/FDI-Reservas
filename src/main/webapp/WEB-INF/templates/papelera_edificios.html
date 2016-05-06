@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+    
+	<title>UCM RESERVAS - Restaurar edificios</title>
+    
+</head>
+<body>
+<div class="container-fluid" th:fragment="contenido">
+	<div class="row">
+	    <div class="col-md-12">
+	        <h1 class="page-header text-center">
+	            Administrar
+	        </h1>
+	    </div>
+	</div>
+	<!-- /.row -->
+	<div class="row">
+    	<div class="col-md-12">
+            <h1 class="page-header text-center">
+                <small>Restaurar edificios</small>
+            </h1>
+        </div>
+    </div>
+           <!-- /.row -->
+
+    <div class="row">
+		<div class="col-md-8 col-md-offset-2">
+    	
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(edificios)}">
+           			<i class="fa fa-ban fa-5x"></i>
+           			<h4>¡Uups! No hay ningún edificio.</h4>
+      		</div> 
+
+          	<div class="table-responsive" th:unless="${#lists.isEmpty(edificios)}">
+              <table class="table table-bordered table-hover">
+                  <thead>
+                      <tr>
+                      	
+                          <th>Nombre</th>
+                          <th>Facultad</th>
+                          <th>Acción</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr th:each="r : ${edificios}"
+                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombre_edificio},idFacultad=${r.facultad.id}">
+                      	
+                          <td th:text="${r.nombre_edificio}"></td>
+                          <td th:text="${r.facultad.nombreFacultad}"></td>
+                          <td><a th:href="@{'/administrar/edificio/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
+                      </tr> 
+                      <!-- <tr>
+                      	<td><input id="btn-crear" type="text" class="btn btn-default" value="Añadir edificio"/></td>
+                      	<td></td>
+                      </tr>    --> 
+                      
+                  </tbody>
+              </table>
+              <a th:href="@{'/nuevoEdificio'}"><input type="button" class="btn btn-default" value="Añadir edificio"/></a> 
+                
+          	</div> 
+        <!-- /.table-responsive-->
+    
+		</div>
+	</div>
+
+ 
+</div>
+</body>
+</html>

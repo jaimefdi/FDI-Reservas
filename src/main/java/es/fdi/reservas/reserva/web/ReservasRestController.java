@@ -38,9 +38,10 @@ public class ReservasRestController {
 	}
 	
 	@RequestMapping(value="{idEspacio}/eventos", method=RequestMethod.GET)
-	public List<ReservaFullCalendarDTO> reservasEspacio(@PathVariable("idEspacio") long idEspacio){
+	public List<ReservaDTO> reservasEspacio(@PathVariable("idEspacio") long idEspacio){
 		List<Reserva> reservasEspacio = reserva_service.getReservasEspacio(idEspacio);
 		List<Reserva> reservasTotales = new ArrayList<>();
+		User user = user_service.getCurrentUser();
 		for(Reserva r : reservasEspacio) {
 			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
@@ -49,17 +50,24 @@ public class ReservasRestController {
 				reservasTotales.add(r);
 		}
 		
-		List<ReservaFullCalendarDTO> result = new ArrayList<>();
+		List<ReservaDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
-			result.add(ReservaFullCalendarDTO.fromReserva(r));
+			if(user.getUsername().equals(r.getUser().getUsername())){
+				result.add(ReservaDTO.fromReservaEditable(r));
+			}
+			else{
+				result.add(ReservaDTO.fromReserva(r));
+			}
+			
 		}
 		 
 		return result;
 	}
 	
 	@RequestMapping(value="{idGrupo}/reservasGrupo", method=RequestMethod.GET)
-	public List<ReservaFullCalendarDTO> reservasGrupo(@PathVariable("idGrupo") long idGrupo){
-		List<Reserva> reservasGrupo = reserva_service.getReservasGrupo(idGrupo);
+	public List<ReservaDTO> reservasGrupo(@PathVariable("idGrupo") long idGrupo){
+		User user = user_service.getCurrentUser();
+		List<Reserva> reservasGrupo = reserva_service.getReservasGrupo(idGrupo, user.getId());
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : reservasGrupo) {
 			if(!r.getReglasRecurrencia().isEmpty()){
@@ -69,18 +77,16 @@ public class ReservasRestController {
 				reservasTotales.add(r);
 		}
 		
-		List<ReservaFullCalendarDTO> result = new ArrayList<>();
+		List<ReservaDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
-			result.add(ReservaFullCalendarDTO.fromReserva(r));
+			result.add(ReservaDTO.fromReservaEditable(r));
 		}
-		 
-		return result;
-	}
 	
 	@RequestMapping(value="{idEspacio}/eventosMan", method=RequestMethod.GET)
-	public List<ReservaFullCalendarDTO> reservasEspacioDeMañana(@PathVariable("idEspacio") long idEspacio){
+	public List<ReservaDTO> reservasEspacioDeMañana(@PathVariable("idEspacio") long idEspacio){
 		List<Reserva> reservasEspacio = reserva_service.getReservasEspacioDeMañana(idEspacio);
 		List<Reserva> reservasTotales = new ArrayList<>();
+		User user = user_service.getCurrentUser();
 		for(Reserva r : reservasEspacio) {
 			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
@@ -88,19 +94,12 @@ public class ReservasRestController {
 			else
 				reservasTotales.add(r);
 		}
-		
-		List<ReservaFullCalendarDTO> result = new ArrayList<>();
-		for(Reserva r : reservasTotales) {
-			result.add(ReservaFullCalendarDTO.fromReserva(r));
-		}
-		 
-		return result;
-	}
 	
 	@RequestMapping(value="{idEspacio}/eventosTar", method=RequestMethod.GET)
-	public List<ReservaFullCalendarDTO> reservasEspacioDeTarde(@PathVariable("idEspacio") long idEspacio){
+	public List<ReservaDTO> reservasEspacioDeTarde(@PathVariable("idEspacio") long idEspacio){
 		List<Reserva> reservasEspacio = reserva_service.getReservasEspacioDeTarde(idEspacio);
 		List<Reserva> reservasTotales = new ArrayList<>();
+		User user = user_service.getCurrentUser();
 		for(Reserva r : reservasEspacio) {
 			if(!r.getReglasRecurrencia().isEmpty()){
 				reservasTotales.addAll(r.getInstanciasEvento());
@@ -111,16 +110,21 @@ public class ReservasRestController {
 		
 		List<ReservaFullCalendarDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
-			result.add(ReservaFullCalendarDTO.fromReserva(r));
+			if(user.getUsername().equals(r.getUser().getUsername())){
+				result.add(ReservaDTO.fromReservaEditable(r));
+			}
+			else{
+				result.add(ReservaDTO.fromReserva(r));
+			}
 		}
 		 
 		return result;
 	}
 	
 	@RequestMapping(value="/misEventos", method=RequestMethod.GET)
-	public List<ReservaFullCalendarDTO> reservasUsuario(){
+	public List<ReservaDTO> reservasUsuario(){
 		User user = user_service.getCurrentUser();
-		List<Reserva> userReser = reserva_service.getReservasUsuario(user.getUsername());
+		List<Reserva> userReser = reserva_service.getReservasUsuario(user.getId());
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : userReser) {
 			if(!r.getReglasRecurrencia().isEmpty()){
@@ -130,9 +134,9 @@ public class ReservasRestController {
 				reservasTotales.add(r);
 		}
 		
-		List<ReservaFullCalendarDTO> result = new ArrayList<>();
+		List<ReservaDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
-			result.add(ReservaFullCalendarDTO.fromReserva(r));
+			result.add(ReservaDTO.fromReservaEditable(r));
 		}
 		 
 		return result;
@@ -188,9 +192,19 @@ public class ReservasRestController {
     }
 	
 	
-	@RequestMapping(value = "/reserva/{idReserva}", method = RequestMethod.PUT)
-	public void editarReserva(@PathVariable("idReserva") long idReserva, @RequestBody ReservaFullCalendarDTO reservaActualizada) {
-		//reserva_service.editaReserva(reservaActualizada);
+	@RequestMapping(value = "/reserva/editar/{idReserva}", method = RequestMethod.PUT)
+	public void editarReserva(@PathVariable("idReserva") long idReserva, @RequestBody ReservaDTO reservaActualizada) {
+		try{
+			if(reservaActualizada.esRecurrente()){
+				//reserva_service.editarReservaRecurrente(reservaActualizada);
+			}
+			else{
+				reserva_service.editarReservaSimple(reservaActualizada);
+			}
+		}
+		catch(ReservaSolapadaException ex){
+			System.out.println(ex.getMessage());
+		}
 	}
 	
 	
@@ -226,8 +240,8 @@ public class ReservasRestController {
 	
 	
 	@RequestMapping(value="/nuevaReservaAJAX",method=RequestMethod.POST)
-    public void crearReservaAJAX(@RequestBody ReservaFullCalendarDTO rf) throws ReservaSolapadaException {
-		User u = user_service.getCurrentUser();
+    public void crearReservaAJAX(@RequestBody ReservaDTO rf) throws ReservaSolapadaException {
+		User user = user_service.getCurrentUser();
 		Reserva r = new Reserva();
 		r.setComienzo(rf.getStart());
 		r.setFin(rf.getEnd());
@@ -235,8 +249,14 @@ public class ReservasRestController {
 		r.setEspacio(reserva_service.getEspacio(rf.getIdEspacio()));
 		r.setReservaColor(rf.getColor());
 		r.setReglasRecurrencia(rf.getReglasRecurrencia());
+		r.setUser(user);
+		Long idGrupo = rf.getIdGrupo();
+		if(idGrupo != 0){
+			r.setGrupoReserva(grupo_service.getGrupoReserva(idGrupo));
+		}
+		
 		try{
-			reserva_service.agregarReserva(r,u.getUsername());
+			reserva_service.agregarReserva(r);		
 		}
 		catch(ReservaSolapadaException ex){
 			System.out.println(ex.getMessage());
@@ -247,9 +267,15 @@ public class ReservasRestController {
 	
 	
 	@RequestMapping(value="/editarReserRecurrente",method=RequestMethod.POST)
-    public void editarReserRecurrente(@RequestBody ReservaFullCalendarDTO rf){		
-		reserva_service.editarReservaRecurrente(rf);
+    public void editarReserRecurrente(@RequestBody ReservaDTO rf){		
+		reserva_service.editarReglasRecurrencia(rf);
     }
+	
+	
+	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.DELETE)
+	public void eliminarGrupo(@PathVariable("idGrupo") long idGrupo){
+		grupo_service.eliminarGrupo(idGrupo);
+	}
 	
 	
 	

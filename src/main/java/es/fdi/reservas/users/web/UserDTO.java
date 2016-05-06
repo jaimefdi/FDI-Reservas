@@ -41,5 +41,4 @@ public class UserDTO {
 	public static UserDTO fromUserDTO(User u){
 		return new UserDTO(u.getId().toString(), u.getUsername(), u.getEmail());
 	}
-
 }

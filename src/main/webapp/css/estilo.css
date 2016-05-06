@@ -3,6 +3,10 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+a:hover{
+	text-decoration: none;
+}
+
 #content{
     padding-left: 0px;
 }
@@ -37,7 +41,7 @@ body {
 .top-nav>.open>a:hover,
 .top-nav>.open>a:focus {
     color: #fff;
-    background-color: #999;
+    background-color: #A94442;
 }
 
 .top-nav>.open>.dropdown-menu {
@@ -54,6 +58,7 @@ body {
 
 .top-nav>.open>.dropdown-menu>li>a {
     white-space: normal;
+    padding: 7px 15px;
 }
 
 ul.message-dropdown {
@@ -64,7 +69,8 @@ ul.message-dropdown {
 }
 
 li.message-preview {
-    width: 275px;
+    min-width: 275px;
+    max-width: 520px;
     border-bottom: 1px solid rgba(0,0,0,.15);
 }
 
@@ -131,6 +137,12 @@ ul.alert-dropdown {
    color: #FFF;
 }
 
+.img-sec{
+	width: 70px;
+	height: 70px;
+	margin: 5px;
+}
+
 /* media queries */
 @media(min-width:768px){
     body{
@@ -194,6 +206,11 @@ ul.alert-dropdown {
         margin-top: 0px;
         margin-bottom: 0px;
     }
+    
+    .img-sec{
+		width: 50px;
+		height: 50px;
+	}
 
 }
 
@@ -324,10 +341,10 @@ button.yellow{
 #btn-logout{
 	border:none;
 	background-color: transparent;
-	padding-left: 20px;
+	padding-top: 5px;
 }
 
-#filtro{
+.filtro{
 	background-color: #CCC;
 	padding: 10px 15px;
 	-border-radius: 4px;
@@ -351,58 +368,35 @@ button.yellow{
 }
 
 .btn-rec.yellow{
-	border: 2px solid #EEA236;
+	border: 2px solid transparent;
 	color: #EEA236;
 }
 
 .btn-rec.green{
-	border: 2px solid #4CAE4C;
+	border: 2px solid transparent;
 	color: #4CAE4C;
 }
 
 .btn-rec.blue{
-	border: 2px solid #2E6DA4;
+	border: 2px solid transparent;
 	color: #2E6DA4;
 }
 
 .btn-rec.red{
-	border: 2px solid #D9534F;
+	border: 2px solid transparent;
 	color: #D9534F;
 }
 
 .btn-rec.gray{
-	border: 2px solid #555;
+	border: 2px solid transparent;
 	color: #555;
 }
 
-.btn-rec.yellow:hover{
-	background: #EEA236;
-	color: #FFF;
-}
-
-.btn-rec.green:hover{
-	background: #4CAE4C;
-	color: #FFF;
-}
-
-.btn-rec.blue:hover{
-	background: #2E6DA4;
-	color: #FFF;
-}
-
-.btn-rec.red:hover{
-	background: #D9534F;
-	color: #FFF;
-}
-
-.btn-rec.gray:hover{
-	background:#555;
-	color: #FFF;
-}
 
 #repetir{
 	display:none;
 }
+
 
 
 
@@ -419,9 +413,10 @@ button.yellow{
    height: 100px;
  }
 
-.ui-menu > .ui-menu-item{
-	height: 60px;
-	padding:2px 2px 0px 2px ;
+.ui-menu > .ui-menu-item{	
+	list-style-image: none;
+	max-width: 520px;
+	padding:2px 3px;
 }
 
 .ui-autocomplete-input{
@@ -469,16 +464,6 @@ button.yellow{
 
 .edificio i{
 	color: #777;
-}
-
-ol{
-	list-style: none;
-	padding: 0px;
-}
-
-.alert{
-	margin-top: 10px;
-	padding-bottom: 5px;
 }
 
 /**/
@@ -542,7 +527,107 @@ ol{
 	padding-top:7px;
 }
 
+
+
+.ui-autocomplete {
+   max-height: 150px;
+   overflow-y: auto;
+   /* prevent horizontal scrollbar */
+   overflow-x: hidden;
+ }
+ /* IE 6 doesn't support max-height
+  * we use height instead, but this forces the menu to always be this tall
+  */
+ * html .ui-autocomplete {
+   height: 100px;
+ }
+
+.ui-menu > .ui-menu-item{
+	height: 60px;
+	padding:2px 2px 0px 2px ;
+}
+
+.ui-autocomplete-input{
+	width: 100%;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.ui-widget{
+	font-family: 'Open Sans', sans-serif;	
+}
+
+.ui-widget p{
+	margin-bottom: 2px;	
+}
+
+.ui-widget-content{
+	background: #fff;
+}
+
+
+.ui-menu .ui-state-focus,
+.ui-menu .ui-state-active{
+	margin: 0px;	
+}
+
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus{
+	border: none;
+	background: #dadada;
+	font-weight: normal;
+	color: #212121;
+}
+}
+
 #demo1{
 	max-height: 166px;
 	overflow-y: scroll;
+}
+
+.busq-grupos{
+	padding:5px 10px;
+}
+
+.modal-content,
+.popover{
+	border-radius: 0;	
+}
+
+.modal-header{
+	border: none;
+	padding: 10px 15px;
+}
+
+.modal-footer{
+	border: none;
+	padding-top: 0px;
+	padding-bottom: 15px;
+}
+
+#asistencia img{
+	margin: 1px;
+
+}
+
+.pagination>.active>span,
+.pagination>.active>span:hover{
+	background-color: #9D1616;
+	border-color: #9D1616;
+}
+
+.img-prin{
+	width: 400px;
+	max-height: 275px;
+	margin: 5px;
+}
+
+.panel-group .panel,
+.panel-group .panel-heading{
+	border: none;
+	border-radius: 0px;
+}
+
+td i{
+  margin: 0px 7px;	
 }

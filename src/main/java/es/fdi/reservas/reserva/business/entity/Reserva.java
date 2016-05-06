@@ -20,6 +20,8 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import es.fdi.reservas.users.business.entity.User;
+
 
 @Entity
 public class Reserva{
@@ -45,8 +47,10 @@ public class Reserva{
 	@Enumerated(EnumType.ORDINAL)
 	private EstadoReserva estadoReserva;
 	
-	@NotNull
-	private String username;
+	
+	@ManyToOne(optional=true)
+	@JoinColumn(name="UserId")
+	private User user;
 	
 	@ManyToOne(optional=true)
 	@JoinColumn(name="EspacioId")
@@ -65,19 +69,18 @@ public class Reserva{
 	private String recurrenteId;
 	
 
-
 	public Reserva(){
-		this.estadoReserva = EstadoReserva.CONFIRMADA;		
+		
 	}
 	
 	
-	public Reserva(String a, DateTime ini, DateTime fin, String userName, Espacio esp,
+	public Reserva(String a, DateTime ini, DateTime fin, User user, Espacio esp,
 				   DateTime startR, DateTime endR, String color, String recurrId){
 		this.asunto = a;
 		this.comienzo = ini;
 		this.fin = fin;
 		this.estadoReserva = EstadoReserva.CONFIRMADA;
-		this.username = userName;
+		this.user = user;
 		this.espacio = esp;
 		this.startRecurrencia = startR;
 		this.endRecurrencia = endR;
@@ -140,9 +143,15 @@ public class Reserva{
 	public void setFin(DateTime fecha_fin) {
 		this.fin = fecha_fin;
 	}
+	
 
-	public String getUsername() {
-		return username;
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User usuario) {
+		this.user = usuario;
 	}
 
 	public EstadoReserva getEstadoReserva() {
@@ -151,10 +160,6 @@ public class Reserva{
 
 	public void setEstadoReserva(EstadoReserva estadoReserva) {
 		this.estadoReserva = estadoReserva;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 
@@ -198,6 +203,14 @@ public class Reserva{
 		this.recurrenteId = recurrenteId;
 	}
 
+	public GrupoReserva getGrupoReserva() {
+		return grupoReserva;
+	}
+
+
+	public void setGrupoReserva(GrupoReserva grupoReserva) {
+		this.grupoReserva = grupoReserva;
+	}
 	
 	public int getRegla(String regla){
 		for(int i = 0; i < reglasRecurrencia.size(); i++){
@@ -389,7 +402,7 @@ public class Reserva{
 		List<RangoDateTime> rango = rangoRecurrencias();
 		
 		for(RangoDateTime r : rango){
-			Reserva reserva = new Reserva(asunto, r.getComienzo(), r.getFin(), username,
+			Reserva reserva = new Reserva(asunto, r.getComienzo(), r.getFin(), user,
 							              espacio, startRecurrencia, endRecurrencia, reservaColor,
 							              id + "_" + r.getComienzo().toString("dd/MM/yyyy"));
 								
@@ -402,7 +415,7 @@ public class Reserva{
 
 
 	public boolean solapa(Reserva r){
-	  if (r.getReglasRecurrencia().isEmpty()) {
+	  if (r.getReglasRecurrencia() == null) {
 		return solapaSimple(new RangoDateTime(r.getComienzo(), r.getFin()));
 	  } 
 	  else {

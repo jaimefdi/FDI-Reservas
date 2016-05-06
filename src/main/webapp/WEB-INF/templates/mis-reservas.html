@@ -22,61 +22,58 @@
 <div class="row">
 	<div class="col-md-2 col-md-offset-10 text-center">
 	    Ver como: 
-	    <span id="view-list" class="red" title="Lista"><i class="fa fa-list-ul"> </i></span>
-	    <span id="view-calendar" title="Calendario"><i class="fa fa-calendar"> </i> </span>
-		<!-- 
-		<div class="col-md-5 text-left" style="padding:0px;">Ver como: </div>
-		<div class="col-md-3" style="padding:0px;"><i id="view-list" class="fa fa-list-ul"> </i></div>
-		<div class="col-md-3" style="padding:0px;"><i id="view-calendar" class="fa fa-calendar"> </i></div>
-		 -->
-		
+	    <span id="iconoLista" class="red" title="Lista"><i class="fa fa-list-ul"> </i></span>
+	    <span id="iconoCalendario" title="Calendario"><i class="fa fa-calendar"> </i> </span>
 	</div>
 </div>
 <hr/>
-<!-- 
-<div class="col-md-10 col-md-offset-1 alert alert-danger alert-dismissible" role="alert">
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <p class="text-muted"> Better check yourself, you're not looking too good.</p>
-</div> -->
 
-<div id="lista" class="row" >
+<div id="vistaLista" class="row" >
 	<div  class="col-md-8 col-md-offset-2">
         
         <div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults.content)}">
-                <i class="fa fa-ban fa-5x"></i>
-                <h4>¡Uups! Todavía no has hecho ninguna reserva.</h4>
-           </div> 
+             <i class="fa fa-ban fa-5x"></i>
+             <h4>¡Uups! Todavía no has hecho ninguna reserva.</h4>
+        </div> 
 
-            <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults.content)}">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Asunto</th>
-                            <th>Espacio</th>
-                            <th>Desde</th>
-                            <th>Hasta</th>
-                            <th>Estado</th>
-                            
-                        </tr>
-                    </thead>
-					<tbody>
-						<tr th:each="r : ${currentResults}"
-							th:attr="id=${r.id},data-id=${r.id},data-start=${#joda.isoDateTime(r.comienzo)},data-end=${#joda.isoDateTime(r.fin)},data-espacio=${r.espacio.id}">
-							<td th:text="${r.asunto}">Recuperacion de clase</td>
-							<td th:text="${r.espacio.nombreEspacio}">Aula 9</td>
-							<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
-							<td th:text="${#joda.format(r.fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
-							<td th:if="${r.estadoReserva.toString() == 'Confirmada'}" class=" text-center"><span
-								class="label label-success">Confirmada</span></td>
-							<td th:if="${r.estadoReserva.toString() == 'Pendiente'}" class=" text-center"><span
-								class="label label-warning">Pendiente</span></td>
-							<td th:if="${r.estadoReserva.toString() == 'Denegada'}" class=" text-center"><span
-								class="label label-danger">Denegada</span></td>
-						</tr>
-					</tbody>                    
-                </table>
-            </div> 
-            <!-- /.table-responsive-->
+         <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults.content)}">
+             <table class="table table-bordered">
+                 <thead>
+                     <tr>
+                         <th>Asunto</th>
+                         <th>Espacio</th>
+                         <th>Desde</th>
+                         <th>Hasta</th>
+                         <th>Estado</th>
+                         <th>Acción</th>
+                         
+                     </tr>
+                 </thead>
+			     <tbody>
+					<tr th:each="r : ${currentResults}"
+						th:attr="id=${r.id}">
+						<td th:text="${#strings.abbreviate(r.asunto,18)}">Recuperacion de clase</td>
+						<td th:text="${r.espacio.nombreEspacio}">Aula 9</td>
+						<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
+						<td th:text="${#joda.format(r.fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
+						<td th:if="${r.estadoReserva.toString() == 'Confirmada'}" class=" text-center"><span
+							class="label label-success">Confirmada</span></td>
+						<td th:if="${r.estadoReserva.toString() == 'Pendiente'}" class=" text-center"><span
+							class="label label-warning">Pendiente</span></td>
+						<td th:if="${r.estadoReserva.toString() == 'Denegada'}" class=" text-center"><span
+							class="label label-danger">Denegada</span></td>
+						<td>
+							<a th:attr="data-id=${r.id}, data-asunto=${r.asunto}, data-start=${#joda.isoDateTime(r.comienzo)},
+									    data-end=${#joda.isoDateTime(r.fin)}, data-espacio=${r.espacio.nombreEspacio},
+									    data-grupo=${r.grupoReserva.nombreGrupo}, data-reservaColor=${r.reservaColor}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>						
+						</td>
+					</tr>
+				</tbody>                    
+             </table>
+         </div> 
+         <!-- /.table-responsive-->
         
     </div>
 
@@ -139,77 +136,86 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Editar reserva</h4>
+            <h4 class="modal-title" id="myModalLabel">Reserva</h4>
           </div>
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Reserva}" method="put">             
 				
-                 <!-- Asunto --> 
-                 <div class="form-group">
-                     <label for="ejemplo_2" class="col-md-2 control-label">Asunto:</label>
-                      <div class="col-md-10">
-                         <input id="idAsunto" name="asunto" type="text" class="form-control" placeholder="Introduce un asunto"/>
-                      </div>
-                 </div>
-                 
-                 <!-- Fecha inicio --> 
-                 <div class="form-group">
-                     <label for="ejemplo_3" class="col-md-3 control-label">Desde:</label>
-                     <div class="col-md-9">
-		                <div class='input-group date' >
-			               <input name="fecha_ini" id="datetimepicker1" type='text' class="form-control" />
-			               <span class="input-group-addon">
-			                   <span class="fa fa-calendar"></span>
-			               </span>
-			            </div>
-                     </div>
-                 </div>
-                 
-                 <!-- Fecha fin --> 
-                 <div class="form-group">
-                     <label for="ejemplo_3" class="col-md-3 control-label">Hasta:</label>
-		             <div class="col-md-9">
-		                 <div class='input-group date' >
-			                <input name="fecha_fin" id="datetimepicker2" type='text' class="form-control" />
-			                <span class="input-group-addon">
-			                    <span class="fa fa-calendar"></span>
-			                </span>
-			             </div>
-                      </div>
-                 </div>
-                 
-                 <!-- Tipo de espacio 
-                 <div class="col-md-4">
-                   <div class="form-group">
-                      <label for="ejemplo_1" class="col-md-3 control-label">Tipo:</label>
-                     <div class="col-md-9">
-                         <p class="form-control-static" >xxxx</p>                   
-                     </div>
+				 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-1 control-label">Asunto: </label>
+		                      <div class="col-md-11">
+		                         <p id="asunto" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
                    </div>
-                 </div> --> 
-                 
-                 <!-- Espacios --> 
-                
-                   <div class="form-group">
-                      <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
-                     <div class="col-md-10">
-                          <p id="nombre_espacio" class="form-control-static" >yyyy</p>                     
-                     </div>
-                   </div>
-                 
- 
-
+		         </div>
+		        
                  <div class="row">
-                     <div class="col-xs-6 col-md-6">
-                      <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
+                 	<div class="col-md-6">
+		                 <!-- Fecha inicio -->
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Desde: </label>
+		                     <div class="col-md-10">		         
+					               <p id="comienzo" class="form-control-static" ></p>		             
+		                     </div>
+		                 </div>
+	                 </div>
+	                 <div class="col-md-6">
+		                 <!-- Fecha fin -->
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Hasta: </label>
+				             <div class="col-md-10">	              		         
+					               <p id="fin" class="form-control-static" ></p>		                                	 
+		                      </div>
+		                 </div>
+	                 </div>
+                 </div>               
+                 
+                  <div class="row">
+                 	<div class="col-md-6">
+		                 <!-- Espacio -->            
+		                   <div class="form-group">
+		                      <label class="col-md-3 control-label">Espacio: </label>
+		                     <div class="col-md-9">
+		                          <p id="nombreEspacio" class="form-control-static" ></p>                     
+		                     </div>
+		                   </div> 
                      </div>
-                     <div class="col-xs-6 col-md-6 text-right">
-                      <button id="btn-guardar" type="button" class="btn-rec blue">GUARDAR </button>
+                     
+                     <div class="col-md-6">
+		                 <!-- Grupo -->            
+		                   <div class="form-group">
+		                      <label class="col-md-2 control-label">Grupo: </label>
+		                     <div class="col-md-10">
+		                          <p id="nombreGrupo" class="form-control-static" ></p>                     
+		                     </div>
+		                   </div> 
                      </div>
-                 </div>                
+                     
+		          </div> 
+		          
+		           <div class="row">
+                 	<div class="col-md-6">
+		                 <!-- Color -->            
+		                   <div class="form-group">
+		                      <label class="col-md-2 control-label">Color: </label>
+		                     <div class="col-md-10">
+		                          <span id="reservaColor" class="red" ></span>                     
+		                     </div>
+		                   </div> 
+                     </div>
+		           </div>  
              </form>
                  
           </div>
+          <div class="modal-footer">
+	        <a id="enlaceEliminar" href="#" class="btn-rec gray">ELIMINAR</a>
+	        <a id="enlaceEditar" th:href="@{''}" class="btn-rec blue">EDITAR</a>
+	      </div>
+        
         </div>
       </div>
     </div>
@@ -220,277 +226,33 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Eliminar reserva</h4>
+            <h4 class="modal-title" id="myModalLabel">Eliminar reserva periódica</h4>
           </div>
           <div class="modal-body">
-          	<button id="solo_esta">Solo esta</button>
-          	<button id="toda_la_serie">Toda la serie</button>
+          	<div class="row">
+            	<div class="col-md-12">
+          	  	 <button id="solo_esta" class="btn-rec gray">Sólo éste</button>
+          	  	 Se eliminará sólo este evento.
+          		</div>
+          	</div>
+          	<br/>
+          	<div class="row">
+          		<div class="col-md-12">
+          	  	 <button id="toda_la_serie" class="btn-rec gray">Toda la serie</button>
+          	  	 Se eliminarán todos los eventos.
+          		</div>
+          	</div>
           </div>
        </div>
      </div>
 </div>
 
-
+ 
+        
  <script th:inline="javascript">
- var baseURL = /*[[@{/}]]*/ '/';
-
- $(document).ready(function(){
-	  
-	 	var reserva = {};
-	 	var token = $("meta[name='_csrf']").attr("content");
-	 	var header = $("meta[name='_csrf_header']").attr("content");
-	 	var reqHeaders = [];
-	 	reqHeaders[header] = token;
-	 	
-	 	$("#view-list").click(function(){
-	 		$(this).addClass("red");
-	 		$("#view-calendar").removeClass("red");
-	 		$("#lista").show();
-	 		$("#calendar").hide();
-	 	});
-	 	
-		$("#view-calendar").click(function(){
-			$(this).addClass("red");
-	 		$("#view-list").removeClass("red");
-			$("#lista").hide();
-			loadCalendar();
-	 		$("#calendar").show();
-	 	});
-	 	
-	 	
-	 	
-	 	
-	 	$('tr').click(function(){
-	 		$('#modalEditarReserva').modal('show');
-	 		
-	 		var espacio = $(this).find("td").eq(1).html();
-	 		reserva.id =  $(this).attr("data-id");
-	 		reserva.start = $(this).attr("data-start");
-	 		reserva.end = $(this).attr("data-end");
-	 		reserva.idEspacio = $(this).attr("data-espacio");
-	 		reserva.title = $(this).find("td").eq(0).html();
-
-	 		$('#modalEditarReserva #idAsunto').attr("value",reserva.title);
-	 		$('#modalEditarReserva #datetimepicker1').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
-	 		$('#modalEditarReserva #datetimepicker2').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
-	 		$('#modalEditarReserva #nombre_espacio').text(espacio);
-	 	});
-	 	
-	 	$("#btn-guardar").click(function(){
-	 		reserva.title = $("#modalEditarReserva #idAsunto").val();
-	 		reserva.start =	es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker1').val());
-	 		reserva.end = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker2').val());
-	 	
-
-	 		$.ajax({
-	 			url: baseURL+'reserva/' + reserva.id,
-	 			type: 'PUT',
-	 			headers : reqHeaders,
-	 			data: JSON.stringify(reserva),
-	 			contentType: 'application/json',
-	 			success : function(datos) {   
-	 				alert("Reserva actualizada");
-	 				$('#modalEditarReserva').modal('hide');
-	 				$("#"+reserva.id +" td:nth-child(1)").text(reserva.title);
-	 				$("#"+reserva.id +" td:nth-child(3)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
-	 				$("#"+reserva.id +" td:nth-child(4)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
-	 			},    
-	 			error : function(xhr, status) {
-	     			alert('Disculpe, existió un problema');
-	 			}
-	 		});
-	 	});
-	 
-	 	$("#btn-eliminar").click(function(){
-	 		
-	 		if(reserva.recurrenteId != null){
-	 			$('#modalEditarReserva').modal('hide');
-	 			$("#modalRecurrente").modal('show');
-	 		}
-	 		else{
-	 			$.ajax({
-		 			url: baseURL + 'reserva/' + reserva.id,
-		 			type: 'DELETE',
-		 			headers : reqHeaders,
-		 			success : function(datos) {
-		 				alert("Reserva eliminada");
-		 				$('#modalEditarReserva').modal('hide');
-		 				$("#"+reserva.id).remove();
-		 				$("#calendar").fullCalendar('refetchEvents');
-		 			},    
-		 			error : function(xhr, status) {
-		 				alert('Disculpe, existió un problema');
-		 			}
-		 		});
-	 		}
-	 		
-	 	});
-	 	
-	 	
-	 	$('#solo_esta').click(function(){
-	 		
-	 		var w = reserva.recurrenteId.split("_");
-	 		var reservaPadre = w[0];
-	 		var exDate = "EXDATE:";
-	 		exDate += "VALUE=" + w[1]; 
-	 		reserva.id = reservaPadre;
-	 		var recurrencia = [];
-	 		recurrencia.push(exDate);
-	 		reserva.reglasRecurrencia = recurrencia;
-	 			 		
-	 		$.ajax({
-	 			url: baseURL + 'editarReserRecurrente',
-	 			headers : reqHeaders,
-	 			type: 'POST',		 				 			
-	 			data: JSON.stringify(reserva),
-	 			contentType: 'application/json',
-	 			success : function(datos) {  
-	 				$("#modalRecurrente").modal('hide');	 				
-	 				$("#calendar").fullCalendar('refetchEvents');
-	 				
-	 			},    
-	 			error : function(xhr, status) {
-	 				
-	     			alert('Disculpe, existió un problema');
-	     			
-	 			}
-	 		});
-	 		
-	 	});
-	 
-	 	//fullcalendar
-	 	function loadCalendar(){
-		 	$('#calendar').fullCalendar({
-				lang: 'es',
-				timezone: 'local',
-			    header: {
-			        left: 'prev,next today',
-			        center: 'title',
-			        right: 'month,agendaWeek,agendaDay'
-			    },
-			    
-			    eventClick : function(calEvent,jsEvent, view) {
-			    	console.log(calEvent);
-			    	reserva.id = calEvent.id;
-			    	reserva.recurrenteId = calEvent.recurrenteId;
-					$('#modalEditarReserva').modal('show');
-					$('#modalEditarReserva #idAsunto').attr("value",calEvent.title);
-					$('#modalEditarReserva #datetimepicker1').attr("value",calEvent.start.format("DD/MM/YYYY HH:mm"));
-					$('#modalEditarReserva #datetimepicker2').attr("value",calEvent.end.format("DD/MM/YYYY HH:mm"));
-					
-				},
-			    defaultDate: '2016-03-12',
-			    editable: true,
-			    eventLimit: true,
-			    eventRender : function(event,element,view) {
-			    
-			    	if(view.name == 'month'){
-						element.popover({
-							
-								placement : 'auto',
-								html : true,
-								trigger : 'hover',
-								animation : 'true',
-								container:'#calendar',
-								content : "<b>" + event.nombreEspacio +
-										  "</b><br/>" + event.start.format("HH:mm") + "-" + event.end.format("HH:mm") + 
-										  "<br/>" + event.title
-							});
-			    	}
-					
-				},
-				eventResize: function(event, delta, revertFunc, jsEvent) {
-	
-			        var s = "El evento ahora durará hasta el " + event.end.format("DD/MM/YYYY HH:mm") +
-			        		" ¿Esta de acuerdo?";
-			      			        
-			        if (confirm(s)) {
-			        	reserva.id = event.id;
-			        	reserva.title = event.title;
-			        	reserva.start = event.start;
-			        	reserva.end = event.end;
-			        	reserva.idEspacio = event.idEspacio;
-			        	$.ajax({
-				 			url: baseURL + 'reserva/' + reserva.id,
-				 			type: 'PUT',
-				 			headers : reqHeaders,
-				 			data: JSON.stringify(reserva),
-				 			contentType: 'application/json',
-				 			success : function(datos) {   
-				 				alert("Reserva actualizada");
-				 				
-				 			},    
-				 			error : function(xhr, status) {
-				 				revertFunc();
-				     			alert('Disculpe, existió un problema');
-				     			
-				 			}
-				 		});
-			        	
-			        }
-			        else{
-			        	 revertFunc();
-			        }
-	
-	
-			    },
-			    eventDrop: function(event, delta, revertFunc) {
-			    	var s = "El evento se va a cambiar al día " + event.start.format("DD/MM/YYYY") +
-		        		    " de " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + " ¿Esta de acuerdo?";
-			   
-			        if (confirm(s)) {
-			        	reserva.id = event.id;
-			        	reserva.title = event.title;
-			        	reserva.start = event.start;
-			        	reserva.end = event.end;
-			        	reserva.idEspacio = event.idEspacio;
-			        	$.ajax({
-				 			url: baseURL + 'reserva/' + reserva.id,
-				 			type: 'PUT',
-				 			headers : reqHeaders,
-				 			data: JSON.stringify(reserva),
-				 			contentType: 'application/json',
-				 			success : function(datos) {   
-				 				alert("Reserva actualizada");
-				 				
-				 			},    
-				 			error : function(xhr, status) {
-				 				revertFunc();
-				     			alert('Disculpe, existió un problema');
-				     			
-				 			}
-				 		});
-			        }
-			        else{
-			           revertFunc();	
-			        }
-	
-			    },
-			    loading: function (bool) {
-			        if (bool) {
-			            $("#calendar").css({"visibility": "hidden"});		            
-			        } else {
-			            $("#calendar").css({"visibility": "visible"});		            
-			        }
-			    },
-			    eventSources: [ 
-				        {
-				        	url: '/reservas/misEventos',							   
-				            textColor: 'black'  
-				        }	        
-			    ]
-			       	
-			    
-			});
-	 	}	
-	 	
-	 	
-	 	
-	 	
- });
- 
- 
+ 	var baseURL = /*[[@{/}]]*/ '/';
  </script>
+ <script src="../../js/mis-reservas.js" th:src="@{/js/mis-reservas.js}"></script>
  
  
  

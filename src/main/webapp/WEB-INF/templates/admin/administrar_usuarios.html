@@ -2,24 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet"
-        href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-        th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"/>
-    <link rel="stylesheet"
-        href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0-3/css/font-awesome.min.css"
-        th:href="@{/webjars/font-awesome/4.3.0-3/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" type="text/css" media="all" href="../../css/estilo.css" th:href="@{/css/estilo.css}"/>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
-	<title>UCM RESERVAS</title>
-     <!-- JS -->
-    <script 
-        src="//code.jquery.com/jquery-2.1.4.min.js"
-        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-    <script
-        src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-        th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+    
+	<title>UCM RESERVAS - Administrar usuarios</title>
+    
 </head>
 <body>
 <div class="container-fluid" th:fragment="contenido">
@@ -41,38 +26,93 @@
 	<div class="row">
     	<div class="col-md-8 col-md-offset-2">
          	
-			<div class="jumbotron text-center" th:if="${#lists.isEmpty(userList)}">
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults)}">
                 <i class="fa fa-ban fa-5x"></i>
                 <h4>¡Uups! No hay ningún usuario.</h4>
            </div> 
-
-            <div class="table-responsive" th:unless="${#lists.isEmpty(userList)}">
+			<!-- <div class="row">
+			<div class="col-md-6">
+				  <div class="form-group">
+				    <label> Usuario :</label>
+				    	   
+				    <div class="ui-widget">
+				    	<input id="autoUsuario" type="text" class="form-control" 
+				    	 placeholder="Nombre del usuario" />  
+				    </div>		     
+				   </div>
+			    </div>
+			    			                  
+			</div> -->
+            <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults)}">
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                        	<th>Identificador</th>
+                        	
                             <th>Nombre</th>
                             <th>Email</th>
                             <th>Activado</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="r : ${userList}"
+                        <tr th:each="r : ${currentResults}"
                         	th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},en=${r.enabled}">
-                        	<td th:text="${r.id}"></td>
+                        	
                             <td th:text="${r.username}"></td>
                             <td th:text="${r.email}"></td>
-                            <td th:if="${r.enabled.toString() == '0'}">No</td>
-                            <td th:if="${r.enabled.toString() == '1'}">Si</td>
+                            <td th:if="${!r.enabled}">No</td>
+                            <td th:if="${r.enabled}">Si</td>
                             
                         </tr>     
                     </tbody>
                 </table>
-            </div> 
+            </div>
              <!-- /.table-responsive-->
-         
+         <a th:href="@{'/administrar/usuarios/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar usuarios"/></a>
      	</div>
  	</div>
+ 	<!-- Pagination -->
+ 	<div class="row">
+    <div class="col-md-12 text-center">
+        <div class='pagination pagination-centered'>
+            <ul class="pagination">
+                <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{1}">← First</a>
+                </li>
+                <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                    <span th:if='${currentIndex == 1}'>«</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{${(currentIndex - 1)}}"
+                       title='Go to previous page'>«</a>
+                </li>
+
+                <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+                    th:class="${item == currentIndex ? 'active' : '' }">
+
+                    <span th:if='${item == currentIndex}' th:text='${item}'>1</span>
+
+                    <a th:if='${item != currentIndex}'
+                       th:href="@{${item}}">
+                        <span th:text='${item}'>1</span>
+                    </a>
+                </li>
+
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                </li>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+ <!-- /.Pagination -->
  	<div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -83,13 +123,6 @@
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${User}" method="put">             
 				
-				<!-- Identificador -->
-				<div class="form-group">
-                     <label for="ejemplo_2" class="col-md-2 control-label">Identificador:</label>
-                      <div class="col-md-10">
-                         <label id="idUser" class="form-control"></label>
-                      </div>
-                 </div>
 				 <!-- Nombre de usuario --> 
                  <div class="form-group">
                      <label for="ejemplo_2" class="col-md-2 control-label">Nombre:</label>
@@ -112,19 +145,24 @@
                  <div class="form-group">
                      <label for="ejemplo_3" class="col-md-3 control-label">Activado:</label>
                      <div class="col-md-9">
-		                
-		               <input id="idEnabled" name="enabled" type="text" class="form-control" placeholder="Activar(1) o desactivar(0)"/>
+		                <select id="idEnabled" name="enabled" title="Activado">
+							          
+				          <option value="true">Sí</option>
+				          <option value="false">No</option>
+				        </select>
+		               
 		               			            
                      </div>
                  </div>
                  
                  <div class="row">
-                     <div class="col-xs-6 col-md-6">
+                     <div class="col-xs-4 col-md-4">
                       <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
                      </div>
-                     <div class="col-xs-6 col-md-6 text-right">
+                     <div class="col-xs-4 col-md-4 text-center">
                       <button id="btn-guardar" type="button" class="btn-rec blue">GUARDAR </button>
                      </div>
+                     
                  </div>                
              </form>
                  
@@ -138,7 +176,7 @@
  var baseURL = /*[[@{/}]]*/ '/';
 
  $(document).ready(function(){
-	 	var usuario = {};
+	 	var user = {};
 	 	var token = $("meta[name='_csrf']").attr("content");
 	 	var header = $("meta[name='_csrf_header']").attr("content");
 	 	var reqHeaders = [];
@@ -148,54 +186,54 @@
 	 		$('#modalEditarUsuario').modal('show');
 	 		
 	 		
-	 		usuario.id =  $(this).attr("data-id");
-	 		usuario.name = $(this).attr("name");
-	 		usuario.email = $(this).attr("email");
-	 		usuario.act = $(this).attr("en");
+	 		user.id =  $(this).attr("data-id");
+	 		user.username = $(this).attr("name");
+	 		user.email = $(this).attr("email");
+	 		user.enabled = $(this).attr("en");
 	 		//usuario.title = $(this).find("td").eq(0).html();
 
 	 		$('#modalEditarUsuario #idUser').text(usuario.id);
-	 		$('#modalEditarUsuario #idNombre').attr("value",usuario.name);
-	 		$('#modalEditarUsuario #idEmail').attr("value",usuario.email);
-	 		$('#modalEditarUsuario #idEnabled').attr("value",usuario.act);
+	 		$('#modalEditarUsuario #idNombre').attr("value",user.username);
+	 		$('#modalEditarUsuario #idEmail').attr("value",user.email);
+	 		$('#modalEditarUsuario #idEnabled').attr("value",user.enabled);
 	 		
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
-	 		usuario.name = $("#modalEditarUsuario #idNombre").val();
-	 		usuario.email = $(this).attr("email");
-	 		usuario.act = $(this).attr("en");
+	 		user.username = $("#modalEditarUsuario #idNombre").val();
+	 		
+	 		user.email = $('#modalEditarUsuario #idEmail').val();
+	 		user.enabled = $('#modalEditarUsuario #idEnabled').val();
 	 	
 
 	 		$.ajax({
-	 			url: baseURL + "user/" + usuario.id,
+	 			url: baseURL + "user/" + user.id,
 	 			type: 'PUT',
 	 			headers : reqHeaders,
-	 			data: JSON.stringify(usuario),
+	 			data: JSON.stringify(user),
 	 			contentType: 'application/json',
 	 			success : function(datos) {   
 	 				alert("Usuario actualizado");
 	 				$('#modalEditarUsuario').modal('hide');
-	 				$("#"+usuario.id +" td:nth-child(1)").text(usuario.id);
-	 				$("#"+usuario.id +" td:nth-child(2)").text(usuario.name);
-	 				$("#"+usuario.id +" td:nth-child(3)").text(usuario.email);
-	 				$("#"+usuario.id +" td:nth-child(4)").text(usuario.en);
+	 				$("#"+user.id +" td:nth-child(1)").text(user.username);
+	 				$("#"+user.id +" td:nth-child(2)").text(user.email);
+	 				$("#"+user.id +" td:nth-child(3)").text(user.enabled);
 	 			},    
 	 			error : function(xhr, status) {
 	     			alert('Disculpe, existió un problema');
 	 			}
 	 		});
 	 	});
-	 
+	 	 	
 	 	$("#btn-eliminar").click(function(){
 	 		$.ajax({
-	 			url: baseURL + "user/" + usuario.id,
+	 			url: baseURL + "user/" + user.id,
 	 			type: 'DELETE',
 	 			headers : reqHeaders,
 	 			success : function(datos) {
 	 				alert("Usuario eliminado");
 	 				$('#modalEditarUsuario').modal('hide');
-	 				$("#"+usuario.id).remove();
+	 				$("#"+user.id).remove();
 	 			},    
 	 			error : function(xhr, status) {
 	 				alert('Disculpe, existió un problema');
@@ -207,6 +245,51 @@
  
  
  </script>
+ <script>
+
+$("#autoUsuario").autocomplete({
+	source:function(request, response){
+			var tag = request.term;
+			
+			$.ajax({
+				url: '/administrar/usuarios/',
+				type: 'GET',
+				contentType: 'application/json',
+				success : function(datos) {
+									
+					response($.map(datos,function(item){
+						
+							var obj = new Object();
+							obj.label = item.id; 
+							obj.value = item.username;
+							return obj;
+		
+					}))
+					
+				},    
+			    error : function(xhr, status) {
+			        alert('Disculpe, existió un problema');
+			    }
+			});
+	}
+
+}).autocomplete("instance")._renderItem = function(ul,item){
+	
+		var inner_html = '<div class="col-md-2" style="padding-top:3px;">' + 
+		                  '<img class="media-object" src="http://placehold.it/50x50"/>' + 
+		                  '</div>' + 
+		                  '<div class="col-md-10">' + 
+		                  '<p>'+ item.value +'</p>' +
+		                  '</div>';
+            return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append(inner_html)
+                    .appendTo(ul);
+	
+};
+	
+
+</script>
 </div>
 </body>
 </html>
