@@ -65,9 +65,9 @@
 						<td>
 							<a th:attr="data-id=${r.id}, data-asunto=${r.asunto}, data-start=${#joda.isoDateTime(r.comienzo)},
 									    data-end=${#joda.isoDateTime(r.fin)}, data-espacio=${r.espacio.nombreEspacio},
-									    data-grupo=${r.grupoReserva.nombreGrupo}, data-reservaColor=${r.reservaColor}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+									    data-grupo=${r.grupoReserva.nombreGrupo}, data-reservaColor=${r.reservaColor}, data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>						
+							<a th:attr="data-id=${r.id},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>						
 						</td>
 					</tr>
 				</tbody>                    
@@ -212,7 +212,7 @@
                  
           </div>
           <div class="modal-footer">
-	        <a id="enlaceEliminar" href="#" class="btn-rec gray">ELIMINAR</a>
+	        <a id="enlaceEliminar" class="btn-rec gray" role="button">ELIMINAR</a>
 	        <a id="enlaceEditar" th:href="@{''}" class="btn-rec blue">EDITAR</a>
 	      </div>
         
@@ -220,7 +220,27 @@
       </div>
     </div>
  
- <!-- Modal Reserva Recurrente -->
+ <!-- Modal Eliminar Reserva Simple -->
+ <div class="modal fade" id="modalEliminarReservaSimple" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">¿Eliminar reserva?</h4>
+          </div>
+          <div class="modal-body">
+          	
+          </div>
+          <div class="modal-footer">
+	        <a class="btn-rec gray" data-dismiss="modal" aria-label="Close" role="button">CANCELAR</a>
+	        <a id="aceptarEliminar" class="btn-rec blue" role="button">ACEPTAR</a>
+	      </div>
+       </div>
+     </div>
+</div>
+ 
+ 
+ <!-- Modal Eliminar Reserva Recurrente -->
  <div class="modal fade" id="modalRecurrente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

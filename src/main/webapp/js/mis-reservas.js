@@ -55,6 +55,7 @@ $('td a').click(function(){
 	var nombreEspacio = $(this).attr("data-espacio");
 	var nombreGrupo = $(this).attr("data-grupo");
 	var color = $(this).attr("data-reservaColor");
+	var accion = $(this).attr("data-accion");
 	
 	$('#modalEditarReserva #asunto').text(asunto);
 	$('#modalEditarReserva #comienzo').text(es.ucm.fdi.dateUtils.fromIso8601(start));
@@ -64,58 +65,23 @@ $('td a').click(function(){
 	$('#modalEditarReserva #reservaColor').css("background",color);
 	$('#modalEditarReserva #enlaceEditar').prop("href", baseURL + "editar/" + reserva.id)
 	
+	if(accion == 'Ver'){
+		$('#modalEditarReserva').modal('show');
+	}
+	else if(accion == 'Eliminar'){
+		modalEliminarReserva(reserva);
+	}
 	
-	$('#modalEditarReserva').modal('show');
-});
-
-
-$("#btn-guardar").click(function(){
-	reserva.title = $("#modalEditarReserva #idAsunto").val();
-	reserva.start =	es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker1').val());
-	reserva.end = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker2').val());
-
-
-	$.ajax({
-		url: baseURL + 'reserva/' + reserva.id,
-		type: 'PUT',
-		headers : reqHeaders,
-		data: JSON.stringify(reserva),
-		contentType: 'application/json',
-		success : function(datos) {   			
-			$('#modalEditarReserva').modal('hide');
-			$("#"+reserva.id +" td:nth-child(1)").text(reserva.title);
-			$("#"+reserva.id +" td:nth-child(3)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
-			$("#"+reserva.id +" td:nth-child(4)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
-		},    
-		error : function(xhr, status) {
- 			alert('Disculpe, existió un problema');
- 			}
- 		});
+	
 });
 
 
 $("#enlaceEliminar").click(function(){
-	
-	if(reserva.recurrenteId != null){
-		$('#modalEditarReserva').modal('hide');
-		$("#modalRecurrente").modal('show');
-	}
-	else{
-		$.ajax({
- 			url: baseURL + 'reserva/' + reserva.id,
- 			type: 'DELETE',
- 			headers : reqHeaders,
- 			success : function(datos) {
- 				$('#modalEditarReserva').modal('hide');
- 				$("#"+reserva.id).remove();
- 				$("#calendar").fullCalendar('refetchEvents');
- 			},    
- 			error : function(xhr, status) {
- 				alert('Disculpe, existió un problema');
- 			}
- 		});
-	}
-	
+	modalEliminarReserva(reserva);
+});
+
+$("#aceptarEliminar").click(function(){
+	eliminarReserva(reqHeaders, reserva.id);
 });
 
 
@@ -245,6 +211,34 @@ function editarReserva(reserva, reqHeaders, idReserva){
 				revertFunc();
 			}
 		});
+}
+
+function eliminarReserva(reqHeaders, idReserva){
+	$.ajax({
+			url: baseURL + 'reserva/' + idReserva,
+			type: 'DELETE',
+			headers : reqHeaders,
+			success : function(datos) {
+				$('#modalEliminarReservaSimple').modal('hide');
+				$("#" + idReserva).remove();
+				$("#calendar").fullCalendar('refetchEvents');
+			},    
+			error : function(xhr, status) {
+				alert('Disculpe, existió un problema');
+			}
+		});
+}
+
+function modalEliminarReserva(reserva){
+	$('#modalEditarReserva').modal('hide');
+	// Si la reserva es recurrente
+	if(reserva.recurrenteId != null){	
+		$("#modalRecurrente").modal('show');
+	}
+	// Si la reserva es simple
+	else{
+		$('#modalEliminarReservaSimple').modal('show');
+	}
 }
 
 
