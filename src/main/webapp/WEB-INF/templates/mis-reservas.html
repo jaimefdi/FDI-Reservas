@@ -52,7 +52,7 @@
 			     <tbody>
 					<tr th:each="r : ${currentResults}"
 						th:attr="id=${r.id}">
-						<td th:text="${#strings.abbreviate(r.asunto,18)}">Recuperacion de clase</td>
+						<td th:text="${#strings.abbreviate(r.asunto,14)}">Recuperacion de clase</td>
 						<td th:text="${r.espacio.nombreEspacio}">Aula 9</td>
 						<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
 						<td th:text="${#joda.format(r.fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
@@ -65,7 +65,7 @@
 						<td>
 							<a th:attr="data-id=${r.id}, data-asunto=${r.asunto}, data-start=${#joda.isoDateTime(r.comienzo)},
 									    data-end=${#joda.isoDateTime(r.fin)}, data-espacio=${r.espacio.nombreEspacio},
-									    data-grupo=${r.grupoReserva.nombreGrupo}, data-reservaColor=${r.reservaColor}, data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+									    data-grupo=${r.grupoReserva != null} ? ${r.grupoReserva.nombreGrupo} : 'Ninguno', data-reservaColor=${r.reservaColor}, data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a th:attr="data-id=${r.id},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>						
 						</td>

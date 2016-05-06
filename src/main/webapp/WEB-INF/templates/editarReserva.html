@@ -63,7 +63,7 @@
                    	   	<option th:each="g : ${GruposReservas}"
                    	   			th:text="${g.nombreGrupo}"
                    	   			th:value="${g.id}"
-                   	   			th:selected="${Reserva.grupoReserva.id}==${g.id}">
+                   	   			th:selected="${Reserva.grupoReserva != null} ? ${Reserva.grupoReserva.id}==${g.id}">
                    	   	</option>
                    	 </select>
                     <p class="small help-block">Agrega esta reserva a un grupo de reservas.</p>

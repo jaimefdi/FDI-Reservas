@@ -163,9 +163,10 @@
 						            <label class="col-md-3 control-label">Repetir cada:</label>
 						            <div class="col-md-3">
 							            <select id="selec_inter" class="form-control">
-							            	<option value="1">1</option>
-							            	<option value="2">2</option>
-							            	<option value="3">3</option>
+							            	<option th:each="i : ${#numbers.sequence(1,30)}" 
+							            	        th:value="${i}"
+							            	        th:text="${i}"></option>
+							            	
 							            </select>
 						            </div>
 						            
@@ -334,21 +335,25 @@
     
   
   
-  <!-- Modal confirmación -->
-  <div class="modal fade bs-example-modal-sm" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-	  <div class="modal-dialog modal-sm">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title">Modal title</h4>
-		  </div>
-	      <div class="modal-footer">
-	        <button id="modalClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button id="modalConfirm" type="button" class="btn btn-primary">Save changes</button>
+  <!-- Modal Eliminar Reserva Simple -->
+ <div class="modal fade" id="modalEliminarReservaSimple" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">¿Eliminar reserva?</h4>
+          </div>
+          <div class="modal-body">
+          	
+          </div>
+          <div class="modal-footer">
+	        <a class="btn-rec gray" data-dismiss="modal" aria-label="Close" role="button">CANCELAR</a>
+	        <a id="aceptarEliminar" class="btn-rec blue" role="button">ACEPTAR</a>
 	      </div>
-	    </div>
-	  </div>
-  </div>
+       </div>
+     </div>
+</div>
+ 
 
 <script type="text/javascript" th:inline="javascript">
 	
@@ -570,7 +575,6 @@
 		 			},    
 		 			error : function(xhr, status) {
 		 				
-		     			alert('Disculpe, existió un problema');
 		     			
 		 			}
 		 		});
@@ -597,22 +601,29 @@
 			    eventLimit: true,
 			    
 			    eventClick: function(event, jsEvent, view){
+			    	reserva.id = event.id;
 			    		var cuerpo = "<div>Donde: <b>" + event.nombreEspacio + "</b><br/>"+
 						  			 "De " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + 
 						  			 "<br/>Asunto: " + event.title + "</div>";
 						 
 			    		if(event.editable){
-			    			cuerpo += "<br/><div class='row'>" +
-									  "<div class='col-md-6 text-left'><a href='/reservas/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
-									  "<div class='col-md-6 text-right'><a href='/reservas/eliminar/" + event.id + "'>" + 'Eliminar' + "</a></div>" +
+			    			cuerpo += "<br/><div class='row'>" +						
+									  "<div class='col-md-6 text-left'><a onclick='modalEliminar(" + event.id + ")'>" + 'Eliminar' + "</a></div>" +
+									  "<div class='col-md-6 text-right'><a href='/reservas/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
 									  "</div>";
 			    		}
-			    		
-			    		$('[role="tooltip"]').popover('hide');
+			    		var popup = this;
+			    		$.each($('[role="tooltip"]'),function(index, value){
+			    			if(value != popup){
+			    				$(value).popover('hide');
+			    			}
+			    		});
+			    		//.popover('hide');
 				    	$(this).popover({						
 							placement : 'auto',
 							html : true,
-							animation : 'true',
+							animate: false,
+							
 							container:'#calendar',
 							content : cuerpo
 									  
@@ -720,10 +731,34 @@
 				}
 			});
 			
-			
-			
+			$("#aceptarEliminar").click(function(){
+				eliminarReserva(reqHeaders, reserva.id);
+			});
 			
 		});
+		
+		function modalEliminar(idReserva){
+			$('[role="tooltip"]').popover('hide'); 
+			$("#modalEliminarReservaSimple").modal('show');
+			//alert("eliminar reserva " + idReserva);
+		}
+		
+		function eliminarReserva(reqHeaders, idReserva){
+			$.ajax({
+					url: baseURL + 'reserva/' + idReserva,
+					type: 'DELETE',
+					headers : reqHeaders,
+					success : function(datos) {
+						$('#modalEliminarReservaSimple').modal('hide');
+						$("#" + idReserva).remove();
+						$("#calendar").fullCalendar('refetchEvents');
+					},    
+					error : function(xhr, status) {
+						alert('Disculpe, existió un problema');
+					}
+				});
+		}
+		
 		
 		/*]]>*/
 	</script>

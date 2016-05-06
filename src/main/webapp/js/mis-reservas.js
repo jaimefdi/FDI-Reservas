@@ -156,11 +156,12 @@ function loadCalendar(){
 	    eventLimit: true,
 	    eventClick: function(event, jsEvent, view){
 	    	$('[role="tooltip"]').popover('hide');
+	    	reserva.id = event.id;
     		var cuerpo = "<div>Donde: <b>" + event.nombreEspacio + "</b><br/>"+
 			  			 "De " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + 
 			  			 "<br/>Asunto: " + event.title + "</div><br/>" +
 			  			 "<div class='row'>" +
-						 "<div class='col-md-6 text-left'><a>" + 'Eliminar' + "</a></div>" +
+						 "<div class='col-md-6 text-left'><a onclick='modalEliminarReserva(event)'>" + 'Eliminar' + "</a></div>" +
 						 "<div class='col-md-6 text-right'><a href='/reservas/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
 						 "</div>";
 		
@@ -231,6 +232,7 @@ function eliminarReserva(reqHeaders, idReserva){
 
 function modalEliminarReserva(reserva){
 	$('#modalEditarReserva').modal('hide');
+	$('[role="tooltip"]').popover('hide');
 	// Si la reserva es recurrente
 	if(reserva.recurrenteId != null){	
 		$("#modalRecurrente").modal('show');
