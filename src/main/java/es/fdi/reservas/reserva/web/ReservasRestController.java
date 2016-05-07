@@ -81,6 +81,9 @@ public class ReservasRestController {
 		for(Reserva r : reservasTotales) {
 			result.add(ReservaDTO.fromReservaEditable(r));
 		}
+		
+		return result;
+	}
 	
 	@RequestMapping(value="{idEspacio}/eventosMan", method=RequestMethod.GET)
 	public List<ReservaDTO> reservasEspacioDeMañana(@PathVariable("idEspacio") long idEspacio){
@@ -94,6 +97,18 @@ public class ReservasRestController {
 			else
 				reservasTotales.add(r);
 		}
+		List<ReservaDTO> result = new ArrayList<>();
+		for(Reserva r : reservasTotales) {
+			if(user.getUsername().equals(r.getUser().getUsername())){
+				result.add(ReservaDTO.fromReservaEditable(r));
+			}
+			else{
+				result.add(ReservaDTO.fromReserva(r));
+			}
+		}
+		 
+		return result;
+	}
 	
 	@RequestMapping(value="{idEspacio}/eventosTar", method=RequestMethod.GET)
 	public List<ReservaDTO> reservasEspacioDeTarde(@PathVariable("idEspacio") long idEspacio){
@@ -108,7 +123,7 @@ public class ReservasRestController {
 				reservasTotales.add(r);
 		}
 		
-		List<ReservaFullCalendarDTO> result = new ArrayList<>();
+		List<ReservaDTO> result = new ArrayList<>();
 		for(Reserva r : reservasTotales) {
 			if(user.getUsername().equals(r.getUser().getUsername())){
 				result.add(ReservaDTO.fromReservaEditable(r));

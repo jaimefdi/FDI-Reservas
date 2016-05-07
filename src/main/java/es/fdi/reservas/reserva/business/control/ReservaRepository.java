@@ -20,6 +20,8 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long>{
 	
 	public Page<Reserva> findByUserId(long idUsuario, Pageable pageable); 
 
+	public Page<Reserva> findByEspacioId(long idEspacio, Pageable pageable); 
+
   // http://stackoverflow.com/questions/18082276/spring-data-querying-datetime-with-only-date
 	public List<Reserva> findByEspacioIdAndComienzoBetween(Long idEspacio, DateTime start, DateTime end); 
 

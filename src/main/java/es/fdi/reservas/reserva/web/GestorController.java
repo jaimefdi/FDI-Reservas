@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
+@PreAuthorize("hasRole('ROLE_GESTOR')")
 @Controller
 public class GestorController {
 
@@ -40,9 +42,14 @@ public class GestorController {
 		user_service = us;
 	}
 	
-	@RequestMapping({"/","","/gestor/mis-reservas"})
+	@RequestMapping({"/gestor/mis-reservas"})
     public String misReservas() {
         return "redirect:/gestor/mis-reservas/page/1";
+    }
+	
+	@RequestMapping({"/gestor","/gestor/gestion-reservas"})
+    public String gestionReservas() {
+        return "redirect:/gestor/gestion-reservas/page/1";
     }
 	
 	@RequestMapping(value="/gestor/mis-reservas/page/{pageNumber}", method=RequestMethod.GET)
@@ -50,7 +57,7 @@ public class GestorController {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 7, new Sort(new Sort.Order(Sort.Direction.ASC,"comienzo")));
-        Page<Reserva> currentResults = reserva_service.getReservasUsuario(u.getUsername(),pageRequest);
+        Page<Reserva> currentResults = reserva_service.getReservasUsuario(u.getId(), pageRequest);
         
         model.addAttribute("currentResults", currentResults);
     
@@ -64,18 +71,17 @@ public class GestorController {
 		model.addAttribute("user", u);
 		model.addAttribute("view", "mis-reservas");
 		model.addAttribute("User", u);
-		model.addAttribute("Reservas", reserva_service.getReservasUsuario(u.getUsername()));
-		model.addAttribute("GruposReservas", grupo_service.gruposReservas());
+		model.addAttribute("Reservas", reserva_service.getReservasUsuario(u.getId()));
+		model.addAttribute("GruposReservas", grupo_service.getGruposReservas());
 		model.addAttribute("view", "mis-reservas");
 		
-        return "gestor/index";
+        return "index";
     }
 	
 	@RequestMapping(value="/gestor/gestion-reservas/page/{pageNumber}", method=RequestMethod.GET)
     public String gestiona_reservas(@PathVariable Integer pageNumber, Model model) {
-		User u = user_service.getCurrentUser();
-		
-		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		User u= user_service.getCurrentUser();
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 7, new Sort(new Sort.Order(Sort.Direction.ASC,"comienzo")));
         Page<Reserva> currentResults = reserva_service.getTodasReservasPaginadas(pageRequest);
         
         model.addAttribute("currentResults", currentResults);
@@ -87,15 +93,11 @@ public class GestorController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
-		List<EstadoReserva> lista=new ArrayList<EstadoReserva>();
-		lista.add(EstadoReserva.CONFIRMADA);
-		lista.add(EstadoReserva.PENDIENTE);
-		lista.add(EstadoReserva.DENEGADA);
-		model.addAttribute("estadoReserva", lista);
+		model.addAttribute("User", u);
+		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "gestor/gestion-reservas");
 		
-        return "gestor/index";
+        return "index";
     }
 	
 	@RequestMapping(value="/gestor/gestion-reservas/page/{pageNumber}/user/{user}", method=RequestMethod.GET)
@@ -103,7 +105,7 @@ public class GestorController {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Reserva> currentResults = reserva_service.getReservasPaginadasUser(pageRequest, user);
+        Page<Reserva> currentResults = reserva_service.getReservasUsuario(u.getId(), pageRequest);
         
         model.addAttribute("currentResults", currentResults);
     
@@ -117,7 +119,7 @@ public class GestorController {
 		model.addAttribute("user", u);
 		model.addAttribute("view", "gestor/gestion-reservas");
 		
-        return "gestor/index";
+        return "index";
     }
 	
 	@RequestMapping(value="/gestor/gestion-reservas/page/{pageNumber}/sala/{sala}", method=RequestMethod.GET)
@@ -125,7 +127,7 @@ public class GestorController {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Reserva> currentResults = reserva_service.getReservasPaginadas(pageRequest, sala);
+        Page<Reserva> currentResults = reserva_service.getReservasEspacio(sala,pageRequest);
         
         model.addAttribute("currentResults", currentResults);
     
@@ -139,6 +141,6 @@ public class GestorController {
 		model.addAttribute("user", u);
 		model.addAttribute("view", "gestor/gestion-reservas");
 		
-        return "gestor/index";
+        return "index";
     }
 }

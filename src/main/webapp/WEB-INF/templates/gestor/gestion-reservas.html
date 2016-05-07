@@ -6,72 +6,95 @@
 </head>
 <body>
 
-            <div class="container-fluid" th:fragment="contenido">
+<div class="container-fluid" th:fragment="contenido">
 
 <!-- Page Heading -->
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header text-center">
-            Lista <small>de reservas</small>
+           
         </h1>
     </div>
 </div>
 <!-- /.row -->
 
+<!-- Vista -->
 <div class="row">
-	<div class="col-md-8 col-md-offset-2">
-        
-       <div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults)}">
-                <i class="fa fa-ban fa-5x"></i>
-                <h4>¡Uups! Todavía no has hecho ninguna reserva.</h4>
-           </div> 
+	<div class="col-md-2 col-md-offset-10 text-center">
+	    Ver como: 
+	    <span id="iconoLista" class="red" title="Lista"><i class="fa fa-list-ul"> </i></span>
+	    <span id="iconoCalendario" title="Calendario"><i class="fa fa-calendar"> </i> </span>
+	</div>
+</div>
+<hr/>
 
-            <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults)}">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                        	<th>Usuario</th>
-                            <th>Asunto</th>
-                            <th>Espacio</th>
-                            <th>Desde</th>
-                            <th>Hasta</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                   <!-- Añadir formulario para busqueda por usuario(correcta) y Espacio -->
-					<tbody>
-						<tr th:each="r : ${currentResults}"
-							th:attr="id=${r.id},data-id=${r.id},data-start=${#joda.isoDateTime(r.comienzo)},data-end=${#joda.isoDateTime(r.fin)},data-espacio=${r.espacio.id}, data-estado=${r.estadoReserva}, data-username=${r.username}">
-							<td th:text="${r.username}"> Usuario </td>
-							<td th:text="${r.asunto}">Recuperacion de clase</td>
-							<td th:text="${r.espacio.nombreEspacio}">Aula 9</td>
-							<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
-							<td th:text="${#joda.format(r.fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
-							<td th:if="${r.estadoReserva.toString() == 'Confirmada'}" class=" text-center"><span
-								class="label label-success">Confirmada</span></td>
-							<td th:if="${r.estadoReserva.toString() == 'Pendiente'}" class=" text-center"><span
-								class="label label-warning">Pendiente</span></td>
-							<td th:if="${r.estadoReserva.toString() == 'Denegada'}" class=" text-center"><span
-								class="label label-danger">Denegada</span></td>	
-						</tr>
-					</tbody>                    
-                </table>
-            </div> 
-            <!-- /.table-responsive-->
-        	<div class="row">
+<div id="vistaLista" class="row" >
+	<div  class="col-md-8 col-md-offset-2">
+        
+        <div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults.content)}">
+             <i class="fa fa-ban fa-5x"></i>
+             <h4>¡Uups! Todavía no has hecho ninguna reserva.</h4>
+        </div> 
+
+         <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults.content)}">
+             <table class="table table-bordered">
+                 <thead>
+                     <tr>
+                     	 <th>Usuario</th>
+                         <th>Asunto</th>
+                         <th>Espacio</th>
+                         <th>Desde</th>
+                         <th>Hasta</th>
+                         <th>Estado</th>
+                         <th>Acción</th>
+                         
+                     </tr>
+                 </thead>
+			     <tbody>
+					<tr th:each="r : ${currentResults}"
+						th:attr="id=${r.id}">
+						<td th:text="${r.user.username}">Usuario</td>
+						<td th:text="${#strings.abbreviate(r.asunto,18)}">Recuperacion de clase</td>
+						<td th:text="${r.espacio.nombreEspacio}">Aula 9</td>
+						<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
+						<td th:text="${#joda.format(r.fin, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
+						<td th:if="${r.estadoReserva.toString() == 'Confirmada'}" class=" text-center"><span
+							class="label label-success">Confirmada</span></td>
+						<td th:if="${r.estadoReserva.toString() == 'Pendiente'}" class=" text-center"><span
+							class="label label-warning">Pendiente</span></td>
+						<td th:if="${r.estadoReserva.toString() == 'Denegada'}" class=" text-center"><span
+							class="label label-danger">Denegada</span></td>
+						<td>
+							<a th:attr="data-id=${r.id}, data-user=${r.user.username},data-asunto=${r.asunto}, data-start=${#joda.isoDateTime(r.comienzo)},
+									    data-end=${#joda.isoDateTime(r.fin)}, data-espacio=${r.espacio.nombreEspacio},
+									    data-grupo=${r.grupoReserva.nombreGrupo}, data-reservaColor=${r.reservaColor}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>						
+						</td>
+					</tr>
+				</tbody>                    
+             </table>
+         </div> 
+         <!-- /.table-responsive-->
+        
+    </div>
+
+ 
+ <!-- Pagination -->
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
     <div class="col-md-12 text-center">
-        <div class='pagination pagination-centered'>
+        <nav>
             <ul class="pagination">
                 <li th:class="${currentIndex == 1}? 'disabled' : ''">
-                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <span th:if='${currentIndex == 1}'>Primera</span>
                     <a th:if='${currentIndex != 1}'
-                       th:href="@{1}">← First</a>
+                       th:href="@{1}">Primera</a>
                 </li>
                 <li th:class="${currentIndex != 1}? '' : 'disabled'">
-                    <span th:if='${currentIndex == 1}'>«</span>
+                    <span th:if='${currentIndex == 1}'><i class='fa fa-angle-left'></i></span>
                     <a th:if='${currentIndex != 1}'
                        th:href="@{${(currentIndex - 1)}}"
-                       title='Go to previous page'>«</a>
+                       title='Go to previous page'><i class='fa fa-angle-left'></i></a>
                 </li>
 
                 <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
@@ -86,22 +109,175 @@
                 </li>
 
                 <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
+                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
                     <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
                 </li>
                 <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
                     <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                       th:href="@{${currentResults.totalPages}}">Última</a>
                 </li>
             </ul>
+        </nav>
+    </div>
+</div>
+ <!-- /.Pagination -->
+
+</div>
+<!-- /.row -->
+
+<!-- Calendar -->
+<div class="row">
+   <div id="calendar" class="col-md-10 col-md-offset-1"></div>
+</div>
+ 
+ <!-- Modal Editar Reserva -->
+ <div class="modal fade" id="modalEditarReserva" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Reserva</h4>
+          </div>
+          <div class="modal-body">
+          		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Reserva}" method="put">             
+
+				 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-1 control-label">Usuario: </label>
+		                      <div class="col-md-11">
+		                         <p id="usaurio" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+				
+									
+				 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-1 control-label">Asunto: </label>
+		                      <div class="col-md-11">
+		                         <p id="asunto" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+		        
+                 <div class="row">
+                 	<div class="col-md-6">
+		                 <!-- Fecha inicio -->
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Desde: </label>
+		                     <div class="col-md-10">		         
+					               <p id="comienzo" class="form-control-static" ></p>		             
+		                     </div>
+		                 </div>
+	                 </div>
+	                 <div class="col-md-6">
+		                 <!-- Fecha fin -->
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Hasta: </label>
+				             <div class="col-md-10">	              		         
+					               <p id="fin" class="form-control-static" ></p>		                                	 
+		                      </div>
+		                 </div>
+	                 </div>
+                 </div>               
+                 
+                  <div class="row">
+                 	<div class="col-md-6">
+		                 <!-- Espacio -->            
+		                   <div class="form-group">
+		                      <label class="col-md-3 control-label">Espacio: </label>
+		                     <div class="col-md-9">
+		                          <p id="nombreEspacio" class="form-control-static" ></p>                     
+		                     </div>
+		                   </div> 
+                     </div>
+                     
+                     <div class="col-md-6">
+		                 <!-- Grupo -->            
+		                   <div class="form-group">
+		                      <label class="col-md-2 control-label">Grupo: </label>
+		                     <div class="col-md-10">
+		                          <p id="nombreGrupo" class="form-control-static" ></p>                     
+		                     </div>
+		                   </div> 
+                     </div>
+                     
+		          </div> 
+		          
+		           <div class="row">
+                 	<div class="col-md-6">
+		                 <!-- Color -->            
+		                   <div class="form-group">
+		                      <label class="col-md-2 control-label">Color: </label>
+		                     <div class="col-md-10">
+		                          <span id="reservaColor" class="red" ></span>                     
+		                     </div>
+		                   </div> 
+                     </div>
+		           </div>  
+             </form>
+                 
+          </div>
+          <div class="modal-footer">
+	        <a id="enlaceEliminar" href="#" class="btn-rec gray">ELIMINAR</a>
+	        <a id="enlaceEditar" th:href="@{''}" class="btn-rec blue">EDITAR</a>
+	      </div>
+        
         </div>
+      </div>
     </div>
+ 
+ <!-- Modal Reserva Recurrente -->
+ <div class="modal fade" id="modalRecurrente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Eliminar reserva periódica</h4>
+          </div>
+          <div class="modal-body">
+          	<div class="row">
+            	<div class="col-md-12">
+          	  	 <button id="solo_esta" class="btn-rec gray">Sólo éste</button>
+          	  	 Se eliminará sólo este evento.
+          		</div>
+          	</div>
+          	<br/>
+          	<div class="row">
+          		<div class="col-md-12">
+          	  	 <button id="toda_la_serie" class="btn-rec gray">Toda la serie</button>
+          	  	 Se eliminarán todos los eventos.
+          		</div>
+          	</div>
+          </div>
+       </div>
+     </div>
 </div>
-    </div>
-</div>
- <!-- /.row -->
+
+ 
+        
+ <script th:inline="javascript">
+ 	var baseURL = /*[[@{/}]]*/ '/';
+ </script>
+ <script src="../../js/mis-reservas.js" th:src="@{/js/mis-reservas.js}"></script>
+ 
+ 
+ 
+ </div>
+
+<!-- /.container-fluid -->
+
+</body>
+</html>
+
  
  <div class="modal fade" id="modalEditarReserva" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -349,10 +525,3 @@
 		});
  
  </script>
- 
- </div>
-
-            <!-- /.container-fluid -->
-
-</body>
-</html>

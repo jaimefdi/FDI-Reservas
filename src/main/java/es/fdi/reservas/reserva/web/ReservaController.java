@@ -24,8 +24,6 @@ import es.fdi.reservas.users.business.entity.User;
 @Controller
 public class ReservaController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ReservaController.class);
-	
 	private ReservaService reserva_service;
 	
 	private GrupoReservaService grupo_service;
@@ -132,7 +130,7 @@ public class ReservaController {
 		model.addObject("User", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
 		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
 		model.addObject("view", "reservas-calendario");
 		
         return model;
@@ -155,7 +153,7 @@ public class ReservaController {
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("user", user_service.getCurrentUser());
 		model.addObject("GrupoReservas", grupo_service.getGrupoReserva(idGrupo));
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user_service.getCurrentUser().getId()));
 		model.addObject("view", "grupo-reservas");
 		
         return model;
@@ -179,14 +177,14 @@ public class ReservaController {
 		model.addAttribute("User", user);
 		model.addAttribute("view", "nuevoGrupo");
 		
-		if(grupo_service.addNuevoGrupo(g) != null){			
+		if(grupo_service.addNuevoGrupo(g, user) != null){			
 			model.addAttribute("exito", "");
 		}
 		else{
 			model.addAttribute("error", "");
 		}
 		
-		model.addAttribute("GruposReservas", grupo_service.gruposReservas());
+		model.addAttribute("GruposReservas", grupo_service.getGruposReservas());
 		
         return "index";
     }

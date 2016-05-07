@@ -83,16 +83,6 @@ public class UserController {
 		return model;
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value="/administrar")
-	public ModelAndView administrar(){
-		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
-		model.addObject("view", "administrar");
-		return model;
-	}
-	
 	@RequestMapping(value="/administrar/usuarios/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();

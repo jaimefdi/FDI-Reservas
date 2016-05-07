@@ -107,9 +107,6 @@ public class ReservaService {
 		if(reserva.getGrupoReserva() != null){
 			nuevaReserva.setGrupoReserva(reserva.getGrupoReserva());
 		}
-		if(nuevaReserva.reservaAConfirmar()) {
-			nuevaReserva.setEstadoReserva(EstadoReserva.PENDIENTE);
-		}
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		
 		return nuevaReserva;
@@ -194,6 +191,10 @@ public class ReservaService {
 	public Page<Reserva> getReservasUsuario(Long idUsuario, PageRequest pageRequest) {
 		return reserva_repository.findByUserId(idUsuario, pageRequest);
 	}
+	
+	public Page<Reserva> getReservasEspacio(Long espacio, PageRequest pageRequest) {
+		return reserva_repository.findByEspacioId(espacio, pageRequest);
+	}
 
 	public void eliminarEdificio(long idEdificio) {
 		//edificio_repository.delete(idEdificio);
@@ -208,11 +209,6 @@ public class ReservaService {
 	
 	public Page<Edificio> getEdificiosPaginados(PageRequest pageRequest) {
 		return edificio_repository.findAll(pageRequest);
-	}
-	public Page<Reserva> getTodasReservasPaginadas(PageRequest pageRequest) {
-		List<Reserva> lista = reserva_repository.findAll();
-		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
-		return pagina;
 	}
 	
 	public Edificio editarEdificio(EdificioDTO edificio){
@@ -234,12 +230,19 @@ public class ReservaService {
 		return facultad_repository.findAll(pageRequest);
 	}
 	
+	public Page<Reserva> getTodasReservasPaginadas(PageRequest pageRequest) {
+		/*List<Reserva> lista = reserva_repository.findAll();
+		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
+		return pagina;*/
+		return reserva_repository.findAll(pageRequest);
+	}
+	
 	/*public Facultad eliminarFacultad(FacultadDTO facultad) {
-		Facultad f = facultad_repository.findOne(facultad.getId());
-		f.setDeleted(true);
-		return facultad_repository.save(f);
-		
-	}*/
+	Facultad f = facultad_repository.findOne(facultad.getId());
+	f.setDeleted(true);
+	return facultad_repository.save(f);
+	
+}*/
 	
 	public Facultad editarFacultad(FacultadDTO facultad){
 		Facultad f = facultad_repository.findOne(facultad.getId());
@@ -277,8 +280,8 @@ public class ReservaService {
 		return espacio_repository.save(e);
 	}
 	
-	public Page<Reserva> getReservasPaginadasUser(PageRequest pageRequest, String user) {
-		List<Reserva> lista = reserva_repository.findByUsername(user);
+	/*public Page<Reserva> getReservasPaginadasUser(PageRequest pageRequest, Long idUsuario) {
+		List<Reserva> lista = reserva_repository.findByUserId(idUsuario);
 		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
 		return pagina;
 	}
@@ -292,11 +295,6 @@ public class ReservaService {
 	public Page<Reserva> getReservasUsuario(String username, PageRequest pageRequest) {
 		return reserva_repository.findByUsername(username, pageRequest);
 	} 
-	
-	public void eliminarEdificio(long idEdificio) {
-		edificio_repository.delete(idEdificio);
-		
-	}
 	
 	public Edificio editarEdificio(Edificio edificio){
 		Edificio e = edificio_repository.findOne(edificio.getId());
@@ -316,11 +314,6 @@ public class ReservaService {
 		return facultad_repository.save(f);
 	}
 	
-	public void eliminarEspacio(long idEspacio) {
-		espacio_repository.delete(idEspacio);
-		
-	}
-	
 	public Espacio editarEspacio(Espacio espacio){
 		Espacio e = espacio_repository.findOne(espacio.getId());
 		e.setNombreEspacio(espacio.getNombreEspacio());
@@ -329,15 +322,7 @@ public class ReservaService {
 		e.setProyector(espacio.isProyector());
 		e.setTipoEspacio(espacio.getTipoEspacio());
 		return espacio_repository.save(e);
-	}
-
-	public List<Facultad> getFacultadesPorTagName(String tagName) {
-		return facultad_repository.getFacultadesPorTagName(tagName);
-	}
-
-	public List<TipoEspacio> tiposDeEspacios(long idEdificio) {
-		return espacio_repository.tiposDeEspacios(idEdificio);
-	}
+	}*/
 
 	public List<Facultad> getFacultadesPorTagName(String tagName) {
 		return facultad_repository.getFacultadesPorTagName(tagName);
