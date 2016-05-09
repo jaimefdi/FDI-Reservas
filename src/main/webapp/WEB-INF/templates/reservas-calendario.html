@@ -598,8 +598,7 @@
 			        right: 'month,agendaWeek,agendaDay'
 			    },
 			    defaultDate: '2016-03-12',			    
-			    eventLimit: true,
-			    
+			    eventLimit: true,		    
 			    eventClick: function(event, jsEvent, view){
 			    	reserva.id = event.id;
 			    		var cuerpo = "<div>Donde: <b>" + event.nombreEspacio + "</b><br/>"+
@@ -608,7 +607,7 @@
 						 
 			    		if(event.editable){
 			    			cuerpo += "<br/><div class='row'>" +						
-									  "<div class='col-md-6 text-left'><a onclick='modalEliminar(" + event.id + ")'>" + 'Eliminar' + "</a></div>" +
+									  "<div class='col-md-6 text-left'><a role='button' onclick='modalEliminar(" + event.id + ")'>" + 'Eliminar' + "</a></div>" +
 									  "<div class='col-md-6 text-right'><a href='/reservas/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
 									  "</div>";
 			    		}
@@ -628,26 +627,7 @@
 							content : cuerpo
 									  
 						}).popover('show');
-			    },
-			    /*
-			    eventRender : function(event,element,view) {
-			    
-			    	if(view.name == 'month'){
-			    		element.popover({
-							
-								placement : 'auto',
-								html : true,
-								trigger : 'hover',
-								animation : 'true',
-								container:'#calendar',
-								content : "<b>" + event.nombreEspacio +
-										  "</b><br/>" + event.start.format("HH:mm") + "-" + event.end.format("HH:mm") + 
-										  "<br/>" + event.title
-							});
-			    	}
-					
-				},
-				*/
+			    },			  
 				selectable : true,
 			    select : function(start, end) {
 			    	$('[role="tooltip"]').popover('hide'); 
@@ -676,8 +656,7 @@
 					var numDia = eventData.start.isoWeekday();
 					array.push(letraSemana(numDia));
 					marcarChecks(array);
-					//Desmarca el evento si no se ha creado
-					//$('#calendar').fullCalendar('unselect');
+					
 				},				
 			    eventSources: [ 
 				        {

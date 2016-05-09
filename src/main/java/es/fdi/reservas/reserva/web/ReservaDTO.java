@@ -1,6 +1,7 @@
 package es.fdi.reservas.reserva.web;
 
 import java.util.List;
+import java.util.Random;
 
 import org.joda.time.DateTime;
 import es.fdi.reservas.reserva.business.entity.Reserva;
@@ -164,7 +165,14 @@ public class ReservaDTO {
 	}
 	
 	public static ReservaDTO fromReservaEditable(Reserva reserva) {
-		return new ReservaDTO(reserva.getId(), reserva.getAsunto(), 
+	
+		long n = 0;
+		Random random = new Random();
+		if(reserva.getRecurrenteId() != null){
+			n = random.nextLong();
+		}
+		
+		return new ReservaDTO(reserva.getId() + n , reserva.getAsunto(), 
 				                          reserva.getComienzo(), reserva.getFin(),
 				                          reserva.getEspacio().getNombreEspacio(),
 				                          reserva.getEspacio().getId(), reserva.getReservaColor(),

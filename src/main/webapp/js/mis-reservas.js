@@ -49,6 +49,7 @@ $("#iconoCalendario").click(function(){
 $('td a').click(function(){
 	
 	reserva.id =  $(this).attr("data-id");
+	reserva.recurrenteId = $(this).attr("data-recurrenteId");
 	var asunto =  $(this).attr("data-asunto");
 	var start = $(this).attr("data-start");
 	var end = $(this).attr("data-end");
@@ -56,6 +57,8 @@ $('td a').click(function(){
 	var nombreGrupo = $(this).attr("data-grupo");
 	var color = $(this).attr("data-reservaColor");
 	var accion = $(this).attr("data-accion");
+	
+	console.log(reserva.recurrenteId);
 	
 	$('#modalEditarReserva #asunto').text(asunto);
 	$('#modalEditarReserva #comienzo').text(es.ucm.fdi.dateUtils.fromIso8601(start));
@@ -69,7 +72,7 @@ $('td a').click(function(){
 		$('#modalEditarReserva').modal('show');
 	}
 	else if(accion == 'Eliminar'){
-		modalEliminarReserva(reserva);
+		modalEliminarReservaSimple();	
 	}
 	
 	
@@ -77,7 +80,7 @@ $('td a').click(function(){
 
 
 $("#enlaceEliminar").click(function(){
-	modalEliminarReserva(reserva);
+	modalEliminarReservaSimple();	
 });
 
 $("#aceptarEliminar").click(function(){
@@ -86,48 +89,20 @@ $("#aceptarEliminar").click(function(){
 
 
 $('#solo_esta').click(function(){
-	
 	var w = reserva.recurrenteId.split("_");
 	var reservaPadre = w[0];
-	var exDate = "EXDATE:";
-	exDate += "VALUE=" + w[1]; 
+	var exDate = "EXDATE:VALUE=" + w[1];
 	reserva.id = reservaPadre;
 	var recurrencia = [];
 	recurrencia.push(exDate);
 	reserva.reglasRecurrencia = recurrencia;
-		 		
-	$.ajax({
-		url: baseURL + 'editarReserRecurrente',
-		headers : reqHeaders,
-		type: 'POST',		 				 			
-		data: JSON.stringify(reserva),
-		contentType: 'application/json',
-		success : function(datos) {  
-			$("#modalRecurrente").modal('hide');	 				
-			$("#calendar").fullCalendar('refetchEvents');
-			
-		},    
-		error : function(xhr, status) {			
- 			alert('Disculpe, existió un problema');			
-		}
-	});
+	editarReservaRecurrente(reserva, reqHeaders);	
 });
 	
 $('#toda_la_serie').click(function(){
-	
-	$.ajax({
-		url: baseURL + 'reserva/' + reserva.id,
-		type: 'DELETE',
-		headers : reqHeaders,
-		success : function(datos) {
-			$("#modalRecurrente").modal('hide');	
-			$("#" + reserva.id).remove();
-			$("#calendar").fullCalendar('refetchEvents');
-		},    
-		error : function(xhr, status) {
-			alert('Disculpe, existió un problema');
-		}
-	});
+	var w = reserva.recurrenteId.split("_");
+	var idReserva = w[0];
+	eliminarReserva(reqHeaders, idReserva);
 });
 	
 
@@ -141,29 +116,29 @@ function loadCalendar(){
 	        center: 'title',
 	        right: 'month,agendaWeek,agendaDay'
 	    },	    
-	    eventClick : function(calEvent,jsEvent, view) {
-	    	console.log(calEvent);
-	    	reserva.id = calEvent.id;
-	    	reserva.recurrenteId = calEvent.recurrenteId;
-			$('#modalEditarReserva').modal('show');
-			$('#modalEditarReserva #idAsunto').val(calEvent.title);
-			$('#modalEditarReserva #datetimepicker1').val(calEvent.start.format("DD/MM/YYYY HH:mm"));
-			$('#modalEditarReserva #datetimepicker2').val(calEvent.end.format("DD/MM/YYYY HH:mm"));
-			$('#modalEditarReserva #nombreEspacio').text(calEvent.nombreEspacio);
-		},
 	    defaultDate: '2016-03-12',
 	    editable: true,
 	    eventLimit: true,
 	    eventClick: function(event, jsEvent, view){
 	    	$('[role="tooltip"]').popover('hide');
 	    	reserva.id = event.id;
+	    	reserva.recurrenteId = event.recurrenteId;
+	    	console.log(event);
+	    	
+	    	var divEliminar = "<div class='col-md-6 text-left'><a role='button' onclick='modalEliminarReservaSimple()'>" + 'Eliminar' + "</a></div>";
+	    	
+	    	if(esRecurrente(reserva)){
+	    		var w = reserva.recurrenteId.split("_");
+	    		event.id = w[0];
+	    		divEliminar = "<div class='col-md-6 text-left'><a role='button' onclick='modalEliminarReservaRecurrente()'>" + 'Eliminar' + "</a></div>";
+	    	}
+	    	
     		var cuerpo = "<div>Donde: <b>" + event.nombreEspacio + "</b><br/>"+
-			  			 "De " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + 
-			  			 "<br/>Asunto: " + event.title + "</div><br/>" +
-			  			 "<div class='row'>" +
-						 "<div class='col-md-6 text-left'><a onclick='modalEliminarReserva(event)'>" + 'Eliminar' + "</a></div>" +
-						 "<div class='col-md-6 text-right'><a href='/reservas/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
-						 "</div>";
+ 			 "De " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + 
+ 			 "<br/>Asunto: " + event.title + "</div><br/>" +
+ 			 "<div class='row'>" + divEliminar +
+			 "<div class='col-md-6 text-right'><a href='/reservas/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
+			 "</div>";
 		
 
 	    	$(this).popover({						
@@ -175,13 +150,46 @@ function loadCalendar(){
 						  
 			}).popover('show');
 	    },
+	    eventDragStart: function(event, jsEvent, ui, view){
+	    	var w = event.recurrenteId.split("_");
+	    	var reservaPadre = w[0];
+	    	var exDate = "EXDATE:VALUE=" + w[1];
+	    	reserva.id = reservaPadre;
+	    	var recurrencia = [];
+	    	recurrencia.push(exDate);
+	    	reserva.reglasRecurrencia = recurrencia;
+	    },
 		eventResize: function(event, delta, revertFunc, jsEvent) {
-
-			editarReserva(event, reqHeaders, event.id);
+			
+			if(esRecurrente(event)){
+				var w = event.recurrenteId.split("_");
+		    	var reservaPadre = w[0];
+		    	var exDate = "EXDATE:VALUE=" + w[1];
+		    	reserva.id = reservaPadre;
+		    	var recurrencia = [];
+		    	recurrencia.push(exDate);
+		    	reserva.reglasRecurrencia = recurrencia;
+	    		//agregar exdate
+	    		editarReservaRecurrente(reserva, reqHeaders);
+	    		console.log(event);	    		
+	    		nuevaReserva(event, reqHeaders);
+	
+	    	}
+	    	else{	    		
+	    		editarReservaSimple(event, reqHeaders, event.id);
+	    	}
 	    },
 	    eventDrop: function(event, delta, revertFunc) {
-
-	        editarReserva(event, reqHeaders, event.id);
+	    	if(esRecurrente(event)){
+	    		//agregar exdate
+	    		editarReservaRecurrente(reserva, reqHeaders);
+	    		console.log(event);
+	    		nuevaReserva(event, reqHeaders);
+	    	}
+	    	else{	    		
+	    		editarReservaSimple(event, reqHeaders, event.id);
+	    	}
+	    	
   
 	    },
 	    viewRender: function(view, element){
@@ -201,13 +209,18 @@ function loadCalendar(){
 });
 
 
-function editarReserva(reserva, reqHeaders, idReserva){
+function editarReservaSimple(reserva, reqHeaders, idReserva){
 	$.ajax({
 			url: baseURL + 'reserva/editar/' + idReserva,
 			type: 'PUT',
 			headers : reqHeaders,
 			data: JSON.stringify(reserva),
-			contentType: 'application/json',    
+			contentType: 'application/json',
+			success : function(datos) {
+				$('#modalEliminarReservaSimple').modal('hide');
+				$("#" + idReserva).remove();
+				$("#calendar").fullCalendar('refetchEvents');
+			},
 			error : function(xhr, status) {
 				revertFunc();
 			}
@@ -230,17 +243,50 @@ function eliminarReserva(reqHeaders, idReserva){
 		});
 }
 
-function modalEliminarReserva(reserva){
+function modalEliminarReservaSimple(){
 	$('#modalEditarReserva').modal('hide');
 	$('[role="tooltip"]').popover('hide');
-	// Si la reserva es recurrente
-	if(reserva.recurrenteId != null){	
-		$("#modalRecurrente").modal('show');
-	}
-	// Si la reserva es simple
-	else{
-		$('#modalEliminarReservaSimple').modal('show');
-	}
+	$('#modalEliminarReservaSimple').modal('show');	
 }
 
+function modalEliminarReservaRecurrente(){
+	$('#modalEditarReserva').modal('hide');
+	$('[role="tooltip"]').popover('hide');
+	$('#modalRecurrente').modal('show');	
+}
 
+function nuevaReserva(reserva, reqHeaders){
+	$.ajax({
+			url: baseURL + 'nuevaReservaAJAX',
+			headers : reqHeaders,
+			type: 'POST',		 				 			
+			data: JSON.stringify(reserva),
+			contentType: 'application/json',
+			success : function(datos) {  
+				$("#calendar").fullCalendar('refetchEvents');			
+			},
+			error: function(xhr, status){
+				alert("Error al insertar");
+			}
+		});
+}
+
+function esRecurrente(reserva){
+	return reserva.recurrenteId != null;
+}
+
+function editarReservaRecurrente(reserva, reqHeaders){	 		
+	$.ajax({
+		url: baseURL + 'editarReserRecurrente',
+		headers : reqHeaders,
+		type: 'POST',		 				 			
+		data: JSON.stringify(reserva),
+		contentType: 'application/json',
+		success : function(datos) {  
+			$("#modalRecurrente").modal('hide');	 							
+		},    
+		error : function(xhr, status) {			
+ 			alert('Disculpe, existió un problema');			
+		}
+	});
+}

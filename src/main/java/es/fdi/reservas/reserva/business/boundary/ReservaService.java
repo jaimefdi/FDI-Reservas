@@ -90,14 +90,11 @@ public class ReservaService {
 		}
 		
 		Reserva nuevaReserva = new Reserva(reserva.getAsunto(),reserva.getComienzo(),reserva.getFin(),
-										   reserva.getUser(), reserva.getEspacio(),reserva.getStartRecurrencia(),
-										   reserva.getEndRecurrencia(),reserva.getReservaColor(),
-										   reserva.getRecurrenteId());
+										   reserva.getUser(), reserva.getEspacio(), reserva.getGrupoReserva(),
+										   reserva.getStartRecurrencia(), reserva.getEndRecurrencia(),
+										   reserva.getReservaColor(), reserva.getRecurrenteId());
 		
 		nuevaReserva.setReglasRecurrencia(reserva.getReglasRecurrencia());
-		if(reserva.getGrupoReserva() != null){
-			nuevaReserva.setGrupoReserva(reserva.getGrupoReserva());
-		}
 		nuevaReserva = reserva_repository.save(nuevaReserva);
 		
 		return nuevaReserva;
@@ -148,6 +145,16 @@ public class ReservaService {
 		Reserva reserva = new Reserva();
 		reserva.setComienzo(reservaActualizada.getStart());
 		reserva.setFin(reservaActualizada.getEnd());
+		reserva.setReglasRecurrencia(reservaActualizada.getReglasRecurrencia());
+		
+		String recurrenteID = reservaActualizada.getRecurrenteId();
+		if(recurrenteID != null){
+			String[] w = recurrenteID.split("_");
+			Long idR = Long.valueOf(w[0]);
+			reservaActualizada.setId(idR);
+		}
+		
+		
 		
 		Long idEspacio = reservaActualizada.getIdEspacio();
 		DateTime start = reservaActualizada.getStart();
@@ -258,8 +265,12 @@ public class ReservaService {
 			
 			i++;
 		}
-		
-		reserva_repository.save(r);
+		if(r.rangoRecurrencias().size() > 0){
+			reserva_repository.save(r);
+		}
+		else{
+			reserva_repository.delete(r.getId());
+		}
 		
 	}
 
