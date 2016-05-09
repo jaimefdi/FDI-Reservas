@@ -79,6 +79,7 @@ public class User implements UserDetails{
 		this.email = email;
 		this.enabled = true;
 		this.roles = new ArrayList<UserRole>();
+		
 	}
 	
 	public String getPassword() {

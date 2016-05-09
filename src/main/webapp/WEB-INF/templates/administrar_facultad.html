@@ -43,10 +43,10 @@
                   </thead>
                   <tbody>
                       <tr th:each="r : ${currentResults}"
-                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}, dir=${r.dir}">
+                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad}">
                       	
                           <td th:text="${r.nombreFacultad}"></td>
-                          <td th:text="${r.dir}"></td>
+                          <td th:text="${r.webFacultad}"></td>
                       </tr>     
                   </tbody>
               </table>
@@ -119,9 +119,9 @@
                  
                  <!-- Direccion de facultad --> 
                  <div class="form-group">
-                     <label for="ejemplo_2" class="col-md-2 control-label">Direccion:</label>
+                     <label for="ejemplo_2" class="col-md-2 control-label">Web:</label>
                       <div class="col-md-10">
-                         <input id="idDir" name="direccion" type="text" class="form-control" placeholder="Introduce una direccion para la facultad"/>
+                         <input id="idWeb" name="web" type="text" class="form-control" placeholder="Introduce una web para la facultad"/>
                       </div>
                  </div>
                               
@@ -154,16 +154,16 @@
 	 		
 	 		facultad.id =  $(this).attr("data-id");
 	 		facultad.nombreFacultad = $(this).attr("name");
-			facultad.dir = $(this).attr("dir");
+			facultad.webFacultad = $(this).attr("web");
 			
 	 		$('#modalEditarFacultad #idFacultad').text(facultad.id);
 	 		$('#modalEditarFacultad #idNombre').attr("value",facultad.nombreFacultad);
-	 		$('#modalEditarFacultad #idDir').attr("value",facultad.dir);
+	 		$('#modalEditarFacultad #idWeb').attr("value",facultad.webFacultad);
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
 	 		facultad.nombreFacultad = $("#modalEditarFacultad #idNombre").val();
-	 		facultad.dir = $("#modalEditarFacultad #idDir").val();
+	 		facultad.webFacultad = $("#modalEditarFacultad #idWeb").val();
 	 	
 
 	 		$.ajax({
@@ -177,7 +177,7 @@
 	 				$('#modalEditarFacultad').modal('hide');
 	 				
 	 				$("#"+facultad.id +" td:nth-child(1)").text(facultad.nombreFacultad);
-	 				$("#"+facultad.id +" td:nth-child(2)").text(facultad.dir);
+	 				$("#"+facultad.id +" td:nth-child(2)").text(facultad.webFacultad);
 	 			},    
 	 			error : function(xhr, status) {
 	     			alert('Disculpe, existió un problema');

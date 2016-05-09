@@ -82,12 +82,24 @@ public class UserService implements UserDetailsService{
 		return user_ropository.save(f);
 	}
 
-	public User editaUsuario(UserDTO userActualizado) {
+	public User editaUsuario(UserDTO userActualizado, String user, String admin, String secre) {
 		
 		User u = user_ropository.findOne(userActualizado.getId());
 		u.setUsername(userActualizado.getUsername());
 		u.setEmail(userActualizado.getEmail());
-		u.setEnabled(userActualizado.isEnabled());
+		//u.setEnabled(userActualizado.isEnabled());
+		if (user.equals("1") || admin.equals("1") || secre.equals("1")){//si hay alguno seleccionado
+			u.getAuthorities().clear();
+			if (user.equals("1")){
+				u.addRole(new UserRole("ROLE_USER"));
+			}
+			if (admin.equals("1")){
+				u.addRole(new UserRole("ROLE_ADMIN"));
+			}
+			if (secre.equals("1")){
+				u.addRole(new UserRole("ROLE_SECRE"));
+			}
+		}
 		return user_ropository.save(u);
 		
 		

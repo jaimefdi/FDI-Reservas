@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Listado de espacios</title>
+</head>
+<body>
+
+<div class="container-fluid" th:fragment="contenido">
+
+<!-- Page Heading -->
+<div class="row">  
+	<div class="col-md-12">
+        <h1 class="page-header text-center">
+            <small>Editar</small>
+        </h1>
+    </div>                  
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-md-12">
+	   <form role="form" action="#" method="put">
+	   		<div class="col-md-6">
+	   		
+	   		<!-- Asunto --> 
+                 <div class="form-group">
+                     <label>Nombre:</label>
+                      <div>
+                         <input id="idNombre" name="nombre" type="text" class="form-control" th:value="${usuario.username}"/>
+                      </div>
+                 </div>
+                 
+                 <!-- Fecha inicio --> 
+                 <div class="form-group">
+                     <label>Correo:</label>                  
+		                <input id="idEmail" name="email" type="text" class="form-control" th:value="${usuario.email}"/>                 
+                 </div>
+                 
+                                  
+                                  
+                	               
+                    <!-- Asistentes  -->
+                   <div class="form-group">
+                       <label>Facultad:</label>
+                        <div class="ui-widget">                      
+						    <input id="autoFacultades" type="text"  class="form-control" placeholder="Agrega facultad" th:value="${usuario.facultad.nombreFacultad}"/>				    							                       	                    	
+                        </div>
+                   </div>
+					<div id="facultad"></div> 
+					
+					 </div>
+					 
+					 <div class="col-md-6">
+					 	<div class="form-group">
+					 		<label>Roles:</label>
+					 		<div class="checkbox">
+							    <label>
+							      <input type="checkbox" id="chkAdmin"  value="1"/> Administrador
+							    </label>
+							  </div>
+							<div class="checkbox">
+							    <label>
+							      <input type="checkbox" id="chkUser" value="1"/> Usuario básico
+							    </label>
+							  </div>
+							<div class="checkbox">
+							    <label>
+							      <input type="checkbox" id="chkSecre" value="1"/> Gestor
+							    </label>
+							  </div>
+					 	</div>
+					 
+					 </div>                                     
+                   <div class="row">              	
+					    <div class="col-md-12 text-center">
+					         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>
+					    </div>                   
+				   </div>
+				   <!-- /.row -->
+				  
+	   </form>
+   </div>                  
+</div>
+<!-- /.row -->
+	
+
+
+<script th:inline="javascript">
+	var baseURL = /*[[@{/}]]*/ '/';
+	var idUsuario = /*[[${usuario.id}]]*/ '1';
+	var user = /*[[#chkUser]]*/ '1';
+	var admin = /*[[#chkAdmin]]*/ '1';
+	var gestor = /*[[#chkSecre]]*/ '1';
+</script>
+<script src="../../js/editarUsuario.js" th:src="@{/js/editarUsuario.js}"></script>
+</div>
+
+            <!-- /.container-fluid -->
+
+</body>
+</html>	

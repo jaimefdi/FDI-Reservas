@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	
 	@Query("select e from #{#entityName} e where e.enabled=true")
 	public List<User> findAll();
-
+	
 	public UserDetails findByEmail(String username);
 
 	public UserDetails findByUsername(String username);

@@ -23,8 +23,8 @@ public class UserDTO {
 	
 	private Collection<UserRole> roles;
 	
-	
-	private Set<Facultad> facultades;
+	private Facultad facultad;
+	//private Set<Facultad> facultades;
 	
 	public UserDTO(){}
 	
@@ -33,9 +33,30 @@ public class UserDTO {
 		this.email = email;
 		this.enabled = enabled;
 		this.roles = new ArrayList<UserRole>();
-		this.facultades = new HashSet<Facultad>();
+		
+		//this.facultades = new HashSet<Facultad>();
 	}
 	
+	public Collection<UserRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Collection<UserRole> roles) {
+		this.roles = roles;
+	}
+
+	public Facultad getFacultad() {
+		return facultad;
+	}
+
+	public void setFacultad(Facultad facultad) {
+		this.facultad = facultad;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -80,21 +101,21 @@ public class UserDTO {
 		this.enabled = en;
 	}
 
-	public Set<Facultad> getFacultades() {
-		return facultades;
-	}
-
-	public void setFacultades(Set<Facultad> facultades) {
-		this.facultades = facultades;
-	}
-	
-	public void addFacultad(Facultad f){
-		this.facultades.add(f);
-	}
-	
-	public void removeFacultad(Facultad f){
-		this.facultades.remove(f);
-	}
+//	public Set<Facultad> getFacultades() {
+//		return facultades;
+//	}
+//
+//	public void setFacultades(Set<Facultad> facultades) {
+//		this.facultades = facultades;
+//	}
+//	
+//	public void addFacultad(Facultad f){
+//		this.facultades.add(f);
+//	}
+//	
+//	public void removeFacultad(Facultad f){
+//		this.facultades.remove(f);
+//	}
 	
 	public static UserDTO fromUserDTO(User user){
 		return new UserDTO(user.getUsername(), user.getEmail(), user.isEnabled());

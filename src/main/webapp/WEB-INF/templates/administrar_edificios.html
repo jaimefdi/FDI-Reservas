@@ -37,17 +37,16 @@
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
-                      		<th></th>
+                      		
                           	<th>Nombre</th>
-                          	<th>Facultad</th>
+                          	<th>Dirección</th>
                       </tr>
                   </thead>
                   <tbody>
                       <tr th:each="r : ${currentResults}"
-                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombre_edificio},idFacultad=${r.facultad.id}">
-                      	  <td><img alt="${r.nombre_edificio}" th:src="@{/img/+${r.nombre_edificio}+.png}" width="50" height="50"></img></td>
-                          <td th:text="${r.nombre_edificio}"></td>
-                          <td th:text="${r.facultad.nombreFacultad}"></td>
+                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion}">
+                          <td th:text="${r.nombreEdificio}"></td>
+                          <td th:text="${r.direccion}"></td>
                           
                       </tr> 
                       <!-- <tr>
@@ -129,15 +128,9 @@
                  
                  <!-- Correo --> 
                  <div class="form-group">
-                     <label for="ejemplo_3" class="col-md-3 control-label">Facultad:</label>
+                     <label for="ejemplo_3" class="col-md-3 control-label">Dirección:</label>
                      <div class="col-md-9">
-                     
-                     	<select id="idFacul" name="facul" title="Facultad">
-				          
-				          <option th:each="f : ${facultades}" th:value="${f.id}" th:text="${f.nombreFacultad}"/> 
-				        </select>
-		               
-		               
+                     	<input id="idDir" name="direccion" type="text" class="form-control" placeholder="Introduce la dirección del edificio"/>
                      </div>
                  </div>
                  
@@ -173,18 +166,18 @@
 	 		$('#modalEditarEdificio').modal('show');
 	 		
 	 		edificio.id =  $(this).attr("data-id");
-	 		edificio.nombre_edificio = $(this).attr("name");
-	 		edificio.idFacultad = $(this).attr("idFacultad");
+	 		edificio.nombreEdificio = $(this).attr("name");
+	 		edificio.direccion = $(this).attr("dir");
 
 	 		//$('#modalEditarEdificio #idEdificio').text(edificio.id);
-	 		$('#modalEditarEdificio #idNombre').attr("value",edificio.nombre_edificio);
-	 		$('#modalEditarEdificio #idFacul').attr("value",edificio.idFacultad);
+	 		$('#modalEditarEdificio #idNombre').attr("value",edificio.nombreEdificio);
+	 		$('#modalEditarEdificio #idDir').attr("value",edificio.direccion);
 	 		
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
-	 		edificio.nombre_edificio = $("#modalEditarEdificio #idNombre").val();
-	 		edificio.idFacultad = $('#modalEditarEdificio #idFacul').val();
+	 		edificio.nombreEdificio = $("#modalEditarEdificio #idNombre").val();
+	 		edificio.direccion = $('#modalEditarEdificio #idDir').val();
 	 		
 	 		$.ajax({
 	 			url: baseURL + "edificio/" + edificio.id,
@@ -196,8 +189,8 @@
 	 				alert("Edificio actualizado");
 	 				$('#modalEditarEdificio').modal('hide');
 	 				
-	 				$("#"+edificio.id +" td:nth-child(1)").text(edificio.nombre_edificio);
-	 				$("#"+edificio.id +" td:nth-child(2)").text(edificio.idFacultad);
+	 				$("#"+edificio.id +" td:nth-child(1)").text(edificio.nombreEdificio);
+	 				$("#"+edificio.id +" td:nth-child(2)").text(edificio.direccion);
 	 			},    
 	 			error : function(xhr, status) {
 	     			alert('Disculpe, existió un problema');

@@ -1,5 +1,8 @@
 package es.fdi.reservas.users.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +22,8 @@ import es.fdi.reservas.reserva.web.EdificioDTO;
 import es.fdi.reservas.reserva.web.EspacioTipoDTO;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
+import es.fdi.reservas.users.business.entity.UserRole;
+import javassist.bytecode.Descriptor.Iterator;
 
 
 @Controller
@@ -40,8 +45,23 @@ public class UserController {
 	   return "login";
 	}
 	
+	
+	
+	@RequestMapping(value ="/administrar/usuarios")
+    public String usuarios() {
+        return "redirect:/administrar/usuarios/1";
+    }
+	
 	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.GET)
 	public ModelAndView nuevoUsuario(){
+//		ModelAndView model = new ModelAndView("index");
+//		User u = user_service.getCurrentUser();
+//		u = new User();
+//		model.addObject("User", u);
+////		model.addObject("User");
+////		model.addObject(new User());
+//		model.addObject("view", "nuevoUsuario");
+//		return model;
 	   return new ModelAndView("nuevoUsuario", "User", new User());
 	}
 	
@@ -57,7 +77,7 @@ public class UserController {
 	public ModelAndView administrar(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
+		model.addObject("User", u);
 		model.addObject("view", "administrar");
 		return model;
 	}
@@ -68,7 +88,24 @@ public class UserController {
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
         Page<User> currentResults = user_service.getUsuariosPaginados(pageRequest);
-                
+        Iterable<User> users = user_service.getUsuarios();
+        java.util.Iterator<User> it = users.iterator();
+        List<String> roles = new ArrayList<String>();
+        User aux;
+        UserRole[] vec = new UserRole[5];
+        String str = "";
+        while (it.hasNext()){
+        	aux = it.next();
+        	vec = new UserRole[aux.getAuthorities().size()];
+        	aux.getAuthorities().toArray(vec);
+        	//str = vec.toString();
+        	for (int i = 0; i < vec.length; i++){
+        		str = str + vec[i].getRole() + ";";
+        	}
+        	roles.add(str);
+        	str = "";
+        }
+        model.addAttribute("roles", roles);
         model.addAttribute("currentResults", currentResults);
         
         int current = currentResults.getNumber() + 1;
@@ -78,11 +115,21 @@ public class UserController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
+		model.addAttribute("User", u);
 		model.addAttribute("view", "administrar_usuarios");
 		
         return "index";
     }
+	
+	@RequestMapping(value="/administrar/usuarios/editar/{idUser}", method=RequestMethod.GET)
+	public String editarUsuario(@PathVariable("idUser") long idUser, Model model){
+		User u = user_service.getCurrentUser();
+		model.addAttribute("User", u);
+		model.addAttribute("usuario", user_service.getUser(idUser));
+		//System.out.println(user_service.getUser(idUser).getUsername());
+		model.addAttribute("view", "editarUsuario");
+		return "index";
+	}
 	
 	/*@RequestMapping(value="/administrar/usuarios")
 	public ModelAndView administrarUsuarios(){
@@ -123,7 +170,7 @@ public class UserController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
+		model.addAttribute("User", u);
 		model.addAttribute("view", "administrar_edificios");
 		
         return "index";
@@ -156,7 +203,7 @@ public class UserController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
+		model.addAttribute("User", u);
 		model.addAttribute("view", "administrar_facultad");
 		
         return "index";
@@ -188,7 +235,7 @@ public class UserController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
+		model.addAttribute("User", u);
 		model.addAttribute("view", "administrar_espacios");
 		
         return "index";
@@ -236,6 +283,8 @@ public class UserController {
 	@RequestMapping(value="/nuevoEdificio",method=RequestMethod.GET)
 	public ModelAndView nuevoEdificio(){
 		ModelAndView model = new ModelAndView("nuevoEdificio", "Edificio", new Edificio());
+		
+		model.addObject("view", "index");
 		model.addObject("facultades", reserva_service.getFacultades());
 		return model;
 	}

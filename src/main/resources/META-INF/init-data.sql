@@ -12,7 +12,7 @@ INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(11
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(12,'Facultad de Comercio y Turismo','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(13,'Facultad de Derecho','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(14,'Facultad de EducaciÃ³n','C/ JosÃ© Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(15,'Facultad de EnfermerÃ­a, Fisioterapia y PodologÃ­a','C/ JosÃ© Antonio Novais, 12, false');
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(15,'Facultad de EnfermerÃ­a, Fisioterapia y PodologÃ­a','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(16,'Facultad de Estudios EstadÃ­sticos','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(17,'Facultad de Farmacia','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(18,'Facultad de FilologÃ­a','C/ JosÃ© Antonio Novais, 12', false);
@@ -26,7 +26,7 @@ INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(25
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(26,'Facultad de Veterinaria','C/ JosÃ© Antonio Novais, 12', false);
 
 INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId) VALUES (1, 'root', 'root@ucm.es', '$2a$10$//HU8yTgOoLrZX6z9cgXhuR/IJki.BtS/ZM4Pr8s/zBDCFIT.I3P6', true, false, false, false, 2);
-INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', true, false, false, false, 1);
+INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', false, false, false, false, 1);
 
 INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_USER');
 INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_ADMIN');

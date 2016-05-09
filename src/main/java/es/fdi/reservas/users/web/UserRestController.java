@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.web.*;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -54,9 +54,10 @@ public class UserRestController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.PUT)
-	public void editarUsuario(@PathVariable("idUsuario") long idUsuario, @RequestBody UserDTO userActualizado) {
-		user_service.editaUsuario(userActualizado);
+	@RequestMapping(value="/administrar/usuarios/editar/{idUser}/{user}/{admin}/{secre}", method=RequestMethod.PUT)
+	public void editarUsuario(@PathVariable("idUser") long idUser, @PathVariable("user") String user,
+			@PathVariable("admin") String admin, @PathVariable("secre") String secre, @RequestBody UserDTO userActualizado) {
+		user_service.editaUsuario(userActualizado, user, admin, secre);
 	}	
 	
 	/*
@@ -99,6 +100,7 @@ public class UserRestController {
 		reserva_service.editarFacultad(facultadActualizado);
 	}
 	
+	
 	@RequestMapping(value = "/administrar/facultad/restaurar")
 	public ModelAndView restaurarFacultades(){
 		ModelAndView model = new ModelAndView("index");
@@ -121,7 +123,7 @@ public class UserRestController {
 	}
 	
 	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.PUT)
-	public String editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioTipoDTO espacioActualizado) {
+	public String editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioDTO espacioActualizado) {
 		reserva_service.editarEspacio(espacioActualizado);
 		return "redirect:/administrar/espacios";
 	}
@@ -151,6 +153,22 @@ public class UserRestController {
 				
 		for(User u : usuarios) {
 			result.add(UserDTO.fromUserDTO(u));
+		}
+		 
+		return result;
+	}
+	
+
+	@RequestMapping(value = "/facultades/tag/{tagName}", method = RequestMethod.GET)
+	public List<FacultadDTO> FacultadesFiltro(@PathVariable("tagName") String tagName) {
+		
+		List<FacultadDTO> result = new ArrayList<>();
+		List<Facultad> facultades = new ArrayList<>();
+		System.out.println(tagName);
+		facultades = reserva_service.getFacultadesPorTagName(tagName);
+				
+		for(Facultad f : facultades) {
+			result.add(FacultadDTO.fromFacultadDTO(f));
 		}
 		 
 		return result;
