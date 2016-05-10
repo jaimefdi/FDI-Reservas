@@ -87,7 +87,7 @@ public class UserService implements UserDetailsService{
 		User u = user_ropository.findOne(userActualizado.getId());
 		u.setUsername(userActualizado.getUsername());
 		u.setEmail(userActualizado.getEmail());
-		//u.setEnabled(userActualizado.isEnabled());
+		u.setEnabled(userActualizado.isEnabled());
 		if (user.equals("1") || admin.equals("1") || secre.equals("1")){//si hay alguno seleccionado
 			u.getAuthorities().clear();
 			if (user.equals("1")){

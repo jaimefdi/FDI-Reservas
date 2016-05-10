@@ -44,11 +44,11 @@
                   </thead>
                   <tbody>
                       <tr th:each="r : ${facultades}"
-                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}, dir=${r.dir}">
+                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}, dir=${r.webFacultad}">
                       	
                           <td th:text="${r.nombreFacultad}"></td>
-                          <td th:text="${r.dir}"></td>
-                          <td><a th:href="@{'/administrar/facultad/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
+                          <td th:text="${r.webFacultad}"></td>
+                          <td><a th:href="@{'/administrar/facultad/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
                       </tr>     
                   </tbody>
               </table>

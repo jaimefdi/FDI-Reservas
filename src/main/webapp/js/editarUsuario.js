@@ -13,7 +13,7 @@ $(document).ready(function(){
 			user.username = $("#idNombre").val();
 			user.email = $("#idEmail").val();
 			user.facultad = $("#autoFacultades").val();
-			
+			//user.enabled = $("#idActivado").val();
 	    	editarUsuario(user,reqHeaders);
   	
 		});

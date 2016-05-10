@@ -45,11 +45,11 @@
                   </thead>
                   <tbody>
                       <tr th:each="r : ${edificios}"
-                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombre_edificio},idFacultad=${r.facultad.id}">
+                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},idFacultad=${r.facultad.id}">
                       	
-                          <td th:text="${r.nombre_edificio}"></td>
+                          <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.facultad.nombreFacultad}"></td>
-                          <td><a th:href="@{'/administrar/edificio/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
+                          <td><a th:href="@{'/administrar/edificio/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
                       </tr> 
                       <!-- <tr>
                       	<td><input id="btn-crear" type="text" class="btn btn-default" value="Añadir edificio"/></td>
@@ -57,8 +57,7 @@
                       </tr>    --> 
                       
                   </tbody>
-              </table>
-              <a th:href="@{'/nuevoEdificio'}"><input type="button" class="btn btn-default" value="Añadir edificio"/></a> 
+              </table> 
                 
           	</div> 
         <!-- /.table-responsive-->

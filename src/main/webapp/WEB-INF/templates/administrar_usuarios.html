@@ -58,12 +58,12 @@
                     <tbody>
                         <tr th:if="${r.enabled}" th:each="r : ${currentResults}"  class="success">
                         	
-                            <td th:text="${r.username}"></td>
-                            <td th:text="${r.email}"></td>
-                            <td th:text="${r.facultad.nombreFacultad}"></td>
-                            <td >
+                            <td th:if="${r.id != User.id}" th:text="${r.username}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.email}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.facultad.nombreFacultad}"></td>
+                            <td th:if="${r.id != User.id}" >
                             <span th:each="s:${roles}" th:text="${s}"></span></td>
-                            <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${s}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${s},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
@@ -71,12 +71,12 @@
                         
                         <tr th:if="${!r.enabled}" th:each="r : ${currentResults}"  class="danger">
                         	
-                            <td th:text="${r.username}"></td>
-                            <td th:text="${r.email}"></td>
-                            <td th:text="${r.facultad.nombreFacultad}"></td>
-                            <td >
+                            <td th:if="${r.id != User.id}" th:text="${r.username}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.email}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.facultad.nombreFacultad}"></td>
+                            <td th:if="${r.id != User.id}" >
                             <span th:each="s:${roles}" th:text="${s}"></span></td>
-                            <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${s}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${s},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
@@ -85,7 +85,7 @@
                 </table>
             </div>
              <!-- /.table-responsive-->
-<!--          <a th:href="@{'/administrar/usuarios/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar usuarios"/></a> -->
+	         <a th:href="@{'/administrar/usuarios/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar usuarios"/></a>
      	</div>
  	</div>
  	<!-- Pagination -->
@@ -176,6 +176,18 @@
 		                 </div>
                    </div>
 		         </div>
+		         
+<!-- 		         <div class="row"> -->
+<!--                 	<div class="col-md-12"> -->
+<!-- 		                 Asunto  -->
+<!-- 		                 <div class="form-group"> -->
+<!-- 		                     <label class="col-md-2 control-label">Activado: </label> -->
+<!-- 		                      <div class="col-md-10"> -->
+<!-- 		                         <p id="idActivado" class="form-control-static"> </p> -->
+<!-- 		                      </div> -->
+<!-- 		                 </div> -->
+<!--                    </div> -->
+<!-- 		         </div> -->
                  
                  <div class="row">
                 	<div class="col-md-12">

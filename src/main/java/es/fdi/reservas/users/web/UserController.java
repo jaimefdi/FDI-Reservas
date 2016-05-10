@@ -54,14 +54,7 @@ public class UserController {
 	
 	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.GET)
 	public ModelAndView nuevoUsuario(){
-//		ModelAndView model = new ModelAndView("index");
-//		User u = user_service.getCurrentUser();
-//		u = new User();
-//		model.addObject("User", u);
-////		model.addObject("User");
-////		model.addObject(new User());
-//		model.addObject("view", "nuevoUsuario");
-//		return model;
+
 	   return new ModelAndView("nuevoUsuario", "User", new User());
 	}
 	
@@ -130,30 +123,7 @@ public class UserController {
 		model.addAttribute("view", "editarUsuario");
 		return "index";
 	}
-	
-	/*@RequestMapping(value="/administrar/usuarios")
-	public ModelAndView administrarUsuarios(){
-		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
 		
-		Iterable<User> lista = user_service.getUsuarios();
-		List<User> aux = new ArrayList<User>();
-		
-		Iterator<User> it = lista.iterator();
-		while (it.hasNext()){
-			User user= it.next();
-			if (!user.getId().equals(u.getId())){
-				aux.add(user);
-			}
-		}
-		
-		model.addObject("userList", aux);
-		model.addObject("view", "administrar_usuarios");
-		model.addObject("url","/administrar/usuarios" );
-		return model;
-	}*/
-	
 	@RequestMapping(value="/administrar/edificios/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
@@ -175,17 +145,7 @@ public class UserController {
 		
         return "index";
     }
-	
-//	@RequestMapping(value="/administrar/edificios")
-//	public ModelAndView administrarEdificios(){
-//		ModelAndView model = new ModelAndView("index");
-//		User u = user_service.getCurrentUser();
-//		model.addObject("user", u);
-//		model.addObject("edificios", reserva_service.getAllBuildings());
-//		model.addObject("facultades", reserva_service.getFacultades());
-//		model.addObject("view", "administrar_edificios");
-//		return model;
-//	}
+
 	
 	@RequestMapping(value="/administrar/facultad/{pageNumber}", method=RequestMethod.GET)
     public String misFacultadesPaginadas(@PathVariable Integer pageNumber, Model model) {
@@ -208,16 +168,36 @@ public class UserController {
 		
         return "index";
     }
+
+	@RequestMapping(value="/administrar/facultad/editar/{idFacul}", method=RequestMethod.GET)
+	public String editarFacultad(@PathVariable("idFacul") long idFacul, Model model){
+		User u = user_service.getCurrentUser();
+		model.addAttribute("User", u);
+		model.addAttribute("facultad", reserva_service.getFacultad(idFacul));
+		//System.out.println(user_service.getUser(idUser).getUsername());
+		model.addAttribute("view", "editarFacultad");
+		return "index";
+	}
 	
-//	@RequestMapping(value="/administrar/facultad/1")
-//	public ModelAndView administrarFacultades(){
-//		ModelAndView model = new ModelAndView("index");
-//		User u = user_service.getCurrentUser();
-//		model.addObject("user", u);
-//		model.addObject("facultades", reserva_service.getFacultades());
-//		model.addObject("view", "administrar_facultad");
-//		return model;
-//	}
+	@RequestMapping(value="/administrar/edificios/editar/{idEdificio}", method=RequestMethod.GET)
+	public String editarEdificio(@PathVariable("idEdificio") long idEdificio, Model model){
+		User u = user_service.getCurrentUser();
+		model.addAttribute("User", u);
+		model.addAttribute("edificio", reserva_service.getEdificio(idEdificio));
+		//System.out.println(user_service.getUser(idUser).getUsername());
+		model.addAttribute("view", "editarEdificio");
+		return "index";
+	}
+	
+	@RequestMapping(value="/administrar/espacio/editar/{idEspacio}", method=RequestMethod.GET)
+	public String editarEspacio(@PathVariable("idEspacio") long idEspacio, Model model){
+		User u = user_service.getCurrentUser();
+		model.addAttribute("User", u);
+		model.addAttribute("espacio", reserva_service.getEspacio(idEspacio));
+		//System.out.println(user_service.getUser(idUser).getUsername());
+		model.addAttribute("view", "editarEspacio");
+		return "index";
+	}
 	
 	@RequestMapping(value="/administrar/espacios/{pageNumber}", method=RequestMethod.GET)
     public String misEspaciosPaginados(@PathVariable Integer pageNumber, Model model) {
@@ -240,18 +220,7 @@ public class UserController {
 		
         return "index";
     }
-	
-//	@RequestMapping(value="/administrar/espacios")
-//	public ModelAndView administrarEspacios(){
-//		ModelAndView model = new ModelAndView("index");
-//		User u = user_service.getCurrentUser();
-//		model.addObject("user", u);
-//		model.addObject("edificios", reserva_service.getAllBuildings());
-//		model.addObject("espacios", reserva_service.getEspacios());
-//		model.addObject("view", "administrar_espacios");
-//		return model;
-//	}
-	
+		
 	@RequestMapping(value="/nuevaFacultad",method=RequestMethod.GET)
 	public ModelAndView nuevaFacultad(){
 		return new ModelAndView("nuevaFacultad", "Facultad", new Facultad());

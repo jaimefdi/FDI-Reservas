@@ -46,17 +46,17 @@
                   </thead>
                   <tbody>
                       <tr th:each="r : ${espacios}"
-                      	th:attr="data-id=${r.id},name=${r.nombre_espacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo}, edificio = ${r.edificio.nombre_edificio}">
+                      	th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo}, edificio = ${r.edificio.nombreEdificio}">
                       	
-                        <td th:text="${r.nombre_espacio}"></td>
+                        <td th:text="${r.nombreEspacio}"></td>
                         <td th:text="${r.capacidad}"></td>
                         <td th:if="${!r.microfono}">No</td>
                         <td th:if="${r.microfono}">Si</td>
                         <td th:if="${!r.proyector}">No</td>
                         <td th:if="${r.proyector}">Si</td>
                         <td th:text="${r.tipoEspacio.tipo}"></td> 
-                        <td th:text="${r.edificio.nombre_edificio}"></td> 
-                        <td><a th:href="@{'/administrar/espacio/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
+                        <td th:text="${r.edificio.nombreEdificio}"></td> 
+                        <td><a th:href="@{'/administrar/espacio/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
                       </tr>     
                   </tbody>
               </table>

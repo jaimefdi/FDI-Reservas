@@ -218,6 +218,10 @@ public class ReservaService {
 		
 	}
 	
+	public Facultad getFacultad(long idFacul){
+		return facultad_repository.findOne(idFacul);
+	}
+	
 	public Page<Facultad> getFacultadesPaginadas(PageRequest pageRequest) {
 		return facultad_repository.findAll(pageRequest);
 	}
