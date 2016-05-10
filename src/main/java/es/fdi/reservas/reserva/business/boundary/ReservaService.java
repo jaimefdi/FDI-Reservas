@@ -265,11 +265,15 @@ public class ReservaService {
 			
 			i++;
 		}
-		if(r.rangoRecurrencias().size() > 0){
+		if(r.rangoRecurrencias().size() > 1){
 			reserva_repository.save(r);
 		}
 		else{
-			reserva_repository.delete(r.getId());
+			// si queda un solo evento lo transformo a un evento simple
+			r.setReglasRecurrencia(new ArrayList<String>());
+			r.setStartRecurrencia(null);
+			r.setEndRecurrencia(null);
+			reserva_repository.save(r);
 		}
 		
 	}

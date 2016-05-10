@@ -152,7 +152,7 @@ public class ReservaDTO {
 		if(r.getGrupoReserva() != null)
 			return r.getGrupoReserva().getId();
 		else
-			return null;
+			return (long) 0;
 	}
 	
 	public static ReservaDTO fromReserva(Reserva reserva) {
