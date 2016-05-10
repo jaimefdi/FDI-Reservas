@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaSolapadaException;
@@ -194,33 +193,17 @@ public class ReservasRestController {
 	}
 	
 	@RequestMapping(value="/reserva/{idReserva}",method=RequestMethod.DELETE)
-    public void eliminarReserva(@PathVariable("idReserva") long idReserva) {
-		  Reserva r = reserva_service.getReserva(idReserva);
-		  
-		  if(r.getRecurrenteId() == null){
-			  reserva_service.eliminarReserva(idReserva);
-		  }
-		  else{
-			  
-		  }
-		
-		
+    public void eliminarReserva(@PathVariable("idReserva") long idReserva) {	 
+		reserva_service.eliminarReserva(idReserva);
     }
 	
 	
 	@RequestMapping(value = "/reserva/editar/{idReserva}", method = RequestMethod.PUT)
-	public void editarReserva(@PathVariable("idReserva") long idReserva, @RequestBody ReservaDTO reservaActualizada) {
-		try{
-			if(reservaActualizada.esRecurrente()){
-				//reserva_service.editarReservaRecurrente(reservaActualizada);
-			}
-			else{
+	public void editarReserva(@PathVariable("idReserva") long idReserva,
+			                  @RequestBody ReservaDTO reservaActualizada)throws ReservaSolapadaException{
+		
 				reserva_service.editarReservaSimple(reservaActualizada);
-			}
-		}
-		catch(ReservaSolapadaException ex){
-			System.out.println(ex.getMessage());
-		}
+		
 	}
 	
 	
@@ -239,21 +222,6 @@ public class ReservasRestController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/grupo/tag/{tagName}", method = RequestMethod.GET)
-	public List<GrupoReservaDTO> gruposFiltro(@PathVariable("tagName") String tagName) {
-		
-		List<GrupoReservaDTO> result = new ArrayList<>();
-		List<GrupoReserva> grupos = new ArrayList<>();
-
-		grupos = grupo_service.getGruposPorTagName(tagName);
-				
-		for(GrupoReserva g : grupos) {
-			result.add(GrupoReservaDTO.fromGrupoReserva(g));
-		}
-		 
-		return result;
-	}
-	
 	
 	@RequestMapping(value="/nuevaReservaAJAX",method=RequestMethod.POST)
     public void crearReservaAJAX(@RequestBody ReservaDTO rf) throws ReservaSolapadaException {
@@ -267,17 +235,13 @@ public class ReservasRestController {
 		r.setReglasRecurrencia(rf.getReglasRecurrencia());
 		r.setUser(user);
 		Long idGrupo = rf.getIdGrupo();
+		
 		if(idGrupo != 0){
 			r.setGrupoReserva(grupo_service.getGrupoReserva(idGrupo));
 		}
-		
-		try{
-			reserva_service.agregarReserva(r);		
-		}
-		catch(ReservaSolapadaException ex){
-			System.out.println(ex.getMessage());
-		}
-		
+			
+		reserva_service.agregarReserva(r);		
+			
     }
 	
 	
@@ -287,12 +251,5 @@ public class ReservasRestController {
 		reserva_service.editarReglasRecurrencia(rf);
     }
 	
-	
-	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.DELETE)
-	public void eliminarGrupo(@PathVariable("idGrupo") long idGrupo){
-		grupo_service.eliminarGrupo(idGrupo);
-	}
-	
-	
-	
+
 }

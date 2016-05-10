@@ -19,19 +19,20 @@
 <!-- /.row -->
 
 <div class="row">
-	<div class="col-md-4 col-md-offset-4">
+	<div class="col-md-6 col-md-offset-3">
         <form role="form" action="#" th:action="@{/nuevoGrupo}" th:object="${GrupoReserva}" method="POST">
         	<div class="form-group">
-                <label>Nombre</label>
+                <label>Nombre corto</label>
                 <div class="form-group">           
-                  <input name="nombreGrupo" type="text" class="form-control" placeholder="Nombre del grupo"/>
+                  <input name="nombreCorto" type="text" class="form-control" />
+                  <p class="small help-block">Máximo 15 caracteres</p>
                 </div>
             </div>
             <div class="form-group">
-                <label>Descripcion</label>
+                <label>Nombre largo</label>
                 <div class="form-group">           
-                  <textarea name="descripcion" class="form-control">
-                  </textarea>
+                  <input name="nombreLargo" type="text" class="form-control" />
+                  <p class="small help-block">Máximo 30 caracteres</p>
                 </div>
             </div>
             <div class="row text-center">

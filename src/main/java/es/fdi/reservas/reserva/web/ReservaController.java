@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +26,7 @@ import es.fdi.reservas.users.business.entity.User;
 public class ReservaController {
 	
 	private ReservaService reserva_service;
-	
 	private GrupoReservaService grupo_service;
-	
 	private UserService user_service;
 	
 	@Autowired
@@ -65,24 +64,7 @@ public class ReservaController {
 		
         return "index";
     }
-	 /*
-	@RequestMapping(value="/nueva",method=RequestMethod.POST)
-    public String crearReserva(Reserva r) throws ReservaSolapadaException {
-		User u = user_service.getCurrentUser();
-		long idEspacio = r.getEspacio().getId();
-		Espacio e = reserva_service.getEspacio(idEspacio);
-		r.setEspacio(e);
-		r.setRecurrencia("RRULE:FREQ=DAILY;COUNT=3");
-		try{
-			reserva_service.agregarReserva(r,u.getUsername());
-		}
-		catch(ReservaSolapadaException ex){
-			System.out.println(ex.getMessage());
-		}
-		
-        return "redirect:/mis-reservas";
-    }
-	*/
+	
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
     public String edificios(Model model) {
@@ -102,8 +84,6 @@ public class ReservaController {
 		   
 		   return "redirect:/edificio/" + idEdificio + "/espacios";
 		}
-		
-
         
     }
 	
@@ -126,14 +106,14 @@ public class ReservaController {
 	@RequestMapping(value="/edificio/{idEdificio}/espacio/{idEspacio}", method=RequestMethod.GET) 
 	public ModelAndView reservasEspacio(@PathVariable("idEdificio") long idEdificio,@PathVariable("idEspacio") long idEspacio) {
 		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
+		User user = user_service.getCurrentUser();
 		Espacio e = reserva_service.getEspacio(idEspacio);
 		Reserva r = new Reserva();
 		r.setEspacio(e);	
-		model.addObject("User", user_service.getCurrentUser());
+		model.addObject("User", user);
 		model.addObject("Reserva", r);
-		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("IdEspacio", idEspacio);
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
 		model.addObject("view", "reservas-calendario");
 		
         return model;
@@ -152,48 +132,10 @@ public class ReservaController {
     }
 	
 	
-	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.GET)
-    public ModelAndView verGrupo(@PathVariable("idGrupo") long idGrupo) {
-		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
-		model.addObject("User", u);
-		model.addObject("GrupoReservas", grupo_service.getGrupoReserva(idGrupo));
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
-		model.addObject("view", "grupo-reservas");
-		
-        return model;
-    }
 	
 	
-	@RequestMapping(value="/grupo/nuevo", method=RequestMethod.GET)
-    public ModelAndView crearGrupo() {
-		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
-		model.addObject("User", u);	
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
-		model.addObject("view", "nuevoGrupo");
-		
-        return model;
-    }
-	
-	@RequestMapping(value="/nuevoGrupo", method=RequestMethod.POST)
-    public String nuevoGrupo(GrupoReserva g, Model model) {	
-		User user = user_service.getCurrentUser();
-		model.addAttribute("User", user);		
-		model.addAttribute("view", "nuevoGrupo");
-		
-		if(grupo_service.addNuevoGrupo(g, user) != null){			
-			model.addAttribute("exito", "");
-		}
-		else{
-			model.addAttribute("error", "");
-		}
-		
-		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
-	
-        return "index";
-    }
-	
+	//@PreAuthorize("principal.username == 'user'")
+	//@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value="/editar/{idReserva}", method=RequestMethod.GET)
     public String editarReserva(@PathVariable("idReserva") long idReserva, Model model) {
 		User u = user_service.getCurrentUser();

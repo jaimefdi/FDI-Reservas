@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.fdi.reservas.reserva.business.control.GrupoReservaRepository;
 import es.fdi.reservas.reserva.business.entity.GrupoReserva;
+import es.fdi.reservas.reserva.web.GrupoReservaDTO;
 import es.fdi.reservas.users.business.entity.User;
 
 @Service
@@ -20,7 +21,7 @@ public class GrupoReservaService {
 	}
 	
 	public GrupoReserva addNuevoGrupo(GrupoReserva grupo, User user){
-		GrupoReserva newGrupo = new GrupoReserva(grupo.getNombreGrupo(), grupo.getDescripcion(), user);
+		GrupoReserva newGrupo = new GrupoReserva(grupo.getNombreCorto(), grupo.getNombreLargo(), user);
 		newGrupo = grupo_repository.save(newGrupo);
 		
 		return newGrupo;
@@ -30,8 +31,8 @@ public class GrupoReservaService {
 		return grupo_repository.findAll();
 	}
 
-	public List<GrupoReserva> getGruposPorTagName(String tagName) {
-		return grupo_repository.getGruposPorTagName(tagName);
+	public List<GrupoReserva> getGruposPorTagName(String tagName, Long idUsuario) {
+		return grupo_repository.getGruposPorTagName(tagName,idUsuario);
 	}
 
 	public GrupoReserva getGrupoReserva(long idGrupo) {
@@ -45,6 +46,14 @@ public class GrupoReservaService {
 
 	public List<GrupoReserva> getGruposUsuario(Long idUsuario) {
 		return grupo_repository.findByUserId(idUsuario);
+	}
+
+	public void editarGrupoReserva(Long idGrupo, GrupoReservaDTO grDTO) {
+		GrupoReserva grupo = getGrupoReserva(idGrupo);
+		grupo.setNombreCorto(grDTO.getNombreCorto());
+		grupo.setNombreLargo(grDTO.getNombreLargo());
+		
+		grupo_repository.save(grupo);		
 	}
 	
 }

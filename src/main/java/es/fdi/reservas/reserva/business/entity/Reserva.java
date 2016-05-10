@@ -75,7 +75,7 @@ public class Reserva{
 	}
 	
 	
-	public Reserva(String a, DateTime ini, DateTime fin, User user, Espacio esp,
+	public Reserva(String a, DateTime ini, DateTime fin, User user, Espacio esp, GrupoReserva grupo,
 				   DateTime startR, DateTime endR, String color, String recurrId){
 		this.asunto = a;
 		this.comienzo = ini;
@@ -83,6 +83,7 @@ public class Reserva{
 		this.estadoReserva = EstadoReserva.CONFIRMADA;
 		this.user = user;
 		this.espacio = esp;
+		this.grupoReserva = grupo;
 		this.startRecurrencia = startR;
 		this.endRecurrencia = endR;
 		this.reservaColor = color;
@@ -395,8 +396,10 @@ public class Reserva{
 		
 		
 		//actualizamos el comienzo y el final de la recurrencia
-		startRecurrencia = recurrencias.get(0).getComienzo();
-		endRecurrencia = recurrencias.get(recurrencias.size()-1).getFin();
+		if(recurrencias.size() > 0){
+			startRecurrencia = recurrencias.get(0).getComienzo();
+			endRecurrencia = recurrencias.get(recurrencias.size()-1).getFin();
+		}
 			
 		return recurrencias;
 	}
@@ -407,11 +410,11 @@ public class Reserva{
 		List<RangoDateTime> rango = rangoRecurrencias();
 		
 		for(RangoDateTime r : rango){
-			Reserva reserva = new Reserva(asunto, r.getComienzo(), r.getFin(), user,
-							              espacio, startRecurrencia, endRecurrencia, reservaColor,
-							              id + "_" + r.getComienzo().toString("dd/MM/yyyy"));
+			Reserva reserva = new Reserva(asunto, r.getComienzo(), r.getFin(), user,espacio,
+										  grupoReserva, startRecurrencia, endRecurrencia,reservaColor,
+										  id + "_" + r.getComienzo().toString("dd/MM/yyyy"));
 								
-			reserva.setId(id);
+			reserva.setId(id);		
 			instancias.add(reserva);
 		}
 		
@@ -420,7 +423,7 @@ public class Reserva{
 
 
 	public boolean solapa(Reserva r){
-	  if (r.getReglasRecurrencia() == null) {
+	  if (r.getReglasRecurrencia().isEmpty()) {
 		return solapaSimple(new RangoDateTime(r.getComienzo(), r.getFin()));
 	  } 
 	  else {

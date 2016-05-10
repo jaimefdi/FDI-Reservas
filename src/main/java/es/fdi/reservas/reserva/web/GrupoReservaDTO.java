@@ -5,13 +5,15 @@ import es.fdi.reservas.reserva.business.entity.GrupoReserva;
 public class GrupoReservaDTO {
 
 	private Long id;
-	private String nombreGrupo;
+	private String nombreCorto;
+	private String nombreLargo;
 	
 	public GrupoReservaDTO(){ }
 	
-	public GrupoReservaDTO(Long idGrupo, String nombre){ 
+	public GrupoReservaDTO(Long idGrupo, String nombreCorto, String nombreLargo){ 
 		this.id = idGrupo;
-		this.nombreGrupo = nombre;
+		this.nombreCorto = nombreCorto;
+		this.nombreLargo = nombreLargo;
 	}
 
 	public Long getId() {
@@ -22,16 +24,25 @@ public class GrupoReservaDTO {
 		this.id = id;
 	}
 
-	public String getNombreGrupo() {
-		return nombreGrupo;
+
+	public String getNombreCorto() {
+		return nombreCorto;
 	}
 
-	public void setNombreGrupo(String nombreGrupo) {
-		this.nombreGrupo = nombreGrupo;
+	public void setNombreCorto(String nombreCorto) {
+		this.nombreCorto = nombreCorto;
 	}
-	
+
+	public String getNombreLargo() {
+		return nombreLargo;
+	}
+
+	public void setNombreLargo(String nombreLargo) {
+		this.nombreLargo = nombreLargo;
+	}
+
 	public static GrupoReservaDTO fromGrupoReserva(GrupoReserva g){
-		return new GrupoReservaDTO(g.getId(), g.getNombreGrupo());
+		return new GrupoReservaDTO(g.getId(), g.getNombreCorto(), g.getNombreLargo());
 	}
 	
 	

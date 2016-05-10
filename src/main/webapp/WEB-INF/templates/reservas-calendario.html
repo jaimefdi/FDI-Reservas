@@ -78,7 +78,7 @@
                        <label for="ejemplo_3" class="col-md-3 control-label">Desde:</label>
                         <div class="col-md-9">
                          <div class='input-group date' >
-			                <input name="comienzo" id="datetimepicker1" type='text' class="form-control" />
+			                <input name="comienzo" id="datetimepicker1" type='text' class="form-control" th:readonly="readonly" />
 			                <span class="input-group-addon">
 			                    <span class="fa fa-calendar"></span>
 			                </span>
@@ -91,7 +91,7 @@
                        <label for="ejemplo_3" class="col-md-3 control-label">Hasta:</label>
                         <div class="col-md-9">
                          <div class='input-group date' >
-			                <input name="fin" id="datetimepicker2" type='text' class="form-control" />
+			                <input name="fin" id="datetimepicker2" type='text' class="form-control" th:readonly="readonly" />
 			                <span class="input-group-addon">
 			                    <span class="fa fa-calendar"></span>
 			                </span>
@@ -163,9 +163,10 @@
 						            <label class="col-md-3 control-label">Repetir cada:</label>
 						            <div class="col-md-3">
 							            <select id="selec_inter" class="form-control">
-							            	<option value="1">1</option>
-							            	<option value="2">2</option>
-							            	<option value="3">3</option>
+							            	<option th:each="i : ${#numbers.sequence(1,30)}" 
+							            	        th:value="${i}"
+							            	        th:text="${i}"></option>
+							            	
 							            </select>
 						            </div>
 						            
@@ -280,7 +281,7 @@
 										
 											<div class="col-md-9">
 												<div class='input-group date' >
-									                <input name="comienzo" id="datetimepicker3" type='text' class="form-control" />
+									                <input name="comienzo" id="datetimepicker3" type='text' class="form-control" th:readonly="readonly" />
 									                <span class="input-group-addon">
 									                    <span class="fa fa-calendar"></span>
 									                </span>
@@ -317,13 +318,11 @@
                      </div>
                    </div>
 					
-                   <div class="row">
-                       <div class="col-xs-6 col-md-6">
-                        <a href="#"><button type="submit" class="btn-rec yellow">VACIAR</button></a>
-                       </div>
-                       <div class="col-xs-6 col-md-6 text-right">
-                        <button id="btn-crearReserva" type="button" class="btn-rec green">CREAR</button>
-                       </div>
+                   <div class="row">  
+                    <div class="col-md-12 text-right">                		
+				        <a class="btn-rec gray" data-dismiss="modal" aria-label="Close" role="button">CANCELAR</a>
+				        <a id="enlaceCrearReserva" class="btn-rec blue" role="button">CREAR</a>					    
+   					</div> 
                    </div>                
                </form>
                  
@@ -333,403 +332,60 @@
     </div>
     
   
-  
-  <!-- Modal confirmación -->
-  <div class="modal fade bs-example-modal-sm" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-	  <div class="modal-dialog modal-sm">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title">Modal title</h4>
-		  </div>
-	      <div class="modal-footer">
-	        <button id="modalClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button id="modalConfirm" type="button" class="btn btn-primary">Save changes</button>
+  <!-- Modal Eliminar Reserva Simple -->
+ <div class="modal fade" id="modalEliminarReservaSimple" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">¿Eliminar reserva?</h4>
+          </div>
+          <div class="modal-body">
+          	
+          </div>
+          <div class="modal-footer">
+	        <a class="btn-rec gray" data-dismiss="modal" aria-label="Close" role="button">CANCELAR</a>
+	        <a id="aceptarEliminar" class="btn-rec blue" role="button">ACEPTAR</a>
 	      </div>
-	    </div>
-	  </div>
-  </div>
+       </div>
+     </div>
+</div>
+ 
+ <!-- Modal Eliminar Reserva Recurrente -->
+ <div class="modal fade" id="modalRecurrente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Eliminar reserva periódica</h4>
+          </div>
+          <div class="modal-body">
+          	<div class="row">
+            	<div class="col-md-12">
+          	  	 <button id="solo_esta" class="btn-rec gray">Sólo éste</button>
+          	  	 Se eliminará sólo este evento.
+          		</div>
+          	</div>
+          	<br/>
+          	<div class="row">
+          		<div class="col-md-12">
+          	  	 <button id="toda_la_serie" class="btn-rec gray">Toda la serie</button>
+          	  	 Se eliminarán todos los eventos.
+          		</div>
+          	</div>
+          </div>
+       </div>
+     </div>
+</div>
 
-<script type="text/javascript" th:inline="javascript">
-	
-		/*<![CDATA[*/
-		var baseURL = /*[[@{/}]]*/ '/';
-		
-		$(document).ready(function(){
-			var reserva = {};
-		 	var token = $("meta[name='_csrf']").attr("content");
-		 	var header = $("meta[name='_csrf_header']").attr("content");
-		 	var reqHeaders = [];
-		 	reqHeaders[header] = token;
-		
-		 	////////
-			$("#op_1").click(function(){
-				$("#count_repet").val("");
-				$("#datetimepicker3").val("");
-			});
-			
-			$("#op_2").click(function(){				
-				$("#datetimepicker3").val("");
-			});
-			
-			$("#op_3").click(function(){
-				$("#count_repet").val("");				
-			});
-		 	/////////
-		 	
-		 	$(function(){
-		 		$('#cp2').colorpicker();		
-		    });
-		 	
-		 
-		 	
-		 	
-		 	$("#checkRepetir").change(function(){
-				if(this.checked){
-					$("#repetir").css("display","block");
-				}
-				else{
-					$("#repetir").css("display","none");
-				}
-			});
-		 	
-		 	
-		 	$("#selec_frec").change(function(){
-		 		var t = $("#selec_frec option:selected").text();
-		 		console.log(t);
-		 		desmarcarCkecks();
-		 		
-		 		if(t == 'Todos los lunes, miercoles y viernes'){
-		 			$("#repetirCada").addClass("hidden");
-		 			$("#repetirCadaMes").addClass("hidden");
-		 			$("#diasSemana").addClass("hidden");
-		 			
-		 			var dow = ["L","X","V"];
-		 			marcarChecks(dow);
-		 			
-		 		}
-		 		else if(t == 'Todos los martes y jueves'){	 			
-		 			$("#repetirCada").addClass("hidden");
-		 			$("#repetirCadaMes").addClass("hidden");
-		 			$("#diasSemana").addClass("hidden");
-		 			
-		 			var dow = ["M","J"];
-		 			marcarChecks(dow);
-		 			
-		 		}
-				else if(t == 'Todos los dias laborables (de lunes a viernes)'){				
-		 			$("#repetirCada").addClass("hidden");
-		 			$("#repetirCadaMes").addClass("hidden");
-		 			$("#diasSemana").addClass("hidden");
-		 			
-		 			var dow = ["L","M","X","J","V"];
-		 			marcarChecks(dow);
-		 			
-		 		}
-				else if(t == 'Cada dia'){
-					
-					$("#repetirCada").removeClass("hidden");
-					$("#repetirCadaMes").addClass("hidden");
-					$("#diasSemana").addClass("hidden");
-					//var dow = ["L","M","X","J","V","S","D"];
-		 			//marcarChecks(dow);
-					var w = t.split(' ');
-					$("#lb_repetirCada").text(w[1] + 's');
-					
-   				   
-		 		}
-				else if(t == 'Cada semana'){
-					
-					$("#repetirCada").removeClass("hidden");
-					$("#repetirCadaMes").addClass("hidden");
-					$("#diasSemana").removeClass("hidden");
-					var w = t.split(' ');
-					$("#lb_repetirCada").text(w[1] + 's');
-		
-		 		}
-				else if(t == 'Cada mes'){
-					
-					$("#repetirCada").removeClass("hidden");
-					$("#repetirCadaMes").removeClass("hidden");
-					$("#diasSemana").addClass("hidden");
-					// añadir nuevo div
-					var w = t.split(' ');
-					$("#lb_repetirCada").text(w[1] + 'es');
-	 		    }
-				else{
-					$("#repetirCadaMes").addClass("hidden");
-					$("#diasSemana").addClass("hidden");
-					var w = t.split(' ');
-					$("#lb_repetirCada").text(w[1] + 's');
-				}
-		 		
-		 		console.log(daysChecked());
-		 	});
-		 	
-		 	
-			$("#selec_inter").change(function(){
-		 		
-		 	});
-		 	
-			
-		 	$("#btn-crearReserva").click(function(){
-		 		var recurrencia = [];
-		 		var rrule = "RRULE:";
-		 		var freq = "FREQ=" + $("#selec_frec").val();
-		 		rrule += freq;
-		 		
-		 		/// INTERVAL ///
-		 		if($("#selec_inter").val() > 1){
-		 			var interval = "INTERVAL=" + $("#selec_inter").val();
-		 			rrule += ";" + interval;
-		 		}
-		 		
-		 		/// UNTIL Y COUNT ///
-		 		if($("#op_3").is(':checked')){
-		 			var u = es.ucm.fdi.dateUtils.toIso8601($('#modalCrearReserva #datetimepicker3').val());
-			 		var until = "UNTIL=" + new moment(u).format("YYYY-MM-DD");
-		 			rrule += ";" + until;
-		 		}
-		 		else if($("#op_2").is(':checked')){
-		 			var count = "COUNT=" + $("#count_repet").val();
-		 			rrule += ";" +  count;
-		 		}
-		 		
-		 		/// BYDAY ///
-		 		if(daysChecked() != ""){
-		 			var byday = "BYDAY=" + daysChecked();
-		 			rrule += ";" + byday;
-		 		}
-		 		
-		 		/// BYMONTH ///
-		 		if($("#selec_frec").val() == "MONTHLY"){
-		 			var diaMes = $("#empieza_el").val();
-		 			var bymonth = "BYMONTH=" + diaMes;
-		 			rrule += ";" + bymonth;
-		 		}
-		 		
-		 		var rdate = "RDATE:";
-		 		var exdate = "EXDATE:";
-		 		
-		 		
-		 		if($("#checkRepetir").is(":checked")){
-		 			recurrencia.push(rrule);
-		 		}
-		 		
-		 		console.log(recurrencia);
-		 		
-		 		
-		 		
-		 		
-		 		var reservaAJAX = {};
-		 		reservaAJAX.title = $("#modalCrearReserva #idAsunto").val();
-		 		reservaAJAX.start = es.ucm.fdi.dateUtils.toIso8601($('#modalCrearReserva #datetimepicker1').val());				
-				reservaAJAX.end = es.ucm.fdi.dateUtils.toIso8601($('#modalCrearReserva #datetimepicker2').val());
-		 		// calcular el nuevo comienzo que depende del byday	 		
-		 		var encontrado = false;
-				var c = 0;
-				var byday = daysChecked().split(',');
-				if(byday != ""){
-					while(c < byday.length && !encontrado){
-						var nextDay = numeroSemana(byday[c]);
-						
-						var oldStart = es.ucm.fdi.dateUtils.toIso8601($('#modalCrearReserva #datetimepicker1').val());				
-						var oldEnd = es.ucm.fdi.dateUtils.toIso8601($('#modalCrearReserva #datetimepicker2').val());
-						
-						var currentDay = new moment(oldStart).isoWeekday();
-											
-						if( currentDay <= nextDay ){
-							encontrado = true;
-							reservaAJAX.start = es.ucm.fdi.dateUtils.toIso8601(new moment(oldStart).add( nextDay-currentDay ,'d'));
-							reservaAJAX.end = es.ucm.fdi.dateUtils.toIso8601(new moment(oldEnd).add( nextDay-currentDay ,'d'));
-							
-						}
-						c++;
-					}
-				}
-		 		
-		 		
-		 		reservaAJAX.idEspacio = $('#esp_hidden').val();;
-		 		reservaAJAX.color = $('#cp2').colorpicker('getValue',"");
-		 		reservaAJAX.reglasRecurrencia = recurrencia;
-				reservaAJAX.idGrupo = $("#selec_grupo").val();
-		 			 		
-		 		console.log(reservaAJAX);
-		 			
-		 		$.ajax({
-		 			url: baseURL + 'nuevaReservaAJAX',
-		 			headers : reqHeaders,
-		 			type: 'POST',		 				 			
-		 			data: JSON.stringify(reservaAJAX),
-		 			contentType: 'application/json',
-		 			success : function(datos) {  
-		 				$("#modalCrearReserva").modal('hide');
-		 				//alert("Reserva creada");
-		 				$("#calendar").fullCalendar('refetchEvents');
-		 				
-		 			},    
-		 			error : function(xhr, status) {
-		 				
-		     			alert('Disculpe, existió un problema');
-		     			
-		 			}
-		 		});
-		 			
-		 		
-		 		
-		 	});
-		 	///////
-			
-			var pathname = window.location.pathname;
-			var w = pathname.split("/");
-			var id_espacio = w[5]; 
-			
-			
-			$('#calendar').fullCalendar({
-				lang: 'es',
-				timezone: 'local',
-			    header: {
-			        left: 'prev,next today',
-			        center: 'title',
-			        right: 'month,agendaWeek,agendaDay'
-			    },
-			    defaultDate: '2016-03-12',			    
-			    eventLimit: true,
-			    
-			    eventClick: function(event, jsEvent, view){
-			    		var cuerpo = "<div>Donde: <b>" + event.nombreEspacio + "</b><br/>"+
-						  			 "De " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + 
-						  			 "<br/>Asunto: " + event.title + "</div>";
-						 
-			    		if(event.editable){
-			    			cuerpo += "<br/><div class='row'>" +
-									  "<div class='col-md-6 text-left'><a href='/reservas/editar/" + event.id + "'>" + 'Editar' + "</a></div>" +
-									  "<div class='col-md-6 text-right'><a href='/reservas/eliminar/" + event.id + "'>" + 'Eliminar' + "</a></div>" +
-									  "</div>";
-			    		}
-			    		
-			    		$('[role="tooltip"]').popover('hide');
-				    	$(this).popover({						
-							placement : 'auto',
-							html : true,
-							animation : 'true',
-							container:'#calendar',
-							content : cuerpo
-									  
-						}).popover('show');
-			    },
-			    /*
-			    eventRender : function(event,element,view) {
-			    
-			    	if(view.name == 'month'){
-			    		element.popover({
-							
-								placement : 'auto',
-								html : true,
-								trigger : 'hover',
-								animation : 'true',
-								container:'#calendar',
-								content : "<b>" + event.nombreEspacio +
-										  "</b><br/>" + event.start.format("HH:mm") + "-" + event.end.format("HH:mm") + 
-										  "<br/>" + event.title
-							});
-			    	}
-					
-				},
-				*/
-				selectable : true,
-			    select : function(start, end) {
-			    	$('[role="tooltip"]').popover('hide'); 
-					$('#modalCrearReserva').modal('show');
-					var d = new Date();
-					var eventData = {
-						start : start,
-						end : end.subtract(1,'day'),
-					};
-					// redondeo de minutos
-					var m = redondeoMinutos(d.getMinutes());
-					
-					
-					// hora actual para start, +1 para end				
-					eventData.start.hours(d.getHours());
-					eventData.start.minutes(m);
-					eventData.end.hours(d.getHours()).add(1,'hour');
-					eventData.end.minutes(m);
-					
-					$('#modalCrearReserva #idAsunto').val("");
-					$("#modalCrearReserva #datetimepicker1").val(eventData.start.format("DD/MM/YYYY HH:mm"));
-					$("#modalCrearReserva #datetimepicker2").val(eventData.end.format("DD/MM/YYYY HH:mm"));
-					
-					$("#empieza_el").val(eventData.start.format("DD/MM/YYYY"));
-					var array = [];
-					var numDia = eventData.start.isoWeekday();
-					array.push(letraSemana(numDia));
-					marcarChecks(array);
-					//Desmarca el evento si no se ha creado
-					//$('#calendar').fullCalendar('unselect');
-				},				
-			    eventSources: [ 
-				        {
-				            url: '/reservas/' + id_espacio + '/eventos',   
-				            textColor: 'black'  
-				        }	        
-			    ]
-			       	
-			    
-			});
-					
-			$("#checkMan").change(function(){
-				
-				$("#calendar").fullCalendar('removeEventSource',{
-					 url: '/reservas/' + id_espacio + '/eventos',    
-			         textColor: 'black' 
-				});
-				
-				if(this.checked){
-					$("#calendar").fullCalendar('addEventSource',{
-						 url: '/reservas/' + id_espacio + '/eventosMan',   
-				         textColor: 'black'
-					});
-				}
-				else{
-					$("#calendar").fullCalendar('removeEventSource',{
-						 url: '/reservas/' + id_espacio + '/eventosMan',			           
-				         textColor: 'black'
-					});
-				}
-			});
-			
-			$("#checkTar").change(function(){
-				
-				$("#calendar").fullCalendar('removeEventSource',{
-					 url: '/reservas/' + id_espacio + '/eventos',  
-			         textColor: 'black' 
-				});
-				
-				if(this.checked){
-					$("#calendar").fullCalendar('addEventSource',{
-						 url: '/reservas/' + id_espacio + '/eventosTar',   
-				         textColor: 'black'
-					});
-				}
-				else{
-					$("#calendar").fullCalendar('removeEventSource',{
-						 url: '/reservas/' + id_espacio + '/eventosTar',				             
-				         textColor: 'black'
-					});
-				}
-			});
-			
-			
-			
-			
-		});
-		
-		/*]]>*/
-	</script>
- </div>
+<script th:inline="javascript">		
+	var baseURL = /*[[@{/}]]*/ '/';
+	var idEspacio = /*[[${IdEspacio}]]*/ '1';	
+</script>
+<script src="../../js/reservas-calendario.js" th:src="@{/js/reservas-calendario.js}"></script>
+</div>
 
-            <!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 
 </body>
 </html>	
