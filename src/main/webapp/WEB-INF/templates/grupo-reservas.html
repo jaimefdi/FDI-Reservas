@@ -12,10 +12,15 @@
 <div class="row">
     <div class="col-md-12">
         <h2 class="page-header text-center">
-           Grupo: <small th:text="${GrupoReservas.nombreGrupo}"> GII-1ºA </small>     
-        <div class="pull-right"> 
-        	<i th:attr="data-idGrupo=${GrupoReservas.id}" class="fa fa-trash-o" aria-hidden="true" title="Eliminar grupo" data-toggle="modal" data-target="modalEliminarGrupo"></i>
-        </div>
+	        <div class="pull-left">           
+	        	<a th:href="@{'/grupo/editar/' + ${GrupoReservas.id}}"><i class="zmdi zmdi-edit" aria-hidden="true" title="Editar grupo"></i></a>
+	        </div>
+        
+           		Grupo: <small th:inline="text"> [[${GrupoReservas.nombreCorto}]] </small> 
+              
+	        <div class="pull-right">           
+	        	<i th:attr="data-idGrupo=${GrupoReservas.id}" class="fa fa-trash-o" aria-hidden="true" title="Eliminar grupo" data-toggle="modal" data-target="modalEliminarGrupo"></i>
+	        </div>
         </h2>
     </div>
 </div>
@@ -42,7 +47,7 @@
 <div id="2_calendario" class="row">
    <div class="col-md-6 text-center">
    	 <div class="selec_C1 row">
-   		<p th:text="${GrupoReservas.nombreGrupo}"></p>
+   		<p th:text="${GrupoReservas.nombreCorto}"></p>
      </div>
    	 <div id="calendar21" class="col-md-10 col-md-offset-1"></div>
    </div>
@@ -51,7 +56,7 @@
     <div class=" selec_C2 row">
    		<select id="selec_C2_grupo">
    			<option th:each="g : ${GruposReservas}"
-   					th:text="${g.nombreGrupo}"
+   					th:text="${g.nombreCorto}"
    					th:value="${g.id}"
    					th:if="${GrupoReservas.id != g.id}">
    			</option>
@@ -77,7 +82,7 @@
 		  <div class="media-body">
 		   
 		    <p th:inline="text">Al eliminar un grupo se eliminarán también todas las reservas que contenga
-        	 ¿Desea eliminar el grupo <b>[[${GrupoReservas.nombreGrupo}]]</b> de todas formas?</p>
+        	 ¿Desea eliminar el grupo <b>[[${GrupoReservas.nombreCorto}]]</b> de todas formas?</p>
 		  </div>
 		</div>
         

@@ -4,11 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import es.fdi.reservas.users.business.entity.User;
 
@@ -27,10 +25,11 @@ public class GrupoReserva {
 	@Column(name="GrupoReservaId")
 	private Long id;
 	
-	@NotNull
-	private String nombreGrupo;
+	@NotNull @Size(min=1, max=15)
+	private String nombreCorto;
 	
-	private String descripcion;
+	@NotNull @Size(min=1, max=30)
+	private String nombreLargo;
 	
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="grupoReserva")
 	private Set<Reserva> reservasGrupo;
@@ -43,9 +42,9 @@ public class GrupoReserva {
 		
 	}
 	
-	public GrupoReserva(String nombre, String des, User user){
-		this.nombreGrupo = nombre;
-		this.descripcion = des;
+	public GrupoReserva(String nombreCorto, String nombreLargo, User user){
+		this.nombreCorto = nombreCorto;
+		this.nombreLargo = nombreLargo;
 		this.reservasGrupo = new HashSet<Reserva>();
 		this.user = user;
 	}
@@ -59,26 +58,21 @@ public class GrupoReserva {
 		return id;
 	}
 
-
-	public String getNombreGrupo() {
-		return nombreGrupo;
+	public String getNombreCorto() {
+		return nombreCorto;
 	}
 
-
-	public void setNombreGrupo(String nombreGrupo) {
-		this.nombreGrupo = nombreGrupo;
+	public void setNombreCorto(String nombreCorto) {
+		this.nombreCorto = nombreCorto;
 	}
 
-
-	public String getDescripcion() {
-		return descripcion;
+	public String getNombreLargo() {
+		return nombreLargo;
 	}
 
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setNombreLargo(String nombreLargo) {
+		this.nombreLargo = nombreLargo;
 	}
-
 
 	public Set<Reserva> getReservasGrupo() {
 		return reservasGrupo;

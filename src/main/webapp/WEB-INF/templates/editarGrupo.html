@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+	<meta charset="utf-8"/>
+	<title>Listado de espacios</title>
+</head>
+<body>
+
+<div class="container-fluid" th:fragment="contenido">
+
+<!-- Page Heading -->
+<div class="row">  
+	<div class="col-md-12">
+        <h1 class="page-header text-center">
+            <small>Editar Grupo</small>
+        </h1>
+    </div>                  
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-md-12">
+	   <form role="form" action="#" method="PUT">
+	   		<div class="col-md-6 col-md-offset-3">
+	   		
+	   			<!-- Nombre Corto --> 
+                 <div class="form-group">
+                     <label>Nombre corto:</label>
+                      <div>
+                         <input id="nombreCorto" type="text" class="form-control" 
+                         		th:value="${GrupoReservas.nombreCorto}" />
+                         <p class="small help-block">Máximo 15 caracteres</p>
+                      </div>
+                 </div>
+                 
+                 <!-- Nombre Largo --> 
+                 <div class="form-group">
+	                <label>Nombre largo:</label>
+	                <div class="form-group">           
+	                  <input id="nombreLargo" class="form-control" 
+	                  			th:value="${GrupoReservas.nombreLargo}" /> 
+	                  <p class="small help-block">Máximo 30 caracteres</p>                 
+	                </div>
+	            </div>
+            </div>    
+               
+                
+                 
+           <div class="row">              	
+			    <div class="col-md-12 text-center">
+			         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>
+			    </div>                   
+		   </div>
+		   <!-- /.row -->
+	   </form>
+   </div>                  
+</div>
+<!-- /.row -->
+	
+
+
+<script th:inline="javascript">
+	var baseURL = /*[[@{/}]]*/ '/';
+	var idGrupo = /*[[${GrupoReservas.id}]]*/ '1';
+</script>
+<script src="../../js/editarGrupo.js" th:src="@{/js/editarGrupo.js}"></script>
+</div>
+
+            <!-- /.container-fluid -->
+
+</body>
+</html>	
