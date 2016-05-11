@@ -74,37 +74,17 @@
             
             var pathname = window.location.pathname;
             
-<<<<<<< HEAD
-            if(pathname.indexOf("edificio") >= 0){
-            	if(pathname.indexOf("administrar") == 0){
-	            	$("#li_porespacios").addClass("active");
-	            	$("#demo").collapse();
-            	}else if(pathname.indexOf("administrar") >= 0){
-                	$("#li_administrar").addClass("active");
-                	$("#demo").collapse();
-                	$("#demo1").collapse();
-                }
-=======
-            if(pathname.indexOf("gestor") >= 0){
+            if(pathname.indexOf("gestion-reservas") >= 0){
             	$("#li_gestionar").addClass("active");
-            	$("#demo").collapse();
-            }
-            else if(pathname.indexOf("administrar") >= 0){
-            	$("#li_administrar").addClass("active");
             	$("#demo").collapse();
             }
             else if(pathname.indexOf("edificio") >= 0){
             	$("#li_porespacios").addClass("active");
             	$("#demo").collapse();
->>>>>>> Javier/Desarrollo
             }
             else if(pathname.indexOf("fecha") >= 0){
             	$("#li_porfecha").addClass("active");
             	$("#demo").collapse();
-            }else if(pathname.indexOf("administrar") >= 0){
-            	$("#li_administrar").addClass("active");
-            	$("#demo").collapse();
-            	$("#demo1").collapse();
             }
             else if(pathname.indexOf("grupo") >= 0){
             	//$("#li_porfecha").addClass("active");
@@ -143,7 +123,7 @@
         							
         								var obj = new Object();
         								obj.label = item.id; 
-        								obj.value = item.nombreCorto;      								
+        								obj.value = item.nombreGrupo;      								
         								return obj;
         			
         						}))
@@ -161,7 +141,7 @@
 								
         						for(var i in datos){
         							$("#demo1").append('<li><a href="/reservas/grupo/'+ datos[i].id +'">'
-        									+ datos[i].nombreCorto + '</a></li>');
+        									+ datos[i].nombreGrupo + '</a></li>');
         						}
         						
         					},    
@@ -285,23 +265,14 @@
             <!-- Left bar menu -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                		<th:block sec:authorize="hasRole('ROLE_ADMIN')">
-                		<li id="li_administrar">
-                        	<a th:href="@{/administrar}"><i class="fa fa-cog"></i> Administrar</a>
-                    	</li>
-                    	</th:block>
-                	<!--/*/  <th:block sec:authorize="hasRole('ROLE_GESTOR')"> /*/-->
                    	 	<li id="li_gestionar" >
-                        	<a th:href="@{/gestor}"><i class="fa fa-book"> </i> Gestionar Reservas</a>
+                        	<a th:href="@{/gestor/gestion-reservas}"><i class="fa fa-book"> </i> Gestionar Reservas</a>
                     	</li>
-                    <!--/*/  </th:block> /*/-->
-                    <!--/*/  <th:block sec:authorize="hasRole('ROLE_USER')"> /*/-->
                     	<li id="li_misreservas" >
-                        	<a th:href="@{/mis-reservas}">
+                        	<a th:href="@{/gestor/mis-reservas}">
                         	<i class="fa fa-book"> </i> Mis Reservas                      	
                         	</a>
                     	</li>
-                    <!--/*/  </th:block> /*/-->
                     <li>
                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-calendar-o"> </i> Reservar <i class="fa fa-angle-down"></i></a>
                         <ul id="demo" class="collapse">
@@ -326,7 +297,7 @@
 	                    		
                     		</li>
                     		<li th:each="g : ${GruposReservas}">
-                    			<a th:href="@{'/grupo/'+ ${g.id}}" th:inline="text">[[${g.nombreCorto}]]
+                    			<a th:href="@{'/grupo/'+ ${g.id}}" th:inline="text">[[${g.nombreGrupo}]]
 		                    		<!-- <div class="pull-right"> <i th:attr="data-idGrupo=${g.id}" class="fa fa-trash" aria-hidden="true" title="Eliminar" style="visibility:hidden;"></i></div>  -->
                     			</a>
                     		</li>

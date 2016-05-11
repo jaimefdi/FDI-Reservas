@@ -49,7 +49,11 @@ $("#iconoCalendario").click(function(){
 $('td a').click(function(){
 	
 	reserva.id =  $(this).attr("data-id");
+<<<<<<< HEAD
 	reserva.recurrenteId = $(this).attr("data-recurrenteId");
+=======
+	var usuario= $(this).attr("data-user");
+>>>>>>> Javier/Desarrollo
 	var asunto =  $(this).attr("data-asunto");
 	var start = $(this).attr("data-start");
 	var end = $(this).attr("data-end");
@@ -60,6 +64,7 @@ $('td a').click(function(){
 	
 	console.log(reserva.recurrenteId);
 	
+	$('#modalEditarReserva #usuario').text(usuario);
 	$('#modalEditarReserva #asunto').text(asunto);
 	$('#modalEditarReserva #comienzo').text(es.ucm.fdi.dateUtils.fromIso8601(start));
 	$('#modalEditarReserva #fin').text(es.ucm.fdi.dateUtils.fromIso8601(end));

@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	public UserDetails findByEmail(String username);
 
 	public UserDetails findByUsername(String username);
-	
+
 	@Query("select e from #{#entityName} e where e.enabled=false")
 	public List<User> recycleBin();
 	
