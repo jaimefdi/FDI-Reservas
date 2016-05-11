@@ -100,12 +100,12 @@ public class GestorController {
         return "index";
     }
 	
-	@RequestMapping(value="/gestor/gestion-reservas/page/{pageNumber}/user/{user}", method=RequestMethod.GET)
-    public String gestiona_reservas_usuario(@PathVariable String user, @PathVariable Integer pageNumber, Model model) {
+	@RequestMapping(value="/gestor/gestion-reservas/user/{user}/page/{pageNumber}", method=RequestMethod.GET)
+    public String gestiona_reservas_usuario(@PathVariable Long user, @PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Reserva> currentResults = reserva_service.getReservasUsuario(u.getId(), pageRequest);
+        Page<Reserva> currentResults = reserva_service.getReservasUsuario(user, pageRequest);
         
         model.addAttribute("currentResults", currentResults);
     
@@ -116,18 +116,18 @@ public class GestorController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
+		model.addAttribute("User", u);
 		model.addAttribute("view", "gestor/gestion-reservas");
 		
         return "index";
     }
 	
-	@RequestMapping(value="/gestor/gestion-reservas/page/{pageNumber}/sala/{sala}", method=RequestMethod.GET)
-    public String gestiona_reservas_usuario(@PathVariable Long sala, @PathVariable Integer pageNumber, Model model) {
+	@RequestMapping(value="/gestor/gestion-reservas/espacio/{espacio}/page/{pageNumber}", method=RequestMethod.GET)
+    public String gestiona_reservas_sala(@PathVariable Long espacio, @PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Reserva> currentResults = reserva_service.getReservasEspacio(sala,pageRequest);
+        Page<Reserva> currentResults = reserva_service.getReservasEspacio(espacio,pageRequest);
         
         model.addAttribute("currentResults", currentResults);
     
@@ -138,9 +138,25 @@ public class GestorController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-		model.addAttribute("user", u);
+		model.addAttribute("User", u);
 		model.addAttribute("view", "gestor/gestion-reservas");
 		
+        return "index";
+    }
+	@RequestMapping(value="/gestor/editar/{idReserva}", method=RequestMethod.GET)
+    public String edita_reservas_gestor(@PathVariable Long idReserva, Model model) {
+		
+		User u = user_service.getCurrentUser();
+		List<EstadoReserva> lista= EstadoReserva.getAll();
+		model.addAttribute("User", u);	
+		model.addAttribute("Reserva", reserva_service.getReserva(idReserva));
+		model.addAttribute("EstadosReserva", lista);
+		Long id= reserva_service.getReserva(idReserva).getUser().getId();
+		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addAttribute("GruposReservasUser", grupo_service.getGruposUsuario(id));
+		model.addAttribute("view", "gestor/editarReserva");
+		
+
         return "index";
     }
 }

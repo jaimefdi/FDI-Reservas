@@ -32,8 +32,8 @@ $(document).ready(function(){
 		
 		
 		
-		$("#enlaceGuardar").click(function(){
-
+		$("#enlaceGuardarGestor").click(function(){
+			
 			reserva.id = idReserva;
 			reserva.title = $("#idAsunto").val();
 	    	reserva.start = es.ucm.fdi.dateUtils.toIso8601($("#datetimepicker1").val());
@@ -43,7 +43,9 @@ $(document).ready(function(){
 	    	reserva.idEspacio = idEspacio;
 	    	reserva.recurrenteId = recurrenteId;
 	    	reserva.reglasRecurrencia = reglas;
+	    	reserva.estado= $("#selec_estado").val();
 	    	
+	    	console.log(reserva.estado);
 	    	editarReserva(reserva,reqHeaders);
   	
 		});
@@ -114,7 +116,7 @@ function editarReserva(reserva, reqHeaders){
 			data: JSON.stringify(reserva),
 			contentType: 'application/json',
 			success : function(datos) {   
-				 window.location = "/reservas/mis-reservas";
+				 window.location = "/reservas/gestor/gestion-reservas/page/1";
 			},    
 			error : function(xhr, status) {
 			

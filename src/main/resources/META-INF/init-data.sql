@@ -12,7 +12,7 @@ INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(11
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(12,'Facultad de Comercio y Turismo','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(13,'Facultad de Derecho','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(14,'Facultad de EducaciÃ³n','C/ JosÃ© Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(15,'Facultad de EnfermerÃ­a, Fisioterapia y PodologÃ­a','C/ JosÃ© Antonio Novais, 12, false');
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(15,'Facultad de EnfermerÃ­a, Fisioterapia y PodologÃ­a','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(16,'Facultad de Estudios EstadÃ­sticos','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(17,'Facultad de Farmacia','C/ JosÃ© Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(18,'Facultad de FilologÃ­a','C/ JosÃ© Antonio Novais, 12', false);
@@ -42,17 +42,17 @@ INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted)
 INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(5,'Edificio de la DocumentaciÃ³n','C/ SantÃ­sima Trinidad, 37',4, false);
 INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(6,'Edificio de la InformaciÃ³n','Av. Complutense, s/n',5, false);
 
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(1,'Sala de Grados',70,true,true,1,1, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(2,'Sala de Conferencias',180,true,true,1,1, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(3,'Sala de Reuniones',20,true,true,1,1, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(4,'Aula 1',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(5,'Aula 2',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(6,'Aula 3',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(7,'Aula 4',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(8,'Aula 5',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(9,'Lab. 1',50,true,true,1,2, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(10,'Aula 1280',80,true,true,2,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(11,'Aula 1290',80,true,true,2,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(1,'Sala de Grados',70,true,true,1,1,1,2, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(2,'Sala de Conferencias',180,true,true,1,1,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(3,'Sala de Reuniones',20,true,true,1,1,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(4,'Aula 1',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(5,'Aula 2',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(6,'Aula 3',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(7,'Aula 4',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(8,'Aula 5',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(9,'Lab. 1',50,true,true,1,2,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(10,'Aula 1280',80,true,true,2,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(11,'Aula 1290',80,true,true,2,0,0,0, false);
 
 INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(1,'GII-1ÂºA','Lo que sea',2);
 INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(2,'GII-1ÂºB','Lo que sea',2);

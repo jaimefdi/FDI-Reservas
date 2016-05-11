@@ -89,6 +89,11 @@ public class Reserva{
 		this.recurrenteId = recurrId;
 		
 	}
+	
+	public boolean mismoGReserva(GrupoReserva valor)
+	{
+		return this.grupoReserva.equals(valor);
+	}
 
     public void addReglaRecurrente(String regla){
     	this.reglasRecurrencia.add(regla);

@@ -113,7 +113,7 @@ public class ReservaController {
 		model.addObject("User", u);
 		model.addObject("Edificio", reserva_service.getEdificio(idEdificio));
 		model.addObject("TiposEspacio",reserva_service.tiposDeEspacios(idEdificio));
-		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
+		//model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "espacios");
         return model;
@@ -129,7 +129,7 @@ public class ReservaController {
 		r.setEspacio(e);	
 		model.addObject("User", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
-		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
+		//model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
 		model.addObject("view", "reservas-calendario");
 		

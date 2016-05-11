@@ -41,13 +41,17 @@ public class Espacio {
 	private TipoEspacio tipoEspacio;
 
 	@NotNull
+	private Autorizacion tipoAutorizacion;
+	@NotNull
+	private int horasAutorizacion;
+	@NotNull
 	private boolean deleted;
 	
 	public Espacio(){
 		
 	}
 	
-	public Espacio(String nombre_espacio, int capacidad, boolean microfono, boolean proyector,
+	/*public Espacio(String nombre_espacio, int capacidad, boolean microfono, boolean proyector,
 			TipoEspacio tipoEspacio, Edificio edificio) {
 		super();
 		this.nombreEspacio = nombre_espacio;
@@ -57,9 +61,40 @@ public class Espacio {
 		this.tipoEspacio = tipoEspacio;
 		this.edificio = edificio;
 		this.deleted = false;
+	}*/
+	
+	public Espacio(String nombre_espacio, int capacidad, boolean microfono, boolean proyector,
+			TipoEspacio tipoEspacio, Edificio edificio, Autorizacion autorizacion, int horas) {
+		super();
+		this.nombreEspacio = nombre_espacio;
+		this.capacidad = capacidad;
+		this.microfono = microfono;
+		this.proyector = proyector;
+		this.tipoAutorizacion=autorizacion;
+		this.horasAutorizacion=horas;
+		this.tipoEspacio = tipoEspacio;
+		this.edificio = edificio;
+		this.deleted = false;
 	}
 
+	public Autorizacion getTipoAutorizacion() {
+		return tipoAutorizacion;
+	}
 
+	public void setTipoAutorizacion(Autorizacion tipoAutorizacion) {
+		this.tipoAutorizacion = tipoAutorizacion;
+	}
+
+	public int getHorasAutorizacion() {
+		return horasAutorizacion;
+	}
+
+	public void setHorasAutorizacion(int horasAutorizacion) {
+		if (horasAutorizacion<=0)
+			this.horasAutorizacion=0;
+		else
+			this.horasAutorizacion = horasAutorizacion;
+	}
 
 	public boolean isDeleted() {
 		return deleted;

@@ -54,20 +54,13 @@
 			                </span>
 			             </div>                     
                  </div>
-                 
-                 <!-- Grupo de Reservas --> 
                  <div class="form-group">
-                     <label>Grupo:</label> 
-                     	                   
-                      <select id="selec_grupo" class="form-control" >            
-                   	   	<option th:each="g : ${GruposReservas}"
-                   	   			th:text="${g.nombreGrupo}"
-                   	   			th:value="${g.id}">
-                   	   			<!-- th:selected="${g.id== Reserva.getGrupoReserva().id}" -->
-                   	   	</option>
-                   	 </select>
-                    <p class="small help-block">Agrega esta reserva a un grupo de reservas.</p>
+                     <label>Usuario:</label>
+                      <div>
+                         <input id="idUser" name="User" type="text" class="form-control" th:value="${Reserva.User.id}" th:text="${Reserva.User.username}"/>
+                      </div>
                  </div>
+                 
                </div> 
                  
                 <div class="col-md-6">
@@ -87,22 +80,37 @@
 							</div>                        	                    	
                         </div>
                    </div>
-               
-                    <!-- Asistentes  -->
+                   
                    <div class="form-group">
-                       <label>Asistentes:</label>
-                        <div class="ui-widget">                      
-						    <input id="autoUsuarios" type="text"  class="form-control" placeholder="Agrega invitados"/>				    							                       	                    	
-                        </div>
-                   </div>
-                   
-                   <div id="asistencia"></div>
-                  </div> 
+                     <label>Estado:</label> 
+                     	                   
+                      <select id="selec_estado" class="form-control" >            
+                   	   	<option th:each="s : ${EstadosReserva}"
+                   	   			th:text="${s.toString()}"
+                   	   			th:value="${s}"
+                   	   			th:selected="${s== Reserva.getEstadoReserva()}">
+                   	   			
+                   	   	</option>
+                   	 </select>
+                 </div>
                   
+                  	<!-- Grupo de Reservas -->	
+                   	<div class="form-group">
+                   	<label>Grupo:</label>
+                  		<select id="selec_grupo" class="form-control" >            
+                   	   		<option th:each="s : ${GruposReservasUser}"
+                   	   			th:text="${s.getNombreGrupo()}"
+                   	   			th:value="${s.id}"
+                   	   			th:selected="${s.id== Reserva.getGrupoReserva().id}">
+                   	   			
+                   	   		</option>
+                   	 	</select>	
                    
+                 	</div> 
+                   </div>
                    <div class="row">              	
 					    <div class="col-md-12 text-center">
-					         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>
+					         <button id="enlaceGuardarGestor" type="button" class="btn-rec blue">GUARDAR</button>
 					    </div>                   
 				   </div>
 				   <!-- /.row -->
@@ -117,10 +125,11 @@
 	var baseURL = /*[[@{/}]]*/ '/';
 	var idReserva = /*[[${Reserva.id}]]*/ '1';
 	var idEspacio = /*[[${Reserva.espacio.id}]]*/ '1';
+	var idUsuario = /*[[${Reserva.user.id}]]*/ "1";
 	var recurrenteId = /*[[${Reserva.recurrenteId}]]*/ '1';
 	var reglas = /*[[${Reserva.reglasRecurrencia}]]*/ '1';
 </script>
-<script src="../../js/editarReserva.js" th:src="@{/js/editarReserva.js}"></script>
+<script src="../../js/editarReservaGestor.js" th:src="@{/js/editarReservaGestor.js}"></script>
 </div>
 
             <!-- /.container-fluid -->

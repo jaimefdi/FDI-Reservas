@@ -69,6 +69,25 @@ public class ReservaService {
 		return reserva_repository.findByUserId(idUsuario);
 	}
 
+	public Reserva compruebaAutorizacion(Reserva reserva)
+	{
+		List<Espacio> lista= espacio_repository.findById(reserva.getEspacio().getId());
+		//List<Espacio> lista= espacio_repository.findAll();
+		
+		Espacio esp=lista.get(0);
+		
+		if (esp.getTipoAutorizacion().toString()=="Necesaria")
+			//Autorizacion Obligatoria
+			reserva.setEstadoReserva(EstadoReserva.PENDIENTE);
+		else if ((esp.getTipoAutorizacion().toString()=="Por horas") && 
+				(reserva.getComienzo().plusHours(esp.getHorasAutorizacion()).isBefore(reserva.getFin())))
+			//horaComienzo + horasAutorizacion > horaFin
+			reserva.setEstadoReserva(EstadoReserva.PENDIENTE);
+		else
+			reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
+		return reserva;
+	}
+	
 	public Reserva agregarReserva(Reserva reserva) {		
 		List<Reserva> reservas = new ArrayList<Reserva>();		
 		Long idEspacio = reserva.getEspacio().getId();
@@ -102,6 +121,8 @@ public class ReservaService {
 										   reserva.getUser(), reserva.getEspacio(),reserva.getStartRecurrencia(),
 										   reserva.getEndRecurrencia(),reserva.getReservaColor(),
 										   reserva.getRecurrenteId());
+		
+		nuevaReserva = compruebaAutorizacion(nuevaReserva);
 		
 		nuevaReserva.setReglasRecurrencia(reserva.getReglasRecurrencia());
 		if(reserva.getGrupoReserva() != null){
@@ -180,6 +201,7 @@ public class ReservaService {
 		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
 		r.setReservaColor(reservaActualizada.getColor());
 		r.setGrupoReserva(grupo_repository.findOne(reservaActualizada.getIdGrupo()));
+		r.setEstadoReserva(EstadoReserva.fromEstadoReserva(reservaActualizada.getEstado()));
 		
 		return reserva_repository.save(r);
 	}

@@ -18,6 +18,9 @@ public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 	@Query("select f from #{#entityName} f where f.deleted=false and f.id = :id_edif")
 	public List<Espacio> findByEdificioId(Long idEdificio);
 	
+	//@Query("select f from #{#entityName} f where f.deleted=false and f.id = :id and f.edificio.id = :idEdificio")
+	public List<Espacio> findById(Long Id); 
+
 	@Query("select f from #{#entityName} f where f.deleted=false and f.id = :id_edif")
 	public List<Espacio> findByEdificioIdAndTipoEspacio(Long idEdificio, TipoEspacio idTipoEspacio);
 	

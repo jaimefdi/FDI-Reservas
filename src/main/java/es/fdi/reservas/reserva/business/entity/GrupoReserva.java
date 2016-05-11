@@ -97,8 +97,10 @@ public class GrupoReserva {
 		this.user = user;
 	}
 	
-	
-	
+	public boolean equals(GrupoReserva gr)
+	{
+		return this.id.equals(gr.id);
+	}
 	
 	
 }
