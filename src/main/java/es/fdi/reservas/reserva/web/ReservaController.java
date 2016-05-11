@@ -151,47 +151,47 @@ public class ReservaController {
     }
 	
 
-	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.GET)
-    public ModelAndView verGrupo(@PathVariable("idGrupo") long idGrupo) {
-		ModelAndView model = new ModelAndView("index");
-		model.addObject("user", user_service.getCurrentUser());
-		model.addObject("GrupoReservas", grupo_service.getGrupoReserva(idGrupo));
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user_service.getCurrentUser().getId()));
-		model.addObject("view", "grupo-reservas");
-		
-        return model;
-    }
+//	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.GET)
+//    public ModelAndView verGrupo(@PathVariable("idGrupo") long idGrupo) {
+//		ModelAndView model = new ModelAndView("index");
+//		model.addObject("user", user_service.getCurrentUser());
+//		model.addObject("GrupoReservas", grupo_service.getGrupoReserva(idGrupo));
+//		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user_service.getCurrentUser().getId()));
+//		model.addObject("view", "grupo-reservas");
+//		
+//        return model;
+//    }
 	
 	
-	@RequestMapping(value="/grupo/nuevo", method=RequestMethod.GET)
-    public ModelAndView crearGrupo() {
-		ModelAndView model = new ModelAndView("index");
-		User u =  user_service.getCurrentUser();
-		model.addObject("User", u);
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
-		model.addObject("view", "nuevoGrupo");
-		
-        return model;
-    }
+//	@RequestMapping(value="/grupo/nuevo", method=RequestMethod.GET)
+//    public ModelAndView crearGrupo() {
+//		ModelAndView model = new ModelAndView("index");
+//		User u =  user_service.getCurrentUser();
+//		model.addObject("User", u);
+//		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+//		model.addObject("view", "nuevoGrupo");
+//		
+//        return model;
+//    }
 	
 	
-	@RequestMapping(value="/nuevoGrupo", method=RequestMethod.POST)
-    public String nuevoGrupo(GrupoReserva g, Model model) {
-		User user =  user_service.getCurrentUser();
-		model.addAttribute("User", user);
-		model.addAttribute("view", "nuevoGrupo");
-		
-		if(grupo_service.addNuevoGrupo(g, user) != null){			
-			model.addAttribute("exito", "");
-		}
-		else{
-			model.addAttribute("error", "");
-		}
-		
-		model.addAttribute("GruposReservas", grupo_service.getGruposReservas());
-		
-		return "index";
-    }
+//	@RequestMapping(value="/nuevoGrupo", method=RequestMethod.POST)
+//    public String nuevoGrupo(GrupoReserva g, Model model) {
+//		User user =  user_service.getCurrentUser();
+//		model.addAttribute("User", user);
+//		model.addAttribute("view", "nuevoGrupo");
+//		
+//		if(grupo_service.addNuevoGrupo(g, user) != null){			
+//			model.addAttribute("exito", "");
+//		}
+//		else{
+//			model.addAttribute("error", "");
+//		}
+//		
+//		model.addAttribute("GruposReservas", grupo_service.getGruposReservas());
+//		
+//		return "index";
+//    }
 	
 	@RequestMapping(value="/editar/{idReserva}", method=RequestMethod.GET)
     public String editarReserva(@PathVariable("idReserva") long idReserva, Model model) {

@@ -14,7 +14,7 @@ $(document).ready(function(){
 			edificio.direccion = $("#idDir").val();
 			edificio.deleted = $("#idActivado").val();
 			
-	    	editarEdificio(edficio,reqHeaders);
+	    	editarEdificio(edificio,reqHeaders);
   	
 		});
 		
@@ -23,14 +23,14 @@ $(document).ready(function(){
 function editarEdificio(edificio, reqHeaders){
 	
 	$.ajax({
-			url: baseURL + 'administrar/edificios/editar/' + idEdificio,
+			url: baseURL + 'admin/administrar/edificios/editar/' + idEdificio,
 			type: 'PUT',
 			headers : reqHeaders,
 			data: JSON.stringify(edificio),
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/administrar/edificios/1";
+				 window.location = "/reservas/admin/administrar/edificios/1";
 			},    
 			error : function(xhr, status) {
 				alert(baseURL),

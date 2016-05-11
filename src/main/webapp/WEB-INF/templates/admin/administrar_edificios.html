@@ -50,7 +50,7 @@
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.direccion}"></td>
                           <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},act=${r.deleted}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/administrar/edificios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr>
@@ -60,7 +60,7 @@
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.direccion}"></td>
                           <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},act=${r.deleted}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/administrar/edificios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr> 
@@ -76,7 +76,7 @@
                 
           	</div> 
         <!-- /.table-responsive-->
-    	<a th:href="@{'/administrar/edificio/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar edificios"/></a>
+    	<a th:href="@{'/admin/administrar/edificios/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar edificios"/></a>
 		</div>
 	</div>
 	

@@ -1,8 +1,10 @@
 package es.fdi.reservas.users.business.entity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -119,7 +121,19 @@ public class User implements UserDetails{
 		this.reservas = reservas;
 	}
 	
-	
+	public String rolesToString(){
+        UserRole[] vec = new UserRole[5];
+        String[] str = new String[this.getAuthorities().size()];
+       
+    	vec = new UserRole[this.getAuthorities().size()];
+    	this.getAuthorities().toArray(vec);
+    	//str = vec.toString();
+    	for (int i = 0; i < vec.length; i++){
+    		str[i] = vec[i].toString();
+    	}
+    	
+        return Arrays.toString(str);
+	}
 
 	public Set<GrupoReserva> getGruposReservas() {
 		return gruposReservas;

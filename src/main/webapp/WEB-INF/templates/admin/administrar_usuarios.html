@@ -51,7 +51,7 @@
                             <th>Nombre</th>
                             <th>Email</th>
                             <th>Facultad</th>
-                            <th>Rol</th>
+                            <th>Rol/es</th>
                             <th>Acción</th>
                         </tr>
                     </thead>
@@ -61,10 +61,10 @@
                             <td th:if="${r.id != User.id}" th:text="${r.username}"></td>
                             <td th:if="${r.id != User.id}" th:text="${r.email}"></td>
                             <td th:if="${r.id != User.id}" th:text="${r.facultad.nombreFacultad}"></td>
-                            <td th:if="${r.id != User.id}" >
-                            <span th:each="s:${roles}" th:text="${s}"></span></td>
-                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${s},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+                            <td th:if="${r.id != User.id}" th:text="${r.rolesToString()}"></td>
+<!--                             <span th:each="s:${roles}" th:text="${s}"></span></td> -->
+                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                         </tr>   
@@ -74,10 +74,10 @@
                             <td th:if="${r.id != User.id}" th:text="${r.username}"></td>
                             <td th:if="${r.id != User.id}" th:text="${r.email}"></td>
                             <td th:if="${r.id != User.id}" th:text="${r.facultad.nombreFacultad}"></td>
-                            <td th:if="${r.id != User.id}" >
-                            <span th:each="s:${roles}" th:text="${s}"></span></td>
-                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${s},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+                            <td th:if="${r.id != User.id}" th:text="${r.rolesToString()}"></td>
+<!--                             <span th:each="s:${roles}" th:text="${s}"></span></td> -->
+                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                         </tr>    
@@ -85,7 +85,7 @@
                 </table>
             </div>
              <!-- /.table-responsive-->
-	         <a th:href="@{'/administrar/usuarios/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar usuarios"/></a>
+	         <a th:href="@{'/admin/administrar/usuarios/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar usuarios"/></a>
      	</div>
  	</div>
  	<!-- Pagination -->

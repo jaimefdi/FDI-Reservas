@@ -23,8 +23,6 @@ import es.fdi.reservas.reserva.web.EdificioDTO;
 import es.fdi.reservas.reserva.web.EspacioTipoDTO;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
-import es.fdi.reservas.users.business.entity.UserRole;
-import javassist.bytecode.Descriptor.Iterator;
 
 
 @Controller
@@ -53,15 +51,24 @@ public class UserController {
         return "redirect:/administrar/usuarios/1";
     }
 	
-	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.GET)
 	public ModelAndView nuevoUsuario(){
+		ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
+		User u = user_service.getCurrentUser();
+		model.addObject("User", u);
+		model.addObject("view", "index");
+	   return model;
+	}
+	
+	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.GET)
+	public ModelAndView nuevoUser(){
 	   return new ModelAndView("nuevoUsuario", "User", new User());
 	}
 	
-	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.POST)
 	public String crearUsuario(User u){
 		user_service.addNewUser(u);
-	   return "redirect:/login";
+	   return "redirect:/admin/administrar";
 		//return "nuevoUsuario";
 	}
 	
@@ -92,30 +99,15 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value="/administrar/usuarios/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/usuarios/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
         Page<User> currentResults = user_service.getUsuariosPaginados(pageRequest);
         Iterable<User> users = user_service.getUsuarios();
-        java.util.Iterator<User> it = users.iterator();
-        List<String> roles = new ArrayList<String>();
-        User aux;
-        UserRole[] vec = new UserRole[5];
-        String str = "";
-        while (it.hasNext()){
-        	aux = it.next();
-        	vec = new UserRole[aux.getAuthorities().size()];
-        	aux.getAuthorities().toArray(vec);
-        	//str = vec.toString();
-        	for (int i = 0; i < vec.length; i++){
-        		str = str + vec[i].getRole() + ";";
-        	}
-        	roles.add(str);
-        	str = "";
-        }
-        model.addAttribute("roles", roles);
+        
+        //model.addAttribute("roles", roles);
         model.addAttribute("currentResults", currentResults);
         
         int current = currentResults.getNumber() + 1;
@@ -126,22 +118,22 @@ public class UserController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
-		model.addAttribute("view", "administrar_usuarios");
+		model.addAttribute("view", "admin/administrar_usuarios");
 		
         return "index";
     }
 	
-	@RequestMapping(value="/administrar/usuarios/editar/{idUser}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/usuarios/editar/{idUser}", method=RequestMethod.GET)
 	public String editarUsuario(@PathVariable("idUser") long idUser, Model model){
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("usuario", user_service.getUser(idUser));
 		//System.out.println(user_service.getUser(idUser).getUsername());
-		model.addAttribute("view", "editarUsuario");
+		model.addAttribute("view", "admin/editarUsuario");
 		return "index";
 	}
 		
-	@RequestMapping(value="/administrar/edificios/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/edificios/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
@@ -158,64 +150,44 @@ public class UserController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
-		model.addAttribute("view", "administrar_edificios");
+		model.addAttribute("view", "admin/administrar_edificios");
 		
         return "index";
     }
 	
-	@RequestMapping(value="/administrar/facultad/{pageNumber}", method=RequestMethod.GET)
-    public String misFacultadesPaginadas(@PathVariable Integer pageNumber, Model model) {
-		User u = user_service.getCurrentUser();
-		
-		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Facultad> currentResults = reserva_service.getFacultadesPaginadas(pageRequest);
-                
-        model.addAttribute("currentResults", currentResults);
-        
-        int current = currentResults.getNumber() + 1;
-        int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+	
 
-        model.addAttribute("beginIndex", begin);
-        model.addAttribute("endIndex", end);
-        model.addAttribute("currentIndex", current); 
-		model.addAttribute("User", u);
-		model.addAttribute("view", "administrar_facultad");
-		
-        return "index";
-    }
-
-	@RequestMapping(value="/administrar/facultad/editar/{idFacul}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/facultad/editar/{idFacul}", method=RequestMethod.GET)
 	public String editarFacultad(@PathVariable("idFacul") long idFacul, Model model){
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("facultad", reserva_service.getFacultad(idFacul));
 		//System.out.println(user_service.getUser(idUser).getUsername());
-		model.addAttribute("view", "editarFacultad");
+		model.addAttribute("view", "admin/editarFacultad");
 		return "index";
 	}
 	
-	@RequestMapping(value="/administrar/edificios/editar/{idEdificio}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/edificios/editar/{idEdificio}", method=RequestMethod.GET)
 	public String editarEdificio(@PathVariable("idEdificio") long idEdificio, Model model){
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("edificio", reserva_service.getEdificio(idEdificio));
 		//System.out.println(user_service.getUser(idUser).getUsername());
-		model.addAttribute("view", "editarEdificio");
+		model.addAttribute("view", "admin/editarEdificio");
 		return "index";
 	}
 	
-	@RequestMapping(value="/administrar/espacio/editar/{idEspacio}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/espacio/editar/{idEspacio}", method=RequestMethod.GET)
 	public String editarEspacio(@PathVariable("idEspacio") long idEspacio, Model model){
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("espacio", reserva_service.getEspacio(idEspacio));
 		//System.out.println(user_service.getUser(idUser).getUsername());
-		model.addAttribute("view", "editarEspacio");
+		model.addAttribute("view", "admin/editarEspacio");
 		return "index";
 	}
 	
-	@RequestMapping(value="/administrar/espacios/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/espacios/{pageNumber}", method=RequestMethod.GET)
     public String misEspaciosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
@@ -232,18 +204,18 @@ public class UserController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
-		model.addAttribute("view", "administrar_espacios");
+		model.addAttribute("view", "admin/administrar_espacios");
 		
         return "index";
     }
 		
-	@RequestMapping(value="/nuevaFacultad",method=RequestMethod.GET)
+	@RequestMapping(value="/admin/nuevaFacultad",method=RequestMethod.GET)
 	public ModelAndView nuevaFacultad(){
-		return new ModelAndView("nuevaFacultad", "Facultad", new Facultad());
+		return new ModelAndView("admin/nuevaFacultad", "Facultad", new Facultad());
 		//return model;
 	}
 	
-	@RequestMapping(value="/nuevaFacultad", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/nuevaFacultad", method=RequestMethod.POST)
 	public String crearFacultad(Facultad f){
 		reserva_service.addNewFacultad(f);
 	   return "redirect:/administrar/facultad";
@@ -251,30 +223,31 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value="/nuevoEspacio",method=RequestMethod.GET)
+	@RequestMapping(value="/admin/nuevoEspacio",method=RequestMethod.GET)
 	public ModelAndView nuevoEspacio(){
-		ModelAndView model = new ModelAndView("nuevoEspacio", "Espacio", new Espacio());
+		ModelAndView model = new ModelAndView("admin/nuevoEspacio", "Espacio", new Espacio());
 		model.addObject("edificios", reserva_service.getEdificios());
 		return model;
 	}
 	
-	@RequestMapping(value="/nuevoEspacio", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/nuevoEspacio", method=RequestMethod.POST)
 	public String crearEspacio(EspacioTipoDTO f){
 		reserva_service.addNewEspacio(f);
 	   return "redirect:/administrar/espacios";
 		//return "nuevoUsuario";
 	}
 	
-	@RequestMapping(value="/nuevoEdificio",method=RequestMethod.GET)
+	@RequestMapping(value="/admin/nuevoEdificio",method=RequestMethod.GET)
 	public ModelAndView nuevoEdificio(){
-		ModelAndView model = new ModelAndView("nuevoEdificio", "Edificio", new Edificio());
-		
+		ModelAndView model = new ModelAndView("admin/nuevoEdificio", "Edificio", new Edificio());
+		User u = user_service.getCurrentUser();
+		model.addObject("User", u);
 		model.addObject("view", "index");
 		model.addObject("facultades", reserva_service.getFacultades());
 		return model;
 	}
 	
-	@RequestMapping(value="/nuevoEdificio", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/nuevoEdificio", method=RequestMethod.POST)
 	public String crearEdificio(EdificioDTO f){
 		reserva_service.addNewEdificio(f);
 	    return "redirect:/administrar/edificios";

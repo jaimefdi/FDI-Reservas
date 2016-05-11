@@ -237,20 +237,20 @@ public class ReservasRestController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/grupo/tag/{tagName}", method = RequestMethod.GET)
-	public List<GrupoReservaDTO> gruposFiltro(@PathVariable("tagName") String tagName) {
-		
-		List<GrupoReservaDTO> result = new ArrayList<>();
-		List<GrupoReserva> grupos = new ArrayList<>();
-
-		grupos = grupo_service.getGruposPorTagName(tagName, user_service.getCurrentUser().getId());
-				
-		for(GrupoReserva g : grupos) {
-			result.add(GrupoReservaDTO.fromGrupoReserva(g));
-		}
-		 
-		return result;
-	}
+//	@RequestMapping(value = "/grupo/tag/{tagName}", method = RequestMethod.GET)
+//	public List<GrupoReservaDTO> gruposFiltro(@PathVariable("tagName") String tagName) {
+//		
+//		List<GrupoReservaDTO> result = new ArrayList<>();
+//		List<GrupoReserva> grupos = new ArrayList<>();
+//
+//		grupos = grupo_service.getGruposPorTagName(tagName, user_service.getCurrentUser().getId());
+//				
+//		for(GrupoReserva g : grupos) {
+//			result.add(GrupoReservaDTO.fromGrupoReserva(g));
+//		}
+//		 
+//		return result;
+//	}
 	
 	
 	@RequestMapping(value="/nuevaReservaAJAX",method=RequestMethod.POST)
@@ -286,10 +286,10 @@ public class ReservasRestController {
     }
 	
 	
-	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.DELETE)
-	public void eliminarGrupo(@PathVariable("idGrupo") long idGrupo){
-		grupo_service.eliminarGrupo(idGrupo);
-	}
+//	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.DELETE)
+//	public void eliminarGrupo(@PathVariable("idGrupo") long idGrupo){
+//		grupo_service.eliminarGrupo(idGrupo);
+//	}
 	
 	
 	

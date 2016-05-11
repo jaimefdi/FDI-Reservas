@@ -23,14 +23,14 @@ $(document).ready(function(){
 function editarFacultad(facultad, reqHeaders){
 	
 	$.ajax({
-			url: baseURL + 'administrar/facultad/editar/' + idFacultad,
+			url: baseURL + 'admin/administrar/facultad/editar/' + idFacultad,
 			type: 'PUT',
 			headers : reqHeaders,
 			data: JSON.stringify(facultad),
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/administrar/facultad/1";
+				 window.location = "/reservas/admin/administrar/facultad/1";
 			},    
 			error : function(xhr, status) {
 				alert(baseURL),

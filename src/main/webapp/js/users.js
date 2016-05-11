@@ -12,14 +12,13 @@
 	 		var email = $(this).attr("email");
 	 		var facultad = $(this).attr("facul");
 	 		var roles = $(this).attr("roles");
-	 		//var enabled = $(this).attr("act");
 
 	 		$('#modalEditarUsuario #idNombre').text(username);
 	 		$('#modalEditarUsuario #idEmail').text(email);
 	 		$('#modalEditarUsuario #idFacul').text(facultad);
-	 		$('#modalEditarUsuario #idRoles').val(roles);
-	 		//$('#modalEditarUsuario #idActivado').text(enabled);
-	 		$('#modalEditarUsuario #btn-editar').prop("href", baseURL + "administrar/usuarios/editar/" + user.id)
+	 		$('#modalEditarUsuario #idRoles').text(roles);
+	 		
+	 		$('#modalEditarUsuario #btn-editar').prop("href", baseURL + "admin/administrar/usuarios/editar/" + user.id)
 	 		
 	 		$('#modalEditarUsuario').modal('show');
 	 		

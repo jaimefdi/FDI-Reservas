@@ -15,7 +15,7 @@ $(document).ready(function(){
 			espacio.microfono = $("#idMicro").val();
 			espacio.proyector = $("#idProy").val();
 			espacio.tipoEspacio = $("#idTipo").val();
-			espacio.deleted = $("#idActivado").val();
+			
 			
 	    	editarEspacio(espacio,reqHeaders);
   	
@@ -26,14 +26,14 @@ $(document).ready(function(){
 function editarEspacio(espacio, reqHeaders){
 	
 	$.ajax({
-			url: baseURL + 'administrar/espacio/editar/' + idEspacio,
+			url: baseURL + 'admin/administrar/espacio/editar/' + idEspacio,
 			type: 'PUT',
 			headers : reqHeaders,
 			data: JSON.stringify(espacio),
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/administrar/espacio";
+				 window.location = "/reservas/admin/administrar/espacio";
 			},    
 			error : function(xhr, status) {
 				alert(baseURL),

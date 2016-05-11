@@ -46,18 +46,18 @@ public class UserRestController {
 		return "redirect:/reservas/administrar/usuarios/{numPag}";
 	}
 	
-	@RequestMapping(value = "/administrar/usuarios/{numPag}/restaurar")
+	@RequestMapping(value = "/admin/administrar/usuarios/{numPag}/restaurar")
 	public ModelAndView restaurarUsers(@PathVariable("numPag") Long numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("usuarios", user_service.getEliminados());
 		model.addObject("User", u);
 		model.addObject("pagina", numPag);
-		model.addObject("view", "papelera_usuarios");
+		model.addObject("view", "/admin/papelera_usuarios");
 		return model;
 	}
 	
-	@RequestMapping(value="/administrar/usuarios/editar/{idUser}/{user}/{admin}/{secre}", method=RequestMethod.PUT)
+	@RequestMapping(value="/admin/administrar/usuarios/editar/{idUser}/{user}/{admin}/{secre}", method=RequestMethod.PUT)
 	public void editarUsuario(@PathVariable("idUser") long idUser, @PathVariable("user") String user,
 			@PathVariable("admin") String admin, @PathVariable("secre") String secre, @RequestBody UserDTO userActualizado) {
 		user_service.editaUsuario(userActualizado, user, admin, secre);
@@ -71,23 +71,23 @@ public class UserRestController {
 		reserva_service.editarEdificioDeleted(idEdificio);
 	}
 	
-	@RequestMapping(value = "/administrar/edificios/editar/{idEdificio}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}", method = RequestMethod.PUT)
 	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody EdificioDTO edificioActualizado) {
 		reserva_service.editarEdificio(edificioActualizado);
 	}
 	
-	@RequestMapping(value = "/administrar/edificios/{numPag}/restaurar")
+	@RequestMapping(value = "/admin/administrar/edificios/{numPag}/restaurar")
 	public ModelAndView restaurarEdificios(@PathVariable("numPag") Long numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
 		model.addObject("pagina", numPag);
 		model.addObject("edificios", reserva_service.getEdificiosEliminados());
-		model.addObject("view", "papelera_edificios");
+		model.addObject("view", "admin/papelera_edificios");
 		return model;
 	}
 	
-	@RequestMapping(value = "/administrar/edificio/{numPag}/restaurar/{idEdificio}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/administrar/edificio/{numPag}/restaurar/{idEdificio}", method = RequestMethod.GET)
 	public String restaurarEdificio(@PathVariable("numPag") Long numPag, @PathVariable("idEdificio") Long idEdificio){
 		reserva_service.restaurarEdificio(idEdificio);
 		return "redirect:/administrar/edificio/{numPag}/restaurar";
@@ -101,13 +101,13 @@ public class UserRestController {
 		reserva_service.editarFacultadDeleted(idFacultad);
 	}
 	
-	@RequestMapping(value = "/administrar/facultad/editar/{idFacultad}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/admin/administrar/facultad/editar/{idFacultad}", method = RequestMethod.PUT)
 	public void editarFacultad(@PathVariable("idFacultad") long idFacultad, @RequestBody FacultadDTO facultadActualizado) {
 		reserva_service.editarFacultad(facultadActualizado);
 	}
 	
 	
-	@RequestMapping(value = "/administrar/facultad/{numPag}/restaurar")
+	@RequestMapping(value = "/admin/administrar/facultad/{numPag}/restaurar")
 	public ModelAndView restaurarFacultades(@PathVariable("numPag") Long numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -115,7 +115,7 @@ public class UserRestController {
 		model.addObject("facultades", reserva_service.getFacultadesEliminadas());
 		
 		model.addObject("pagina", numPag);
-		model.addObject("view", "papelera_facultades");
+		model.addObject("view", "admin/papelera_facultades");
 		return model;
 	}
 	
@@ -132,20 +132,20 @@ public class UserRestController {
 		reserva_service.editarEspacioDeleted(idEspacio);
 	}
 	
-	@RequestMapping(value = "/administrar/espacio/editar/{idEspacio}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/admin/administrar/espacio/editar/{idEspacio}", method = RequestMethod.PUT)
 	public String editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioDTO espacioActualizado) {
 		reserva_service.editarEspacio(espacioActualizado);
-		return "redirect:/administrar/espacios";
+		return "redirect:/admin/administrar/espacios";
 	}
 	
-	@RequestMapping(value = "/administrar/espacio/{numPag}/restaurar")
+	@RequestMapping(value = "/admin/administrar/espacio/{numPag}/restaurar")
 	public ModelAndView restaurarEspacios(@PathVariable("numPag") String numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
 		model.addObject("pagina", numPag);
 		model.addObject("espacios", reserva_service.getEspaciosEliminados());
-		model.addObject("view", "papelera_espacios");
+		model.addObject("view", "admin/papelera_espacios");
 		return model;
 	}
 	
@@ -172,12 +172,11 @@ public class UserRestController {
 	}
 	
 
-	@RequestMapping(value = "/facultades/tag/{tagName}", method = RequestMethod.GET)
+	@RequestMapping(value = "/usuarios/facultades/tag/{tagName}", method = RequestMethod.GET)
 	public List<FacultadDTO> FacultadesFiltro(@PathVariable("tagName") String tagName) {
 		
 		List<FacultadDTO> result = new ArrayList<>();
 		List<Facultad> facultades = new ArrayList<>();
-		System.out.println(tagName);
 		facultades = reserva_service.getFacultadesPorTagName(tagName);
 				
 		for(Facultad f : facultades) {

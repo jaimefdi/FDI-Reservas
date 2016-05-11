@@ -70,17 +70,7 @@
 							    </label>
 							  </div>
 					 	</div>
-					 	
-					 	<div class="form-group">
-					 		<label>Eliminado:</label>
-					 		<br/>
-					 		<select id = "idActivado" title="Activado">
-	                     		<option value="true">Si</option>
-					          	<option value="false">No</option>
-					          	
-	                     	</select>
-					 	</div>
-					 </div>                                     
+					 	    </div>                              
                    <div class="row">              	
 					    <div class="col-md-12 text-center">
 					         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>
@@ -98,7 +88,7 @@
 <script th:inline="javascript">
 	var baseURL = /*[[@{/}]]*/ '/';
 	var idUsuario = /*[[${usuario.id}]]*/ '1';
-	var user = /*[[#chkUser]]*/ '1';
+	var usuario = /*[[#chkUser]]*/ '1';
 	var admin = /*[[#chkAdmin]]*/ '1';
 	var gestor = /*[[#chkSecre]]*/ '1';
 </script>

@@ -11,9 +11,10 @@ $(document).ready(function(){
 		$("#enlaceGuardar").click(function(){
 			user.id = idUsuario;
 			user.username = $("#idNombre").val();
+			alert("1");
 			user.email = $("#idEmail").val();
-			user.facultad = $("#autoFacultades").val();
-			//user.enabled = $("#idActivado").val();
+			//user.facultad = $("#autoFacultades").val();
+			alert("2");
 	    	editarUsuario(user,reqHeaders);
   	
 		});
@@ -79,14 +80,14 @@ $(document).ready(function(){
 function editarUsuario(user, reqHeaders){
 	
 	$.ajax({
-			url: baseURL + 'administrar/usuarios/editar/' + idUsuario + '/' + user + '/' + admin + '/' + gestor,
+			url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario + '/' + usuario + '/' + admin + '/' + gestor,
 			type: 'PUT',
 			headers : reqHeaders,
 			data: JSON.stringify(user),
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/administrar/usuarios";
+				 window.location = "/reservas/admin/administrar/usuarios";
 			},    
 			error : function(xhr, status) {
 				alert(baseURL),

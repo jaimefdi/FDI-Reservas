@@ -14,7 +14,7 @@ import es.fdi.reservas.reserva.business.entity.Facultad;
 @Repository
 public interface FacultadRepository extends JpaRepository<Facultad, Long>{
 
-	@Query("from Facultad f where lower(f.nombreFacultad) like lower(concat('%',:nombreFacultad, '%')) and f.deleted=false")
+	@Query("from Facultad f where lower(f.nombreFacultad) like lower(concat('%',:nombreFacultad, '%'))")
 	List<Facultad> getFacultadesPorTagName(@Param("nombreFacultad") String nombreFacultad);
 	
 	@Query("from #{#entityName} f where f.deleted=false")

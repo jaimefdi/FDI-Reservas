@@ -232,6 +232,18 @@
                         <li>
                             <a th:href="@{/grupo/nuevo}">Nuevo grupo </a>
                         </li>
+                        <li>
+                            <a th:href="@{/admin/nuevoUsuario}">Nuevo usuario </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/admin/nuevaFacultad}">Nueva facultad </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/admin/nuevEdificio}">Nuevo edificio </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/admin/nuevEspacio}">Nuevo espacio </a>
+                        </li>
                         
                     </ul>
                 </li>
@@ -275,7 +287,7 @@
                 <ul class="nav navbar-nav side-nav">
                 		<th:block sec:authorize="hasRole('ROLE_ADMIN')">
                 		<li id="li_administrar">
-                        	<a th:href="@{/administrar}"><i class="fa fa-cog"></i> Administrar</a>
+                        	<a th:href="@{/admin/administrar}"><i class="fa fa-cog"></i> Administrar</a>
                     	</li>
                     	</th:block>
                 	<!--/*/  <th:block sec:authorize="hasRole('ROLE_GESTOR')"> /*/-->
