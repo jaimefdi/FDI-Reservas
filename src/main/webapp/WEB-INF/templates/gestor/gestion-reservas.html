@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
 <head>
 	<meta charset="utf-8"/>
-	<title>Mis Reservas</title>
+	<title>Gestion de Reservas</title>
 </head>
 <body>
 
@@ -11,6 +11,7 @@
 <!-- Page Heading -->
 <div class="row">
     <div class="col-md-12">
+    	
         <h1 class="page-header text-center">
            
         </h1>
@@ -20,7 +21,15 @@
 
 <!-- Vista -->
 <div class="row">
-	<div class="col-md-2 col-md-offset-10 text-center">
+	<div class="col-md-6 text-center">
+		<select id="selec_busqueda">
+			<option value="user">User</option>
+			<option value="espacio">Espacio</option>
+		</select>:
+		<input type="text" id="texto_busqueda"></input>
+    	<button id="boton_busqueda">Buscar</button>
+	</div>
+	<div class="col-md-2 col-md-offset-4 text-center">
 	    Ver como: 
 	    <span id="iconoLista" class="red" title="Lista"><i class="fa fa-list-ul"> </i></span>
 	    <span id="iconoCalendario" title="Calendario"><i class="fa fa-calendar"> </i> </span>
@@ -40,6 +49,7 @@
              <table class="table table-bordered">
                  <thead>
                      <tr>
+                     	 <th>Usuario</th>
                          <th>Asunto</th>
                          <th>Espacio</th>
                          <th>Desde</th>
@@ -52,6 +62,7 @@
 			     <tbody>
 					<tr th:each="r : ${currentResults}"
 						th:attr="id=${r.id}">
+						<td th:text="${r.user.username}">Usuario</td>
 						<td th:text="${#strings.abbreviate(r.asunto,18)}">Recuperacion de clase</td>
 						<td th:text="${r.espacio.nombreEspacio}">Aula 9</td>
 						<td th:text="${#joda.format(r.comienzo, 'dd/MM/yyyy HH:mm')}">21/01/2016</td>
@@ -63,11 +74,11 @@
 						<td th:if="${r.estadoReserva.toString() == 'Denegada'}" class=" text-center"><span
 							class="label label-danger">Denegada</span></td>
 						<td>
-							<a th:attr="data-id=${r.id}, data-asunto=${r.asunto}, data-start=${#joda.isoDateTime(r.comienzo)},
+						<!-- data-grupo=${r.grupoReserva.nombreGrupo}, -->
+							<a th:attr="data-id=${r.id}, data-user=${r.user.username},data-asunto=${r.asunto}, data-start=${#joda.isoDateTime(r.comienzo)},
 									    data-end=${#joda.isoDateTime(r.fin)}, data-espacio=${r.espacio.nombreEspacio},
-									    data-grupo=${r.grupoReserva.id},
-									    data-recurrenteId=${r.startRecurrencia}, data-reservaColor=${r.reservaColor}, data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>									
-							<a th:href="@{'/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+									    data-reservaColor=${r.reservaColor}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/gestor/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>						
 						</td>
 					</tr>
@@ -141,7 +152,20 @@
           </div>
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Reserva}" method="put">             
+
+				 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-1 control-label">Usuario: </label>
+		                      <div class="col-md-11">
+		                         <p id="usuario" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
 				
+									
 				 <div class="row">
                 	<div class="col-md-12">
 		                 <!-- Asunto --> 
@@ -221,26 +245,7 @@
       </div>
     </div>
  
- <!-- Modal Eliminar Reserva Simple -->
- <div class="modal fade" id="modalEliminarReservaSimple" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">¿Eliminar reserva?</h4>
-          </div>
-          <div class="modal-body">
-          	
-          </div>
-          <div class="modal-footer">
-	        <a class="btn-rec gray" data-dismiss="modal" aria-label="Close" role="button">CANCELAR</a>
-	        <a id="aceptarEliminar" class="btn-rec blue" role="button">ACEPTAR</a>
-	      </div>
-       </div>
-     </div>
-</div>
- 
- <!-- Modal Eliminar Reserva Recurrente -->
+ <!-- Modal Reserva Recurrente -->
  <div class="modal fade" id="modalRecurrente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -272,7 +277,7 @@
  <script th:inline="javascript">
  	var baseURL = /*[[@{/}]]*/ '/';
  </script>
- <script src="../../js/mis-reservas.js" th:src="@{/js/mis-reservas.js}"></script>
+ <script src="../../js/gestion-reservas.js" th:src="@{/js/gestion-reservas.js}"></script>
  
  
  
@@ -282,3 +287,99 @@
 
 </body>
 </html>
+
+ 
+ <div class="modal fade" id="modalEditarReserva" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Editar reserva</h4>
+          </div>
+          <div class="modal-body">
+          		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Reserva}" method="put">             
+				
+				 <div class="form-group">
+                     <label for="ejemplo_2" class="col-md-2 control-label">Usuario:</label>
+                      <div class="col-md-10">
+                         <input id="idUsuario" name="username" type="text" class="form-control" placeholder="Introduce un usuario"/>
+                      </div>
+                      
+                 </div>
+                 
+				 <!-- Asunto --> 
+                 <div class="form-group">
+                     <label for="ejemplo_2" class="col-md-2 control-label">Asunto:</label>
+                      <div class="col-md-10">
+                         <input id="idAsunto" name="asunto" type="text" class="form-control" placeholder="Introduce un asunto"/>
+                      </div>
+                 </div>
+                 
+                 <!-- Fecha inicio --> 
+                 <div class="form-group">
+                     <label for="ejemplo_3" class="col-md-3 control-label">Desde:</label>
+                     <div class="col-md-9">
+		                <div class='input-group date' >
+			               <input name="fecha_ini" id="datetimepicker1" type='text' class="form-control" />
+			               <span class="input-group-addon">
+			                   <span class="fa fa-calendar"></span>
+			               </span>
+			            </div>
+                     </div>
+                 </div>
+                 
+                 <!-- Fecha fin --> 
+                 <div class="form-group">
+                     <label for="ejemplo_3" class="col-md-3 control-label">Hasta:</label>
+		             <div class="col-md-9">
+		                 <div class='input-group date' >
+			                <input name="fecha_fin" id="datetimepicker2" type='text' class="form-control" />
+			                <span class="input-group-addon">
+			                    <span class="fa fa-calendar"></span>
+			                </span>
+			             </div>
+                      </div>
+                 </div>
+                 
+                 <!-- Espacios --> 
+                
+                   <div class="form-group">
+                      <label for="ejemplo_1" class="col-md-2 control-label">Espacio:</label>
+                     <div class="col-md-10">
+                          <p id="nombreEspacio" class="form-control-static" >yyyy</p>                     
+                     </div>
+                   </div>
+                   
+                   <div class="form-group">
+                      <label for="ejemplo_1" class="col-md-2 control-label">Estado de la Reserva:</label>
+                     <div class="col-md-10">
+                         <select name="estadoReserva" id="selec_estadoReserva">
+ 							<option th:each="tipo : ${estadoReserva}" 
+        							th:text="${tipo}"
+					        		th:value="${tipo}">
+					 		</option>
+					    </select>                   
+                     </div>
+                   </div>
+
+                 <div class="row">
+                     <div class="col-xs-6 col-md-6">
+                      <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
+                     </div>
+                     <div class="col-xs-6 col-md-6 text-right">
+                      <button id="btn-guardar" type="button" class="btn-rec blue">GUARDAR </button>
+                     </div>
+                 </div>                
+             </form>
+                 
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+ <script th:inline="javascript">
+ var baseURL = /*[[@{/}]]*/ '/';
+ </script>
+ <script src="../../js/gestionReservas.js" th:src="@{/js/gestionReservas.js}"></script>
+ 
+ 

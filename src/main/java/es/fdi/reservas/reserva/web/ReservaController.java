@@ -26,7 +26,9 @@ import es.fdi.reservas.users.business.entity.User;
 public class ReservaController {
 	
 	private ReservaService reserva_service;
+	
 	private GrupoReservaService grupo_service;
+	
 	private UserService user_service;
 	
 	@Autowired
@@ -64,7 +66,23 @@ public class ReservaController {
 		
         return "index";
     }
-	
+
+	 /*
+	@RequestMapping(value="/nueva",method=RequestMethod.POST)
+    public String crearReserva(Reserva r) throws ReservaSolapadaException {
+		User u = user_service.getCurrentUser();
+		long id_esp = r.getEspacio().getId();
+		Espacio e = reserva_service.getSpaceById(id_esp);
+		r.setEspacio(e);
+		try{
+			reserva_service.agregarReserva(r,u.getUsername());
+		}
+		catch(ReservaSolapadaException ex){
+			logger.error("Problemas en la reserva", ex);
+		}
+        return "redirect:/mis-reservas";
+    }
+	*/
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
     public String edificios(Model model) {
@@ -84,6 +102,8 @@ public class ReservaController {
 		   
 		   return "redirect:/edificio/" + idEdificio + "/espacios";
 		}
+		
+
         
     }
 	
@@ -91,14 +111,13 @@ public class ReservaController {
 	@RequestMapping(value="/edificio/{idEdificio}/espacios", method=RequestMethod.GET)
     public ModelAndView espacios(@PathVariable("idEdificio") long idEdificio) {
 		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
+		User u =  user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("Edificio", reserva_service.getEdificio(idEdificio));		
+		model.addObject("Edificio", reserva_service.getEdificio(idEdificio));
 		model.addObject("TiposEspacio",reserva_service.tiposDeEspacios(idEdificio));
-		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
+		//model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "espacios");
-		
         return model;
     }
 	
@@ -110,9 +129,9 @@ public class ReservaController {
 		Espacio e = reserva_service.getEspacio(idEspacio);
 		Reserva r = new Reserva();
 		r.setEspacio(e);	
-		model.addObject("User", user);
+		model.addObject("User", user_service.getCurrentUser());
 		model.addObject("Reserva", r);
-		model.addObject("IdEspacio", idEspacio);
+		//model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
 		model.addObject("view", "reservas-calendario");
 		
@@ -123,7 +142,7 @@ public class ReservaController {
 	@RequestMapping(value="/reservas-fecha", method=RequestMethod.GET)
     public ModelAndView reservasFecha() {
 		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
+		User u =  user_service.getCurrentUser();
 		model.addObject("User", u);
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "reservas-fecha");
@@ -131,11 +150,49 @@ public class ReservaController {
         return model;
     }
 	
+
+	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.GET)
+    public ModelAndView verGrupo(@PathVariable("idGrupo") long idGrupo) {
+		ModelAndView model = new ModelAndView("index");
+		model.addObject("user", user_service.getCurrentUser());
+		model.addObject("GrupoReservas", grupo_service.getGrupoReserva(idGrupo));
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user_service.getCurrentUser().getId()));
+		model.addObject("view", "grupo-reservas");
+		
+        return model;
+    }
 	
 	
+	@RequestMapping(value="/grupo/nuevo", method=RequestMethod.GET)
+    public ModelAndView crearGrupo() {
+		ModelAndView model = new ModelAndView("index");
+		User u =  user_service.getCurrentUser();
+		model.addObject("User", u);
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("view", "nuevoGrupo");
+		
+        return model;
+    }
 	
-	//@PreAuthorize("principal.username == 'user'")
-	//@PreAuthorize("hasRole('ADMIN')")
+	
+	@RequestMapping(value="/nuevoGrupo", method=RequestMethod.POST)
+    public String nuevoGrupo(GrupoReserva g, Model model) {
+		User user =  user_service.getCurrentUser();
+		model.addAttribute("User", user);
+		model.addAttribute("view", "nuevoGrupo");
+		
+		if(grupo_service.addNuevoGrupo(g, user) != null){			
+			model.addAttribute("exito", "");
+		}
+		else{
+			model.addAttribute("error", "");
+		}
+		
+		model.addAttribute("GruposReservas", grupo_service.getGruposReservas());
+		
+		return "index";
+    }
+	
 	@RequestMapping(value="/editar/{idReserva}", method=RequestMethod.GET)
     public String editarReserva(@PathVariable("idReserva") long idReserva, Model model) {
 		User u = user_service.getCurrentUser();
@@ -147,7 +204,5 @@ public class ReservaController {
 
         return "index";
     }
-	
-	
 	
 }

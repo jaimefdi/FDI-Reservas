@@ -62,7 +62,7 @@ public class UserRestController {
 			@PathVariable("admin") String admin, @PathVariable("secre") String secre, @RequestBody UserDTO userActualizado) {
 		user_service.editaUsuario(userActualizado, user, admin, secre);
 	}	
-	
+
 	/*
 	 * Administracion edificios
 	 */

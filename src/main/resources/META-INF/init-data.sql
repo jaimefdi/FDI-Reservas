@@ -27,10 +27,13 @@ INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(26
 
 INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId) VALUES (1, 'root', 'root@ucm.es', '$2a$10$//HU8yTgOoLrZX6z9cgXhuR/IJki.BtS/ZM4Pr8s/zBDCFIT.I3P6', true, false, false, false, 2);
 INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', false, false, false, false, 1);
+INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId) VALUES (3, 'secre', 'secre@ucm.es', '$2a$10$fHAYSqISyxuhwcmWb3m1geDcMn5aGuXM.vvsN74v7JHwiUEYudgB6', true, false, false, false, 1);
 
 INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_USER');
 INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_ADMIN');
 INSERT INTO UserRole (user, role) VALUES(2, 'ROLE_USER');
+INSERT INTO UserRole (user, role) VALUES(3, 'ROLE_USER');
+INSERT INTO UserRole (user, role) VALUES(3, 'ROLE_GESTOR');
 
 INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(1,'FDI','C/ del Prof. JosÃ© G! Santesmases, 9',1, false);
 INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(2,'Multiusos','C/ del Prof. Aranguren, s/n',1, false);
@@ -39,24 +42,24 @@ INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted)
 INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(5,'Edificio de la DocumentaciÃ³n','C/ SantÃ­sima Trinidad, 37',4, false);
 INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(6,'Edificio de la InformaciÃ³n','Av. Complutense, s/n',5, false);
 
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(1,'Sala de Grados',70,true,true,1,1, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(2,'Sala de Conferencias',180,true,true,1,1, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(3,'Sala de Reuniones',20,true,true,1,1, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(4,'Aula 1',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(5,'Aula 2',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(6,'Aula 3',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(7,'Aula 4',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(8,'Aula 5',80,true,true,1,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(9,'Lab. 1',50,true,true,1,2, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(10,'Aula 1280',80,true,true,2,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, deleted) VALUES(11,'Aula 1290',80,true,true,2,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(1,'Sala de Grados',70,true,true,1,1,1,2, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(2,'Sala de Conferencias',180,true,true,1,1,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(3,'Sala de Reuniones',20,true,true,1,1,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(4,'Aula 1',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(5,'Aula 2',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(6,'Aula 3',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(7,'Aula 4',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(8,'Aula 5',80,true,true,1,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(9,'Lab. 1',50,true,true,1,2,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(10,'Aula 1280',80,true,true,2,0,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(11,'Aula 1290',80,true,true,2,0,0,0, false);
 
-INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(1,'GII-1ºA','Grado en Ing. Informática',2);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(2,'GII-1ºB','Lo que sea',2);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(3,'GII-1ºC','Lo que sea',1);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(4,'GII-1ºD','Lo que sea',1);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(5,'GII-1ºE','Lo que sea',2);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(6,'GII-1ºF','Lo que sea',2);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(1,'GII-1ÂºA','Lo que sea',2);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(2,'GII-1ÂºB','Lo que sea',2);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(3,'GII-1ÂºC','Lo que sea',1);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(4,'GII-1ÂºD','Lo que sea',1);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(5,'GII-1ÂºE','Lo que sea',2);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(6,'GII-1ÂºF','Lo que sea',2);
 
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, EspacioId, GrupoReservaId) VALUES(1,'Charla Intel','2016-03-16 12:30:00','2016-03-16 14:30:00',0,2,1,1);
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, EspacioId, GrupoReservaId) VALUES(2,'Reunion TFG','2016-03-16 14:30:00','2016-03-16 16:30:00',2,1,3,1);

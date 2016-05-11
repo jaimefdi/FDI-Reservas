@@ -38,6 +38,10 @@ public class UserService implements UserDetailsService{
 		return user_ropository.findOne(idUsuario);
 	}
 	
+	/*public List<User> getUsers(String idUsuario) {
+		return user_ropository.findByUsername(idUsuario);
+	}*/
+	
 	public User getCurrentUser() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if ( principal instanceof User) {
@@ -124,5 +128,7 @@ public class UserService implements UserDetailsService{
 	public List<User> getUsuariosPorTagName(String tagName) {
 		return user_ropository.getUsuariosPorTagName(tagName);
 	}
+	
+	
 
 }

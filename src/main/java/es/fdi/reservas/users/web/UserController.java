@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
@@ -34,7 +35,7 @@ public class UserController {
 	private ReservaService reserva_service;
 	
 	@Autowired
-	public UserController(UserService userService, ReservaService reservaservice){
+	public UserController(UserService userService, ReservaService reservaservice, GrupoReservaService grr){
 		user_service = userService;
 		reserva_service = reservaservice;
 	}
@@ -54,7 +55,6 @@ public class UserController {
 	
 	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.GET)
 	public ModelAndView nuevoUsuario(){
-
 	   return new ModelAndView("nuevoUsuario", "User", new User());
 	}
 	
@@ -65,13 +65,30 @@ public class UserController {
 		//return "nuevoUsuario";
 	}
 	
+	@RequestMapping(value = "usuario/tag/{tagName}", method = RequestMethod.GET)
+	public List<UserDTO> usuariosFiltro(@PathVariable("tagName") String tagName) {
+		
+		List<UserDTO> result = new ArrayList<>();
+		List<User> usuarios = new ArrayList<>();
+		
+		
+		usuarios = user_service.getUsuariosPorTagName(tagName);
+		
+		
+		for(User u : usuarios) {
+			result.add(UserDTO.fromUserDTO(u));
+		}
+		 
+		return result;
+	}
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value="/administrar")
+	@RequestMapping({"/admin/administrar"})
 	public ModelAndView administrar(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("view", "administrar");
+		model.addObject("view", "admin/administrar");
 		return model;
 	}
 	
@@ -145,7 +162,6 @@ public class UserController {
 		
         return "index";
     }
-
 	
 	@RequestMapping(value="/administrar/facultad/{pageNumber}", method=RequestMethod.GET)
     public String misFacultadesPaginadas(@PathVariable Integer pageNumber, Model model) {
@@ -264,7 +280,6 @@ public class UserController {
 	    return "redirect:/administrar/edificios";
 		//return "nuevoUsuario";
 	}
-
 
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)
 	public ModelAndView verPerfil(){

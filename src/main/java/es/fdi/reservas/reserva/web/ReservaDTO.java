@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.joda.time.DateTime;
+
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 
 public class ReservaDTO {
@@ -19,6 +21,7 @@ public class ReservaDTO {
 	private String recurrenteId;
 	private Long idGrupo;
 	private boolean editable;
+	private String estado;
 
 
 	public ReservaDTO(){ }
@@ -26,7 +29,7 @@ public class ReservaDTO {
 
 	public ReservaDTO(Long id, String title, DateTime start, DateTime end, String nombreEspacio,
 			                      Long idEspacio, String color, List<String> reglas, String recurId,
-			                      Long idGrupo, Boolean editable) {
+			                      Long idGrupo, Boolean editable, String estado) {
 		this.id = id;
 		this.title = title;
 		this.start = start;
@@ -38,6 +41,15 @@ public class ReservaDTO {
 		this.recurrenteId = recurId;
 		this.idGrupo = idGrupo;
 		this.editable = editable;
+		this.estado= estado;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	public Long getId() {
@@ -161,7 +173,7 @@ public class ReservaDTO {
 				                          reserva.getEspacio().getNombreEspacio(),
 				                          reserva.getEspacio().getId(), reserva.getReservaColor(),
 				                          reserva.getReglasRecurrencia(), reserva.getRecurrenteId(),
-				                          getGrupoId(reserva), false);
+				                          getGrupoId(reserva), false, reserva.getEstadoReserva().toString());
 	}
 	
 	public static ReservaDTO fromReservaEditable(Reserva reserva) {
@@ -177,7 +189,7 @@ public class ReservaDTO {
 				                          reserva.getEspacio().getNombreEspacio(),
 				                          reserva.getEspacio().getId(), reserva.getReservaColor(),
 				                          reserva.getReglasRecurrencia(), reserva.getRecurrenteId(),
-				                          getGrupoId(reserva), true);
+				                          getGrupoId(reserva), true, reserva.getEstadoReserva().toString());
 	}
 
 

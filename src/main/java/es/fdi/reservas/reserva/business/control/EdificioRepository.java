@@ -25,4 +25,5 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 
 	public List<Edificio> findByFacultadId(Long idFacultad);
 
+	
 }
