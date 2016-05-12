@@ -278,6 +278,10 @@ public class ReservaService {
 		return facultad_repository.save(f);
 	}
 	
+	public List<Espacio> getEspaciosPorTagName(String tag) {
+		return espacio_repository.getEspaciosByTagName(tag);
+	}
+	
 	public void eliminarEspacio(long idEspacio) {
 		//espacio_repository.delete(idEspacio);
 		espacio_repository.softDelete(Long.toString(idEspacio));

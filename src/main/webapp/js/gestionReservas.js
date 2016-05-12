@@ -1,5 +1,4 @@
 $(document).ready(function(){
-		console.log("entra en ready");
 	 	var reserva = {};
 	 	var token = $("meta[name='_csrf']").attr("content");
 	 	var header = $("meta[name='_csrf_header']").attr("content");
@@ -53,15 +52,8 @@ $(document).ready(function(){
 	 		});
 	 	});
 	 	
-	 	$('#selec_busqueda').change(function(){
-	 		console.log("entra");
-	 		$('#texto_busqueda').val("");
-	 	});
-
-	 	$('#boton_busqueda').click(function(){
-	 		console.log("entra");
-	 		var valor="";	
-	 		$('#texto_busqueda').val(" ");
+	 	$('#selec-busqueda').change(function(){
+	 		$('#texto-busqueda').val("");
 	 	});
 	 	
 	 	$("#btn-eliminar").click(function(){
@@ -85,22 +77,20 @@ $(document).ready(function(){
 
 
 
- $("#idUsuario").autocomplete({
+ $("#texto-busqueda").autocomplete({
 		source:function(request, response){
-				var tag = request.term;
-				
+			var tag = request.term;
 				$.ajax({
-					url: '/reservas/usuario/tag/' + tag,
+		/*			url: '/reservas/usuarios/tag/' + tag,
 					type: 'GET',
 					contentType: 'application/json',
-					success : function(datos) {
-										
+					success : function(datos) {				
 						response($.map(datos,function(item){
 							
 								var obj = new Object();
 								obj.label = item.id; 
 								obj.value = item.username;
-								obj.mail = item.email;
+								obj.info = item.email;
 								return obj;
 			
 						}))
@@ -111,38 +101,44 @@ $(document).ready(function(){
 				    }
 				});
 		},
-		select: function(event, ui){
+		minLength: 2
+ //}else{}*/
+					url: '/reservas/espacios/tag/' + tag,
+					type: 'GET',
+					contentType: 'application/json',
+					success : function(datos) {				
+						response($.map(datos,function(item){
+							
+								var obj = new Object();
+								obj.label = item.id; 
+								obj.value = item.nombreEspacio;
+								obj.info = item.edificio;
+								return obj;
 			
-			$.ajax({
-				url: '/reservas/usuario/' + ui.item.label,
-				type: 'GET',
-				contentType: 'application/json',
-				success : function(datos) {
-					
-					$("#selec_edificios").empty();
-					for(var i in datos){
-						var text = datos[i].username;
-						var value = datos[i].id;
-						$("#selec_edificios").append(new Option(text, value));	
-					}
-				    
-				},    
-			    error : function(xhr, status) {
-			        alert('Disculpe, existió un problema');
-			    }
-			});
+						}))
+						
+					},    
+				    error : function(xhr, status) {
+				        alert('Disculpe, existió un problema');
+				    }
+				});
 		},
 		minLength: 2
-
-	}).autocomplete("instance")._renderItem = function(ul,item){
-		
-			var inner_html = '<div class="col-md-2" style="padding-top:3px;">' + 
+	}).autocomplete("instance")._renderItem = function(ul,item){	
+	 	var direccion;
+	 	console.log($('#selec_busqueda').val());
+		if ($('#selec-busqueda').val()=="user")
+			direccion="user";
+		else
+			direccion="espacio";
+			var inner_html =  '<a href="/reservas/gestor/gestion-reservas/'+direccion+'/'+item.label+'/page/1">'+
+							  '<div class="col-md-2" style="padding-top:3px;">' +
 			                  '<img class="media-object" src="http://placehold.it/50x50"/>' + 
 			                  '</div>' + 
 			                  '<div class="col-md-10">' + 
 			                  '<p>'+ item.value +'</p>' + 
-			                  '<p class="small text-muted">'+ item.email +'</p>' + 
-			                  '</div>';
+			                  '<p class="small text-muted">'+ item.info +'</p>'
+			                  '</div></a>';
 	            return $("<li></li>")
 	                    .data("item.autocomplete", item)
 	                    .append(inner_html)
@@ -150,10 +146,14 @@ $(document).ready(function(){
 		
 	};
 		
-		$("#selec_edificios").change(function(){
-			var id_usuario = $("#selec_edificios").val();
-			var link = 'edificio/' + id_usuario + '/espacios';
-			$("#edificio_link").attr("href",link);
-			
+	
+		$("#boton-busqueda").click(function(){
+			var id_busqueda = $("#id-busqueda").val();
+			var direccion;
+			if ($('#selec_busqueda').val()=="user")
+				direccion="user";
+			else
+				direccion="espacio";
+			window.location = '/reservas/gestor/gestion-reservas/'+direccion+'/'+id_busqueda+'/page/1';
 		});
 });
