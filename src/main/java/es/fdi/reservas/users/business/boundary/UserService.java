@@ -17,7 +17,7 @@ import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.users.business.control.UserRepository;
 import es.fdi.reservas.users.business.entity.User;
-import es.fdi.reservas.users.business.entity.UserDTO;
+import es.fdi.reservas.users.web.UserDTO;
 import es.fdi.reservas.users.business.entity.UserRole;
 
 

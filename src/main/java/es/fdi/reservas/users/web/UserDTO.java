@@ -1,44 +1,118 @@
 package es.fdi.reservas.users.web;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.users.business.entity.User;
+import es.fdi.reservas.users.business.entity.UserRole;
 
 public class UserDTO {
 	
-	private String id;
+	private Long id;
+	
 	private String username;
+	
+	private String password;
+	
 	private String email;
 	
-	public UserDTO(String id, String username, String email) {
+	private boolean enabled;
+	
+	
+	private Collection<UserRole> roles;
+	
+	
+	private Set<Facultad> facultades;
+	
+	public UserDTO(){}
+	
+	
+	
+	public UserDTO(Long id, String username, String email) {
+		super();
 		this.id = id;
 		this.username = username;
 		this.email = email;
 	}
-	
-	public String getId() {
-		return id;
+
+
+
+	public UserDTO(String username, String email, boolean enabled) {
+		this.username = username;
+		this.email = email;
+		this.enabled = enabled;
+		this.roles = new ArrayList<UserRole>();
+		this.facultades = new HashSet<Facultad>();
 	}
 	
-	public void setId(String id) {
-		this.id = id;
+	public String getPassword() {
+		return password;
 	}
 	
+	public void setPassword(String user_password){
+		password = user_password;
+	}
+
 	public String getUsername() {
 		return username;
 	}
 	
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsername(String userName){
+		username = userName;
 	}
 	
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Long getId() {
+		return id;
+	}
 	
-	public static UserDTO fromUserDTO(User u){
-		return new UserDTO(u.getId().toString(), u.getUsername(), u.getEmail());
+	public void addRole(UserRole role) {
+		this.roles.add(role);
+	}
+	
+	public void removeRole(UserRole role) {
+		this.roles.remove(role);
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
+	public void setEnabled(boolean en){
+		this.enabled = en;
+	}
+
+	public Set<Facultad> getFacultades() {
+		return facultades;
+	}
+
+	public void setFacultades(Set<Facultad> facultades) {
+		this.facultades = facultades;
+	}
+	
+	public void addFacultad(Facultad f){
+		this.facultades.add(f);
+	}
+	
+	public void removeFacultad(Facultad f){
+		this.facultades.remove(f);
+	}
+	
+	public static UserDTO fromUserDTO(User user){
+		return new UserDTO(user.getUsername(), user.getEmail(), user.isEnabled());
+	}
+	
+	public static UserDTO fromUserDTOAutocompletar(User user){
+		return new UserDTO(user.getId(), user.getUsername(), user.getEmail());
 	}
 }

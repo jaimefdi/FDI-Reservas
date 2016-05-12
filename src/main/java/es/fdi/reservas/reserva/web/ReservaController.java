@@ -26,9 +26,7 @@ import es.fdi.reservas.users.business.entity.User;
 public class ReservaController {
 	
 	private ReservaService reserva_service;
-	
 	private GrupoReservaService grupo_service;
-	
 	private UserService user_service;
 	
 	@Autowired
@@ -66,7 +64,6 @@ public class ReservaController {
 		
         return "index";
     }
-
 	 /*
 	@RequestMapping(value="/nueva",method=RequestMethod.POST)
     public String crearReserva(Reserva r) throws ReservaSolapadaException {
@@ -83,6 +80,7 @@ public class ReservaController {
         return "redirect:/mis-reservas";
     }
 	*/
+	
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
     public String edificios(Model model) {
@@ -102,8 +100,6 @@ public class ReservaController {
 		   
 		   return "redirect:/edificio/" + idEdificio + "/espacios";
 		}
-		
-
         
     }
 	
@@ -111,13 +107,14 @@ public class ReservaController {
 	@RequestMapping(value="/edificio/{idEdificio}/espacios", method=RequestMethod.GET)
     public ModelAndView espacios(@PathVariable("idEdificio") long idEdificio) {
 		ModelAndView model = new ModelAndView("index");
-		User u =  user_service.getCurrentUser();
+		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("Edificio", reserva_service.getEdificio(idEdificio));
+		model.addObject("Edificio", reserva_service.getEdificio(idEdificio));		
 		model.addObject("TiposEspacio",reserva_service.tiposDeEspacios(idEdificio));
-		//model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
+		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "espacios");
+		
         return model;
     }
 	
@@ -129,9 +126,9 @@ public class ReservaController {
 		Espacio e = reserva_service.getEspacio(idEspacio);
 		Reserva r = new Reserva();
 		r.setEspacio(e);	
-		model.addObject("User", user_service.getCurrentUser());
+		model.addObject("User", user);
 		model.addObject("Reserva", r);
-		//model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
+		model.addObject("IdEspacio", idEspacio);
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
 		model.addObject("view", "reservas-calendario");
 		
@@ -142,7 +139,7 @@ public class ReservaController {
 	@RequestMapping(value="/reservas-fecha", method=RequestMethod.GET)
     public ModelAndView reservasFecha() {
 		ModelAndView model = new ModelAndView("index");
-		User u =  user_service.getCurrentUser();
+		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "reservas-fecha");
@@ -192,7 +189,9 @@ public class ReservaController {
 //		
 //		return "index";
 //    }
-	
+
+	//@PreAuthorize("principal.username == 'user'")
+	//@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value="/editar/{idReserva}", method=RequestMethod.GET)
     public String editarReserva(@PathVariable("idReserva") long idReserva, Model model) {
 		User u = user_service.getCurrentUser();
@@ -204,5 +203,7 @@ public class ReservaController {
 
         return "index";
     }
+	
+	
 	
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
+import es.fdi.reservas.users.business.entity.User;
 
 @Repository
 public interface EspacioRepository extends JpaRepository<Espacio, Long>{
@@ -38,4 +39,7 @@ public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 	@Modifying
 	@Query("update #{#entityName} e set e.deleted=true where e.id= :idEspacio")
 	void softDelete(@Param("idEspacio") String idEspacio);
+	
+	@Query("from #{#entityName} e where lower(e.nombreEspacio) like lower(concat('%',:nombreEspacio, '%'))")
+	List<Espacio> getEspaciosByTagName(@Param("nombreEspacio") String nombreEspacio);
 }

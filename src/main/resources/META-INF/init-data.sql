@@ -54,12 +54,12 @@ INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, E
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(10,'Aula 1280',80,true,true,2,0,0,0, false);
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(11,'Aula 1290',80,true,true,2,0,0,0, false);
 
-INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(1,'GII-1ÂºA','Lo que sea',2);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(2,'GII-1ÂºB','Lo que sea',2);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(3,'GII-1ÂºC','Lo que sea',1);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(4,'GII-1ÂºD','Lo que sea',1);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(5,'GII-1ÂºE','Lo que sea',2);
-INSERT INTO GrupoReserva(GrupoReservaId, nombreGrupo, descripcion, UserId) VALUES(6,'GII-1ÂºF','Lo que sea',2);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(1,'GII-1ºA','Grado en Ing. Informática',2);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(2,'GII-1ºB','Lo que sea',2);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(3,'GII-1ºC','Lo que sea',1);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(4,'GII-1ºD','Lo que sea',1);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(5,'GII-1ºE','Lo que sea',2);
+INSERT INTO GrupoReserva(GrupoReservaId, nombreCorto, nombreLargo, UserId) VALUES(6,'GII-1ºF','Lo que sea',2);
 
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, EspacioId, GrupoReservaId) VALUES(1,'Charla Intel','2016-03-16 12:30:00','2016-03-16 14:30:00',0,2,1,1);
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, EspacioId, GrupoReservaId) VALUES(2,'Reunion TFG','2016-03-16 14:30:00','2016-03-16 16:30:00',2,1,3,1);

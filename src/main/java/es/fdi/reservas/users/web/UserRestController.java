@@ -16,7 +16,6 @@ import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.web.*;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
-import es.fdi.reservas.users.business.entity.UserDTO;
 
 @RestController
 public class UserRestController {
@@ -69,7 +68,22 @@ public class UserRestController {
 		usuarios = user_service.getUsuariosPorTagName(tagName);
 				
 		for(User u : usuarios) {
-			result.add(UserDTO.fromUserDTO(u));
+			result.add(UserDTO.fromUserDTOAutocompletar(u));
+		}
+		 
+		return result;
+	}
+	
+	@RequestMapping(value = "/gestor/usuarios/tag/{tagName}", method = RequestMethod.GET)
+	public List<UserDTO> usuariosFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+		
+		List<UserDTO> result = new ArrayList<>();
+		List<User> usuarios = new ArrayList<>();
+
+		usuarios = user_service.getUsuariosPorTagName(tagName);
+				
+		for(User u : usuarios) {
+			result.add(UserDTO.fromUserDTOAutocompletar(u));
 		}
 		 
 		return result;

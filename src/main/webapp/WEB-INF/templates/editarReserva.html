@@ -57,9 +57,9 @@
                  
                  <!-- Grupo de Reservas --> 
                  <div class="form-group">
-                     <label>Grupo:</label> 
-                     	                   
-                      <select id="selec_grupo" class="form-control" >            
+                     <label>Grupo:</label>                    
+                     <select id="selec_grupo" class="form-control" >            
+                   	   	<option value="0">Ninguno</option>
                    	   	<option th:each="g : ${GruposReservas}"
                    	   			th:text="${g.nombreGrupo}"
                    	   			th:value="${g.id}"
