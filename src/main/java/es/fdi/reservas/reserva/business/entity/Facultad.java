@@ -30,13 +30,40 @@ public class Facultad {
 	@OneToMany(mappedBy="facultad")
 	private Set<User> usuarios;
 	
+	@NotNull
+	private boolean deleted;
+	
 	public Facultad(){
 		
 	}
 	
-	public Facultad(String name){
-		this.nombreFacultad = name;
+	
+	public Facultad(String nombreFacultad) {
+		
+		this.nombreFacultad = nombreFacultad;
+		this.deleted = false;
 	}
+
+
+	public Set<User> getUsuarios() {
+		return usuarios;
+	}
+
+
+	public void setUsuarios(Set<User> usuarios) {
+		this.usuarios = usuarios;
+	}
+
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 
 	public Long getId() {
 		return id;

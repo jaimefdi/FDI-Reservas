@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+    
+	<title>UCM RESERVAS - Administrar</title>
+    
+</head>
+<body>
+<div class="container-fluid" th:fragment="contenido">
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header text-center">
+            Administrar
+        </h1>
+    </div>
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-md-12 col-md-offset-2">
+        
+	<a href="administrar/usuarios" th:href="@{/administrar/usuarios/1}" class="button blue medium">
+		<i class="fa fa-users"></i>
+		<span class="icon-house"></span>Administrar usuarios
+	</a>
+ 
+	<a href="administrar/facultad" th:href="@{/administrar/facultad/1}" class="button red medium">
+		<i class="fa fa-home"></i>
+		<span class="icon-warning"></span>Administrar facultades
+	</a>
+ 
+	<a href="administrar/edificios" th:href="@{/administrar/edificios/1}" class="button medium green">
+		<i class="fa fa-fort-awesome"></i>
+		<span class="icon-code"></span>Administrar edificios
+	</a>
+    <a href="administrar/espacios" th:href="@{/administrar/espacios/1}" class="button medium orange">
+    	<i class="fa fa-building"></i>
+		<span class="icon-code"></span>Administrar espacios
+	</a>
+    </div>
+</div>
+</div>
+ <!-- /.row -->
+</body>
+</html>

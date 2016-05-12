@@ -1,6 +1,8 @@
 package es.fdi.reservas.reserva.business.entity;
 
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,13 +32,25 @@ public class Edificio {
 	@JoinColumn(name="FacultadId")
 	private Facultad facultad;
 
-
-	Edificio(){
+	@NotNull
+	private boolean deleted;
+	
+	public Edificio(){
 		
 	}
 	
 	public Edificio(String name){
 		nombreEdificio = name;
+		
+		this.deleted = false;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public Long getId() {

@@ -8,11 +8,11 @@
         href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
         th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"/>
     <link rel="stylesheet"
-        href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+        href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0-3/css/font-awesome.min.css"
         th:href="@{/webjars/font-awesome/4.5.0/css/font-awesome.min.css}"/>
     <link rel="stylesheet" type="text/css" media="all" href="../../css/estilo.css" th:href="@{/css/estilo.css}"/>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
-	<title>UCM RESERVAS</title>
+	<title>UCM RESERVAS - Añadir Facultad</title>
      <!-- JS -->
     <script 
         src="//code.jquery.com/jquery-2.1.4.min.js"
@@ -29,7 +29,7 @@
             <!-- Logotipo -->
             <div class="navbar-header">               
                 <div class="navbar-brand">
-                    <a href="index.html"> <img class="img-circle" src="img/ucm-ws.png" width="30" height="30"/> UCM Reservas</a>
+                    <a href="index.html"> <img class="img-circle" src="img/ucm-ws.png" width="30" height="30"/> UCM Reservas - Añadir facultad</a>
                 </div>      
             </div>    
             <!-- /.navbar-collapse -->
@@ -42,30 +42,25 @@
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="div-login">
-                         <h2 class=" page-header text-center">Login</h2>
-                         <form role="form" action="#" th:action="@{/login}" method="post">
-                            <div class="form-group">
-                                <label for="ejemplo_email_1">Email</label>
+                         <h2 class=" page-header text-center">Añadir facultad</h2>
+                         <form role="form" action="#" th:action="@{/nuevaFacultad}" th:object="${Facultad}" method="post">
+                         	<div class="form-group">
+                                <label for="ejemplo_email_1">Nombre facultad</label>
                                 <div class="input-group">
-                                  <span class="input-group-addon"><i class="fa fa-at"></i></span>
-                                  <input name="username" type="text" class="form-control" placeholder="Introduce tu email"/>
+                                  <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                                  <input name="nombreFacultad" type="text" class="form-control" placeholder="Nombre de facultad"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="ejemplo_password_1">Contraseña</label>
+                                <label for="ejemplo_email_1">Direccion</label>
                                 <div class="input-group">
-                                  <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                  <input name="password" type="password" class="form-control" placeholder="Contraseña"/>
-                                </div>                              
+                                  <span class="input-group-addon"><i class="fa fa-at"></i></span>
+                                  <input name="dir" type="text" class="form-control" placeholder="Introduce la direccion"/>
+                                </div>
                             </div>
+                            
                             <div class="text-center">
-                                 <button type="submit" class="btn btn-default">Entrar</button>
-                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                 <hr/>
-                                 <a href="#">¿Has olvidado tu contraseña?</a>
-                                 <hr/>
-                                 <h4>¿Todavía no tienes cuenta?</h4>
-                                 <a th:href="@{'/nuevoUsuario'}"><input type="button" class="btn btn-default" value="Crear Cuenta"/></a> 
+                                 <button type="submit" class="btn btn-default">Crear</button>
                             </div>
 
                          </form>

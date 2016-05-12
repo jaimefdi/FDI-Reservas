@@ -157,6 +157,21 @@ public class ReservasRestController {
 		return result;
 	}
 	
+	@RequestMapping(value = "/espacios/tag/{tagName}", method = RequestMethod.GET)
+	public List<EspacioDTO> espaciosFiltro(@PathVariable("tagName") String tagName) {
+		
+		List<EspacioDTO> result = new ArrayList<>();
+		List<Espacio> espacios = new ArrayList<>();
+
+		espacios = reserva_service.getEspaciosPorTagName(tagName);
+				
+		for(Espacio e : espacios) {
+			result.add(EspacioDTO.fromEspacioDTO(e));
+		}
+		 
+		return result;
+	}
+	
 	@RequestMapping(value="{idEdificio}/tipoEspacio/{tipoEspacio}", method=RequestMethod.GET)
 	public List<EspacioTipoDTO> todosLosEspacios(@PathVariable("idEdificio") long idEdificio, @PathVariable("tipoEspacio") String tipoEspacio){
 		List<EspacioTipoDTO> result = new ArrayList<>();
@@ -222,6 +237,21 @@ public class ReservasRestController {
 		return result;
 	}
 	
+	@RequestMapping(value = "/grupo/tag/{tagName}", method = RequestMethod.GET)
+	public List<GrupoReservaDTO> gruposFiltro(@PathVariable("tagName") String tagName) {
+		
+		List<GrupoReservaDTO> result = new ArrayList<>();
+		List<GrupoReserva> grupos = new ArrayList<>();
+
+		grupos = grupo_service.getGruposPorTagName(tagName);
+				
+		for(GrupoReserva g : grupos) {
+			result.add(GrupoReservaDTO.fromGrupoReserva(g));
+		}
+		 
+		return result;
+	}
+	
 	
 	@RequestMapping(value="/nuevaReservaAJAX",method=RequestMethod.POST)
     public void crearReservaAJAX(@RequestBody ReservaDTO rf) throws ReservaSolapadaException {
@@ -251,5 +281,12 @@ public class ReservasRestController {
 		reserva_service.editarReglasRecurrencia(rf);
     }
 	
-
+	
+	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.DELETE)
+	public void eliminarGrupo(@PathVariable("idGrupo") long idGrupo){
+		grupo_service.eliminarGrupo(idGrupo);
+	}
+	
+	
+	
 }

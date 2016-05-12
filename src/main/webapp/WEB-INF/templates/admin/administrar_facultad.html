@@ -2,24 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet"
-        href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-        th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"/>
-    <link rel="stylesheet"
-        href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0-3/css/font-awesome.min.css"
-        th:href="@{/webjars/font-awesome/4.3.0-3/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" type="text/css" media="all" href="../../css/estilo.css" th:href="@{/css/estilo.css}"/>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
-	<title>UCM RESERVAS</title>
-     <!-- JS -->
-    <script 
-        src="//code.jquery.com/jquery-2.1.4.min.js"
-        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-    <script
-        src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-        th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+    
+	<title>UCM RESERVAS - Administrar facultades</title>
+   
 </head>
 <body>
 <div class="container-fluid" th:fragment="contenido">
@@ -43,33 +28,77 @@
     <div class="row">
 		<div class="col-md-8 col-md-offset-2">
     	
-			<div class="jumbotron text-center" th:if="${#lists.isEmpty(facultades)}">
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults)}">
            			<i class="fa fa-ban fa-5x"></i>
            			<h4>¡Uups! No hay ninguna facultad.</h4>
       		</div> 
 
-          	<div class="table-responsive" th:unless="${#lists.isEmpty(facultades)}">
+          	<div class="table-responsive" th:unless="${#lists.isEmpty(currentResults)}">
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
-                      	<th>Identificador</th>
                           <th>Nombre</th>
+                          <th>Dirección</th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr th:each="r : ${facultades}"
-                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}">
-                      	<td th:text="${r.id}"></td>
+                      <tr th:each="r : ${currentResults}"
+                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}, dir=${r.dir}">
+                      	
                           <td th:text="${r.nombreFacultad}"></td>
-                          
+                          <td th:text="${r.dir}"></td>
                       </tr>     
                   </tbody>
               </table>
+              
           	</div> 
         <!-- /.table-responsive-->
-    
+    	<a th:href="@{'/administrar/facultad/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar facultades"/></a>
 		</div>
 	</div>
+	<!-- Pagination -->
+ 	<div class="row">
+    <div class="col-md-12 text-center">
+        <div class='pagination pagination-centered'>
+            <ul class="pagination">
+                <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{1}">← First</a>
+                </li>
+                <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                    <span th:if='${currentIndex == 1}'>«</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{${(currentIndex - 1)}}"
+                       title='Go to previous page'>«</a>
+                </li>
+
+                <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+                    th:class="${item == currentIndex ? 'active' : '' }">
+
+                    <span th:if='${item == currentIndex}' th:text='${item}'>1</span>
+
+                    <a th:if='${item != currentIndex}'
+                       th:href="@{${item}}">
+                        <span th:text='${item}'>1</span>
+                    </a>
+                </li>
+
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                </li>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+ <!-- /.Pagination -->
 	<div class="modal fade" id="modalEditarFacultad" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -78,15 +107,8 @@
             <h4 class="modal-title" id="myModalLabel">Editar facultad</h4>
           </div>
           <div class="modal-body">
-          		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="Facultad" method="put">             
+          		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Facultad}" method="put">             
 				
-				<!-- Identificador -->
-				<div class="form-group">
-                     <label for="ejemplo_2" class="col-md-2 control-label">Identificador:</label>
-                      <div class="col-md-10">
-                         <label id="idFacultad" class="form-control"></label>
-                      </div>
-                 </div>
 				 <!-- Nombre de facultad --> 
                  <div class="form-group">
                      <label for="ejemplo_2" class="col-md-2 control-label">Nombre:</label>
@@ -94,7 +116,15 @@
                          <input id="idNombre" name="nombreEdif" type="text" class="form-control" placeholder="Introduce un nombre de facultad"/>
                       </div>
                  </div>
-                                  
+                 
+                 <!-- Direccion de facultad --> 
+                 <div class="form-group">
+                     <label for="ejemplo_2" class="col-md-2 control-label">Direccion:</label>
+                      <div class="col-md-10">
+                         <input id="idDir" name="direccion" type="text" class="form-control" placeholder="Introduce una direccion para la facultad"/>
+                      </div>
+                 </div>
+                              
                  <div class="row">
                      <div class="col-xs-6 col-md-6">
                       <button id="btn-eliminar" type="button" class="btn-rec red">ELIMINAR</button>
@@ -123,16 +153,17 @@
 	 		$('#modalEditarFacultad').modal('show');
 	 		
 	 		facultad.id =  $(this).attr("data-id");
-	 		facultad.name = $(this).attr("name");
-
+	 		facultad.nombreFacultad = $(this).attr("name");
+			facultad.dir = $(this).attr("dir");
+			
 	 		$('#modalEditarFacultad #idFacultad').text(facultad.id);
-	 		$('#modalEditarFacultad #idNombre').attr("value",facultad.name);
-	 		
+	 		$('#modalEditarFacultad #idNombre').attr("value",facultad.nombreFacultad);
+	 		$('#modalEditarFacultad #idDir').attr("value",facultad.dir);
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
-	 		facultad.name = $("#modalEditarFacultad #idNombre").val();
-	 		facultad.facultad = $(this).attr("idFacultad");
+	 		facultad.nombreFacultad = $("#modalEditarFacultad #idNombre").val();
+	 		facultad.dir = $("#modalEditarFacultad #idDir").val();
 	 	
 
 	 		$.ajax({
@@ -144,8 +175,9 @@
 	 			success : function(datos) {   
 	 				alert("Facultad actualizada");
 	 				$('#modalEditarFacultad').modal('hide');
-	 				$("#"+facultad.id +" td:nth-child(1)").text(facultad.id);
-	 				$("#"+facultad.id +" td:nth-child(2)").text(facultad.name);
+	 				
+	 				$("#"+facultad.id +" td:nth-child(1)").text(facultad.nombreFacultad);
+	 				$("#"+facultad.id +" td:nth-child(2)").text(facultad.dir);
 	 			},    
 	 			error : function(xhr, status) {
 	     			alert('Disculpe, existió un problema');
@@ -161,9 +193,11 @@
 	 			success : function(datos) {
 	 				alert("Facultad eliminada");
 	 				$('#modalEditarFacultad').modal('hide');
+	 				
 	 				$("#"+facultad.id).remove();
 	 			},    
 	 			error : function(xhr, status) {
+	 				
 	 				alert('Disculpe, existió un problema');
 	 			}
 	 		});
@@ -172,7 +206,8 @@
  });
  
  
- </script>			
+ </script>	
+ 		
  </div>
 </body>
 </html>
