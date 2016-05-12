@@ -239,11 +239,11 @@ public class ReservasRestController {
 	
 	@RequestMapping(value = "/grupo/tag/{tagName}", method = RequestMethod.GET)
 	public List<GrupoReservaDTO> gruposFiltro(@PathVariable("tagName") String tagName) {
-		
+		User u = user_service.getCurrentUser();
 		List<GrupoReservaDTO> result = new ArrayList<>();
 		List<GrupoReserva> grupos = new ArrayList<>();
 
-		grupos = grupo_service.getGruposPorTagName(tagName);
+		grupos = grupo_service.getGruposPorTagName(tagName, u.getId());
 				
 		for(GrupoReserva g : grupos) {
 			result.add(GrupoReservaDTO.fromGrupoReserva(g));
