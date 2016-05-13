@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -14,15 +16,16 @@ import es.fdi.reservas.users.business.entity.User;
 @Controller
 public class UserController {
 
-	private UserService user_service;
-	
+	private UserService user_service;	
 	private ReservaService reserva_service;
+	private GrupoReservaService grupo_service;
 	
 	
 	@Autowired
-	public UserController(UserService userService, ReservaService reservaservice){
+	public UserController(UserService userService, ReservaService reservaservice, GrupoReservaService grs){
 		user_service = userService;
 		reserva_service = reservaservice;
+		grupo_service = grs;
 	}
 	
 
@@ -48,7 +51,7 @@ public class UserController {
 	public ModelAndView administrar(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
+		model.addObject("User", u);
 		model.addObject("view", "administrar");
 		return model;
 	}
@@ -57,7 +60,7 @@ public class UserController {
 	public ModelAndView administrarUsuarios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
+		model.addObject("User", u);
 		model.addObject("userList", user_service.getUsuarios());
 		model.addObject("view", "administrar_usuarios");
 		model.addObject("url","/administrar/usuarios" );
@@ -68,7 +71,7 @@ public class UserController {
 	public ModelAndView administrarEdificios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
+		model.addObject("User", u);
 		model.addObject("edificios", reserva_service.getEdificios());
 		model.addObject("view", "administrar_edificios");
 		return model;
@@ -78,7 +81,7 @@ public class UserController {
 	public ModelAndView administrarFacultades(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
+		model.addObject("User", u);
 		model.addObject("facultades", reserva_service.getFacultades());
 		model.addObject("view", "administrar_facultad");
 		return model;
@@ -88,7 +91,7 @@ public class UserController {
 	public ModelAndView administrarEspacios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("user", u);
+		model.addObject("User", u);
 		model.addObject("espacios", reserva_service.getEspacios());
 		model.addObject("view", "administrar_espacios");
 		return model;
@@ -97,7 +100,9 @@ public class UserController {
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)
 	public ModelAndView verPerfil(){
 		ModelAndView model = new ModelAndView("index");
-		model.addObject("User", user_service.getCurrentUser());
+		User u = user_service.getCurrentUser();
+		model.addObject("User", u);
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "perfil");
 		
 	   return model;
