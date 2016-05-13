@@ -14,6 +14,7 @@ import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.business.entity.GrupoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import es.fdi.reservas.reserva.web.ReservaDTO;
@@ -38,7 +39,7 @@ public class ReservaService {
 		grupo_repository = gr;
 	}
 
-	private List<Reserva> getAllReservasConflictivas(Long idEspacio, DateTime start, DateTime end){
+	public List<Reserva> getAllReservasConflictivas(Long idEspacio, DateTime start, DateTime end){
 		List<Reserva> resRecurrentes = new ArrayList<Reserva>();
 		List<Reserva> resConflictivas = new ArrayList<Reserva>();
 		List<Reserva> resAux = new ArrayList<Reserva>();
@@ -280,6 +281,17 @@ public class ReservaService {
 
 	public List<Reserva> getReservasGrupo(long idGrupo, long idUsuario) {
 		return reserva_repository.findByGrupoReservaIdAndUserId(idGrupo, idUsuario);
+	}
+
+	public void cambiarDeCalendario(Long idGrupo2, ReservaDTO rfDTO) {
+		Reserva reserva = getReserva(rfDTO.getId());
+		reserva.setComienzo(rfDTO.getStart());
+		reserva.setFin(rfDTO.getEnd());
+		GrupoReserva grupo = grupo_repository.getOne(idGrupo2);
+		reserva.setGrupoReserva(grupo);
+		
+		reserva_repository.save(reserva);
+		
 	}
 
 

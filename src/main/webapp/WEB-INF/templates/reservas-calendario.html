@@ -118,7 +118,7 @@
 	                         	   <select id="selec_grupo" class="form-control">
 	                         	   	<option value="0">Ninguno</option>
 	                         	   	<option th:each="g : ${GruposReservas}"
-	                         	   			th:text="${g.nombreGrupo}"
+	                         	   			th:text="${g.nombreCorto}"
 	                         	   			th:value="${g.id}">
 	                         	   	</option>
 	                         	   </select>                     	                    	
