@@ -73,7 +73,7 @@ public class FacultadController {
 	
 	
 	
-	@RequestMapping(value = "/admin/administrar/facultad/{numPag}/restaurar")
+	@RequestMapping(value = "/admin/administrar/facultad/{numPag}/restaurar",method=RequestMethod.GET)
 	public ModelAndView restaurarFacultades(@PathVariable("numPag") Long numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
@@ -86,11 +86,12 @@ public class FacultadController {
 	}
 	
 
-	@RequestMapping(value = "/usuarios/facultades/tag/{tagName}", method = RequestMethod.GET)
-	public List<FacultadDTO> FacultadesFiltro(@PathVariable("tagName") String tagName) {
+	@RequestMapping(value = "/facultades/tag/{tagName}", method = RequestMethod.GET)
+	public List<FacultadDTO> facultadesFiltro(@PathVariable("tagName") String tagName) {
 		
 		List<FacultadDTO> result = new ArrayList<>();
 		List<Facultad> facultades = new ArrayList<>();
+
 		facultades = reserva_service.getFacultadesPorTagName(tagName);
 				
 		for(Facultad f : facultades) {

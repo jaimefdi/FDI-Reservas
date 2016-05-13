@@ -58,10 +58,13 @@
                  
                  <div class="form-group">
                      <label>Tipo Espacio:</label>
-                     <select id = "idProy" title="Activado" th:value="${espacio.proyector}">
-                    		<option value="Sala">Sala</option>
-			          		<option value="Aula">Aula</option>
-		          			<option value="Laboratorio">Laboratorio</option>
+                     <select id = "idProy" title="Activado">
+                    		<option th:if="${espacio.tipoEspacio.tipo} == 'Sala'" value="1" selected="selected">Sala</option>
+                    		<option value="1">Sala</option>
+                    		<option th:if="${espacio.tipoEspacio.tipo} == 'Aula'" value="1" selected="selected">Aula</option>
+			          		<option value="2">Aula</option>
+			          		<option th:if="${espacio.tipoEspacio.tipo} == 'Laboratorio'" value="1" selected="selected">Laboratorio</option>
+		          			<option value="3">Laboratorio</option>
 			          	
                    	</select>                  
 		                                 

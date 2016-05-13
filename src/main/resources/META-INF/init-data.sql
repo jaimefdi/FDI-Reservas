@@ -72,3 +72,4 @@ INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, Esp
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, EspacioId, GrupoReservaId) VALUES(9,'DVI','2016-03-09 14:00:00','2016-03-09 16:00:00',0,1,1,1);
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, EspacioId, GrupoReservaId) VALUES(10,'Charla ELP','2016-03-24 15:30:00','2016-03-24 17:00:00',1,1,1,1);
 
+INSERT INTO Attachment(id, description, attachmentUrl, storageKey) VALUES(1, 'Facultad de informatica', '/FDI.jpg', '123');

@@ -16,7 +16,7 @@ $(document).ready(function(){
 	 		$('#modalEditarFacultad #idNombre').text(nombreFacultad);
 	 		$('#modalEditarFacultad #idWeb').text(webFacultad);
 	 		$('#modalEditarFacultad #idActivado').text(deleted);
-	 		$('#modalEditarFacultad #btn-editar').prop("href");
+	 		$('#modalEditarFacultad #btn-editar').prop("href", baseURL + "admin/administrar/facultad/editar/" + facultad.id);
 	 		
 	 		$('#modalEditarFacultad').modal('show');
 	 	});

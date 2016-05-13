@@ -13,6 +13,7 @@ $(document).ready(function(){
 			edificio.nombreEdificio = $("#idNombre").val();
 			edificio.direccion = $("#idDir").val();
 			edificio.deleted = $("#idActivado").val();
+			//edificio.imagen = $("#idImagen").val();
 			
 	    	editarEdificio(edificio,reqHeaders);
   	

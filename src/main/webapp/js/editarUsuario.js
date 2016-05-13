@@ -10,10 +10,11 @@ $(document).ready(function(){
 		
 		$("#enlaceGuardar").click(function(){
 			user.id = idUsuario;
+			alert("1");
 			user.username = $("#idNombre").val();
 			alert("1");
 			user.email = $("#idEmail").val();
-			//user.facultad = $("#autoFacultades").val();
+			user.facultad = $("#autoFacultades").val();
 			alert("2");
 	    	editarUsuario(user,reqHeaders);
   	
@@ -25,7 +26,7 @@ $(document).ready(function(){
 					var tag = request.term;
 					
 					$.ajax({
-						url: '/usuarios/facultades/tag/' + tag,
+						url: '/facultades/tag/' + tag,
 						
 						type: 'GET',
 						contentType: 'application/json',

@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+
+import es.fdi.reservas.fileupload.business.entity.Attachment;
 
 @Entity
 public class Edificio {
@@ -34,6 +37,10 @@ public class Edificio {
 
 	@NotNull
 	private boolean deleted;
+	
+//	@OneToOne
+//	@JoinColumn(name="ImagenId")
+//	private Attachment imagen;
 	
 	public Edificio(){
 		
@@ -88,6 +95,14 @@ public class Edificio {
 	public Facultad getFacultad() {
 		return facultad;
 	}
+//	
+//	public Attachment getImagen() {
+//		return imagen;
+//	}
+//
+//	public void setImagen(Attachment imagen) {
+//		this.imagen = imagen;
+//	}
 
 	public void setFacultad(Facultad facultad) {
 		this.facultad = facultad;

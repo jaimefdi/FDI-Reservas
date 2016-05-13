@@ -16,6 +16,7 @@ $(document).ready(function(){
 	 		$('#modalEditarEdificio #idNombre').text(nombreEdificio);
 	 		$('#modalEditarEdificio #idDir').text(direccion);
 	 		$('#modalEditarEdificio #idActivado').text(deleted);
+	 		$('#modalEditarEdificio #btn-editar').prop("href", baseURL + "admin/administrar/edificios/editar/" + edificio.id);
 	 		
 	 		$('#modalEditarEdificio').modal('show');
 	 	});
