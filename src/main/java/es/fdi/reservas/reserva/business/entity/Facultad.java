@@ -38,9 +38,10 @@ public class Facultad {
 	}
 	
 	
-	public Facultad(String nombreFacultad) {
+	public Facultad(String nombreFacultad, String web) {
 		
 		this.nombreFacultad = nombreFacultad;
+		this.webFacultad = web;
 		this.deleted = false;
 	}
 

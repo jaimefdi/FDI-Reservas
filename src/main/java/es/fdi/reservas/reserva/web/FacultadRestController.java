@@ -31,10 +31,9 @@ private ReservaService reserva_service;
 	
 
 	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.DELETE)
-	public String eliminarFacultad(@PathVariable("idFacultad") Long idFacultad) {
+	public void eliminarFacultad(@PathVariable("idFacultad") Long idFacultad) {
 		//reserva_service.eliminarFacultad(facultad);
 		reserva_service.editarFacultadDeleted(idFacultad);
-		return "redirect:/admin/administrar/facultad/1";
 	}
 	
 	@RequestMapping(value = "/admin/administrar/facultad/editar/{idFacultad}", method = RequestMethod.PUT)
@@ -43,7 +42,7 @@ private ReservaService reserva_service;
 	}
 	
 
-	@RequestMapping(value = "/admin/administrar/facultad/{numPag}/restaurar/{idFacultad}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/admin/administrar/facultad/{numPag}/restaurar/{idFacultad}", method = RequestMethod.GET)
 	public String restaurarFacultad(@PathVariable("idFacultad") Long idFacultad, @PathVariable("numPag") Long numPag){
 		reserva_service.restaurarFacultad(idFacultad);
 		return "redirect:admin/administrar/facultad/{numPag}";
@@ -53,7 +52,7 @@ private ReservaService reserva_service;
 	@RequestMapping(value="/admin/nuevaFacultad", method=RequestMethod.POST)
 	public String crearFacultad(Facultad f){
 		reserva_service.addNewFacultad(f);
-	   return "redirect:/administrar/facultad";
+	   return "redirect:/admin/administrar/facultad";
 		//return "nuevoUsuario";
 	}
 }

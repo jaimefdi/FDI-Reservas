@@ -369,7 +369,7 @@ public class ReservaService {
 	}
 	
 	public Facultad addNewFacultad(Facultad facultad){
-		Facultad newFacultad = new Facultad(facultad.getNombreFacultad());
+		Facultad newFacultad = new Facultad(facultad.getNombreFacultad(), facultad.getWebFacultad());
 		newFacultad = facultad_repository.save(newFacultad);
 		
 		if (newFacultad != null){
@@ -380,10 +380,10 @@ public class ReservaService {
 		return newFacultad;
 	}
 	
-	public Espacio addNewEspacio(EspacioTipoDTO espacio){
-		//Espacio newEspacio = new Espacio(espacio.getNombreEspacio(),true, true,null); 
-				//TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()), edificio_repository.findOne(espacio.getIdEdificio()));
-		//newEspacio = espacio_repository.save(newEspacio);
+	public Espacio addNewEspacio(Espacio espacio){
+		Espacio newEspacio = new Espacio(espacio.getNombreEspacio(),espacio.getEdificio(), true, true,espacio.getTipoEspacio()); 
+				TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()), edificio_repository.findOne(espacio.getIdEdificio()));
+		newEspacio = espacio_repository.save(newEspacio);
 		
 		return null;
 	}

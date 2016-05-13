@@ -46,22 +46,24 @@
                   <tbody>
                   	<tr></tr>
                       <tr th:if="${!r.deleted}" th:each="r : ${currentResults}" class="success">
-                      <td></td>
+                      	 <!--                       	<td th:text = "${r.imagen.getFile()}">Mi imagen</td> -->
+							<td></td>
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.direccion}"></td>
-                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},act=${r.deleted}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr>
                       
                       <tr th:if="${r.deleted}" th:each="r : ${currentResults}" class="danger">
-                      	<td></td>
+<!--                       	<td th:text = "${r.imagen.getFile()}">Mi imagen</td> -->
+							<td></td>
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.direccion}"></td>
-                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},act=${r.deleted}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr> 
                       
@@ -72,7 +74,6 @@
                       
                   </tbody>
               </table>
-<!--               <a th:href="@{'/nuevoEdificio'}"><input type="button" class="btn btn-default" value="Añadir edificio"/></a>  -->
                 
           	</div> 
         <!-- /.table-responsive-->
@@ -171,6 +172,18 @@
 		                 </div>
                    </div>
 		         </div>
+		         
+<!-- 		         <div class="row"> -->
+<!--                 	<div class="col-md-12"> -->
+<!-- 		                 Asunto  -->
+<!-- 		                 <div class="form-group"> -->
+<!-- 		                     <label class="col-md-2 control-label">Imágen: </label> -->
+<!-- 		                      <div class="col-md-10"> -->
+<!-- 		                         <p id="idImagen" class="form-control-static"> </p> -->
+<!-- 		                      </div> -->
+<!-- 		                 </div> -->
+<!--                    </div> -->
+<!-- 		         </div> -->
                     
              </form>
                  

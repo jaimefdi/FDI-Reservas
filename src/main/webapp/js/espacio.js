@@ -21,7 +21,7 @@ $(document).ready(function(){
 	 		$('#modalEditarEspacio #idMicro').text(microfono);
 	 		$('#modalEditarEspacio #idProy').text(proyector);
 	 		$('#modalEditarEspacio #idTipo').text(tipoEspacio);
-	 		
+	 		$('#modalEditarEspacio #btn-editar').prop("href", baseURL + 'admin/administrar/espacio/editar/' + espacio.id);
 	 		$('#modalEditarEspacio').modal('show');
 	 		
 	 	});

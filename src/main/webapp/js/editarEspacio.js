@@ -14,9 +14,9 @@ $(document).ready(function(){
 			espacio.capacidad = $("#idCapa").val();
 			espacio.microfono = $("#idMicro").val();
 			espacio.proyector = $("#idProy").val();
-			espacio.tipoEspacio = $("#idTipo").val();
+			espacio.tipoEspacio = $("#idTipo").text();
 			
-			
+			alert(espacio.tipoEspacio);
 	    	editarEspacio(espacio,reqHeaders);
   	
 		});
@@ -33,10 +33,9 @@ function editarEspacio(espacio, reqHeaders){
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/admin/administrar/espacio";
+				 window.location = "/reservas/admin/administrar/espacios/1";
 			},    
 			error : function(xhr, status) {
-				alert(baseURL),
  			alert('Disculpe, existió un problema');
  			
 			}

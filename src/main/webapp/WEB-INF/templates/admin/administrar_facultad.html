@@ -47,18 +47,18 @@
                       	
                           <td th:text="${r.nombreFacultad}"></td>
                           <td th:text="${r.webFacultad}"></td>
-                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad},act=${r.deleted}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/admin/administrar/facultad/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/facultad/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr> 
                       <tr th:if="${r.deleted}" th:each="r : ${currentResults}" class="danger">
                       	
                           <td th:text="${r.nombreFacultad}"></td>
                           <td th:text="${r.webFacultad}"></td>
-                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad},act=${r.deleted}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/admin/administrar/facultad/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/facultad/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr>     
                   </tbody>
