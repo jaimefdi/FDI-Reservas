@@ -312,10 +312,10 @@ public class ReservaService {
 	public Espacio editarEspacio(EspacioDTO espacio){
 		Espacio e = espacio_repository.findOne(espacio.getId());
 		e.setNombreEspacio(espacio.getNombreEspacio());
-		e.setCapacidad(espacio.getCapacidad());
-		e.setMicrofono(espacio.isMicrofono());
-		e.setProyector(espacio.isProyector());
-		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
+//		e.setCapacidad(espacio.getCapacidad());
+//		e.setMicrofono(espacio.isMicrofono());
+//		e.setProyector(espacio.isProyector());
+//		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
 		
 		return espacio_repository.save(e);
 	}

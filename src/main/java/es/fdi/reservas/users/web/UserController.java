@@ -133,7 +133,7 @@ public class UserController {
 		User u = user_service.getCurrentUser();
 
 		model.addAttribute("User", u);
-		//model.addAttribute("usuario", user_service.getUser(idUser));
+		model.addAttribute("usuario", user_service.getUser(idUser));
 		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarUsuario");
 		return "index";
