@@ -52,7 +52,6 @@ private ReservaService reserva_service;
 	@RequestMapping(value="/admin/nuevaFacultad", method=RequestMethod.POST)
 	public String crearFacultad(Facultad f){
 		reserva_service.addNewFacultad(f);
-	   return "redirect:/admin/administrar/facultad";
-		//return "nuevoUsuario";
+	   return "redirect:/admin/administrar/facultad/1";
 	}
 }

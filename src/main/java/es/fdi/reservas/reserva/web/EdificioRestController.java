@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -35,8 +36,6 @@ public class EdificioRestController {
 		reserva_service.editarEdificio(edificioActualizado);
 	}
 	
-	
-	
 	@RequestMapping(value = "/admin/administrar/edificio/{numPag}/restaurar/{idEdificio}", method = RequestMethod.GET)
 	public String restaurarEdificio(@PathVariable("numPag") Long numPag, @PathVariable("idEdificio") Long idEdificio){
 		reserva_service.restaurarEdificio(idEdificio);
@@ -44,9 +43,8 @@ public class EdificioRestController {
 	}
 	
 	@RequestMapping(value="/admin/nuevoEdificio", method=RequestMethod.POST)
-	public String crearEdificio(EdificioDTO f){
+	public String crearEdificio(Edificio f){
 		reserva_service.addNewEdificio(f);
-	    return "redirect:/administrar/edificios";
-		//return "nuevoUsuario";
+	    return "redirect:/admin/administrar/edificios/1";
 	}
 }

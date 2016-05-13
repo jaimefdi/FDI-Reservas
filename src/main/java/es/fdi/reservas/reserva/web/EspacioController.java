@@ -51,10 +51,13 @@ public class EspacioController {
     }
 
 	@RequestMapping(value="/admin/nuevoEspacio",method=RequestMethod.GET)
-	public ModelAndView nuevoEspacio(){
-		ModelAndView model = new ModelAndView("admin/nuevoEspacio", "Espacio", new Espacio());
-		model.addObject("edificios", reserva_service.getEdificios());
-		return model;
+	public String nuevoEspacio(Model model){
+		User u = user_service.getCurrentUser();
+		model.addAttribute("Espacio", new Espacio());
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/nuevoEspacio");
+		model.addAttribute("edificios", reserva_service.getEdificios());
+		return "index";
 	}
 	
 	@RequestMapping(value="/admin/administrar/espacio/editar/{idEspacio}", method=RequestMethod.GET)

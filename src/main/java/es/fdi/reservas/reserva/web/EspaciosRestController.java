@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -44,9 +45,9 @@ public class EspaciosRestController {
 	}
 	
 	@RequestMapping(value="/admin/nuevoEspacio", method=RequestMethod.POST)
-	public String crearEspacio(EspacioTipoDTO f){
+	public String crearEspacio(Espacio f){
 		reserva_service.addNewEspacio(f);
-	   return "redirect:/administrar/espacios";
+	   return "redirect:/admin/administrar/espacios";
 		//return "nuevoUsuario";
 	}
 }

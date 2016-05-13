@@ -67,18 +67,20 @@ public class EdificioController {
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("edificio", reserva_service.getEdificio(idEdificio));
+		model.addAttribute("facultades", reserva_service.getFacultades());
 		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarEdificio");
 		return "index";
 	}
 	
 	@RequestMapping(value="/admin/nuevoEdificio",method=RequestMethod.GET)
-	public ModelAndView nuevoEdificio(){
-		ModelAndView model = new ModelAndView("admin/nuevoEdificio", "Edificio", new Edificio());
+	public String nuevoEdificio(Model model){
+		
 		User u = user_service.getCurrentUser();
-		model.addObject("User", u);
-		model.addObject("view", "index");
-		model.addObject("facultades", reserva_service.getFacultades());
-		return model;
+		model.addAttribute("User", u);
+		model.addAttribute("Edificio", new Edificio());
+		model.addAttribute("view", "admin/nuevoEdificio");
+		model.addAttribute("facultades", reserva_service.getFacultades());
+		return "index";
 	}
 }

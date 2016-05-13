@@ -46,9 +46,11 @@ public class Edificio {
 		
 	}
 	
-	public Edificio(String name){
-		nombreEdificio = name;
-		
+
+	public Edificio(String nombreEdificio,String direccion, Facultad facultad) {
+		super();
+		this.nombreEdificio = nombreEdificio;
+		this.direccion = direccion;
 		this.deleted = false;
 	}
 

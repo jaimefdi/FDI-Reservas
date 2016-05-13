@@ -7,13 +7,15 @@ public class EdificioDTO {
 	private Long id;
 	private String nombreEdificio;
 	private String direccion;
+	private Long idFacultad;
 	
 	public EdificioDTO(){}
 	
-	public EdificioDTO(Long id, String nombre, String dir){
+	public EdificioDTO(Long id, String nombre, String dir, Long idFac){
 		this.id = id;
 		this.nombreEdificio = nombre;
 		this.direccion = dir;
+		this.idFacultad = idFac;
 	}
 
 	public Long getId() {
@@ -41,7 +43,16 @@ public class EdificioDTO {
 		this.direccion = direccion;
 }
 
+	
+	public Long getIdFacultad() {
+		return idFacultad;
+	}
+
+	public void setIdFacultad(Long idFacultad) {
+		this.idFacultad = idFacultad;
+	}
+
 	public static EdificioDTO fromEdificioDTO(Edificio e){
-		return new EdificioDTO(e.getId(), e.getNombreEdificio(), e.getDireccion());
+		return new EdificioDTO(e.getId(), e.getNombreEdificio(), e.getDireccion(), e.getFacultad().getId());
 	}
 }

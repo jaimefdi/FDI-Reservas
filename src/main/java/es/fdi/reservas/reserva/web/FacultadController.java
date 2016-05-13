@@ -65,9 +65,12 @@ public class FacultadController {
 	}
 	
 	@RequestMapping(value="/admin/nuevaFacultad",method=RequestMethod.GET)
-	public ModelAndView nuevaFacultad(){
-		return new ModelAndView("admin/nuevaFacultad", "Facultad", new Facultad());
-		//return model;
+	public String nuevaFacultad(Model model){
+		User u = user_service.getCurrentUser();
+		model.addAttribute("User", u);
+		model.addAttribute("Facultad", new Facultad());
+		model.addAttribute("view", "admin/nuevaFacultad");
+		return "index";
 	}
 	
 	

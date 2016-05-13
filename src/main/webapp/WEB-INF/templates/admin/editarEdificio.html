@@ -36,6 +36,23 @@
                      <label>Direccion:</label>                  
 		                <input id="idDir" name="direccion" type="text" class="form-control" th:value="${edificio.direccion}"/>                 
                  </div>
+                 
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Facultad: </label>
+		                      <div class="col-md-10">
+		                      
+		                         <select id="facultad" name="idFacultad" title="Facultad">
+				          
+							          <option th:each="f : ${facultades}" th:value="${f}" th:text="${f.nombreFacultad}"/>
+							          			
+							        </select>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
 <!--                  <div class="form-group" -->
 <!-- 					th:classappend="${#fields.hasErrors('attachment')} ? has-error"> -->
 <!-- 					<label>Selecciona el fichero: <input -->

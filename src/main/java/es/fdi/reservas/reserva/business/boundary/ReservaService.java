@@ -245,7 +245,7 @@ public class ReservaService {
 
 		e.setNombreEdificio(edificio.getNombreEdificio());
 		e.setDireccion(edificio.getDireccion());
-		
+		e.setFacultad(facultad_repository.findOne(edificio.getIdFacultad()));
 		return edificio_repository.save(e);
 	}
 	
@@ -381,8 +381,8 @@ public class ReservaService {
 	}
 	
 	public Espacio addNewEspacio(Espacio espacio){
-		Espacio newEspacio = new Espacio(espacio.getNombreEspacio(),espacio.getEdificio(), true, true,espacio.getTipoEspacio()); 
-				TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()), edificio_repository.findOne(espacio.getIdEdificio()));
+		Espacio newEspacio = new Espacio(espacio.getNombreEspacio(),espacio.getCapacidad(), espacio.isMicrofono(), espacio.isProyector(), espacio.getTipoEspacio()); 
+				//TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()), edificio_repository.findOne(espacio.getIdEdificio()));
 		newEspacio = espacio_repository.save(newEspacio);
 		
 		return null;
@@ -392,11 +392,11 @@ public class ReservaService {
 		return espacio_repository.tiposDeEspacios(idEdificio);
 	}
 
-	public Edificio addNewEdificio(EdificioDTO edificio) {
+	public Edificio addNewEdificio(Edificio edificio) {
 		
-//		Edificio newEdificio = new Edificio(edificio.getNombre_edificio(), facultad_repository.findOne(edificio.getIdFacultad()));
-//		newEdificio = edificio_repository.save(newEdificio);
-//		
+		Edificio newEdificio = new Edificio(edificio.getNombreEdificio(), edificio.getDireccion(),edificio.getFacultad());
+		newEdificio = edificio_repository.save(newEdificio);
+
 		return null;
 		
 	}
