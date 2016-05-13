@@ -590,5 +590,13 @@ td i{
   margin: 0px 7px;	
 }
 
-
+.panel-admin{
+	margin: 10px 0px;
+	padding: 15px;
+	-padding-bottom: 5px;
+	background: #777;
+	color: #FFF;
+	-border-bottom: 10px solid #555;
+	
+}
 
