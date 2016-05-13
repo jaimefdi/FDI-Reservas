@@ -1,5 +1,8 @@
 package es.fdi.reservas.reserva.business.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum EstadoReserva {
 
 	CONFIRMADA("Confirmada"), PENDIENTE("Pendiente"), DENEGADA("Denegada");
@@ -25,6 +28,15 @@ public enum EstadoReserva {
 			return EstadoReserva.PENDIENTE;
 		else
 		    return EstadoReserva.DENEGADA;
+	}
+	
+	public static List<EstadoReserva> getAll()
+	{
+		List<EstadoReserva> lista= new ArrayList<EstadoReserva>();
+		lista.add(CONFIRMADA);
+		lista.add(PENDIENTE);
+		lista.add(DENEGADA);
+		return lista;
 	}
 	
 	@Override

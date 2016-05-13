@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
-import es.fdi.reservas.reserva.business.entity.*;
-import es.fdi.reservas.reserva.web.FacultadDTO;
+import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.web.*;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -29,58 +30,34 @@ public class UserRestController {
 		user_service = us;
 	}
 	
-	/*
-	 * Administracion usuarios
-	 */
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.DELETE)
-	public void eliminarUsuario(@PathVariable("idUsuario") long idUser) {
-		user_service.eliminarUsuario(idUser);
+	public String eliminarUsuario(@PathVariable("idUsuario") long idUser) {
+		user_service.editarUserDeleted(idUser);
+		return "redirect:/admin/administrar/usuarios/1";
 	}
 	
-	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.PUT)
-	public void editarUsuario(@PathVariable("idUsuario") long idUsuario, @RequestBody User userActualizado) {
-		user_service.editaUsuario(userActualizado);
+	@RequestMapping(value = "/administrar/usuarios/{numPag}/restaurar/{idUsuario}", method = RequestMethod.GET)
+	public String restaurarUsuario(@PathVariable("idUsuario") Long idUser, @PathVariable("numPag") Long numPag){
+		user_service.restaurarUser(idUser);
+		return "redirect:/reservas/administrar/usuarios/{numPag}";
+	}
+	
+	@RequestMapping(value = "/admin/administrar/usuarios/{numPag}/restaurar")
+	public ModelAndView restaurarUsers(@PathVariable("numPag") Long numPag){
+		ModelAndView model = new ModelAndView("index");
+		User u = user_service.getCurrentUser();
+		model.addObject("usuarios", user_service.getEliminados());
+		model.addObject("User", u);
+		model.addObject("pagina", numPag);
+		model.addObject("view", "/admin/papelera_usuarios");
+		return model;
+	}
+	
+	@RequestMapping(value="/admin/administrar/usuarios/editar/{idUser}/{user}/{admin}/{secre}", method=RequestMethod.PUT)
+	public void editarUsuario(@PathVariable("idUser") long idUser, @PathVariable("user") String user,
+			@PathVariable("admin") String admin, @PathVariable("secre") String secre, @RequestBody UserDTO userActualizado) {
+		user_service.editaUsuario(userActualizado, user, admin, secre);
 	}	
-	
-	/*
-	 * Administracion edificios
-	 */
-	@RequestMapping(value = "/edificio/{idEdificio}", method = RequestMethod.DELETE)
-	public void eliminarEdificio(@PathVariable("idEdificio") long idEdificio) {
-		reserva_service.eliminarEdificio(idEdificio);
-	}
-	
-	@RequestMapping(value = "/edificio/{idEdificio}", method = RequestMethod.PUT)
-	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody Edificio edificioActualizado) {
-		reserva_service.editarEdificio(edificioActualizado);
-	}
-	
-	/*
-	 * Administracion Facultades
-	 */
-	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.DELETE)
-	public void eliminarFacultad(@PathVariable("idFacultad") long idFacultad) {
-		reserva_service.eliminarFacultad(idFacultad);
-	}
-	
-	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.PUT)
-	public void editarFacultad(@PathVariable("idFacultad") long idFacultad, @RequestBody Facultad facultadActualizado) {
-		reserva_service.editarFacultad(facultadActualizado);
-	}
-	
-	/*
-	 * Administracion espacios
-	 */
-	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.DELETE)
-	public void eliminarEspacios(@PathVariable("idEspacio") long idEspacio) {
-		reserva_service.eliminarEspacio(idEspacio);
-	}
-	
-	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.PUT)
-	public void editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody Espacio espacioActualizado) {
-		reserva_service.editarEspacio(espacioActualizado);
-	}
-	
 	
 	@RequestMapping(value = "/usuarios/tag/{tagName}", method = RequestMethod.GET)
 	public List<UserDTO> usuariosFiltro(@PathVariable("tagName") String tagName) {
@@ -91,11 +68,27 @@ public class UserRestController {
 		usuarios = user_service.getUsuariosPorTagName(tagName);
 				
 		for(User u : usuarios) {
-			result.add(UserDTO.fromUserDTO(u));
+			result.add(UserDTO.fromUserDTOAutocompletar(u));
 		}
 		 
 		return result;
 	}
+	
+	@RequestMapping(value = "/gestor/usuarios/tag/{tagName}", method = RequestMethod.GET)
+	public List<UserDTO> usuariosFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+		
+		List<UserDTO> result = new ArrayList<>();
+		List<User> usuarios = new ArrayList<>();
+
+		usuarios = user_service.getUsuariosPorTagName(tagName);
+				
+		for(User u : usuarios) {
+			result.add(UserDTO.fromUserDTOAutocompletar(u));
+		}
+		 
+		return result;
+	}
+	
 	
 	
 	

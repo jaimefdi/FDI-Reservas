@@ -44,6 +44,7 @@ $(document).ready(function(){
 	    	reserva.recurrenteId = recurrenteId;
 	    	reserva.reglasRecurrencia = reglas;
 	    	
+	    	console.log(reserva);
 	    	editarReserva(reserva,reqHeaders);
   	
 		});

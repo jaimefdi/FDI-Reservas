@@ -1,5 +1,18 @@
-$(document).ready(function(){
-	  
+function eliminarReserva(reqHeaders, idReserva){
+	$.ajax({
+			url: baseURL + 'reserva/' + idReserva,
+			type: 'DELETE',
+			headers : reqHeaders,
+			success : function(datos) {
+				$('#modalEliminarReservaSimple').modal('hide');
+				$("#" + idReserva).remove();
+				$("#calendar").fullCalendar('refetchEvents');
+			},    
+			error : function(xhr, status) {
+				alert('Disculpe, existió un problema');
+			}
+		});
+}	  
 var reserva = {};
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
@@ -50,6 +63,7 @@ $('td a').click(function(){
 	
 	reserva.id =  $(this).attr("data-id");
 	reserva.recurrenteId = $(this).attr("data-recurrenteId");
+	var usuario= $(this).attr("data-user");
 	var asunto =  $(this).attr("data-asunto");
 	var start = $(this).attr("data-start");
 	var end = $(this).attr("data-end");

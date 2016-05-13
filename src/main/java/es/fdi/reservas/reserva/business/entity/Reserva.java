@@ -69,7 +69,6 @@ public class Reserva{
 	private String recurrenteId;
 	
 
-
 	public Reserva(){
 		
 	}
@@ -90,6 +89,11 @@ public class Reserva{
 		this.reglasRecurrencia = new ArrayList<String>();
 		this.recurrenteId = recurrId;
 		
+	}
+	
+	public boolean mismoGReserva(GrupoReserva valor)
+	{
+		return this.grupoReserva.equals(valor);
 	}
 
     public void addReglaRecurrente(String regla){
@@ -156,7 +160,6 @@ public class Reserva{
 		this.user = usuario;
 	}
 
-
 	public EstadoReserva getEstadoReserva() {
 		return estadoReserva;
 	}
@@ -205,9 +208,7 @@ public class Reserva{
 	public void setRecurrenteId(String recurrenteId) {
 		this.recurrenteId = recurrenteId;
 	}
-	
 
-	
 	public GrupoReserva getGrupoReserva() {
 		return grupoReserva;
 	}
@@ -216,8 +217,7 @@ public class Reserva{
 	public void setGrupoReserva(GrupoReserva grupoReserva) {
 		this.grupoReserva = grupoReserva;
 	}
-
-
+	
 	public int getRegla(String regla){
 		for(int i = 0; i < reglasRecurrencia.size(); i++){
 			String[] w = reglasRecurrencia.get(i).split(":");

@@ -1,8 +1,13 @@
 package es.fdi.reservas.users.business.entity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -12,13 +17,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.GrupoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
@@ -72,6 +81,7 @@ public class User implements UserDetails{
 		this.email = email;
 		this.enabled = true;
 		this.roles = new ArrayList<UserRole>();
+		
 	}
 	
 	public String getPassword() {
@@ -111,7 +121,19 @@ public class User implements UserDetails{
 		this.reservas = reservas;
 	}
 	
-	
+	public String rolesToString(){
+        UserRole[] vec = new UserRole[5];
+        String[] str = new String[this.getAuthorities().size()];
+       
+    	vec = new UserRole[this.getAuthorities().size()];
+    	this.getAuthorities().toArray(vec);
+    	//str = vec.toString();
+    	for (int i = 0; i < vec.length; i++){
+    		str[i] = vec[i].toString();
+    	}
+    	
+        return Arrays.toString(str);
+	}
 
 	public Set<GrupoReserva> getGruposReservas() {
 		return gruposReservas;
@@ -164,7 +186,6 @@ public class User implements UserDetails{
 	public void setFacultad(Facultad facultad) {
 		this.facultad = facultad;
 	}
-
 	
 	
 	

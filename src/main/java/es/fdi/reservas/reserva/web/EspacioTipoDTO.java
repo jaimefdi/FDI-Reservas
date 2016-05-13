@@ -4,19 +4,19 @@ import es.fdi.reservas.reserva.business.entity.Espacio;
 
 public class EspacioTipoDTO {
 	
-	private String id;
+	private Long id;
 	private String nombreEspacio;
 	
-	public EspacioTipoDTO(String id, String nombre){
+	public EspacioTipoDTO(Long id, String nombre){
 		this.id = id;
 		this.nombreEspacio = nombre;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -29,6 +29,6 @@ public class EspacioTipoDTO {
 	}
 	
 	public static EspacioTipoDTO fromEspacioTipoDTO(Espacio e){
-		return new EspacioTipoDTO(e.getId().toString(), e.getNombreEspacio());
+		return new EspacioTipoDTO(e.getId(), e.getNombreEspacio());
 	}
 }

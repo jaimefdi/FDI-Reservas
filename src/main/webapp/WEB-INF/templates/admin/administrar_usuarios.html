@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+    
+	<title>UCM RESERVAS - Administrar usuarios</title>
+    
+</head>
+<body>
+<div class="container-fluid" th:fragment="contenido">
+	<div class="row">
+	    <div class="col-md-12">
+	        <h1 class="page-header text-center">
+	            Administrar
+	        </h1>
+	    </div>
+	</div>
+	<!-- /.row -->
+	<div class="row">
+        <div class="col-md-12">
+            <h1 class="page-header text-center">
+                <small>Administrar usuarios</small>
+            </h1>
+        </div>
+    </div>
+	<div class="row">
+    	<div class="col-md-8 col-md-offset-2">
+         	
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults)}">
+                <i class="fa fa-ban fa-5x"></i>
+                <h4>¡Uups! No hay ningún usuario.</h4>
+           </div> 
+			<!-- <div class="row">
+			<div class="col-md-6">
+				  <div class="form-group">
+				    <label> Usuario :</label>
+				    	   
+				    <div class="ui-widget">
+				    	<input id="autoUsuario" type="text" class="form-control" 
+				    	 placeholder="Nombre del usuario" />  
+				    </div>		     
+				   </div>
+			    </div>
+			    			                  
+			</div> -->
+            <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults)}">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                        	
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Facultad</th>
+                            <th>Rol/es</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${r.enabled}" th:each="r : ${currentResults}"  class="success">
+                        	
+                            <td th:if="${r.id != User.id}" th:text="${r.username}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.email}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.facultad.nombreFacultad}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.rolesToString()}"></td>
+<!--                             <span th:each="s:${roles}" th:text="${s}"></span></td> -->
+                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+							</td>
+                        </tr>   
+                        
+                        <tr th:if="${!r.enabled}" th:each="r : ${currentResults}"  class="danger">
+                        	
+                            <td th:if="${r.id != User.id}" th:text="${r.username}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.email}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.facultad.nombreFacultad}"></td>
+                            <td th:if="${r.id != User.id}" th:text="${r.rolesToString()}"></td>
+<!--                             <span th:each="s:${roles}" th:text="${s}"></span></td> -->
+                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+							</td>
+                        </tr>    
+                    </tbody>
+                </table>
+            </div>
+             <!-- /.table-responsive-->
+	         <a th:href="@{'/admin/administrar/usuarios/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar usuarios"/></a>
+     	</div>
+ 	</div>
+ 	<!-- Pagination -->
+ 	<div class="row">
+    <div class="col-md-12 text-center">
+        <div class='pagination pagination-centered'>
+            <ul class="pagination">
+                <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{1}">← First</a>
+                </li>
+                <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                    <span th:if='${currentIndex == 1}'>«</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{${(currentIndex - 1)}}"
+                       title='Go to previous page'>«</a>
+                </li>
+
+                <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+                    th:class="${item == currentIndex ? 'active' : '' }">
+
+                    <span th:if='${item == currentIndex}' th:text='${item}'>1</span>
+
+                    <a th:if='${item != currentIndex}'
+                       th:href="@{${item}}">
+                        <span th:text='${item}'>1</span>
+                    </a>
+                </li>
+
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                </li>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+ <!-- /.Pagination -->
+ 	<div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Usuario</h4>
+          </div>
+          <div class="modal-body">
+          		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${User}" method="put">             
+				
+				<div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Nombre: </label>
+		                      <div class="col-md-10">
+		                         <p id="idNombre" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+				 
+				 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Email: </label>
+		                      <div class="col-md-10">
+		                         <p id="idEmail" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+				          
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Facultad: </label>
+		                      <div class="col-md-10">
+		                         <p id="idFacul" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+		         
+<!-- 		         <div class="row"> -->
+<!--                 	<div class="col-md-12"> -->
+<!-- 		                 Asunto  -->
+<!-- 		                 <div class="form-group"> -->
+<!-- 		                     <label class="col-md-2 control-label">Activado: </label> -->
+<!-- 		                      <div class="col-md-10"> -->
+<!-- 		                         <p id="idActivado" class="form-control-static"> </p> -->
+<!-- 		                      </div> -->
+<!-- 		                 </div> -->
+<!--                    </div> -->
+<!-- 		         </div> -->
+                 
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Roles: </label>
+		                      <div class="col-md-10">
+		                         <p id="idRoles" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+		                     
+             </form>
+             </div>
+                 <div class="modal-footer">
+			        <a id="btn-eliminar" href="#" class="btn-rec gray">ELIMINAR</a>
+			        <a id="btn-editar" th:href="@{''}" class="btn-rec blue">EDITAR</a>
+			      </div> 
+          
+        </div>
+      </div>
+    </div>
+ <!-- /.row -->
+
+ <script th:inline="javascript">
+ 	var baseURL = /*[[@{/}]]*/ '/';
+ </script>
+ <script src="../../js/users.js" th:src="@{/js/users.js}"></script>
+</div>
+</body>
+</html>
