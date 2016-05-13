@@ -131,7 +131,7 @@
         							
         								var obj = new Object();
         								obj.label = item.id; 
-        								obj.value = item.nombreGrupo;      								
+        								obj.value = item.nombreCorto;      								
         								return obj;
         			
         						}))
@@ -149,7 +149,7 @@
 								
         						for(var i in datos){
         							$("#demo1").append('<li><a href="/reservas/grupo/'+ datos[i].id +'">'
-        									+ datos[i].nombreGrupo + '</a></li>');
+        									+ datos[i].nombreCorto + '</a></li>');
         						}
         						
         					},    
@@ -232,6 +232,7 @@
                         <li>
                             <a th:href="@{/grupo/nuevo}">Nuevo grupo </a>
                         </li>
+                        <!--/*/  <th:block sec:authorize="hasRole('ROLE_GESTOR')"> /*/-->
                         <li>
                             <a th:href="@{/admin/nuevoUsuario}">Nuevo usuario </a>
                         </li>
@@ -244,7 +245,7 @@
                         <li>
                             <a th:href="@{/admin/nuevoEspacio}">Nuevo espacio </a>
                         </li>
-                        
+                         <!--/*/  </th:block> /*/-->
                     </ul>
                 </li>
                 <!-- Perfil -->
@@ -326,7 +327,7 @@
 	                    		
                     		</li>
                     		<li th:each="g : ${GruposReservas}">
-                    			<a th:href="@{'/grupo/'+ ${g.id}}" th:inline="text">[[${g.nombreGrupo}]]
+                    			<a th:href="@{'/grupo/'+ ${g.id}}" th:inline="text">[[${g.nombreCorto}]]
 		                    		<!-- <div class="pull-right"> <i th:attr="data-idGrupo=${g.id}" class="fa fa-trash" aria-hidden="true" title="Eliminar" style="visibility:hidden;"></i></div>  -->
                     			</a>
                     		</li>
