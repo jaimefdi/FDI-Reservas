@@ -591,6 +591,10 @@ td i{
   margin: 0px 7px;	
 }
 
+td a i{
+  color: #333;
+}
+
 .panel-admin{
 	margin: 10px 0px;
 	padding: 15px;
