@@ -1,18 +1,28 @@
 $(document).ready(function(){
 	  
+	
+	   $('#2_calendario .selec_C2 option:eq(1)').attr('selected', 'selected');
+	   $('#2_calendario .selec_C3 option:eq(2)').attr('selected', 'selected');
+	   $('#2_calendario .selec_C4 option:eq(3)').attr('selected', 'selected');
+	
 	 	var reserva = {};
 	 	var token = $("meta[name='_csrf']").attr("content");
 	 	var header = $("meta[name='_csrf_header']").attr("content");
 	 	var reqHeaders = [];
 	 	reqHeaders[header] = token;
 	 	var idGrupo2 = $("#selec_C2_grupo").val();
+	 	var idGrupo3 = $("#selec_C3_grupo").val();
+	 	var idGrupo4 = $("#selec_C4_grupo").val();
 	 	var newStart, newEnd;
 	 	
-		
+		// cargar calendario 1
 	 	calendario($("#calendar11"), idGrupo);
 	 	$("#2_calendario .selec_C1").hide();
 	 	$("#2_calendario .selec_C2").hide();
+	 	$("#2_calendario .selec_C3").hide();
+	 	$("#2_calendario .selec_C4").hide();
 	 	
+	 	// Nº de calendarios
 	 	$("#selec_calen").change(function(){
 	 		var numCalen = $("#selec_calen").val();
 	 		if(numCalen == 1){
@@ -20,24 +30,58 @@ $(document).ready(function(){
 	 			calendario($("#calendar11"), idGrupo);
 	 			$("#1_calendario").show();
 	 		}
-	 		else{
+	 		else if(numCalen == 2){
 	 			$("#1_calendario").hide();	 			
 	 			calendario($("#calendar21"), idGrupo);
 	 			calendario($("#calendar22"), idGrupo2);
 	 			$("#2_calendario").show();
 	 			$("#2_calendario .selec_C1").show();
 	 		 	$("#2_calendario .selec_C2").show();
+	 		 	$("#2_calendario .selec_C3").hide();
+	 		 	$("#2_calendario .selec_C4").hide();
+	 		}
+	 		else if(numCalen == 3){
+	 			$("#1_calendario").hide();	 			
+	 			calendario($("#calendar21"), idGrupo);
+	 			calendario($("#calendar22"), idGrupo2);
+	 			calendario($("#calendar23"), idGrupo3);
+	 			$("#2_calendario").show();
+	 			$("#2_calendario .selec_C1").show();
+	 		 	$("#2_calendario .selec_C2").show();
+	 		 	$("#2_calendario .selec_C3").show();
+	 		 	$("#2_calendario .selec_C4").hide();
+	 		}
+	 		else if(numCalen == 4){
+	 			$("#1_calendario").hide();	 			
+	 			calendario($("#calendar21"), idGrupo);
+	 			calendario($("#calendar22"), idGrupo2);
+	 			calendario($("#calendar23"), idGrupo3);
+	 			calendario($("#calendar24"), idGrupo4);
+	 			$("#2_calendario").show();
+	 			$("#2_calendario .selec_C1").show();
+	 		 	$("#2_calendario .selec_C2").show();
+	 		 	$("#2_calendario .selec_C3").show();
+	 		 	$("#2_calendario .selec_C4").show();
 	 		}
 	 		
 	 		
 	 	});
 	 	
 	 	$("#selec_C2_grupo").change(function(){
+	 		$("#calendar22").fullCalendar('removeEventSource',{
+	 			url: '/reservas/' + idGrupo2 + '/reservasGrupo',							   
+	            textColor: 'black'
+	 		});
+	 		
 	 		idGrupo2 = $("#selec_C2_grupo").val();
-	 		$("#calendar22").fullCalendar('removeEventSource', []);
-	 		$("#calendar22").fullCalendar('destroy');
-	 		calendario($("calendar22"),idGrupo2);
-	 		$("#calendar22").fullCalendar('refetchEvents');
+	 		console.log(idGrupo2);
+	 		$("#calendar22").fullCalendar('addEventSource',{
+	 			url: '/reservas/' + idGrupo2 + '/reservasGrupo',							   
+	            textColor: 'black'
+	 		});
+	 		//$("#calendar22").fullCalendar('destroy');
+	 		//calendario($("calendar22"),idGrupo2);
+	 		//$("#calendar22").fullCalendar('refetchEvents');
 	 	});
 	 	
 	 	
@@ -66,36 +110,8 @@ $(document).ready(function(){
 	 		$("#modalEliminarGrupo").modal('hide');
 	 	});
 	 	
-	 	///
-	 	var calEventStatus = [];
- 
-	 
 	 	////
 	 	
-	 	$("#btn-guardar").click(function(){
-	 		reserva.title = $("#modalEditarReserva #idAsunto").val();
-	 		reserva.start =	es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker1').val());
-	 		reserva.end = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker2').val());
-	 	
-
-	 		$.ajax({
-	 			url: baseURL+'reserva/' + reserva.id,
-	 			type: 'PUT',
-	 			headers : reqHeaders,
-	 			data: JSON.stringify(reserva),
-	 			contentType: 'application/json',
-	 			success : function(datos) {   
-	 				alert("Reserva actualizada");
-	 				$('#modalEditarReserva').modal('hide');
-	 				$("#"+reserva.id +" td:nth-child(1)").text(reserva.title);
-	 				$("#"+reserva.id +" td:nth-child(3)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
-	 				$("#"+reserva.id +" td:nth-child(4)").text(es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
-	 			},    
-	 			error : function(xhr, status) {
-	     			alert('Disculpe, existió un problema');
-	 			}
-	 		});
-	 	});
 	 
 	 	$("#btn-eliminar").click(function(){
 	 		
@@ -134,23 +150,7 @@ $(document).ready(function(){
 	 		recurrencia.push(exDate);
 	 		reserva.reglasRecurrencia = recurrencia;
 	 			 		
-	 		$.ajax({
-	 			url: baseURL + 'editarReserRecurrente',
-	 			headers : reqHeaders,
-	 			type: 'POST',		 				 			
-	 			data: JSON.stringify(reserva),
-	 			contentType: 'application/json',
-	 			success : function(datos) {  
-	 				$("#modalRecurrente").modal('hide');	 				
-	 				$("#calendar").fullCalendar('refetchEvents');
-	 				
-	 			},    
-	 			error : function(xhr, status) {
-	 				
-	     			alert('Disculpe, existió un problema');
-	     			
-	 			}
-	 		});
+	 		SoloEditarReservaRecurrente(reserva, reqHeaders);
 	 		
 	 	});
 
@@ -160,8 +160,8 @@ $(document).ready(function(){
 				lang: 'es',
 				timezone: 'local',
 			    header: {
-			        left: '',
-			        center: '',
+			    	left: 'prev,next',
+			        center: 'title',
 			        right: 'month,agendaWeek'
 			    },
 			    columnFormat: 'ddd',
@@ -170,20 +170,50 @@ $(document).ready(function(){
 			    editable: true,
 				droppable: true, 
 				dragRevertDuration: 0,
-				eventLimit: true, 
+				eventLimit: true,
+				eventClick: function(event, jsEvent, view){
+			    	$('[role="tooltip"]').popover('hide');
+			    	reserva.id = event.id;
+			    	reserva.recurrenteId = event.recurrenteId;
+			    	
+			    	var linkEliminar = "<div class='col-xs-6 text-left'><a role='button' onclick='modalEliminarReservaSimple()'>" + 'Eliminar' + "</a></div>";
+			    	var linkEditar = "<div class='col-xs-6 text-right'><a href='/reservas/editar/" + event.id + "'>" + 'Editar' + "</a></div>";
+			    	
+			    	if(esRecurrente(reserva)){
+			    		var w = reserva.recurrenteId.split("_");
+			    		event.id = w[0];
+			    		console.log(w[1]);
+			    		var nr = w[1].replace("/","-");
+			    		nr = nr.replace("/","-");
+			    		nr = w[0] + "_" + nr;
+			    		linkEliminar = "<div class='col-xs-6 text-left'><a role='button' onclick='modalEliminarReservaRecurrente()'>" + 'Eliminar' + "</a></div>";
+			    		linkEditar = "<div class='col-xs-6 text-right'><a href='/reservas/editar/" + event.id + "/" + nr + "'>" + 'Editar' + "</a></div>";   		
+			    	}
+			    	
+			    	var closePopover = "<div class='col-xs-1 text-right' style='padding:0px;' onclick='closePopover();'><i class='zmdi zmdi-close' role='button'> </i></div>";
+					
+			    	var divDonde = "<div class='col-xs-11' style='padding:0px;'>Donde: <b>" + event.nombreEspacio + "</b> </div>";
+			    	var divCuando = "<div class='col-xs-12' style='padding:0px;'>De " + event.start.format("HH:mm") + " a " + event.end.format("HH:mm") + "</div>";
+					var divAsunto = "<div class='col-xs-12' style='padding:0px;padding-bottom:10px;'>Asunto: " + event.title + "</div>";
+			    	
+			    	var cuerpo = divDonde + closePopover + divCuando + divAsunto;
+						  
+					
+					if(event.editable){
+						cuerpo +=  "<div class='row'>" + linkEliminar + linkEditar + "</div>";
+					}
+					
+			    	$(this).popover({						
+						placement : 'auto',
+						html : true,
+						animation : 'true',
+						container: calendar,
+						content : cuerpo
+								  
+					}).popover('show');
+			    },
 				eventRender: function(event, element){
-					/*
-					element.data('event',{
-						id: event.id,
-						title: event.title,
-						start: event.start,
-						end: event.end,
-						idGrupo: event.idGrupo,
-						idEspacio: event.idEspacio,
-						nombreEspacio: event.nombreEspacio,
-						recurrenteId: event.reccurenteId
-					});
-					*/
+					
 					element.data('event', event);
 					
 					element.draggable({
@@ -195,46 +225,50 @@ $(document).ready(function(){
 					
 				},				
 				eventDragStart: function( event, jsEvent, ui, view ) {
-
-					// Add dragging event in global var 
-					calEventStatus['calendar'] = calendar;
-					calEventStatus['event_id'] = event.id;					
-					console.log('eventDragStart:');
+									
+					console.log('Calendar ' + idGrupo + ' eventDragStart');
 					console.log(event);
-					newEnd = event.end;
+//					newEnd = event.end;
+//					console.log("New End");
+//					console.log(newEnd);
 					
 				},
 				eventDragStop: function(event, jsEvent, ui, view) { 
-					console.log('EventDragDrop');
+					console.log('Calendar ' + idGrupo + ' eventDragStop');
 					console.log(event);
 					//newEnd = event.end;
 					// Dirty fix to remove highlighted blue background
 					$("td").removeClass("fc-highlight");
 				},
 				eventDrop: function(event, delta, revertFunc){
-					editarReservaSimple(event, reqHeaders, event.id);
+					console.log('Calendar ' + idGrupo + ' eventDrop');
+					//editarReservaSimple(event, reqHeaders, event.id, revertFunc);
 				},
 				drop: function(date, jsEvent, ui) { 
+										
+					console.log('Calendar ' + idGrupo + ' drop');
+					console.log(date);
 					
- 					// if event dropped from another calendar, remove from that calendar
-// 					if (calEventStatus['calendar'] != 'undefined') {
-// 						console.log('calendar 1 drop'); 
-// 						calEventStatus['calendar'].fullCalendar('removeEvents', calEventStatus['event_id']);		
-// 						//$(calEventStatus['calendar']).fullCalendar('refetchEvents');	
-// 						calEventStatus = []; // Empty
-// 					}
+					
 					newStart = date;
 					console.log("Nuevo Comienzo");
-					console.log(date);
+					console.log(newStart);
 				},
 				eventReceive: function(event) {  
-					console.log('calendar 1 eventReceive');
+					console.log('Calendar ' + idGrupo + ' eventReceive');
+					var y = newStart.get('year');
+					var m = newStart.get('month');
+					var d = newStart.get('date');					
 					
-					event.start = newStart;
-					event.end = newStart.add(1, 'hour');
+				    event.start = event.start.set({'year': y, 'month': m, 'date':d});
+				    newEnd = event.start.clone().add(1,'hour');
+					event.end = newEnd;
 					console.log(event);
-					cambiarReservaDeCalendario(event, idGrupo2, reqHeaders);
+					cambiarReservaDeCalendario(event, idGrupo, reqHeaders);
 				},
+				viewRender: function(view, element){
+			    	$('[role="tooltip"]').popover('hide');
+			    },
 			    eventSources: [ 
 				        {
 				        	url: '/reservas/' + idGrupo + '/reservasGrupo',							   
@@ -249,9 +283,9 @@ $(document).ready(function(){
  });
 
 
-function cambiarReservaDeCalendario(event, idGrupo2, reqHeaders){
+function cambiarReservaDeCalendario(event, idGrupo, reqHeaders){
 	$.ajax({
-		url: baseURL + 'cambiarReservaDeCalendario/' + idGrupo2,
+		url: baseURL + 'cambiarReservaDeCalendario/' + idGrupo,
 		headers : reqHeaders,
 		type: 'POST',		 				 			
 		data: JSON.stringify(event),
@@ -259,6 +293,8 @@ function cambiarReservaDeCalendario(event, idGrupo2, reqHeaders){
 		success : function(datos) {  
 				$("#calendar21").fullCalendar('refetchEvents');	
 				$("#calendar22").fullCalendar('refetchEvents');
+				$("#calendar23").fullCalendar('refetchEvents');
+				$("#calendar24").fullCalendar('refetchEvents');
 		},    
 		error : function(xhr, status) {			
  			alert('Disculpe, existió un problema');			
@@ -266,7 +302,7 @@ function cambiarReservaDeCalendario(event, idGrupo2, reqHeaders){
 	});
 }
 
-function editarReservaSimple(reserva, reqHeaders, idReserva){
+function editarReservaSimple(reserva, reqHeaders, idReserva, revertFunc){
 	$.ajax({
 			url: baseURL + 'reserva/editar/' + idReserva,
 			type: 'PUT',
@@ -282,3 +318,27 @@ function editarReservaSimple(reserva, reqHeaders, idReserva){
 		});
 }
 
+function SoloEditarReservaRecurrente(reserva, reqHeaders){	 		
+	$.ajax({
+		url: baseURL + 'editarReserRecurrente',
+		headers : reqHeaders,
+		type: 'POST',		 				 			
+		data: JSON.stringify(reserva),
+		contentType: 'application/json',
+		success: function(datos){
+			$("#calendar").fullCalendar('refetchEvents');
+			$('#modalRecurrente').modal('hide');
+		},
+		error : function(xhr, status) {			
+ 			alert('Disculpe, existió un problema');			
+		}
+	});
+}
+
+function esRecurrente(reserva){
+	return reserva.recurrenteId != null;
+}
+
+function closePopover(){
+	$('[role="tooltip"]').popover('hide');
+}

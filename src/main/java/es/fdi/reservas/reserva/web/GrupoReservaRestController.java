@@ -2,7 +2,6 @@ package es.fdi.reservas.reserva.web;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,24 +31,24 @@ public class GrupoReservaRestController {
     }
 	
 
-//	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.DELETE)
-//	public void eliminarGrupo(@PathVariable("idGrupo") long idGrupo){
-//		grupo_service.eliminarGrupo(idGrupo);
-//	}
+	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.DELETE)
+	public void eliminarGrupo(@PathVariable("idGrupo") long idGrupo){
+		grupo_service.eliminarGrupo(idGrupo);
+	}
 	
-//	@RequestMapping(value = "/grupo/tag/{tagName}", method = RequestMethod.GET)
-//	public List<GrupoReservaDTO> gruposFiltro(@PathVariable("tagName") String tagName) {
-//		User user = user_service.getCurrentUser();
-//		List<GrupoReservaDTO> result = new ArrayList<>();
-//		List<GrupoReserva> grupos = new ArrayList<>();
-//
-//		grupos = grupo_service.getGruposPorTagName(tagName, user.getId());
-//				
-//		for(GrupoReserva g : grupos) {
-//			result.add(GrupoReservaDTO.fromGrupoReserva(g));
-//		}
-//		 
-//		return result;
-//	}
+	@RequestMapping(value = "/grupo/tag/{tagName}", method = RequestMethod.GET)
+	public List<GrupoReservaDTO> gruposFiltro(@PathVariable("tagName") String tagName) {
+		User user = user_service.getCurrentUser();
+		List<GrupoReservaDTO> result = new ArrayList<>();
+		List<GrupoReserva> grupos = new ArrayList<>();
+
+		grupos = grupo_service.getGruposPorTagName(tagName, user.getId());
+				
+		for(GrupoReserva g : grupos) {
+			result.add(GrupoReservaDTO.fromGrupoReserva(g));
+		}
+		 
+		return result;
+	}
 	
 }

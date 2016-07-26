@@ -19,7 +19,7 @@
            		Grupo: <small th:inline="text"> [[${GrupoReservas.nombreCorto}]] </small> 
               
 	        <div class="pull-right">           
-	        	<i th:attr="data-idGrupo=${GrupoReservas.id}" class="fa fa-trash-o" aria-hidden="true" title="Eliminar grupo" data-toggle="modal" data-target="modalEliminarGrupo"></i>
+	        	<i th:attr="data-idGrupo=${GrupoReservas.id}" class="fa fa-trash-o" aria-hidden="true" title="Eliminar grupo" data-toggle="modal" data-target="modalEliminarGrupo" role="button"></i>
 	        </div>
         </h2>
     </div>
@@ -29,10 +29,12 @@
 <!-- Vista -->
 <div class="row">
 	<div class="col-md-2 col-md-offset-10 text-center">
-	  *Calendarios: 
+	  Nº de calendarios: 
 	  <select id="selec_calen">
 	  	<option value="1">1</option>
 	  	<option value="2">2</option>
+	  	<option value="3">3</option>
+	  	<option value="4">4</option>
 	  </select>	
 	</div>
 </div>
@@ -43,28 +45,61 @@
    <div id="calendar11" class="col-md-10 col-md-offset-1"></div>
 </div> 
  
-<!-- 2 Calendarios -->
-<div id="2_calendario" class="row">
-   <div class="col-md-6 text-center">
-   	 <div class="selec_C1 row">
-   		<p th:text="${GrupoReservas.nombreCorto}"></p>
-     </div>
-   	 <div id="calendar21" class="col-md-10 col-md-offset-1"></div>
-   </div>
-   
-   <div class="col-md-6 text-center">
-    <div class=" selec_C2 row">
-   		<select id="selec_C2_grupo">
-   			<option th:each="g : ${GruposReservas}"
-   					th:text="${g.nombreCorto}"
-   					th:value="${g.id}"
-   					th:if="${GrupoReservas.id != g.id}">
-   			</option>
-   		</select>
-     </div>
-   	 <div id="calendar22" class="col-md-10 col-md-offset-1"></div>	 
-   </div>
+<!-- Entre 2-4 Calendarios -->
+<div id="2_calendario">
+	<div class="row">
+	   <div class="col-md-6 text-center">
+	   	 <div class="selec_C1 row">
+	   		<p th:text="${GrupoReservas.nombreCorto}"></p>
+	     </div>
+	   	 <div id="calendar21" class="col-md-12"></div>
+	   </div>
+	   
+	   <div class="col-md-6 text-center">
+	    <div class=" selec_C2 row">
+	   		<select id="selec_C2_grupo">
+	   			<option th:each="g : ${GruposReservas}"
+	   					th:text="${g.nombreCorto}"
+	   					th:value="${g.id}">
+	   			</option>
+	   		</select>
+	     </div>
+	   	 <div id="calendar22" class="col-md-12"></div>	 
+	   </div>
+	   
+	   
+    </div>
+    <br/>
+    <div class="row">
+   		 <!-- 3er calendario -->
+	    <div class="col-md-6 text-center">
+	    	<div class=" selec_C3 row">
+	   		<select id="selec_C3_grupo">
+	   			<option th:each="g : ${GruposReservas}"
+	   					th:text="${g.nombreCorto}"
+	   					th:value="${g.id}">
+	   			</option>
+	   		</select>
+	     </div>
+	   		 <div id="calendar23" class="col-md-12"></div>	 
+	    </div>
+	    
+	    <!-- 4to calendario -->
+	     <div class="col-md-6 text-center">
+	    	<div class=" selec_C4 row">
+	   		<select id="selec_C4_grupo">
+	   			<option th:each="g : ${GruposReservas}"
+	   					th:text="${g.nombreCorto}"
+	   					th:value="${g.id}">
+	   			</option>
+	   		</select>
+	     </div>
+	   		 <div id="calendar24" class="col-md-12"></div>	 
+	    </div>
+    </div>
 </div> 
+
+
  
  <!-- Modal Eliminar Grupo -->
  <div class="modal fade" id="modalEliminarGrupo" tabindex="-1" role="dialog">
