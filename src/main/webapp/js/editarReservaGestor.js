@@ -51,7 +51,7 @@ $(document).ready(function(){
 		});
 		
 		
-		$("#autoUsuarios").autocomplete({
+		$("#idUser").autocomplete({
 			source:function(request, response){
 					var tag = request.term;
 					
@@ -79,10 +79,7 @@ $(document).ready(function(){
 					});
 			},
 			select: function(event, ui){
-				var img = '<img class="img-circle" src="http://placehold.it/30x30" data-toggle="tooltip" data-placement="bottom" title="' + ui.item.value + '" />' ;
-				$("#asistencia").append(img);
-				$('[data-toggle="tooltip"]').tooltip();
-				
+				reserva.user=ui.item.label;	
 			},
 			minLength: 3
 

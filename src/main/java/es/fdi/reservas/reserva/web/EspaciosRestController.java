@@ -45,7 +45,7 @@ public class EspaciosRestController {
 	
 	@RequestMapping(value="/admin/nuevoEspacio", method=RequestMethod.POST)
 	public String crearEspacio(EspacioTipoDTO f){
-		reserva_service.addNewEspacio(f);
+		//reserva_service.addNewEspacio(f);
 	   return "redirect:/administrar/espacios";
 		//return "nuevoUsuario";
 	}

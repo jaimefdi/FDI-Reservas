@@ -6,28 +6,38 @@ $(document).ready(function(){
 	 	reqHeaders[header] = token;
 	 	var item;
 	 	
-	 	$('tr').click(function(){
-	 		$('#modalEditarReserva').modal('show');
+	 	$('td a').click(function(){
 	 		
-	 		var espacio = $(this).find("td").eq(2).html();
 	 		reserva.id =  $(this).attr("data-id");
-	 		reserva.start = $(this).attr("data-start");
-	 		reserva.end = $(this).attr("data-end");
-	 		reserva.idEspacio = $(this).attr("data-espacio");
-	 		reserva.estadoReserva= $(this).attr("data-estado");
-	 		reserva.title = $(this).find("td").eq(1).html();
-	 		reserva.username = $(this).find("td").eq(0).html();
+	 		reserva.recurrenteId = $(this).attr("data-recurrenteId");
+	 		var asunto =  $(this).attr("data-asunto");
+	 		var start = $(this).attr("data-start");
+	 		var end = $(this).attr("data-end");
+	 		var nombreEspacio = $(this).attr("data-espacio");
+	 		var nombreGrupo = $(this).attr("data-grupo");
+	 		var color = $(this).attr("data-reservaColor");
+	 		var accion = $(this).attr("data-accion");
+	 		var nombreUser = $(this).attr("data-user");
 	 		
-	 		$('#modalEditarReserva #idAsunto').attr("value",reserva.title);
-	 		$('#modalEditarReserva #idUsuario').attr("value",reserva.username);
-	 		$('#modalEditarReserva #datetimepicker1').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.start));
-	 		$('#modalEditarReserva #datetimepicker2').attr("value",es.ucm.fdi.dateUtils.fromIso8601(reserva.end));
+	 		console.log(reserva.recurrenteId);
 	 		
-	 		$('#modalEditarReserva #nombreEspacio').text(espacio);
-	 		$("#selec_estadoReserva option").filter(function() {
-	 		    //may want to use $.trim in here
-	 		    return $(this).text() == reserva.estadoReserva; 
-	 		}).prop("selected", true);
+	 		$('#modalEditarReserva #usuario').text(nombreUser);
+	 		$('#modalEditarReserva #asunto').text(asunto);
+	 		$('#modalEditarReserva #comienzo').text(es.ucm.fdi.dateUtils.fromIso8601(start));
+	 		$('#modalEditarReserva #fin').text(es.ucm.fdi.dateUtils.fromIso8601(end));
+	 		$('#modalEditarReserva #nombreEspacio').text(nombreEspacio);
+	 		$('#modalEditarReserva #nombreGrupo').text(nombreGrupo);
+	 		$('#modalEditarReserva #reservaColor').css("background",color);
+	 		$('#modalEditarReserva #enlaceEditar').prop("href", baseURL + "gestor/editar/" + reserva.id)
+	 		
+	 		if(accion == 'Ver'){
+	 			$('#modalEditarReserva').modal('show');
+	 		}
+	 		else if(accion == 'Eliminar'){
+	 			modalEliminarReservaSimple();	
+	 		}
+	 		
+	 		
 	 	});
 	 	
 	 	$("#btn-guardar").click(function(){
@@ -55,6 +65,10 @@ $(document).ready(function(){
 	 	
 	 	$('#selec-busqueda').change(function(){
 	 		$('#texto-busqueda').val("");
+	 		if ($(this).val()=="user")
+	 			$('#texto-busqueda').prop("placeholder", "Introduce nombre de usuario");
+	 		else
+	 			$('#texto-busqueda').prop("placeholder", "Introduce nombre de espacio");
 	 	});
 	 	
 	 	$("#btn-eliminar").click(function(){
@@ -92,48 +106,7 @@ $(document).ready(function(){
 				$("#selec-busqueda").val()
 				response=autocompletarEspacio(tag, response);
 			}
-				/*		$.ajax({
-					url: '/reservas/usuarios/tag/' + tag,
-					type: 'GET',
-					contentType: 'application/json',
-					success : function(datos) {				
-						response($.map(datos,function(item){
-							
-								var obj = new Object();
-								obj.label = item.id; 
-								obj.value = item.username;
-								obj.info = item.email;
-								return obj;
-			
-						}))
-						
-					},    
-				    error : function(xhr, status) {
-				        alert('Disculpe, existió un problema');
-				    }
-				});
-		},
-		minLength: 2
- //}else{}
-					url: '/reservas/espacios/tag/' + tag,
-					type: 'GET',
-					contentType: 'application/json',
-					success : function(datos) {				
-						response($.map(datos,function(item){
-							
-								var obj = new Object();
-								obj.label = item.id; 
-								obj.value = item.nombreEspacio;
-								obj.info = item.edificio;
-								return obj;
-			
-						}))
-						
-					},    
-				    error : function(xhr, status) {
-				        alert('Disculpe, existió un problema');
-				    }
-				});*/
+				
 		},
 		minLength: 2
 	}).autocomplete("instance")._renderItem = function(ul,item){	
@@ -146,6 +119,7 @@ $(document).ready(function(){
 		console.log("id:" + item.label);
 		console.log("titulo:" + item.value);
 		console.log("subtitulo:" + item.info);
+		/*
 			var inner_html =  '<a href="/reservas/gestor/gestion-reservas/'+direccion+'/'+item.label+'/page/1">'+
 							  '<div class="col-md-2" style="padding-top:3px;">' +
 			                  '<img class="media-object" src="http://placehold.it/50x50"/>' + 
@@ -154,12 +128,24 @@ $(document).ready(function(){
 			                  '<p>'+ item.value +'</p>' + 
 			                  '<p class="small text-muted">'+ item.info +'</p>'
 			                  '</div></a>';
+			                  */
+		var inner_html = '<a href="/reservas/gestor/gestion-reservas/'+direccion+'/'+item.label+'/page/1">'+
+						'<div class="media"><div class="media-left">' + 
+				        '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
+				        '</div>' + 
+				        '<div class="media-body">' + 
+				        '<h5 class="media-heading">'+ item.value +'</h5>' + 
+				        '<p class="small text-muted">'+ item.info +'</p>' + 
+				        '</div></div></a>';
+        
 	            return $("<li></li>")
 	                    .data("item.autocomplete", item)
 	                    .append(inner_html)
 	                    .appendTo(ul);
 		
 	};
+	
+});
 		
 	function autocompletarUser(tag, respuesta)
 	{
@@ -185,7 +171,7 @@ $(document).ready(function(){
 			}
 		});
 		return item;
-	};
+	}
 	
 	function autocompletarEspacio(tag, respuesta)
 	{
@@ -213,13 +199,9 @@ $(document).ready(function(){
 		return item;
 	}
 		
-		$("#boton-busqueda").click(function(){
-			var id_busqueda = $("#id-busqueda").val();
-			var direccion;
-			if ($('#selec_busqueda').val()=="user")
-				direccion="user";
-			else
-				direccion="espacio";
-			window.location = '/reservas/gestor/gestion-reservas/'+direccion+'/'+id_busqueda+'/page/1';
-		});
-});
+	function modalEliminarReservaSimple(){
+		$('#modalEditarReserva').modal('hide');
+		$('[role="tooltip"]').popover('hide');
+		$('#modalEliminarReservaSimple').modal('show');	
+	}
+

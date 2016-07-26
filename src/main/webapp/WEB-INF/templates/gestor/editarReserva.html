@@ -57,7 +57,7 @@
                  <div class="form-group">
                      <label>Usuario:</label>
                       <div>
-                         <input id="idUser" name="User" type="text" class="form-control" th:value="${Reserva.User.id}" th:text="${Reserva.User.username}"/>
+                         <input id="idUser" name="User" type="text" class="form-control" th:value="${Reserva.User.username}" />
                       </div>
                  </div>
                  
@@ -99,7 +99,7 @@
                    	<label>Grupo:</label>
                   		<select id="selec_grupo" class="form-control" >            
                    	   		<option th:each="s : ${GruposReservasUser}"
-                   	   			th:text="${s.getNombreGrupo()}"
+                   	   			th:text="${s.nombreCorto}"
                    	   			th:value="${s.id}"
                    	   			th:selected="${s.id== Reserva.getGrupoReserva().id}">
                    	   			
