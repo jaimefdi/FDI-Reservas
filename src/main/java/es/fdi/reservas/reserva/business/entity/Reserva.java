@@ -150,7 +150,7 @@ public class Reserva{
 		this.fin = fecha_fin;
 	}
 	
-
+	
 	public User getUser() {
 		return user;
 	}
@@ -232,6 +232,11 @@ public class Reserva{
 		int index = getRegla(regla);
 		String currentValue = reglasRecurrencia.get(index);
 		reglasRecurrencia.set(index, currentValue + ";" + valor);
+	}
+	
+	public void removeValorRegla(String regla, String nuevoValor){
+		int index = getRegla(regla);
+		reglasRecurrencia.set(index, nuevoValor);
 	}
 	
 	private int diaSemana(String d){

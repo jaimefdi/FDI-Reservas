@@ -271,17 +271,6 @@ span.badge{
     text-align: left;
 }
 
-button.green{
-    border-bottom: 3px solid #4CAE4C;
-}
-
-button.blue{
-    border-bottom: 3px solid #2E6DA4;
-}
-
-button.yellow{
-    border-bottom: 3px solid #EEA236;
-}
 
 .panel-default{
    border-color: #CCC;
@@ -346,8 +335,7 @@ button.yellow{
 
 .filtro{
 	background-color: #CCC;
-	padding: 10px 15px;
-	-border-radius: 4px;
+	margin-bottom: 7px;
 }
 
 .jumbotron{
@@ -396,8 +384,6 @@ button.yellow{
 #repetir{
 	display:none;
 }
-
-
 
 
 .ui-autocomplete {
@@ -466,6 +452,26 @@ button.yellow{
 	color: #777;
 }
 
+ol{
+	list-style: none;
+	padding: 0px;
+}
+
+.alert{
+	margin-top: 10px;
+	padding: 10px;
+	padding-bottom: 5px;
+	border-radius: 0px;
+	border: none;
+	border-left: 5px solid;
+}
+
+.alert-danger{
+	border-color: #a94442;
+	padding-top: 20px;
+	padding-bottom: 15px;
+}
+
 /**/
 .button {
 	background:#7f8c8d;
@@ -484,101 +490,6 @@ button.yellow{
 	margin-right:10px;
 }
  
-/*Colores*/
-.button.blue {
-	background:#3498db;
-	box-shadow:0px 3px 0px #266792;
-}
- 
-.button.red {
-	background:#ff0000;
-	box-shadow:0px 3px 0px #804040;
-}
-
-.button.green {
-	background:#00df00;
-	box-shadow:0px 3px 0px #008000;
-}
-
-.button.orange {
-	background:#ff8000;
-	box-shadow:0px 3px 0px #ff0000;
-}
- 
- 
-/*Tamaños*/
-.button.medium {
-	width:350px;
-}
- 
- 
-.button.large {
-	width:450px;
-}
- 
- 
-.button.radius {
-	border-radius:50px;
-}
- 
-/*Efectos, Hover*/
-.button:hover {
-	box-shadow:0px 0px 0px;
-	padding-top:7px;
-}
-
-
-
-.ui-autocomplete {
-   max-height: 150px;
-   overflow-y: auto;
-   /* prevent horizontal scrollbar */
-   overflow-x: hidden;
- }
- /* IE 6 doesn't support max-height
-  * we use height instead, but this forces the menu to always be this tall
-  */
- * html .ui-autocomplete {
-   height: 100px;
- }
-
-.ui-menu > .ui-menu-item{
-	height: 60px;
-	padding:2px 2px 0px 2px ;
-}
-
-.ui-autocomplete-input{
-	width: 100%;
-	font-family: 'Open Sans', sans-serif;
-}
-
-.ui-widget{
-	font-family: 'Open Sans', sans-serif;	
-}
-
-.ui-widget p{
-	margin-bottom: 2px;	
-}
-
-.ui-widget-content{
-	background: #fff;
-}
-
-
-.ui-menu .ui-state-focus,
-.ui-menu .ui-state-active{
-	margin: 0px;	
-}
-
-.ui-state-focus,
-.ui-widget-content .ui-state-focus,
-.ui-widget-header .ui-state-focus{
-	border: none;
-	background: #dadada;
-	font-weight: normal;
-	color: #212121;
-}
-}
 
 #demo1{
 	max-height: 166px;
@@ -592,6 +503,10 @@ button.yellow{
 .modal-content,
 .popover{
 	border-radius: 0;	
+}
+
+.popover{
+	width: 275px;
 }
 
 .modal-header{
@@ -631,3 +546,27 @@ button.yellow{
 td i{
   margin: 0px 7px;	
 }
+
+td a i{
+  color: #333;
+}
+
+.panel-admin{
+	margin: 10px 0px;
+	padding: 15px;
+	-padding-bottom: 5px;
+	background: #777;
+	color: #FFF;
+	-border-bottom: 10px solid #555;
+	
+}
+
+.btn-normal{
+	background: #2E6DA4;
+	padding: 6px 20px;
+	border: 1px solid #2E6DA4;
+	font-weight: bold;
+	color: #FFF;
+}
+
+#00a550

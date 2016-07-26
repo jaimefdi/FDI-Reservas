@@ -21,19 +21,19 @@
 <!-- Filtro -->
 <div class="row">
 	<div class="col-xs-10 col-xs-offset-1 filtro">
-	    <div class="col-md-4 text-center">
+	    <div class="col-xs-4 text-center">
 	         <div class="checkbox">		   
 			       FILTROS:		    
 			 </div>
 		</div>   
-		<div class="col-md-4 text-center">
+		<div class="col-xs-4 text-center">
 	         <div class="checkbox">
 			    <label>
 			      <input id="checkMan" type="checkbox"/> De mañana
 			    </label>
 			 </div>
 		</div>
-		<div class="col-md-4 text-center">
+		<div class="col-xs-4 text-center">
 	         <div class="checkbox">
 			    <label>
 			      <input id="checkTar" type="checkbox"/> De tarde
@@ -42,9 +42,22 @@
 		</div>
 	</div>		
     
-</div><br/>
+</div>
 <!-- /.row -->
-
+ 
+<!-- Alerta solapamiento -->
+<div class="row">
+	<div class="col-xs-10 col-xs-offset-1" style="padding-left: 0px; padding-right:0px;">
+	    <div class="alert alert-danger" role="alert" style="display:none;">
+	        <div class="media">	
+	        	<button type="button" class="close" data-dismiss="alert" aria-label="Close">			 
+				  <i class="zmdi zmdi-close"> </i>
+				</button>		 
+			    <b><p id="alertaMsg" style="margin-bottom: 5px;"></p></b>		 
+			</div>	
+	    </div> 
+    </div> 
+</div>
   
  <div class="row">
     <!-- Calendario -->
@@ -118,7 +131,7 @@
 	                         	   <select id="selec_grupo" class="form-control">
 	                         	   	<option value="0">Ninguno</option>
 	                         	   	<option th:each="g : ${GruposReservas}"
-	                         	   			th:text="${g.nombreGrupo}"
+	                         	   			th:text="${g.nombreCorto}"
 	                         	   			th:value="${g.id}">
 	                         	   	</option>
 	                         	   </select>                     	                    	

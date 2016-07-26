@@ -2,6 +2,8 @@ package es.fdi.reservas.reserva.business.boundary;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,7 +49,7 @@ public class ReservaService {
 		grupo_repository = gr;
 	}
 
-	private List<Reserva> getAllReservasConflictivas(Long idEspacio, DateTime start, DateTime end){
+	public List<Reserva> getAllReservasConflictivas(Long idEspacio, DateTime start, DateTime end){
 		List<Reserva> resRecurrentes = new ArrayList<Reserva>();
 		List<Reserva> resConflictivas = new ArrayList<Reserva>();
 		List<Reserva> resAux = new ArrayList<Reserva>();
@@ -193,9 +195,7 @@ public class ReservaService {
 		List<Reserva> reservas = getAllReservasConflictivas(idEspacio, start, end);
 		for(Reserva r: reservas ){
 			if ( r.solapa(reserva) && ! reservaActualizada.getId().equals(r.getId())) {
-				throw new ReservaSolapadaException(	String.format("La reserva %s, solapa con la reserva %s", 
-								  					reserva.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" + 
-								  					reserva.getFin().toString("HH:mm"), 
+				throw new ReservaSolapadaException(	String.format("La reserva que estás intentando realizar solapa con la reserva %s",						  					 
 								  					r.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" +
 								  					r.getFin().toString("HH:mm")));
 			}
@@ -208,7 +208,9 @@ public class ReservaService {
 		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
 		r.setReservaColor(reservaActualizada.getColor());
 		r.setGrupoReserva(grupo_repository.findOne(reservaActualizada.getIdGrupo()));
-		r.setEstadoReserva(EstadoReserva.fromEstadoReserva(reservaActualizada.getEstado()));
+		if(reservaActualizada.getEstado() != null){
+		  r.setEstadoReserva(EstadoReserva.fromEstadoReserva(reservaActualizada.getEstado()));
+		}
 		
 		return reserva_repository.save(r);
 	}
@@ -490,6 +492,49 @@ public class ReservaService {
 //		return espacio_repository.getEspacioPorFacultad(nombreFacultad);
 //		//return null;
 //	}
+
+
+	public void cambiarDeCalendario(Long idGrupo2, ReservaDTO rfDTO) {
+		Reserva reserva = getReserva(rfDTO.getId());
+		reserva.setComienzo(rfDTO.getStart());
+		reserva.setFin(rfDTO.getEnd());
+		GrupoReserva grupo = grupo_repository.getOne(idGrupo2);
+		reserva.setGrupoReserva(grupo);
+		
+		reserva_repository.save(reserva);
+		
+	}
+
+	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estado) {
+		return reserva_repository.reservasPendientesUsuario(idUsuario, estado);
+	}
+
+	public void eliminarExdate(ReservaDTO rf) {
+		Reserva r = reserva_repository.findOne(rf.getId());
+		List<String> s = r.getReglasRecurrencia();
+		String[] w = s.get(1).split(":");
+		String[] st = w[1].split(";");
+		List<String> aux = new ArrayList<>();
+		int i = 0;
+		if(st.length == 1){
+			s.remove(1);
+		}
+		else{// si tiene más de un EXDATE
+			while(i < st.length-1){
+				aux.add(st[i]);
+				i++;
+			}
+			String q = "EXDATE:" + String.join(";", aux);
+			r.removeValorRegla(w[0], q);
+		}
+		
+		reserva_repository.save(r);
+		
+	}
+
+
+
+	
 
 	
 }

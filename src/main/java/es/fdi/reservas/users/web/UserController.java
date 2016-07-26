@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
-
+import es.fdi.reservas.reserva.business.entity.Edificio;
+import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.web.EdificioDTO;
+import es.fdi.reservas.reserva.web.EspacioTipoDTO;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -23,14 +28,15 @@ import es.fdi.reservas.users.business.entity.User;
 @Controller
 public class UserController {
 
-	private UserService user_service;
-	
+	private UserService user_service;	
 	private ReservaService reserva_service;
+	private GrupoReservaService grupo_service;
 	
 	@Autowired
-	public UserController(UserService userService, ReservaService reservaService){
+	public UserController(UserService userService, ReservaService reservaservice, GrupoReservaService grs){
 		user_service = userService;
-		reserva_service = reservaService;
+		reserva_service = reservaservice;
+		grupo_service = grs;
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
@@ -42,15 +48,14 @@ public class UserController {
     public String usuarios() {
         return "redirect:/administrar/usuarios/1";
     }
-		
-	@RequestMapping(value={"/admin/nuevoUsuario"}, method=RequestMethod.GET)
-	public String nuevoUsuario(Model model){
-		//ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
+	
+	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.GET)
+	public ModelAndView nuevoUsuario(){
+		ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
 		User u = user_service.getCurrentUser();
-		model.addAttribute("User", u);
-		model.addAttribute("User", new User());
-		model.addAttribute("view", "admin/nuevoUsuario");
-	   return "index";
+		model.addObject("User", u);
+		model.addObject("view", "index");
+	   return model;
 	}
 	
 	@RequestMapping(value="/admin/nuevoUser", method=RequestMethod.GET)
@@ -64,6 +69,7 @@ public class UserController {
 	   return "redirect:/admin/administrar";
 		//return "nuevoUsuario";
 	}
+	
 	
 	@RequestMapping(value = "usuario/tag/{tagName}", method = RequestMethod.GET)
 	public List<UserDTO> usuariosFiltro(@PathVariable("tagName") String tagName) {
@@ -80,6 +86,7 @@ public class UserController {
 		}
 		 
 		return result;
+
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -89,12 +96,15 @@ public class UserController {
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
 		model.addObject("view", "admin/administrar");
+
 		return model;
 	}
 	
 	@RequestMapping(value="/admin/administrar/usuarios/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
+
+	
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
         Page<User> currentResults = user_service.getUsuariosPaginados(pageRequest);
         
@@ -110,13 +120,14 @@ public class UserController {
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_usuarios");
 		
-		
         return "index";
     }
+
 	
 	@RequestMapping(value="/admin/administrar/usuarios/editar/{idUser}", method=RequestMethod.GET)
 	public String editarUsuario(@PathVariable("idUser") long idUser, Model model){
 		User u = user_service.getCurrentUser();
+
 		model.addAttribute("User", u);
 		model.addAttribute("usuario", user_service.getUser(idUser));
 		model.addAttribute("facultades", reserva_service.getFacultades());
@@ -125,10 +136,24 @@ public class UserController {
 		return "index";
 	}
 	
+	@RequestMapping({"/administrar/administrar_espacios"})
+	public ModelAndView administrarEspacios(){
+		ModelAndView model = new ModelAndView("index");
+		User u = user_service.getCurrentUser();
+		model.addObject("User", u);
+		model.addObject("espacios", reserva_service.getEspacios());
+		model.addObject("view", "administrar_espacios");
+		return model;
+	}
+
+	
+
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)
 	public ModelAndView verPerfil(){
 		ModelAndView model = new ModelAndView("index");
-		model.addObject("User", user_service.getCurrentUser());
+		User u = user_service.getCurrentUser();
+		model.addObject("User", u);
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "perfil");
 		
 	   return model;

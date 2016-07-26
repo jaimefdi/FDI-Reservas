@@ -4,7 +4,13 @@
 	<meta charset="utf-8"/>
 
 	<title>UCM RESERVAS - Añadir Facultad</title>
-   
+     <!-- JS -->
+    <script 
+        src="//code.jquery.com/jquery-2.1.4.min.js"
+        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    <script
+        src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+        th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
 </head>
 <body>
 
@@ -20,6 +26,13 @@
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-building"></i></span>
                                   <input name="nombreFacultad" type="text" class="form-control" placeholder="Nombre de facultad"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ejemplo_email_1">Direccion</label>
+                                <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-at"></i></span>
+                                  <input name="dir" type="text" class="form-control" placeholder="Introduce la direccion"/>
                                 </div>
                             </div>
                             

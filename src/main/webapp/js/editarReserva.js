@@ -33,7 +33,9 @@ $(document).ready(function(){
 		
 		
 		$("#enlaceGuardar").click(function(){
-
+			
+			
+			
 			reserva.id = idReserva;
 			reserva.title = $("#idAsunto").val();
 	    	reserva.start = es.ucm.fdi.dateUtils.toIso8601($("#datetimepicker1").val());
@@ -45,8 +47,32 @@ $(document).ready(function(){
 	    	reserva.reglasRecurrencia = reglas;
 	    	
 	    	console.log(reserva);
-	    	editarReserva(reserva,reqHeaders);
+	    	if(esRecurrente(reserva)){
+	    		$("#modalRecurrente").modal("show");
+	    	}
+	    	else{
+	    		editarReserva(reserva,reqHeaders);
+	    	}
+
   	
+		});
+		
+		// Editar solo una reserva de la serie
+		$('#solo_esta').click(function(){
+			var b = reserva.start;			
+			var bb = new moment(b).format("DD/MM/YYYY");
+			var exDate = "EXDATE:VALUE=" + bb;
+			
+			var recurrencia = [];
+			recurrencia.push(exDate);
+			reserva.reglasRecurrencia = recurrencia;
+			//editRR2(reserva, reqHeaders);	
+			editarReservaRecurrente(reserva, reqHeaders);	
+		});
+		
+		// Editar todas las reservas de la serie
+		$('#toda_la_serie').click(function(){
+			editarReserva(reserva,reqHeaders);
 		});
 		
 		
@@ -124,4 +150,66 @@ function editarReserva(reserva, reqHeaders){
 			}
 		});
 	
+}
+
+
+function editRR2(reserva, reqHeaders, revertFunc){
+	var r = {};
+	$.extend(true, r, reserva);// clona el objeto
+	r.reglasRecurrencia = [];
+	$.ajax({
+		url: baseURL + 'nuevaReservaAJAX',
+		headers : reqHeaders,
+		type: 'POST',		 				 			
+		data: JSON.stringify(r),
+		contentType: 'application/json',
+		error: function(xhr, status){
+			var x = JSON.parse(xhr.responseText);
+			alert(x.msg);
+			revertFunc();
+		}
+	}).then(function(){
+		editarReservaRecurrente(reserva,reqHeaders);
+	});
+}
+
+function editarReservaRecurrente(reserva, reqHeaders){	 		
+	$.ajax({
+		url: baseURL + 'editarReserRecurrente',
+		headers : reqHeaders,
+		type: 'POST',		 				 			
+		data: JSON.stringify(reserva),
+		contentType: 'application/json',
+		success : function(datos) {  
+			
+		},
+		error : function(xhr, status) {			
+ 			alert('Disculpe, existió un problema');			
+		}
+	}).then(function(){
+		reserva.reglasRecurrencia = [];
+		nuevaReserva(reserva, reqHeaders);
+	});
+	
+}
+
+function esRecurrente(reserva){
+	return reserva.reglasRecurrencia.length > 0;
+}
+
+function nuevaReserva(reserva, reqHeaders){
+	$.ajax({
+			url: baseURL + 'nuevaReservaAJAX',
+			headers : reqHeaders,
+			type: 'POST',		 				 			
+			data: JSON.stringify(reserva),
+			contentType: 'application/json',
+			success : function(datos) {  
+				 window.location = "/reservas/mis-reservas";
+			},
+			error: function(xhr, status){
+				var x = JSON.parse(xhr.responseText);
+				alert(x.msg);			
+			}
+		});
 }

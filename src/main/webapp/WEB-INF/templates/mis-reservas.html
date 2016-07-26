@@ -65,7 +65,7 @@
 						<td>
 							<a th:attr="data-id=${r.id}, data-asunto=${r.asunto}, data-start=${#joda.isoDateTime(r.comienzo)},
 									    data-end=${#joda.isoDateTime(r.fin)}, data-espacio=${r.espacio.nombreEspacio},
-									    data-grupo=${r.grupoReserva.id},
+									    data-grupo=${r.grupoReserva != null} ? ${r.grupoReserva.nombreCorto} : 'Ninguno',
 									    data-recurrenteId=${r.startRecurrencia}, data-reservaColor=${r.reservaColor}, data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>									
 							<a th:href="@{'/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a th:attr="data-id=${r.id},data-recurrenteId=${r.startRecurrencia},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>						
@@ -155,7 +155,7 @@
 		         </div>
 		        
                  <div class="row">
-                 	<div class="col-md-6">
+                 	<div class="col-xs-6">
 		                 <!-- Fecha inicio -->
 		                 <div class="form-group">
 		                     <label class="col-md-2 control-label">Desde: </label>
@@ -164,7 +164,7 @@
 		                     </div>
 		                 </div>
 	                 </div>
-	                 <div class="col-md-6">
+	                 <div class="col-xs-6">
 		                 <!-- Fecha fin -->
 		                 <div class="form-group">
 		                     <label class="col-md-2 control-label">Hasta: </label>
@@ -176,7 +176,7 @@
                  </div>               
                  
                   <div class="row">
-                 	<div class="col-md-6">
+                 	<div class="col-xs-6">
 		                 <!-- Espacio -->            
 		                   <div class="form-group">
 		                      <label class="col-md-3 control-label">Espacio: </label>
@@ -186,7 +186,7 @@
 		                   </div> 
                      </div>
                      
-                     <div class="col-md-6">
+                     <div class="col-xs-6">
 		                 <!-- Grupo -->            
 		                   <div class="form-group">
 		                      <label class="col-md-2 control-label">Grupo: </label>
@@ -199,11 +199,11 @@
 		          </div> 
 		          
 		           <div class="row">
-                 	<div class="col-md-6">
+                 	<div class="col-xs-6">
 		                 <!-- Color -->            
 		                   <div class="form-group">
-		                      <label class="col-md-2 control-label">Color: </label>
-		                     <div class="col-md-10">
+		                      <label class="col-xs-2 control-label">Color: </label>
+		                     <div class="col-xs-10">
 		                          <span id="reservaColor" class="red" ></span>                     
 		                     </div>
 		                   </div> 
@@ -246,20 +246,28 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Eliminar reserva periódica</h4>
+            <h4 class="modal-title" id="myModalLabel">Eliminar Reserva Periódica</h4>
           </div>
           <div class="modal-body">
           	<div class="row">
-            	<div class="col-md-12">
-          	  	 <button id="solo_esta" class="btn-rec gray">Sólo éste</button>
-          	  	 Se eliminará sólo este evento.
+            	<div class="col-xs-12">
+            		<div class="col-xs-4">
+            			 <button id="solo_esta" class="btn-normal">Sólo ésta</button>
+            		</div>
+            		<div class="col-xs-8" style="padding-top:6px;">
+            			 Se eliminará sólo esta reserva.
+            		</div>
           		</div>
           	</div>
           	<br/>
           	<div class="row">
-          		<div class="col-md-12">
-          	  	 <button id="toda_la_serie" class="btn-rec gray">Toda la serie</button>
-          	  	 Se eliminarán todos los eventos.
+          		<div class="col-xs-12">
+	          		<div class="col-xs-4">
+	          			<button id="toda_la_serie" class="btn-normal">Toda la serie</button>
+	          		</div>         	  	 
+	          	  	<div class="col-xs-8" style="padding-top:6px;">
+	          	  	 	Se eliminarán todas las reservas de la serie.
+	          	  	</div>        	  	
           		</div>
           	</div>
           </div>

@@ -106,8 +106,8 @@
             	$("#demo").collapse();
             }else if(pathname.indexOf("administrar") >= 0){
             	$("#li_administrar").addClass("active");
-//             	$("#demo").collapse();
-//             	$("#demo1").collapse();
+            	$("#demo").collapse();
+            	$("#demo1").collapse();
             }
             else if(pathname.indexOf("grupo") >= 0){
             	//$("#li_porfecha").addClass("active");
@@ -146,7 +146,7 @@
         							
         								var obj = new Object();
         								obj.label = item.id; 
-        								obj.value = item.nombreGrupo;      								
+        								obj.value = item.nombreCorto;      								
         								return obj;
         			
         						}))
@@ -164,7 +164,7 @@
 								
         						for(var i in datos){
         							$("#demo1").append('<li><a href="/reservas/grupo/'+ datos[i].id +'">'
-        									+ datos[i].nombreGrupo + '</a></li>');
+        									+ datos[i].nombreCorto + '</a></li>');
         						}
         						
         					},    
@@ -239,6 +239,15 @@
             <ul class="nav navbar-right top-nav">
                 <!-- Notificaciones  -->
                 <li class="dropdown">
+                    <a href="javascript.;" class="dropdown-toggle" data-toggle="dropdown"><span class="badge" th:text="${reservasPendientes}"></span> <i class="zmdi zmdi-notifications-none zmdi-hc-lg"> </i> <i class="fa fa-angle-down"></i></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a th:href="@{/edificios}">Ver pendientes</a>
+                        </li> 
+                     </ul>  
+                </li>
+                
+                <li class="dropdown">
                     <a href="javascript.;" class="dropdown-toggle" data-toggle="dropdown"><i class="zmdi zmdi-plus zmdi-hc-lg"> </i> <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu alert-dropdown">
                         <li>
@@ -247,6 +256,7 @@
                         <li>
                             <a th:href="@{/grupo/nuevo}">Nuevo grupo </a>
                         </li>
+                        <!--/*/  <th:block sec:authorize="hasRole('ROLE_GESTOR') || hasRole('ROLE_ADMIN')"> /*/-->
                         <li>
                             <a th:href="@{/admin/nuevoUsuario}">Nuevo usuario </a>
                         </li>
@@ -259,7 +269,7 @@
                         <li>
                             <a th:href="@{/admin/nuevoEspacio}">Nuevo espacio </a>
                         </li>
-                        
+                         <!--/*/  </th:block> /*/-->
                     </ul>
                 </li>
                 <!-- Perfil -->
@@ -305,11 +315,6 @@
                         	<a th:href="@{/admin/administrar}"><i class="fa fa-cog"></i> Administrar</a>
                     	</li>
                     	</th:block>
-                    	<th:block sec:authorize="hasRole('ROLE_GESTOR')">
-                		<li id="li_administrar">
-                        	<a th:href="@{/admin/administrar}"><i class="fa fa-cog"></i> Administrar</a>
-                    	</li>
-                    	</th:block>
                 	<!--/*/  <th:block sec:authorize="hasRole('ROLE_GESTOR')"> /*/-->
                    	 	<li id="li_gestionar" >
                         	<a th:href="@{/gestor}"><i class="fa fa-book"> </i> Gestionar Reservas</a>
@@ -346,7 +351,7 @@
 	                    		
                     		</li>
                     		<li th:each="g : ${GruposReservas}">
-                    			<a th:href="@{'/grupo/'+ ${g.id}}" th:inline="text">[[${g.nombreGrupo}]]
+                    			<a th:href="@{'/grupo/'+ ${g.id}}" th:inline="text">[[${g.nombreCorto}]]
 		                    		<!-- <div class="pull-right"> <i th:attr="data-idGrupo=${g.id}" class="fa fa-trash" aria-hidden="true" title="Eliminar" style="visibility:hidden;"></i></div>  -->
                     			</a>
                     		</li>

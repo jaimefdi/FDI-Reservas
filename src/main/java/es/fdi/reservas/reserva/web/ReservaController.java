@@ -1,13 +1,15 @@
 package es.fdi.reservas.reserva.web;
 
 import java.util.List;
+
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +18,7 @@ import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
-import es.fdi.reservas.reserva.business.entity.GrupoReserva;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -58,6 +60,8 @@ public class ReservaController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
+        List<Reserva> pendientes = reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE);
+        model.addAttribute("reservasPendientes", pendientes.size()); 
 		model.addAttribute("User", u);
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "mis-reservas");
@@ -140,7 +144,9 @@ public class ReservaController {
     public ModelAndView reservasFecha() {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
+		List<Edificio> edificios = reserva_service.getEdificiosFacultad(u.getFacultad().getId());
 		model.addObject("User", u);
+		model.addObject("Edificios", edificios);
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "reservas-fecha");
 		
@@ -195,8 +201,38 @@ public class ReservaController {
 	@RequestMapping(value="/editar/{idReserva}", method=RequestMethod.GET)
     public String editarReserva(@PathVariable("idReserva") long idReserva, Model model) {
 		User u = user_service.getCurrentUser();
-		model.addAttribute("User", u);	
+		model.addAttribute("User", u);
 		model.addAttribute("Reserva", reserva_service.getReserva(idReserva));
+		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addAttribute("view", "editarReserva");
+		
+
+        return "index";
+    }
+	
+	@RequestMapping(value="/editar/{idReserva}/{recurrenteId}", method=RequestMethod.GET)
+    public String editarReservaRecurrente(@PathVariable("idReserva") long idReserva, @PathVariable("recurrenteId") String recurrenteId, Model model) {
+		User u = user_service.getCurrentUser();
+		model.addAttribute("User", u);
+		String[] w = recurrenteId.split("_");
+		Reserva r = reserva_service.getReserva(idReserva);
+		//cambiar el comienzo y fin con w[1]
+		String[] s = w[1].split("-");
+		DateTime currentStart = r.getComienzo();
+		DateTime currentEnd = r.getFin();
+		Long range = currentEnd.getMillis() - currentStart.getMillis();
+		
+		DateTime newStart = currentStart.withDayOfMonth(Integer.valueOf(s[0]))
+						.withMonthOfYear(Integer.valueOf(s[1]))
+						.withYear(Integer.valueOf(s[2]));
+		
+		r.setComienzo(newStart);		
+		DateTime newEnd = newStart.plus(range);		
+		r.setFin(newEnd);
+		
+		// el newStart y el newEnd pasarlos cen el modelo
+		
+		model.addAttribute("Reserva", r);
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "editarReserva");
 		

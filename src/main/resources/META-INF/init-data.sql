@@ -24,6 +24,30 @@ INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(23
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(24,'Facultad de Psicología','C/ José Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(25,'Facultad de Trabajo Social','C/ José Antonio Novais, 12', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(26,'Facultad de Veterinaria','C/ José Antonio Novais, 12', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(3,'Facultad de Ciencias Biológicas','www.biologicas.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(4,'Facultad de Ciencias de la Documentación','www.documentacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(5,'Facultad de Ciencias de la Información','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(6,'Facultad de Ciencias Económicas y Empresariales','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(7,'Facultad de Ciencias Físicas','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(8,'Facultad de Ciencias Geológicas','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(9,'Facultad de Ciencias Matemáticas','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(10,'Facultad de Ciencias Políticas y Sociología','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(11,'Facultad de Ciencias Químicas','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(12,'Facultad de Comercio y Turismo','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(13,'Facultad de Derecho','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(14,'Facultad de Educación','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(15,'Facultad de Enfermería, Fisioterapia y Podología','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(16,'Facultad de Estudios Estadísticos','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(17,'Facultad de Farmacia','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(18,'Facultad de Filología','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(19,'Facultad de Filosofía','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(20,'Facultad de Geografía e Historia','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(21,'Facultad de Medicina','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(22,'Facultad de Odontología','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(23,'Facultad de Òptica y Optometría','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(24,'Facultad de Psicología','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(25,'Facultad de Trabajo Social','www.ccinformacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(26,'Facultad de Veterinaria','www.ccinformacion.ucm.es', false);
 
 INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId) VALUES (1, 'root', 'root@ucm.es', '$2a$10$//HU8yTgOoLrZX6z9cgXhuR/IJki.BtS/ZM4Pr8s/zBDCFIT.I3P6', true, false, false, false, 2);
 INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', true, false, false, false, 1);
@@ -50,7 +74,7 @@ INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, E
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(6,'Aula 3',80,true,true,1,0,0,0, false);
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(7,'Aula 4',80,true,true,1,0,0,0, false);
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(8,'Aula 5',80,true,true,1,0,0,0, false);
-INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(9,'Lab. 1',50,true,true,3,2,0,0, false);
+INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(9,'Lab. 1',50,true,true,1,2,0,0, false);
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(10,'Aula 1280',80,true,true,2,0,0,0, false);
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(11,'Aula 1290',80,true,true,2,0,0,0, false);
 

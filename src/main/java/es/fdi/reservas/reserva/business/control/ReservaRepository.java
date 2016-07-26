@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 
 
@@ -40,6 +42,9 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long>{
 	public List<Reserva> reservasEspacioDeTarde(@Param("idEspacio")Long idEspacio);
 
 	public List<Reserva> findByGrupoReservaIdAndUserId(Long idGrupo, Long idUsuario);
+	
+	@Query("FROM Reserva r WHERE (r.user.id = :idUsuario) AND (r.estadoReserva = :estado)")
+	public List<Reserva> reservasPendientesUsuario(@Param("idUsuario") Long idUsuario,@Param("estado") EstadoReserva estado);
 	
 	
 }

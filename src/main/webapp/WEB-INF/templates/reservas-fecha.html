@@ -26,9 +26,11 @@
                     <div class="form-group">
                         <label for="ejemplo_1" class="col-md-2 control-label">Edificio:</label>
                         <div class="col-md-10">
-                            <select class="form-control">
-                              <option>Multiusos</option>
-                              <option>Facultad de Informática</option> 
+                            <select id="selecEdificios" class="form-control">
+                              <option th:each="e : ${Edificios}"
+                              		  th:value="${e.id}"
+                              		  th:text="${e.nombreEdificio}">
+                              </option>                             
                             </select>    
                         </div>
                      </div>
@@ -39,7 +41,7 @@
                        <label for="ejemplo_3" class="col-md-3 control-label">Desde:</label>
                         <div class="col-md-9">
                          <div class='input-group date' >
-                      <input name="fecha_fin" id='datetimepicker1' type='text' class="form-control" />
+                      <input id='datetimepicker1' type='text' class="form-control" th:readonly="readonly"/>
                       <span class="input-group-addon">
                           <span class="fa fa-calendar"></span>
                       </span>
@@ -53,7 +55,7 @@
                        <label for="ejemplo_3" class="col-md-3 control-label">Hasta:</label>
                         <div class="col-md-9">
                            <div class='input-group date' >
-                              <input name="fecha_fin" id='datetimepicker2' type='text' class="form-control" />
+                              <input id='datetimepicker2' type='text' class="form-control" th:readonly="readonly" />
                               <span class="input-group-addon">
                                   <span class="fa fa-calendar"></span>
                               </span>
@@ -65,7 +67,7 @@
 
             <div class="row">                  
                 <div class="col-md-12 text-right">
-                   <button type="submit" class="btn-rec gray">BUSCAR <i class="fa fa-angle-right"></i></button>
+                   <button id="filtrarBusqueda" type="button" class="btn-normal">BUSCAR <i class="fa fa-angle-right"></i></button>
                 </div>
             </div>
               
@@ -86,26 +88,12 @@
                         <thead>
                             <tr>                                              
                                 <th>Espacio</th>
+                                <th>Desde</th>
+                                <th>Hasta</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Aula 5</td>
-                                <td>Reservar</td>                                            
-                            </tr>
-                            <tr>
-                                <td>Aula 7</td>
-                                <td>Reservar</td>                                               
-                            </tr>
-                             <tr>
-                                <td>Aula 1</td>
-                                <td>Reservar</td>                                               
-                            </tr>
-                             <tr>
-                                <td>Aula 2</td>
-                                <td>Reservar</td>                                               
-                            </tr>
+                        <tbody>                     
                             
                         </tbody>
                     </table>
@@ -115,22 +103,10 @@
 </div>
 <!-- /.row -->
 
-<script>
-
-	var d = new Date();
-	var fecha = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-	var hora = d.getHours();
-	var minutos = redondeoMinutos(d.getMinutes());
-	var comienzo = hora + ':' + minutos;
-	var fin = hora + 1 + ':' + minutos;
-	var start = fecha + ' ' + comienzo;
-	var end = fecha + ' ' + fin;
-	
-	// inicialización de los datetimepickers
-	$("#datetimepicker1").attr("value",start);
-	$("#datetimepicker2").attr("value",end);
-	
-</script> 
+<script th:inline="javascript">
+ 	var baseURL = /*[[@{/}]]*/ '/';
+</script>
+<script src="../../js/reservas-fecha.js" th:src="@{/js/reservas-fecha.js}"></script>
 
 
         </div>
