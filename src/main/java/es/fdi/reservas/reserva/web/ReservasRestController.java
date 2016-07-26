@@ -268,6 +268,11 @@ public class ReservasRestController {
 		reserva_service.editarReglasRecurrencia(rf);
     }
 	
+	@RequestMapping(value="/borrarExdate",method=RequestMethod.POST)
+    public void eliminarExdate(@RequestBody ReservaDTO rf){		
+		reserva_service.eliminarExdate(rf);
+    }
+	
 	@RequestMapping(value = "/busquedaFecha", method = RequestMethod.POST)
 	public List<ReservaDTO> busquedaPorFecha(@RequestBody BusquedaFechaDTO bfDTO){
 		List<ReservaDTO> result = new ArrayList<>();

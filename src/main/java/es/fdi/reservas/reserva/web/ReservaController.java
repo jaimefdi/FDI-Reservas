@@ -1,12 +1,15 @@
 package es.fdi.reservas.reserva.web;
 
 import java.util.List;
+
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -200,6 +203,36 @@ public class ReservaController {
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("Reserva", reserva_service.getReserva(idReserva));
+		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addAttribute("view", "editarReserva");
+		
+
+        return "index";
+    }
+	
+	@RequestMapping(value="/editar/{idReserva}/{recurrenteId}", method=RequestMethod.GET)
+    public String editarReservaRecurrente(@PathVariable("idReserva") long idReserva, @PathVariable("recurrenteId") String recurrenteId, Model model) {
+		User u = user_service.getCurrentUser();
+		model.addAttribute("User", u);
+		String[] w = recurrenteId.split("_");
+		Reserva r = reserva_service.getReserva(idReserva);
+		//cambiar el comienzo y fin con w[1]
+		String[] s = w[1].split("-");
+		DateTime currentStart = r.getComienzo();
+		DateTime currentEnd = r.getFin();
+		Long range = currentEnd.getMillis() - currentStart.getMillis();
+		
+		DateTime newStart = currentStart.withDayOfMonth(Integer.valueOf(s[0]))
+						.withMonthOfYear(Integer.valueOf(s[1]))
+						.withYear(Integer.valueOf(s[2]));
+		
+		r.setComienzo(newStart);		
+		DateTime newEnd = newStart.plus(range);		
+		r.setFin(newEnd);
+		
+		// el newStart y el newEnd pasarlos cen el modelo
+		
+		model.addAttribute("Reserva", r);
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "editarReserva");
 		
