@@ -66,9 +66,10 @@ public class GrupoReservaController {
 		User user = user_service.getCurrentUser();
 		model.addAttribute("User", user);		
 		model.addAttribute("view", "nuevoGrupo");
+		GrupoReserva nuevoGrupo = grupo_service.addNuevoGrupo(g, user);
 		
-		if(grupo_service.addNuevoGrupo(g, user) != null){			
-			model.addAttribute("exito", "");
+		if(nuevoGrupo != null){			
+			model.addAttribute("exito", nuevoGrupo.getId());
 		}
 		else{
 			model.addAttribute("error", "");

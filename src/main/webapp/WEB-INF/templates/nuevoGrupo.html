@@ -8,6 +8,23 @@
 
 <div class="container-fluid" th:fragment="contenido">
 
+<div class="row" th:if="${exito}">
+	<div class="col-md-12">
+		<div class="alert alert-success" role="alert">
+	        <div class="media">	
+	       		 <button type="button" class="close" data-dismiss="alert" aria-label="Close">			 
+				  <i class="zmdi zmdi-close"> </i>
+				 </button>	 
+			  <div class="media-body">		
+			    <p class="text-muted" style="margin-bottom:5px;"><b>Grupo de reservas creado</b>. Para verlo, pulse 
+			    	<a th:href="@{'grupo/' + ${exito}}"><b>aquí</b></a>
+			    </p>
+			  </div>
+			</div>	
+	    </div>
+	</div>
+</div>
+
 <!-- Page Heading -->
 <div class="row">
     <div class="col-md-12">
