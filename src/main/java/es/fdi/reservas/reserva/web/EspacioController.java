@@ -1,5 +1,8 @@
 package es.fdi.reservas.reserva.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -31,7 +35,6 @@ public class EspacioController {
 	@RequestMapping(value="/admin/administrar/espacios/{pageNumber}", method=RequestMethod.GET)
     public String misEspaciosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
-		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
         Page<Espacio> currentResults = reserva_service.getEspaciosPaginados(pageRequest);
                 
@@ -45,8 +48,8 @@ public class EspacioController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_espacios");
-		
+		model.addAttribute("view", "admin/administrar_espacios");	
+				
         return "index";
     }
 

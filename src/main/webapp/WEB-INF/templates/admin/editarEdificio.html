@@ -45,33 +45,14 @@
 		                      <div class="col-md-10">
 		                      
 		                         <select id="facultad" name="idFacultad" title="Facultad">
-				          
-							          <option th:each="f : ${facultades}" th:value="${f}" th:text="${f.nombreFacultad}"/>
+				          				
+							          <option th:each="f : ${facultades}" th:value="${f.id}" th:text="${f.nombreFacultad}"/>
 							          			
 							        </select>
 		                      </div>
 		                 </div>
                    </div>
 		         </div>
-<!--                  <div class="form-group" -->
-<!-- 					th:classappend="${#fields.hasErrors('attachment')} ? has-error"> -->
-<!-- 					<label>Selecciona el fichero: <input -->
-<!-- 						type="file" class="form-control" -->
-<!-- 						th:field="*{attachment}" /></label> -->
-<!-- 					<span class="help-block" -->
-<!-- 						th:errors="*{attachment}">[errors]</span> -->
-<!-- 				</div> -->
-<!-- 				<button type="submit" class="btn btn-primary">Upload</button> -->
-<!-- 	            <h1>File list</h1> -->
-<!-- 				<ul class="list-unstyled" th:each="file : ${files}"> -->
-<!-- 					<li> -->
-<!-- 						<form method="POST" action="#" th:action="@{/files/__${file.id}__}"> -->
-<!-- 							<input type="hidden" name="_method" value="DELETE" /> -->
-<!-- 							<a href="#" th:href="${file.attachmentUrl}" th:text="${file.description}">File</a> -->
-<!-- 							<button>Delete</button> -->
-<!-- 						</form> -->
-<!-- 					</li> -->
-<!-- 				</ul>             -->
           	</div>              
                    <div class="row">              	
 					    <div class="col-md-12 text-center">

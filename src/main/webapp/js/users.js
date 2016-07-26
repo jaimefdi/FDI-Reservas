@@ -12,20 +12,29 @@
 	 		var email = $(this).attr("email");
 	 		var facultad = $(this).attr("facul");
 	 		var roles = $(this).attr("roles");
+	 		var enabled = $(this).attr("act");
+	 		var accion = $(this).attr("data-accion");
 
 	 		$('#modalEditarUsuario #idNombre').text(username);
 	 		$('#modalEditarUsuario #idEmail').text(email);
 	 		$('#modalEditarUsuario #idFacul').text(facultad);
 	 		$('#modalEditarUsuario #idRoles').text(roles);
-	 		
+	 		$('#modalEditarUsuario #idActivado').text(enabled);
 	 		$('#modalEditarUsuario #btn-editar').prop("href", baseURL + "admin/administrar/usuarios/editar/" + user.id)
 	 		
-	 		$('#modalEditarUsuario').modal('show');
+	 		if (accion == 'Eliminar'){
+	 			
+	 				modalEliminarUsuario(user, reqHeaders);	
+	 			
+	 		}else{
 	 		
+	 			$('#modalEditarUsuario').modal('show');
+	 		}
 	 	});
+ });
 
+ function modalEliminarUsuario(user, reqHeaders){
 	 	 	
-	 	$("#btn-eliminar").click(function(){
 	 		$.ajax({
 	 			url: baseURL + "user/" + user.id,
 	 			type: 'DELETE',
@@ -38,7 +47,6 @@
 	 			error : function(xhr, status) {
 	 				alert('Disculpe, existió un problema');
 	 			}
-	 		});
 	 	});
 	 
- });
+ }

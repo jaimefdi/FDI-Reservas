@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,7 +49,7 @@ public class FacultadController {
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_facultad");
-		
+				
         return "index";
     }
 	
@@ -98,7 +97,7 @@ public class FacultadController {
 		facultades = reserva_service.getFacultadesPorTagName(tagName);
 				
 		for(Facultad f : facultades) {
-			result.add(FacultadDTO.fromFacultadDTO(f));
+			result.add(FacultadDTO.fromFacultadDTOAutocompletar(f));
 		}
 		 
 		return result;

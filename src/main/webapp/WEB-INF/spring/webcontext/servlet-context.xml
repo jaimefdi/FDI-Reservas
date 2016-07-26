@@ -22,6 +22,9 @@
     <context:component-scan base-package="es.fdi.reservas.reserva.web" />
     <context:component-scan base-package="es.fdi.reservas.users.web" />
     
+    <context:component-scan base-package="es.fdi.reservas.fileupload.web" />
+	<context:component-scan base-package="es.fdi.reservas.storage.web" />
+    
     <!-- Define Spring MVC configuration using java annotations -->   
     <mvc:annotation-driven/>
        

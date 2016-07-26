@@ -220,9 +220,6 @@ function loadCalendar(){
 	});
 }	
 
-});
-
-
 function editarReservaSimple(reserva, reqHeaders, idReserva){
 	$.ajax({
 			url: baseURL + 'reserva/editar/' + idReserva,

@@ -10,14 +10,10 @@ $(document).ready(function(){
 		
 		$("#enlaceGuardar").click(function(){
 			user.id = idUsuario;
-			alert("1");
 			user.username = $("#idNombre").val();
-			alert("1");
 			user.email = $("#idEmail").val();
-			user.facultad = $("#autoFacultades").val();
-			alert("2");
+			user.facultad = $("#idFacultad").val();
 	    	editarUsuario(user,reqHeaders);
-  	
 		});
 		
 		
@@ -26,13 +22,13 @@ $(document).ready(function(){
 					var tag = request.term;
 					
 					$.ajax({
-						url: '/facultades/tag/' + tag,
-						
+						url: '/reservas/facultades/tag/' + tag,
 						type: 'GET',
 						contentType: 'application/json',
 						success : function(datos) {
-							console.log(datos);
 							
+							console.log(datos);
+								
 							response($.map(datos,function(item){
 								
 									var obj = new Object();
@@ -45,6 +41,7 @@ $(document).ready(function(){
 							
 						},    
 					    error : function(xhr, status) {
+					    	
 					        alert('Disculpe, existió un problema');
 					    }
 					});
@@ -80,18 +77,43 @@ $(document).ready(function(){
 
 function editarUsuario(user, reqHeaders){
 	
+	var usuario = null;
+	var admin = null;
+	var gestor = null;
+	var inputElements = document.getElementsByClassName('checkbox');
+	for(var i=0; inputElements[i]; ++i){
+	      if(inputElements[i].checked){
+	    	  if (i == 1){
+	           admin = inputElements[i].value;
+//	           break;
+	    	  }
+	    	  else if (i == 3){
+	           usuario = inputElements[i].value;
+//	           break;
+	    	  }
+	    	  else if (i == 5){
+	           gestor = inputElements[i].value;
+//	           break;
+	    	  }
+	      }
+	}
+	
+//	var facultad = document.getElementById("idFacultad").value;
+	
 	$.ajax({
-			url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario + '/' + usuario + '/' + admin + '/' + gestor,
+			
+			url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario + '/' + usuario + '/' + admin + '/' + gestor + '/' + facultad,
+			//url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario ,
 			type: 'PUT',
 			headers : reqHeaders,
 			data: JSON.stringify(user),
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/admin/administrar/usuarios";
+				 window.location = "/reservas/admin/administrar/usuarios/1";
 			},    
 			error : function(xhr, status) {
-				alert(baseURL),
+				alert(usuario + admin + gestor),
  			alert('Disculpe, existió un problema');
  			
 			}

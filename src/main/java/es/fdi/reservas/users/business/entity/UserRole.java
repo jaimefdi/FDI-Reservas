@@ -11,6 +11,10 @@ import org.springframework.security.core.GrantedAuthority;
 @Embeddable
 public class UserRole implements GrantedAuthority, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Basic
 	@Column(length=20)
 	private String role;

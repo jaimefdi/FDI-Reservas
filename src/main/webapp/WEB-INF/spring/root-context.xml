@@ -19,6 +19,9 @@
 		beans -->
 		<context:component-scan base-package="es.fdi.reservas.reserva.business" />
 		<context:component-scan base-package="es.fdi.reservas.users.business" />
+		
+		<context:component-scan base-package="es.fdi.reservas.fileupload.business.boundary" />
+	<context:component-scan base-package="es.fdi.reservas.storage.business.boundary" />
 	
 
 	<!-- Hibernate -->
@@ -42,6 +45,7 @@
 				<value>es.fdi.reservas.reserva.business.entity</value>
 				<value>es.fdi.reservas.users.business.entity</value>
 				<value>es.fdi.reservas.fileupload.business.entity</value>
+				<value>es.fdi.reservas.storage.business.entity</value>
 			</array>
 		</property>
 		<property name="jpaVendorAdapter">
@@ -78,4 +82,10 @@
 	<data:repositories base-package="es.fdi.reservas.fileupload.business.control"
 		entity-manager-factory-ref="myEmf"
 		transaction-manager-ref="transactionManager" />
+		
+	<data:repositories base-package="es.fdi.reservas.storage.business.control"
+		entity-manager-factory-ref="myEmf" transaction-manager-ref="transactionManager" />
+		
+	<data:repositories base-package="es.fdi.reservas.fileupload.business.control"
+		entity-manager-factory-ref="myEmf" transaction-manager-ref="transactionManager" />
 </beans>

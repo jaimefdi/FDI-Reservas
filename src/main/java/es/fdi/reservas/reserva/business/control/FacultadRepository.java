@@ -17,6 +17,12 @@ public interface FacultadRepository extends JpaRepository<Facultad, Long>{
 	@Query("from Facultad f where lower(f.nombreFacultad) like lower(concat('%',:nombreFacultad, '%'))")
 	List<Facultad> getFacultadesPorTagName(@Param("nombreFacultad") String nombreFacultad);
 	
+	@Query("from Facultad f where f.nombreFacultad = :nombre")
+	Facultad getFacultadesPorNombre(@Param("nombre") String nombre);
+	
+	@Query("from Facultad f where f.id= :idFacultad")
+	Facultad getFacultadPorId(@Param("idFacultad") Long idFacultad);
+	
 	@Query("from #{#entityName} f where f.deleted=false")
 	List<Facultad> findAll();
 

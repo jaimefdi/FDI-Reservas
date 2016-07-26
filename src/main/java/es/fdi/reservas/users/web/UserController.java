@@ -14,13 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
-import es.fdi.reservas.reserva.business.entity.Edificio;
-import es.fdi.reservas.reserva.business.entity.Espacio;
-import es.fdi.reservas.reserva.business.entity.Facultad;
-import es.fdi.reservas.reserva.web.EdificioDTO;
-import es.fdi.reservas.reserva.web.EspacioTipoDTO;
+
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -33,9 +28,9 @@ public class UserController {
 	private ReservaService reserva_service;
 	
 	@Autowired
-	public UserController(UserService userService, ReservaService reservaservice, GrupoReservaService grr){
+	public UserController(UserService userService, ReservaService reservaService){
 		user_service = userService;
-		reserva_service = reservaservice;
+		reserva_service = reservaService;
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
@@ -47,19 +42,20 @@ public class UserController {
     public String usuarios() {
         return "redirect:/administrar/usuarios/1";
     }
-	
-	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.GET)
-	public ModelAndView nuevoUsuario(){
-		ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
+		
+	@RequestMapping(value={"/admin/nuevoUsuario"}, method=RequestMethod.GET)
+	public String nuevoUsuario(Model model){
+		//ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
 		User u = user_service.getCurrentUser();
-		model.addObject("User", u);
-		model.addObject("view", "index");
-	   return model;
+		model.addAttribute("User", u);
+		model.addAttribute("User", new User());
+		model.addAttribute("view", "admin/nuevoUsuario");
+	   return "index";
 	}
 	
-	@RequestMapping(value="/nuevoUsuario", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/nuevoUser", method=RequestMethod.GET)
 	public ModelAndView nuevoUser(){
-	   return new ModelAndView("nuevoUsuario", "User", new User());
+	   return new ModelAndView("admin/nuevoUsuario", "User", new User());
 	}
 	
 	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.POST)
@@ -99,7 +95,6 @@ public class UserController {
 	@RequestMapping(value="/admin/administrar/usuarios/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
-		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
         Page<User> currentResults = user_service.getUsuariosPaginados(pageRequest);
         
@@ -115,6 +110,7 @@ public class UserController {
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_usuarios");
 		
+		
         return "index";
     }
 	
@@ -123,6 +119,7 @@ public class UserController {
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("usuario", user_service.getUser(idUser));
+		model.addAttribute("facultades", reserva_service.getFacultades());
 		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarUsuario");
 		return "index";

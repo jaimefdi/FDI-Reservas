@@ -1,5 +1,7 @@
 package es.fdi.reservas.reserva.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,21 +34,22 @@ public class EdificioController {
 	@RequestMapping(value="/admin/administrar/edificios/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
-		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Edificio> currentResults = reserva_service.getEdificiosPaginados(pageRequest);
-                
-        model.addAttribute("currentResults", currentResults);
-        
-        int current = currentResults.getNumber() + 1;
-        int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
-
-        model.addAttribute("beginIndex", begin);
-        model.addAttribute("endIndex", end);
-        model.addAttribute("currentIndex", current); 
+	    Page<Edificio> currentResults = reserva_service.getEdificiosPaginados(pageRequest);
+	            
+	    model.addAttribute("currentResults", currentResults);
+	    
+	    int current = currentResults.getNumber() + 1;
+	    int begin = Math.max(1, current - 5);
+	    int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+	
+	    model.addAttribute("beginIndex", begin);
+	    model.addAttribute("endIndex", end);
+	    model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_edificios");
+		
+		
 		
         return "index";
     }

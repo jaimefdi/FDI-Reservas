@@ -31,7 +31,7 @@ private ReservaService reserva_service;
 	
 
 	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.DELETE)
-	public void eliminarFacultad(@PathVariable("idFacultad") Long idFacultad) {
+	public void eliminarFacultad(@PathVariable("idFacultad") long idFacultad) {
 		//reserva_service.eliminarFacultad(facultad);
 		reserva_service.editarFacultadDeleted(idFacultad);
 	}

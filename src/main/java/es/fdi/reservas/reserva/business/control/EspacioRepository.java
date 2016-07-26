@@ -8,10 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
-import es.fdi.reservas.users.business.entity.User;
 
 @Repository
 public interface EspacioRepository extends JpaRepository<Espacio, Long>{
@@ -42,4 +40,7 @@ public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 	
 	@Query("from #{#entityName} e where lower(e.nombreEspacio) like lower(concat('%',:nombreEspacio, '%'))")
 	List<Espacio> getEspaciosByTagName(@Param("nombreEspacio") String nombreEspacio);
+	
+//	@Query("FROM #{#entityName} e WHERE e.EdificioId IN( SELECT EdificioId FROM #{#edificio} d WHERE d.EdificioId = e.EdificioId AND d.FacultadId IN( SELECT facultad.FacultadId FROM #{#facultad} f WHERE f.FacultadId = d.FacultadId AND f.nombreFacultad = :nombreFacultad ) )")
+//	List<Espacio> getEspacioPorFacultad(@Param("nombreFacultad") String nombreFacultad);
 }

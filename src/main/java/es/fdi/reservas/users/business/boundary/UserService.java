@@ -2,6 +2,8 @@ package es.fdi.reservas.users.business.boundary;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.control.FacultadRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.users.business.control.UserRepository;
@@ -28,10 +32,13 @@ public class UserService implements UserDetailsService{
 	
 	private PasswordEncoder password_encoder;
 	
+	private ReservaService reserva_service;
+	
 	@Autowired
-	public UserService(UserRepository usuarios, PasswordEncoder passwordEncoder){
+	public UserService(UserRepository usuarios, PasswordEncoder passwordEncoder, ReservaService reserva_service){
 		user_ropository = usuarios;
 		password_encoder = passwordEncoder;
+		reserva_service = reserva_service;
 	}
 	
 	public User getUser(Long idUsuario) {
@@ -82,35 +89,54 @@ public class UserService implements UserDetailsService{
 	
 	public User editarUserDeleted(Long idUser){
 		User f = user_ropository.findOne(idUser);
-		f.setEnabled(false);
-		return user_ropository.save(f);
+		if (!f.isEnabled()){//si ya esta eliminado
+			JOptionPane.showMessageDialog(null, "El usuario ya está eliminado", "Información", JOptionPane.OK_CANCEL_OPTION);
+			return f;
+		}else{
+			f.setEnabled(false);
+			return user_ropository.save(f);
+		}
+		
 	}
 
-	public User editaUsuario(UserDTO userActualizado, String user, String admin, String secre) {
+	public User editaUsuario(UserDTO userActualizado, String user, String admin, String gestor) {
 		
 		User u = user_ropository.findOne(userActualizado.getId());
 		u.setUsername(userActualizado.getUsername());
 		u.setEmail(userActualizado.getEmail());
-		u.setEnabled(userActualizado.isEnabled());
-		if (user.equals("1") || admin.equals("1") || secre.equals("1")){//si hay alguno seleccionado
+		Facultad fac = reserva_service.getFacultad(userActualizado.getFacultad());
+		u.setFacultad(fac);
+		
+		if (user.equals("user") || admin.equals("admin") || gestor.equals("gestor")){//si hay alguno seleccionado
 			u.getAuthorities().clear();
-			if (user.equals("1")){
+			if (user.equals("user")){
 				u.addRole(new UserRole("ROLE_USER"));
 			}
-			if (admin.equals("1")){
+			if (admin.equals("admin")){
 				u.addRole(new UserRole("ROLE_ADMIN"));
 			}
-			if (secre.equals("1")){
-				u.addRole(new UserRole("ROLE_SECRE"));
+			if (gestor.equals("gestor")){
+				u.addRole(new UserRole("ROLE_GESTOR"));
 			}
 		}
 		return user_ropository.save(u);
-		
-		
 	}
+	
+//	public User editaUsuario(UserDTO userActualizado) {
+//		
+//		User u = user_ropository.findOne(userActualizado.getId());
+//		u.setUsername(userActualizado.getUsername());
+//		u.setEmail(userActualizado.getEmail());
+//		u.setFacultad(reserva_service.getFacultad(userActualizado.getFacultad()));
+//		return user_ropository.save(u);
+//	}
 	
 	public Page<User> getUsuariosPaginados(PageRequest pageRequest) {
 		return user_ropository.findAll(pageRequest);
+	}
+	
+	public List<User> getUsuariosPorFacultad(String nombreFacultad){
+		return user_ropository.getUsuariosPorFacultad(nombreFacultad);
 	}
 
 	public User restaurarUser(long idUser) {

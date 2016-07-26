@@ -245,7 +245,7 @@ public class ReservaService {
 
 		e.setNombreEdificio(edificio.getNombreEdificio());
 		e.setDireccion(edificio.getDireccion());
-		e.setFacultad(facultad_repository.findOne(edificio.getIdFacultad()));
+		e.setFacultad(facultad_repository.getOne(edificio.getIdFacultad()));
 		return edificio_repository.save(e);
 	}
 	
@@ -255,9 +255,14 @@ public class ReservaService {
 		
 	}
 	
-	public Facultad getFacultad(long idFacul){
-		return facultad_repository.findOne(idFacul);
+	public Facultad getFacultad(Long idFacul){
+//		return facultad_repository.getOne(idFacul);
+		return facultad_repository.getFacultadPorId(idFacul);
 	}
+	
+//	public Facultad getFacultadPorNombre(String nombre){
+//		return facultad_repository.getFacultadPorNombre(nombre);
+//	}
 	
 	public Page<Facultad> getFacultadesPaginadas(PageRequest pageRequest) {
 		return facultad_repository.findAll(pageRequest);
@@ -480,6 +485,11 @@ public class ReservaService {
 	public List<Reserva> getReservasGrupo(long idGrupo, long idUsuario) {
 		return reserva_repository.findByGrupoReservaIdAndUserId(idGrupo, idUsuario);
 	}
+
+//	public List<Espacio> getEspaciosPorFacultad(String nombreFacultad) {
+//		return espacio_repository.getEspacioPorFacultad(nombreFacultad);
+//		//return null;
+//	}
 
 	
 }

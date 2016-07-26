@@ -64,8 +64,8 @@
                             <td th:if="${r.id != User.id}" th:text="${r.rolesToString()}"></td>
 <!--                             <span th:each="s:${roles}" th:text="${s}"></span></td> -->
                             <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                         </tr>   
                         
@@ -77,8 +77,8 @@
                             <td th:if="${r.id != User.id}" th:text="${r.rolesToString()}"></td>
 <!--                             <span th:each="s:${roles}" th:text="${s}"></span></td> -->
                             <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
+							<a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                         </tr>    
                     </tbody>
@@ -94,9 +94,9 @@
         <div class='pagination pagination-centered'>
             <ul class="pagination">
                 <li th:class="${currentIndex == 1}? 'disabled' : ''">
-                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <span th:if='${currentIndex == 1}'>← Primera</span>
                     <a th:if='${currentIndex != 1}'
-                       th:href="@{1}">← First</a>
+                       th:href="@{1}">← Primera</a>
                 </li>
                 <li th:class="${currentIndex != 1}? '' : 'disabled'">
                     <span th:if='${currentIndex == 1}'>«</span>
@@ -122,9 +122,9 @@
                        th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
                 </li>
                 <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Última →</span>
                     <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                       th:href="@{${currentResults.totalPages}}">Última →</a>
                 </li>
             </ul>
         </div>
@@ -177,17 +177,17 @@
                    </div>
 		         </div>
 		         
-<!-- 		         <div class="row"> -->
-<!--                 	<div class="col-md-12"> -->
+		         <div class="row">
+                	<div class="col-md-12">
 <!-- 		                 Asunto  -->
-<!-- 		                 <div class="form-group"> -->
-<!-- 		                     <label class="col-md-2 control-label">Activado: </label> -->
-<!-- 		                      <div class="col-md-10"> -->
-<!-- 		                         <p id="idActivado" class="form-control-static"> </p> -->
-<!-- 		                      </div> -->
-<!-- 		                 </div> -->
-<!--                    </div> -->
-<!-- 		         </div> -->
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Activado: </label>
+		                      <div class="col-md-10">
+		                         <p id="idActivado" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
                  
                  <div class="row">
                 	<div class="col-md-12">
@@ -204,7 +204,7 @@
              </form>
              </div>
                  <div class="modal-footer">
-			        <a id="btn-eliminar" href="#" class="btn-rec gray">ELIMINAR</a>
+<!-- 			        <a id="btn-eliminar" href="#" class="btn-rec gray">ELIMINAR</a> -->
 			        <a id="btn-editar" th:href="@{''}" class="btn-rec blue">EDITAR</a>
 			      </div> 
           

@@ -9,13 +9,16 @@ public class EdificioDTO {
 	private String direccion;
 	private Long idFacultad;
 	
+	private boolean deleted;
+	
 	public EdificioDTO(){}
 	
-	public EdificioDTO(Long id, String nombre, String dir, Long idFac){
-		this.id = id;
+	public EdificioDTO(String nombre, String dir, Long idFac, boolean deleted){
+		
 		this.nombreEdificio = nombre;
 		this.direccion = dir;
 		this.idFacultad = idFac;
+		this.deleted = deleted;
 	}
 
 	public Long getId() {
@@ -26,6 +29,14 @@ public class EdificioDTO {
 		this.id = id;
 	}
 
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	public String getNombreEdificio() {
 		return nombreEdificio;
@@ -38,11 +49,11 @@ public class EdificioDTO {
 
 	public String getDireccion() {
 		return direccion;
-		}
+	}
+	
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
-}
-
+	}
 	
 	public Long getIdFacultad() {
 		return idFacultad;
@@ -53,6 +64,6 @@ public class EdificioDTO {
 	}
 
 	public static EdificioDTO fromEdificioDTO(Edificio e){
-		return new EdificioDTO(e.getId(), e.getNombreEdificio(), e.getDireccion(), e.getFacultad().getId());
+		return new EdificioDTO(e.getNombreEdificio(), e.getDireccion(), e.getFacultad().getId(), e.isDeleted());
 	}
 }

@@ -12,7 +12,8 @@ $(document).ready(function(){
 			edificio.id = idEdificio;
 			edificio.nombreEdificio = $("#idNombre").val();
 			edificio.direccion = $("#idDir").val();
-			edificio.deleted = $("#idActivado").val();
+			edificio.facultad = $("#idFacultad").val();
+			
 			//edificio.imagen = $("#idImagen").val();
 			
 	    	editarEdificio(edificio,reqHeaders);

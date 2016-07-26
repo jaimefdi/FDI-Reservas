@@ -305,6 +305,11 @@
                         	<a th:href="@{/admin/administrar}"><i class="fa fa-cog"></i> Administrar</a>
                     	</li>
                     	</th:block>
+                    	<th:block sec:authorize="hasRole('ROLE_GESTOR')">
+                		<li id="li_administrar">
+                        	<a th:href="@{/admin/administrar}"><i class="fa fa-cog"></i> Administrar</a>
+                    	</li>
+                    	</th:block>
                 	<!--/*/  <th:block sec:authorize="hasRole('ROLE_GESTOR')"> /*/-->
                    	 	<li id="li_gestionar" >
                         	<a th:href="@{/gestor}"><i class="fa fa-book"> </i> Gestionar Reservas</a>

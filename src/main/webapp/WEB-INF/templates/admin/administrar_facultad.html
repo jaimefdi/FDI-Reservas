@@ -75,9 +75,9 @@
         <div class='pagination pagination-centered'>
             <ul class="pagination">
                 <li th:class="${currentIndex == 1}? 'disabled' : ''">
-                    <span th:if='${currentIndex == 1}'>← First</span>
+                    <span th:if='${currentIndex == 1}'>← Primera</span>
                     <a th:if='${currentIndex != 1}'
-                       th:href="@{1}">← First</a>
+                       th:href="@{1}">← Primera</a>
                 </li>
                 <li th:class="${currentIndex != 1}? '' : 'disabled'">
                     <span th:if='${currentIndex == 1}'>«</span>
@@ -103,9 +103,9 @@
                        th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
                 </li>
                 <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>Last →</span>
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Última →</span>
                     <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${currentResults.totalPages}}">Last →</a>
+                       th:href="@{${currentResults.totalPages}}">Última →</a>
                 </li>
             </ul>
         </div>
