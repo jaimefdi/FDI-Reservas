@@ -208,7 +208,9 @@ public class ReservaService {
 		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
 		r.setReservaColor(reservaActualizada.getColor());
 		r.setGrupoReserva(grupo_repository.findOne(reservaActualizada.getIdGrupo()));
-		r.setEstadoReserva(EstadoReserva.fromEstadoReserva(reservaActualizada.getEstado()));
+		if(reservaActualizada.getEstado() != null){
+		  r.setEstadoReserva(EstadoReserva.fromEstadoReserva(reservaActualizada.getEstado()));
+		}
 		
 		return reserva_repository.save(r);
 	}
@@ -493,6 +495,9 @@ public class ReservaService {
 		
 	}
 
+	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estado) {
+		return reserva_repository.reservasPendientesUsuario(idUsuario, estado);
+	}
 
 
 	

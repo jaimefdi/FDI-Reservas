@@ -15,6 +15,7 @@ import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -56,6 +57,8 @@ public class ReservaController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
+        List<Reserva> pendientes = reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE);
+        model.addAttribute("reservasPendientes", pendientes.size()); 
 		model.addAttribute("User", u);
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "mis-reservas");
@@ -195,7 +198,7 @@ public class ReservaController {
 	@RequestMapping(value="/editar/{idReserva}", method=RequestMethod.GET)
     public String editarReserva(@PathVariable("idReserva") long idReserva, Model model) {
 		User u = user_service.getCurrentUser();
-		model.addAttribute("User", u);	
+		model.addAttribute("User", u);
 		model.addAttribute("Reserva", reserva_service.getReserva(idReserva));
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "editarReserva");
