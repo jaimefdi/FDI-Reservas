@@ -21,7 +21,14 @@ public class GrupoReservaService {
 	}
 	
 	public GrupoReserva addNuevoGrupo(GrupoReserva grupo, User user){
-		GrupoReserva newGrupo = new GrupoReserva(grupo.getNombreCorto(), grupo.getNombreLargo(), user);
+		GrupoReserva newGrupo = null;
+		List<GrupoReserva> listaGrupos = getGruposUsuario(user.getId());
+		
+		for(GrupoReserva g : listaGrupos){
+			if(g.equals(grupo))
+				return newGrupo;
+		}
+		newGrupo = new GrupoReserva(grupo.getNombreCorto(), grupo.getNombreLargo(), user);
 		newGrupo = grupo_repository.save(newGrupo);
 		
 		return newGrupo;

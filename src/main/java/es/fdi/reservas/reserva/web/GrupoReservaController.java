@@ -1,13 +1,14 @@
 package es.fdi.reservas.reserva.web;
 
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.entity.GrupoReserva;
 import es.fdi.reservas.users.business.boundary.UserService;
@@ -56,28 +57,37 @@ public class GrupoReservaController {
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);	
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("GrupoReserva", new GrupoReserva());
 		model.addObject("view", "nuevoGrupo");
 		
         return model;
     }
 	
 	@RequestMapping(value="/nuevoGrupo", method=RequestMethod.POST)
-    public String nuevoGrupo(GrupoReserva g, Model model) {	
+    public ModelAndView nuevoGrupo(@ModelAttribute("GrupoReserva") @Valid GrupoReserva grupo, BindingResult bindingResult) {	
+		ModelAndView model = new ModelAndView("index");
 		User user = user_service.getCurrentUser();
-		model.addAttribute("User", user);		
-		model.addAttribute("view", "nuevoGrupo");
-		GrupoReserva nuevoGrupo = grupo_service.addNuevoGrupo(g, user);
+		model.addObject("User", user);
+		model.addObject("view", "nuevoGrupo");
 		
-		if(nuevoGrupo != null){			
-			model.addAttribute("exito", nuevoGrupo.getId());
+		if (bindingResult.hasErrors()) {
+            return model;
+        }
+		
+		GrupoReserva nuevoGrupo = grupo_service.addNuevoGrupo(grupo, user);
+		
+		if(nuevoGrupo != null){
+			
+			model.addObject("exito", nuevoGrupo.getId());
 		}
 		else{
-			model.addAttribute("error", "");
+			
+			model.addObject("error", grupo.getNombreCorto());
 		}
 		
-		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
 	
-        return "index";
+        return model;
     }
 	
 }
