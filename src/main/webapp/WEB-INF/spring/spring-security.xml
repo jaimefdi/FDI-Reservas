@@ -22,6 +22,7 @@
 	
 	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/login-error" access="permitAll" />
 		<intercept-url pattern="/nuevoUsuario" access="permitAll" />
 		<intercept-url pattern="/logout" access="isAuthenticated()" />
 		<intercept-url pattern="/gestor" access="hasRole('ROLE_GESTOR')" />
@@ -35,8 +36,9 @@
 		<!-- para administracion usar las rutas /admin/** 
 			 para secretaria usar las rutas /accept/** -->
 		
-		<form-login login-page="/login" username-parameter="username" password-parameter="password"
-		default-target-url="/welcome.html" always-use-default-target="true"/>
+		<form-login login-page="/login" authentication-failure-url="/login-error" 
+		username-parameter="username" password-parameter="password"
+		default-target-url="/welcome.html" />
 		<logout logout-url="/logout" logout-success-url="/"  />		
 	</http>
 

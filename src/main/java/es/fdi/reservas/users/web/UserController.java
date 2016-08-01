@@ -44,6 +44,12 @@ public class UserController {
 	   return "login";
 	}
 
+	@RequestMapping(value="/login-error", method=RequestMethod.GET)
+    public String loginError(Model model) {
+		model.addAttribute("loginError", true);
+		return "login";
+  }
+	
 	@RequestMapping(value ="/administrar/usuarios")
     public String usuarios() {
         return "redirect:/administrar/usuarios/1";
