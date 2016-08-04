@@ -283,9 +283,11 @@ public class ReservasRestController {
 		for(Espacio e : espacios){
 			resultAux = reserva_service.getAllReservasConflictivas(e.getId(), start, end);
 			
-			if(result.size() == 0){
+			if(resultAux.size() == 0){//si no hay reservas se crea una
 				ReservaDTO reservaDTO = new ReservaDTO();
 				reservaDTO.setIdEspacio(e.getId());
+				reservaDTO.setNombreEspacio(e.getNombreEspacio());
+				reservaDTO.setTitle("Sin asunto");
 				reservaDTO.setStart(start);
 				reservaDTO.setEnd(end);
 				

@@ -16,7 +16,7 @@ import es.fdi.reservas.users.business.entity.User;
 @Repository
 public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 
-	@Query("select f from #{#entityName} f where f.deleted=false and f.id = :idEdificio")
+	@Query("select f from #{#entityName} f where f.deleted=false and f.edificio.id = :idEdificio")
 	public List<Espacio> findByEdificioId(@Param("idEdificio") Long idEdificio);
 	
 	//@Query("select f from #{#entityName} f where f.deleted=false and f.id = :id and f.edificio.id = :idEdificio")

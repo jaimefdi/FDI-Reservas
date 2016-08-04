@@ -4,17 +4,25 @@ $(document).ready(function(){
 	var header = $("meta[name='_csrf_header']").attr("content");
 	var reqHeaders = [];
 	reqHeaders[header] = token;
-	/*
-	var d = new Date();
-	var fecha = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-	var hora = d.getHours();
-	var minutos = redondeoMinutos(d.getMinutes());
-	var comienzo = hora + ':' + minutos;
-	var fin = hora + 1 + ':' + minutos;
-	var start = fecha + ' ' + comienzo;
-	var end = fecha + ' ' + fin;
-	*/
+	var reservaDTO = {};
 	
+	
+	
+	
+	$('#resultContent').on('click', 'button', function() {
+		var idEspacio = $(this).attr("data-idEspacio");		
+		var asunto = $("#asunto" + idEspacio).val();
+		if(asunto == '')
+			asunto = "Sin asunto";
+		
+		reservaDTO.idEspacio = idEspacio;
+		reservaDTO.title = asunto;
+		reservaDTO.reglasRecurrencia = [];
+		reservaDTO.idGrupo = 0;
+		
+		nuevaReserva(reservaDTO, reqHeaders);
+		
+	});
 	
 	var start = moment();
 	var end = moment().add(1,'hour');
@@ -52,10 +60,12 @@ $(document).ready(function(){
 	
 	$("#filtrarBusqueda").click(function(){
 		busquedaFecha.idEdificio = $("#selecEdificios").val();
-		busquedaFecha.start = es.ucm.fdi.dateUtils.toIso8601($('#datetimepicker1').val());
-		busquedaFecha.end = es.ucm.fdi.dateUtils.toIso8601($('#datetimepicker2').val());
+		busquedaFecha.desde = es.ucm.fdi.dateUtils.toIso8601($('#datetimepicker1').val());
+		busquedaFecha.hasta = es.ucm.fdi.dateUtils.toIso8601($('#datetimepicker2').val());
 		
-		console.log(busquedaFecha);
+		reservaDTO.start = es.ucm.fdi.dateUtils.toIso8601($('#datetimepicker1').val());
+		reservaDTO.end = es.ucm.fdi.dateUtils.toIso8601($('#datetimepicker2').val());
+		
 		
 		buscarPorFecha(busquedaFecha, reqHeaders);
 		
@@ -70,8 +80,29 @@ function buscarPorFecha(busquedaFechaDTO, reqHeaders){
 		type: 'POST',		 				 			
 		data: JSON.stringify(busquedaFechaDTO),
 		contentType: 'application/json',
-		success : function(datos) {  
-			console.log(datos);	 							
+		success : function(datos) {
+			$('#resultContent').empty();
+			
+			$('#resultContent').append(
+				 $.map(datos, function (item, index) {
+					 
+					return '<div class="col-xs-10 col-xs-offset-1 resultSearch">' +
+							'<div class="col-xs-12">' +
+								'<p><b>Donde: </b><i>' + item.nombreEspacio + '</i></p>' +			                       
+			                '</div>' +
+			                '<div class="col-xs-8" style="padding:0px;">' +
+			                	'<div class="form-group">' +
+			                       '<label class="col-md-2 control-label" style="padding-right:0px;">Asunto: </label>' +
+			                        '<div class="col-md-6" style="padding-right:0px;">' +
+			                           '<input id=asunto'+ item.idEspacio +' type="text" class="form-control"/>' +
+			                        '</div>' +
+			                    '</div>' +
+							'</div>' +
+							'<div class="col-xs-4 text-right">' +
+							'<button data-idEspacio='+ item.idEspacio +' class="btn-normal">Reservar</button>' +
+						    '</div>'+
+						   '</div>'; 
+			}));
 		},    
 		error : function(xhr, status) {			
  			alert('Disculpe, existió un problema');			
@@ -80,4 +111,20 @@ function buscarPorFecha(busquedaFechaDTO, reqHeaders){
 }
 
 
+function nuevaReserva(reservaDTO, reqHeaders){
+	$.ajax({
+		url: baseURL + 'nuevaReservaAJAX',
+		headers : reqHeaders,
+		type: 'POST',		 				 			
+		data: JSON.stringify(reservaDTO),
+		contentType: 'application/json',
+		success : function(datos) {  
+			window.location = "/reservas/mis-reservas";		
+		},
+		error: function(xhr, status){
+			var x = JSON.parse(xhr.responseText);
+			alert(x.msg);
+		}
+	});
+}
 

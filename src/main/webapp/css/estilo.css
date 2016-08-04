@@ -569,4 +569,9 @@ td a i{
 	color: #FFF;
 }
 
-#00a550
+.resultSearch{
+	background: #F5F4F3;
+	padding: 10px 0px;
+	margin-bottom: 10px;
+	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
