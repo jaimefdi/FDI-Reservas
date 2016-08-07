@@ -38,20 +38,21 @@ public class Edificio {
 	@NotNull
 	private boolean deleted;
 	
-//	@OneToOne
-//	@JoinColumn(name="ImagenId")
-//	private Attachment imagen;
+	@OneToOne
+	@JoinColumn(name="ImagenId")
+	private Attachment imagen;
 	
 	public Edificio(){
 		
 	}
 	
 
-	public Edificio(String nombreEdificio,String direccion, Facultad facultad) {
+	public Edificio(String nombreEdificio,String direccion, Facultad facultad, Attachment img) {
 		super();
 		this.nombreEdificio = nombreEdificio;
 		this.direccion = direccion;
 		this.deleted = false;
+		this.imagen = img;
 	}
 
 	public boolean isDeleted() {
@@ -97,14 +98,14 @@ public class Edificio {
 	public Facultad getFacultad() {
 		return facultad;
 	}
-//	
-//	public Attachment getImagen() {
-//		return imagen;
-//	}
-//
-//	public void setImagen(Attachment imagen) {
-//		this.imagen = imagen;
-//	}
+	
+	public Attachment getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(Attachment imagen) {
+		this.imagen = imagen;
+	}
 
 	public void setFacultad(Facultad facultad) {
 		this.facultad = facultad;

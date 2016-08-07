@@ -1,7 +1,5 @@
 package es.fdi.reservas.reserva.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.users.business.boundary.UserService;
@@ -71,6 +70,7 @@ public class EdificioController {
 		model.addAttribute("User", u);
 		model.addAttribute("edificio", reserva_service.getEdificio(idEdificio));
 		model.addAttribute("facultades", reserva_service.getFacultades());
+		model.addAttribute("command", new NewFileCommand());
 		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarEdificio");
 		return "index";

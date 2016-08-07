@@ -368,3 +368,4 @@ function closePopover(){
 	$('[role="tooltip"]').popover('hide');
 }
 
+

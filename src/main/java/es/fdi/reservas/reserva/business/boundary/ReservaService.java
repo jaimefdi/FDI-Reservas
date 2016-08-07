@@ -10,6 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
+import es.fdi.reservas.fileupload.business.control.AttachmentRepository;
+import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.reserva.business.control.EdificioRepository;
 import es.fdi.reservas.reserva.business.control.EspacioRepository;
 import es.fdi.reservas.reserva.business.control.FacultadRepository;
@@ -39,14 +43,17 @@ public class ReservaService {
 	private EspacioRepository espacio_repository;
 	private GrupoReservaRepository grupo_repository;
 	
+	private AttachmentRepository attachment_repository;
+	
 	@Autowired
 	public ReservaService(ReservaRepository rr, FacultadRepository fr, EdificioRepository er, 
-							EspacioRepository sr, GrupoReservaRepository gr){
+							EspacioRepository sr, GrupoReservaRepository gr, AttachmentRepository ar){
 		reserva_repository = rr;
 		facultad_repository = fr;
 		edificio_repository = er;
 		espacio_repository = sr;
 		grupo_repository = gr;
+		attachment_repository = ar;
 	}
 
 	public List<Reserva> getAllReservasConflictivas(Long idEspacio, DateTime start, DateTime end){
@@ -242,12 +249,14 @@ public class ReservaService {
 		return edificio_repository.findAll(pageRequest);
 	}
 	
-	public Edificio editarEdificio(EdificioDTO edificio){
+	public Edificio editarEdificio(EdificioDTO edificio, Attachment attachment){
 		Edificio e = edificio_repository.findOne(edificio.getId());
 
 		e.setNombreEdificio(edificio.getNombreEdificio());
 		e.setDireccion(edificio.getDireccion());
-		e.setFacultad(facultad_repository.getOne(edificio.getIdFacultad()));
+		//e.setFacultad(facultad_repository.getOne(edificio.getIdFacultad()));
+		e.setImagen(attachment);
+		attachment_repository.save(attachment);
 		return edificio_repository.save(e);
 	}
 	
@@ -258,8 +267,8 @@ public class ReservaService {
 	}
 	
 	public Facultad getFacultad(Long idFacul){
-//		return facultad_repository.getOne(idFacul);
-		return facultad_repository.getFacultadPorId(idFacul);
+		return facultad_repository.getOne(idFacul);
+	//	return facultad_repository.getFacultadPorId(idFacul);
 	}
 	
 //	public Facultad getFacultadPorNombre(String nombre){
@@ -401,7 +410,7 @@ public class ReservaService {
 
 	public Edificio addNewEdificio(Edificio edificio) {
 		
-		Edificio newEdificio = new Edificio(edificio.getNombreEdificio(), edificio.getDireccion(),edificio.getFacultad());
+		Edificio newEdificio = new Edificio(edificio.getNombreEdificio(), edificio.getDireccion(),edificio.getFacultad(), edificio.getImagen());
 		newEdificio = edificio_repository.save(newEdificio);
 
 		return null;
@@ -532,9 +541,16 @@ public class ReservaService {
 		
 	}
 
+	public Attachment getAttachment(Long idAttachment){
+		return attachment_repository.getOne(idAttachment);
+	}
 
+	public List<Attachment> getAttachmentByName(String img) {
+		return attachment_repository.getAttachmentByName(img);
+	}
 
-	
-
-	
+	public void addAttachment(Attachment attachment) {
+		attachment_repository.save(attachment);
+		
+	}
 }

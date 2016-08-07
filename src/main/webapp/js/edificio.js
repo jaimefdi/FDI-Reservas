@@ -12,12 +12,14 @@ $(document).ready(function(){
 	 		var nombreEdificio = $(this).attr("name");
 	 		var direccion = $(this).attr("dir");
 	 		var deleted = $(this).attr("act");
-	 		var facultad = $(this).attr("fac")
+	 		var facultad = $(this).attr("fac");
+	 		var imagen = $(this).attr("img")
 	 		
 	 		$('#modalEditarEdificio #idNombre').text(nombreEdificio);
 	 		$('#modalEditarEdificio #idDir').text(direccion);
 	 		$('#modalEditarEdificio #idFacul').text(facultad);
 	 		$('#modalEditarEdificio #idActivado').text(deleted);
+	 		$('#modalEditarEdificio #idAttachment').text(imagen);
 	 		$('#modalEditarEdificio #btn-editar').prop("href", baseURL + "admin/administrar/edificios/editar/" + edificio.id);
 	 		
 	 		$('#modalEditarEdificio').modal('show');

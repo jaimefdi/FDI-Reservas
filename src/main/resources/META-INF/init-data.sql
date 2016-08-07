@@ -3,30 +3,6 @@ INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(2,
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(3,'Facultad de Ciencias Biológicas','www.biologicas.ucm.es', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(4,'Facultad de Ciencias de la Documentación','www.documentacion.ucm.es', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(5,'Facultad de Ciencias de la Información','www.ccinformacion.ucm.es', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(6,'Facultad de Ciencias Económicas y Empresariales','Campus de Somosaguas', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(7,'Facultad de Ciencias Físicas','Plaza Ciencias, 1', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(8,'Facultad de Ciencias Geológicas','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(9,'Facultad de Ciencias Matemáticas','Plaza Ciencias, 3', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(10,'Facultad de Ciencias Políticas y Sociología','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(11,'Facultad de Ciencias Químicas','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(12,'Facultad de Comercio y Turismo','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(13,'Facultad de Derecho','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(14,'Facultad de Educación','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(15,'Facultad de Enfermería, Fisioterapia y Podología','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(16,'Facultad de Estudios Estadísticos','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(17,'Facultad de Farmacia','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(18,'Facultad de Filología','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(19,'Facultad de Filosofía','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(20,'Facultad de Geografía e Historia','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(21,'Facultad de Medicina','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(22,'Facultad de Odontología','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(23,'Facultad de Óptica y Optometría','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(24,'Facultad de Psicología','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(25,'Facultad de Trabajo Social','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(26,'Facultad de Veterinaria','C/ José Antonio Novais, 12', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(3,'Facultad de Ciencias Biológicas','www.biologicas.ucm.es', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(4,'Facultad de Ciencias de la Documentación','www.documentacion.ucm.es', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(5,'Facultad de Ciencias de la Información','www.ccinformacion.ucm.es', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(6,'Facultad de Ciencias Económicas y Empresariales','www.ccinformacion.ucm.es', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(7,'Facultad de Ciencias Físicas','www.ccinformacion.ucm.es', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(8,'Facultad de Ciencias Geológicas','www.ccinformacion.ucm.es', false);
@@ -59,12 +35,14 @@ INSERT INTO UserRole (user, role) VALUES(2, 'ROLE_USER');
 INSERT INTO UserRole (user, role) VALUES(3, 'ROLE_USER');
 INSERT INTO UserRole (user, role) VALUES(3, 'ROLE_GESTOR');
 
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(1,'FDI','C/ del Prof. José G! Santesmases, 9',1, false);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(2,'Multiusos','C/ del Prof. Aranguren, s/n',1, false);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(3,'Edificio de Bellas Artes','C/ Pintor el Greco, 2',2, false);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(4,'Edificio de Ciencias Biológicas','C/ José Antonio Novais, 12',3, false);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(5,'Edificio de la Documentación','C/ Santísima Trinidad, 37',4, false);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted) VALUES(6,'Edificio de la Información','Av. Complutense, s/n',5, false);
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(1, 'Facultad de informatica', '/img/FDI.jpg', '123');
+
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(1,'FDI','C/ del Prof. José G! Santesmases, 9',1, false,1);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(2,'Multiusos','C/ del Prof. Aranguren, s/n',1, false,1);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(3,'Edificio de Bellas Artes','C/ Pintor el Greco, 2',2, false,1);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(4,'Edificio de Ciencias Biológicas','C/ José Antonio Novais, 12',3, false,1);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(5,'Edificio de la Documentación','C/ Santísima Trinidad, 37',4, false,1);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(6,'Edificio de la Información','Av. Complutense, s/n',5, false,1);
 
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(1,'Sala de Grados',70,true,true,1,1,1,2, false);
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(2,'Sala de Conferencias',180,true,true,1,1,0,0, false);
@@ -96,4 +74,4 @@ INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, Esp
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, EspacioId, GrupoReservaId) VALUES(9,'DVI','2016-03-09 14:00:00','2016-03-09 16:00:00',0,1,1,1);
 INSERT INTO Reserva(ReservaId, asunto, comienzo, fin, estadoReserva, UserId, EspacioId, GrupoReservaId) VALUES(10,'Charla ELP','2016-03-24 15:30:00','2016-03-24 17:00:00',1,1,1,1);
 
-INSERT INTO Attachment(id, description, attachmentUrl, storageKey) VALUES(1, 'Facultad de informatica', '/FDI.jpg', '123');
+

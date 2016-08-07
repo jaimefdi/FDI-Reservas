@@ -48,19 +48,19 @@
                   	<tr></tr>
                       <tr th:if="${!r.deleted}" th:each="r : ${currentResults}" class="success">
                       	 <!--                       	<td th:text = "${r.imagen.getFile()}">Mi imagen</td> -->
-							<td></td>
+							<td><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.direccion}"></td>
                           <td th:text="${r.facultad.nombreFacultad}"></td>
-                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted},img=${r.imagen.attachmentUrl}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},fac=${r.facultad.nombreFacultad},dir=${r.direccion},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr>
                       
                       <tr th:if="${r.deleted}" th:each="r : ${currentResults}" class="danger">
-<!--                       	<td th:text = "${r.imagen.getFile()}">Mi imagen</td> -->
-							<td></td>
+							<td><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
+							
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.direccion}"></td>
                           <td th:text="${r.facultad.nombreFacultad}"></td>
@@ -186,11 +186,12 @@
 		         
 <!-- 		         <div class="row"> -->
 <!--                 	<div class="col-md-12"> -->
-<!-- 		                 Asunto  -->
+		                 
 <!-- 		                 <div class="form-group"> -->
 <!-- 		                     <label class="col-md-2 control-label">Imágen: </label> -->
 <!-- 		                      <div class="col-md-10"> -->
-<!-- 		                         <p id="idImagen" class="form-control-static"> </p> -->
+<!-- 		                      <img class="img-circle" id="idAttachment" alt="" th:src="@{'A:/FDI-Reservas/src/main/webapp' + ${idAttachment}}" height="42" width="42"></img> -->
+<!-- 		                         <p  class="form-control-static"> </p> -->
 <!-- 		                      </div> -->
 <!-- 		                 </div> -->
 <!--                    </div> -->

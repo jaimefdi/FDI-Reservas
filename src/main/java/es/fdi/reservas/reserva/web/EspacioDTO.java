@@ -1,7 +1,5 @@
 package es.fdi.reservas.reserva.web;
 
-import javax.validation.constraints.NotNull;
-
 import es.fdi.reservas.reserva.business.entity.Espacio;
 
 public class EspacioDTO {

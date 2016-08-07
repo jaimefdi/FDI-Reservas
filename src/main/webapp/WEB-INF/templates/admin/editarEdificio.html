@@ -20,7 +20,7 @@
 
 <div class="row">
 	<div class="col-md-12">
-	   <form role="form" action="#" method="put">
+	   <form role="form" action="#" method="put" enctype="multipart/form-data">
 	   		<div class="col-md-6">
 	   		
 	   		<!-- Asunto --> 
@@ -53,6 +53,11 @@
 		                 </div>
                    </div>
 		         </div>
+		         <div class="form-group">
+					<label>Selecciona la imagen: 
+					<input type="file" class="form-control" id="idAttachment" /></label>
+					
+				</div>
           	</div>              
                    <div class="row">              	
 					    <div class="col-md-12 text-center">
@@ -62,6 +67,19 @@
 				   <!-- /.row -->
 				  
 	   </form>
+	   
+<!-- 	   <form action="#" th:action="@{/admin/editarEdificio}" th:object="${command}" -->
+<!-- 			method="POST" enctype="multipart/form-data"> -->
+			
+<!-- 			<div class="form-group" -->
+<!-- 				th:classappend="${#fields.hasErrors('attachment')} ? has-error"> -->
+<!-- 				<label>Selecciona la imagen: <input -->
+<!-- 					type="file" class="form-control" -->
+<!-- 					th:field="*{attachment}" /></label> -->
+<!-- 				<span class="help-block" -->
+<!-- 					th:errors="*{attachment}">[errors]</span> -->
+<!-- 			</div> -->
+<!-- 		</form> -->
    </div>                  
 </div>
 <!-- /.row -->

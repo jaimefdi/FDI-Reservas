@@ -4,7 +4,7 @@ $(document).ready(function(){
 	 	var header = $("meta[name='_csrf_header']").attr("content");
 	 	var reqHeaders = [];
 	 	reqHeaders[header] = token;
-	 	
+	 	var img = "";
 		
 		
 		
@@ -14,10 +14,11 @@ $(document).ready(function(){
 			edificio.direccion = $("#idDir").val();
 			edificio.facultad = $("#idFacultad").val();
 			
-			//edificio.imagen = $("#idImagen").val();
-			
+			edificio.imagen = $("#idAttachment").val();
+			img = edificio.imagen;
+			alert(edificio.imagen);
 	    	editarEdificio(edificio,reqHeaders);
-  	
+	    	alert(img);
 		});
 		
 });	
@@ -25,7 +26,7 @@ $(document).ready(function(){
 function editarEdificio(edificio, reqHeaders){
 	
 	$.ajax({
-			url: baseURL + 'admin/administrar/edificios/editar/' + idEdificio,
+			url: baseURL + 'admin/administrar/edificios/editar/' + idEdificio + "/" + edificio.imagen,
 			type: 'PUT',
 			headers : reqHeaders,
 			data: JSON.stringify(edificio),

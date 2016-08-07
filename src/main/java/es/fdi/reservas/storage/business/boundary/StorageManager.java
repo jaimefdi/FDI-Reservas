@@ -26,7 +26,7 @@ import es.fdi.reservas.storage.business.entity.*;
 public class StorageManager {	
 
 	private static final Logger logger = LoggerFactory
-			.getLogger("es.ucm.fdi.storage");
+			.getLogger("es.fdi.reservas.storage");
 	
 	@Autowired
 	private ResourceLoader loader;
@@ -67,16 +67,17 @@ public class StorageManager {
 		return object;
 	}
 
-	public URL getUrl(String bucket, String key) {
-		URL url = null;
-		try {
-			url = serviceURL.toURI().resolve(bucket+"/"+key).toURL();
-		} catch (MalformedURLException e) {
-			logger.warn("Error generando URL", e);
-			throw new RuntimeException(e);
-		} catch (URISyntaxException e) {
-			logger.warn("Error generando URL", e);
-		}		
+	public String getUrl(String bucket, String key) {
+		String url = null;
+//		try {
+			url = bucket+"/"+key;
+//			url = serviceURL.toURI().resolve(bucket+"/"+key).toURL();
+//		} catch (MalformedURLException e) {
+//			logger.warn("Error generando URL", e);
+//			throw new RuntimeException(e);
+//		} catch (URISyntaxException e) {
+//			logger.warn("Error generando URL", e);
+//		}		
 		return url;
 	}
 

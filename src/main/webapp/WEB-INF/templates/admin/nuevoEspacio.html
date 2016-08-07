@@ -19,7 +19,7 @@
                                 <label for="ejemplo_email_1">Nombre espacio</label>
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                  <input name="nombre_espacio" type="text" class="form-control" placeholder="Nombre del espacio"/>
+                                  <input name="nombreEspacio" type="text" class="form-control" placeholder="Nombre del espacio"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -52,19 +52,19 @@
                                 <label for="ejemplo_email_1">Tipo espacio</label>
                                     <select id="tipoEspacio" name="tipoEspacio" title="Tipo de espacio">
 							          
-							          <option value="Aula">Aula</option>
-							          <option value="Sala">Sala</option>
-							          <option value="Laboratorio">Laboratorio</option>
+							          <option th:value="Aula">Aula</option>
+							          <option th:value="Sala">Sala</option>
+							          <option th:value="Laboratorio">Laboratorio</option>
 							        </select>
                             </div>
                             
-                            <div class="form-group">
-                                <label for="ejemplo_email_1">Edificio</label>
-	                            <select id="idEdif" name="idEdificio" title="Edificio">
+<!--                             <div class="form-group"> -->
+<!--                                 <label for="ejemplo_email_1">Edificio</label> -->
+<!-- 	                            <select id="idEdif" name="edificio" title="Edificio"> -->
 					          
-						          <option th:each="f : ${edificios}" th:value="${f.id}" th:text="${f.nombreEdificio}"/> 
-						        </select>
-					        </div>
+<!-- 						          <option th:each="f : ${edificios}" th:value="${f.id}" th:text="${f.nombreEdificio}"/>  -->
+<!-- 						        </select> -->
+<!-- 					        </div> -->
                             <div class="text-center">
                                  <button type="submit" class="btn btn-default">Crear</button>
                             </div>
