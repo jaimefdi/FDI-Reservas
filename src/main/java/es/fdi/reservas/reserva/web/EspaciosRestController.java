@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -23,6 +24,13 @@ public class EspaciosRestController {
 	public EspaciosRestController(UserService userService, ReservaService reservaservice){
 		user_service = userService;
 		reserva_service = reservaservice;
+	}
+	
+	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.GET)
+	public EspacioDTO espacio(@PathVariable("idEspacio") long idEspacio) {
+		Espacio e = reserva_service.getEspacio(idEspacio);
+		
+		return EspacioDTO.fromEspacioDTO(e);
 	}
 	
 	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.DELETE)

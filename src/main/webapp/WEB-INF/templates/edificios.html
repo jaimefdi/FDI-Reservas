@@ -31,7 +31,7 @@
 	    <h3 class="text-center" style="margin-top:10px;margin-bottom:20px;">Selecciona un edificio</h3>
 	    
 	   <ol>
- 		<li th:each="e : ${Edificios}">
+ 		<li th:each="e : ${Edificios}" role="button">
 		   <div class="edificio" th:attr="data-id=${e.id}">
 			<div class="media">
 			  <div class="media-left media-middle">			    
