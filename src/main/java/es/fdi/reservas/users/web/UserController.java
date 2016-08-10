@@ -15,29 +15,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
+import es.fdi.reservas.reserva.business.boundary.EspacioService;
+import es.fdi.reservas.reserva.business.boundary.FacultadService;
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
-import es.fdi.reservas.reserva.business.entity.Edificio;
-import es.fdi.reservas.reserva.business.entity.Espacio;
-import es.fdi.reservas.reserva.business.entity.Facultad;
-import es.fdi.reservas.reserva.web.EdificioDTO;
-import es.fdi.reservas.reserva.web.EspacioTipoDTO;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
-
 
 @Controller
 public class UserController {
 
 	private UserService user_service;	
-	private ReservaService reserva_service;
 	private GrupoReservaService grupo_service;
+	private FacultadService facultad_service;
+	private EspacioService espacio_service;
 	
 	@Autowired
-	public UserController(UserService userService, ReservaService reservaservice, GrupoReservaService grs){
+	public UserController(UserService userService, GrupoReservaService grs, FacultadService fs, EspacioService es){
 		user_service = userService;
-		reserva_service = reservaservice;
 		grupo_service = grs;
+		facultad_service = fs;
+		espacio_service = es;
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
@@ -63,15 +60,7 @@ public class UserController {
 	@RequestMapping(value="/admin/nuevoUser", method=RequestMethod.GET)
 	public ModelAndView nuevoUser(){
 	   return new ModelAndView("admin/nuevoUsuario", "User", new User());
-	}
-	
-	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.POST)
-	public String crearUsuario(User us){
-		user_service.addNewUser(us);
-	   return "redirect:/admin/administrar";
-		//return "nuevoUsuario";
-	}
-	
+	}	
 	
 	@RequestMapping(value = "usuario/tag/{tagName}", method = RequestMethod.GET)
 	public List<UserDTO> usuariosFiltro(@PathVariable("tagName") String tagName) {
@@ -132,7 +121,7 @@ public class UserController {
 
 		model.addAttribute("User", u);
 		model.addAttribute("usuario", user_service.getUser(idUser));
-		model.addAttribute("facultades", reserva_service.getFacultades());
+		model.addAttribute("facultades", facultad_service.getFacultades());
 		model.addAttribute("command", new NewFileCommand());
 		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarUsuario");
@@ -144,7 +133,7 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("espacios", reserva_service.getEspacios());
+		model.addObject("espacios", espacio_service.getEspacios());
 		model.addObject("view", "administrar_espacios");
 		return model;
 	}

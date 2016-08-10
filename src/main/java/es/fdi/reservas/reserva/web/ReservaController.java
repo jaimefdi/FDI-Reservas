@@ -9,11 +9,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import es.fdi.reservas.reserva.business.boundary.EdificioService;
+import es.fdi.reservas.reserva.business.boundary.EspacioService;
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
@@ -30,12 +32,16 @@ public class ReservaController {
 	private ReservaService reserva_service;
 	private GrupoReservaService grupo_service;
 	private UserService user_service;
+	private EdificioService edificio_service;
+	private EspacioService espacio_service;
 	
 	@Autowired
-	public ReservaController(ReservaService rs, GrupoReservaService grr, UserService us){
+	public ReservaController(ReservaService rs, GrupoReservaService grr, UserService us, EdificioService eds, EspacioService es){
 		reserva_service = rs;
 		grupo_service = grr;
 		user_service = us;
+		edificio_service = eds;
+		espacio_service = es;
 	}
 	
 	
@@ -91,7 +97,7 @@ public class ReservaController {
 		
 		User user = user_service.getCurrentUser();
 		model.addAttribute("User", user);
-		List<Edificio> edificios = reserva_service.getEdificiosFacultad(user.getFacultad().getId());
+		List<Edificio> edificios = edificio_service.getEdificiosFacultad(user.getFacultad().getId());
 		if(edificios.size() > 1){
 		   model.addAttribute("Edificios", edificios);
 		   model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
@@ -113,9 +119,9 @@ public class ReservaController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("Edificio", reserva_service.getEdificio(idEdificio));		
-		model.addObject("TiposEspacio",reserva_service.tiposDeEspacios(idEdificio));
-		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
+		model.addObject("Edificio", edificio_service.getEdificio(idEdificio));		
+		model.addObject("TiposEspacio",espacio_service.tiposDeEspacios(idEdificio));
+		model.addObject("Espacios", espacio_service.getEspaciosEdificio(idEdificio));
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "espacios");
 		
@@ -127,7 +133,7 @@ public class ReservaController {
 	public ModelAndView reservasEspacio(@PathVariable("idEdificio") long idEdificio,@PathVariable("idEspacio") long idEspacio) {
 		ModelAndView model = new ModelAndView("index");
 		User user = user_service.getCurrentUser();
-		Espacio e = reserva_service.getEspacio(idEspacio);
+		Espacio e = espacio_service.getEspacio(idEspacio);
 		Reserva r = new Reserva();
 		r.setEspacio(e);	
 		model.addObject("User", user);
@@ -144,7 +150,7 @@ public class ReservaController {
     public ModelAndView reservasFecha() {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		List<Edificio> edificios = reserva_service.getEdificiosFacultad(u.getFacultad().getId());
+		List<Edificio> edificios = edificio_service.getEdificiosFacultad(u.getFacultad().getId());
 		model.addObject("User", u);
 		model.addObject("Edificios", edificios);
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));

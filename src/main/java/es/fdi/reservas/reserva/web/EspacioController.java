@@ -1,8 +1,5 @@
 package es.fdi.reservas.reserva.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
-import es.fdi.reservas.reserva.business.entity.Edificio;
+import es.fdi.reservas.reserva.business.boundary.EdificioService;
+import es.fdi.reservas.reserva.business.boundary.EspacioService;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -22,21 +19,24 @@ import es.fdi.reservas.users.business.entity.User;
 @Controller
 public class EspacioController {
 
-	private ReservaService reserva_service;
-	
 	private UserService user_service;
 	
+	private EspacioService espacio_service;
+	
+	private EdificioService edificio_service;
+	
 	@Autowired
-	public EspacioController(UserService userService, ReservaService reservaservice){
+	public EspacioController(UserService userService, EspacioService es, EdificioService eds){
 		user_service = userService;
-		reserva_service = reservaservice;
+		espacio_service = es;
+		edificio_service = eds;
 	}
 	
 	@RequestMapping(value="/admin/administrar/espacios/{pageNumber}", method=RequestMethod.GET)
     public String misEspaciosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Espacio> currentResults = reserva_service.getEspaciosPaginados(pageRequest);
+        Page<Espacio> currentResults = espacio_service.getEspaciosPaginados(pageRequest);
                 
         model.addAttribute("currentResults", currentResults);
         
@@ -59,7 +59,7 @@ public class EspacioController {
 		model.addAttribute("Espacio", new Espacio());
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/nuevoEspacio");
-		model.addAttribute("edificios", reserva_service.getEdificios());
+		model.addAttribute("edificios", edificio_service.getEdificios());
 		return "index";
 	}
 	
@@ -67,7 +67,7 @@ public class EspacioController {
 	public String editarEspacio(@PathVariable("idEspacio") long idEspacio, Model model){
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
-		model.addAttribute("espacio", reserva_service.getEspacio(idEspacio));
+		model.addAttribute("espacio", espacio_service.getEspacio(idEspacio));
 		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarEspacio");
 		return "index";
@@ -80,7 +80,7 @@ public class EspacioController {
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
 		model.addObject("pagina", numPag);
-		model.addObject("espacios", reserva_service.getEspaciosEliminados());
+		model.addObject("espacios", espacio_service.getEspaciosEliminados());
 		model.addObject("view", "admin/papelera_espacios");
 		return model;
 	}

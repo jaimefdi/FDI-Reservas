@@ -1,8 +1,5 @@
 package es.fdi.reservas.reserva.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ErrorResult {
 
 	//private List<String> errores;

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.fdi.reservas.reserva.business.boundary.EdificioService;
+import es.fdi.reservas.reserva.business.boundary.EspacioService;
+import es.fdi.reservas.reserva.business.boundary.FacultadService;
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaSolapadaException;
@@ -31,11 +34,20 @@ public class ReservasRestController {
 	
 	private UserService user_service;
 	
+	private EdificioService edificio_service;
+	
+	private EspacioService espacio_service;
+	
+	private FacultadService facultad_service;
+	
 	@Autowired
-	public ReservasRestController(ReservaService rs,GrupoReservaService grs, UserService us){
+	public ReservasRestController(ReservaService rs,GrupoReservaService grs, UserService us, EdificioService eds, EspacioService es, FacultadService fs){
 		reserva_service = rs;
 		grupo_service = grs;
 		user_service = us;
+		edificio_service = eds;
+		espacio_service = es;
+		facultad_service = fs;
 	}
 	
 	@RequestMapping(value="{idEspacio}/eventos", method=RequestMethod.GET)
@@ -165,7 +177,7 @@ public class ReservasRestController {
 		List<EspacioDTO> result = new ArrayList<>();
 		List<Espacio> espacios = new ArrayList<>();
 
-		espacios = reserva_service.getEspaciosPorTagName(tagName);
+		espacios = espacio_service.getEspaciosPorTagName(tagName);
 				
 		for(Espacio e : espacios) {
 			result.add(EspacioDTO.fromEspacioDTO(e));
@@ -180,9 +192,9 @@ public class ReservasRestController {
 		List<Espacio> allSpaces = new ArrayList<>();
 		
 		if(tipoEspacio.equals("Todos"))
-			 allSpaces = reserva_service.getEspaciosEdificio(idEdificio);
+			 allSpaces = espacio_service.getEspaciosEdificio(idEdificio);
 		else
-		     allSpaces = reserva_service.getTiposEspacio(idEdificio, TipoEspacio.fromTipoEspacio(tipoEspacio));
+		     allSpaces = espacio_service.getTiposEspacio(idEdificio, TipoEspacio.fromTipoEspacio(tipoEspacio));
 		
 		
 		for(Espacio e : allSpaces) {
@@ -200,7 +212,7 @@ public class ReservasRestController {
 		List<EdificioDTO> result = new ArrayList<>();
 		List<Edificio> edificios = new ArrayList<>();
 			
-		edificios = reserva_service.getEdificiosFacultad(idFacultad);
+		edificios = edificio_service.getEdificiosFacultad(idFacultad);
 			
 		for(Edificio e : edificios) {
 			result.add(EdificioDTO.fromEdificioDTO(e));
@@ -230,7 +242,7 @@ public class ReservasRestController {
 		List<FacultadDTO> result = new ArrayList<>();
 		List<Facultad> facultades = new ArrayList<>();
 
-		facultades = reserva_service.getFacultadesPorTagName(tagName);
+		facultades = facultad_service.getFacultadesPorTagName(tagName);
 				
 		for(Facultad f : facultades) {
 			result.add(FacultadDTO.fromFacultadDTOAutocompletar(f));
@@ -247,7 +259,7 @@ public class ReservasRestController {
 		r.setComienzo(rf.getStart());
 		r.setFin(rf.getEnd());
 		r.setAsunto(rf.getTitle());
-		r.setEspacio(reserva_service.getEspacio(rf.getIdEspacio()));
+		r.setEspacio(espacio_service.getEspacio(rf.getIdEspacio()));
 		r.setReservaColor(rf.getColor());
 		r.setReglasRecurrencia(rf.getReglasRecurrencia());
 		r.setUser(user);
@@ -279,7 +291,7 @@ public class ReservasRestController {
 		List<Reserva> resultAux = new ArrayList<>();
 		DateTime start = bfDTO.getDesde();
 		DateTime end = bfDTO.getHasta();
-		List<Espacio> espacios = reserva_service.getEspaciosEdificio(bfDTO.getIdEdificio());
+		List<Espacio> espacios = espacio_service.getEspaciosEdificio(bfDTO.getIdEdificio());
 		for(Espacio e : espacios){
 			resultAux = reserva_service.getAllReservasConflictivas(e.getId(), start, end);
 			

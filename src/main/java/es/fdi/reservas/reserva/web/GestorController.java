@@ -1,6 +1,5 @@
 package es.fdi.reservas.reserva.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;

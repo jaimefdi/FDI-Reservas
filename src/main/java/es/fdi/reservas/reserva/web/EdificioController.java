@@ -11,30 +11,33 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.boundary.EdificioService;
+import es.fdi.reservas.reserva.business.boundary.FacultadService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
 @Controller
 public class EdificioController {
-
-	
-	private ReservaService reserva_service;
 	
 	private UserService user_service;
 	
+	private EdificioService edificio_service;
+	
+	private FacultadService facultad_service;
+	
 	@Autowired
-	public EdificioController(UserService userService, ReservaService reservaservice){
+	public EdificioController(UserService userService, EdificioService es, FacultadService fs){
 		user_service = userService;
-		reserva_service = reservaservice;
+		edificio_service = es;
+		facultad_service = fs;
 	}
 	
 	@RequestMapping(value="/admin/administrar/edificios/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-	    Page<Edificio> currentResults = reserva_service.getEdificiosPaginados(pageRequest);
+	    Page<Edificio> currentResults = edificio_service.getEdificiosPaginados(pageRequest);
 	            
 	    model.addAttribute("currentResults", currentResults);
 	    
@@ -59,7 +62,7 @@ public class EdificioController {
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
 		model.addObject("pagina", numPag);
-		model.addObject("edificios", reserva_service.getEdificiosEliminados());
+		model.addObject("edificios", edificio_service.getEdificiosEliminados());
 		model.addObject("view", "admin/papelera_edificios");
 		return model;
 	}
@@ -68,8 +71,8 @@ public class EdificioController {
 	public String editarEdificio(@PathVariable("idEdificio") long idEdificio, Model model){
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
-		model.addAttribute("edificio", reserva_service.getEdificio(idEdificio));
-		model.addAttribute("facultades", reserva_service.getFacultades());
+		model.addAttribute("edificio", edificio_service.getEdificio(idEdificio));
+		model.addAttribute("facultades", facultad_service.getFacultades());
 		model.addAttribute("command", new NewFileCommand());
 		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarEdificio");
@@ -83,7 +86,7 @@ public class EdificioController {
 		model.addAttribute("User", u);
 		model.addAttribute("Edificio", new Edificio());
 		model.addAttribute("view", "admin/nuevoEdificio");
-		model.addAttribute("facultades", reserva_service.getFacultades());
+		model.addAttribute("facultades", facultad_service.getFacultades());
 		return "index";
 	}
 }

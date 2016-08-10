@@ -9,31 +9,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.fdi.reservas.fileupload.business.boundary.AttachmentManager;
 import es.fdi.reservas.fileupload.business.entity.Attachment;
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.boundary.EdificioService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
-import es.fdi.reservas.users.business.boundary.UserService;
 
 @RestController
 public class EdificioRestController {
 
-	private ReservaService reserva_service;
-	
-	private UserService user_service;
-	
-	private AttachmentManager manager;
+	private EdificioService edificio_service;
 	
 	@Autowired
-	public EdificioRestController(UserService userService, ReservaService reservaservice, AttachmentManager manager){
-		user_service = userService;
-		reserva_service = reservaservice;
-		this.manager = manager;
+	public EdificioRestController(EdificioService es){
+		edificio_service = es;
 	}
 	
 	@RequestMapping(value = "/edificio/{idEdificio}", method = RequestMethod.DELETE)
 	public void eliminarEdificio(@PathVariable("idEdificio") long idEdificio) {
-		reserva_service.editarEdificioDeleted(idEdificio);
+		edificio_service.editarEdificioDeleted(idEdificio);
 	}
 	
 	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}/{edificio.imagen}/{edificio.facultad}", method = RequestMethod.PUT)
@@ -47,16 +39,16 @@ public class EdificioRestController {
 		
 		if (fich.exists()){
 			Attachment attachment = new Attachment("");
-			if (reserva_service.getAttachmentByName(img).isEmpty()){
+			if (edificio_service.getAttachmentByName(img).isEmpty()){
 				//si no esta, lo añado
 				
 				attachment.setAttachmentUrl("/img/" + img);
-				attachment.setStorageKey(reserva_service.getEdificio(idEdificio).getNombreEdificio() + "/" + img);
+				attachment.setStorageKey(edificio_service.getEdificio(idEdificio).getNombreEdificio() + "/" + img);
 				//reserva_service.addAttachment(attachment);
 			}else{
-				attachment = reserva_service.getAttachmentByName(img).get(0);
+				attachment = edificio_service.getAttachmentByName(img).get(0);
 			}
-			reserva_service.editarEdificio(edificioActualizado, attachment, idFacul);
+			edificio_service.editarEdificio(edificioActualizado, attachment, idFacul);
 			System.out.println(imagen + " Existe");
 		}else{
 			System.out.println(imagen + " No existe");
@@ -66,13 +58,13 @@ public class EdificioRestController {
 	
 	@RequestMapping(value = "/admin/administrar/edificio/{numPag}/restaurar/{idEdificio}", method = RequestMethod.GET)
 	public String restaurarEdificio(@PathVariable("numPag") Long numPag, @PathVariable("idEdificio") Long idEdificio){
-		reserva_service.restaurarEdificio(idEdificio);
+		edificio_service.restaurarEdificio(idEdificio);
 		return "redirect:/administrar/edificio/{numPag}/restaurar";
 	}
 	
 	@RequestMapping(value="/admin/nuevoEdificio", method=RequestMethod.POST)
 	public String crearEdificio(Edificio f){
-		reserva_service.addNewEdificio(f);
+		edificio_service.addNewEdificio(f);
 	    return "redirect:/admin/administrar/edificios/1";
 	}
 }

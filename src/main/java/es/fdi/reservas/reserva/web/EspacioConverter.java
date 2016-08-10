@@ -3,16 +3,16 @@ package es.fdi.reservas.reserva.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.boundary.EspacioService;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 
 public class EspacioConverter implements Converter<Long, Espacio>{
 
-	private ReservaService reserva_service;
+	private EspacioService espacio_service;
 	
 	@Autowired
-    public EspacioConverter(ReservaService rs) {
-		reserva_service = rs;
+    public EspacioConverter(EspacioService es) {
+		espacio_service = es;
 	} 
 	
 	@Override
@@ -20,7 +20,7 @@ public class EspacioConverter implements Converter<Long, Espacio>{
 		if(idEspacio == null)
 			throw new IllegalArgumentException();
 		
-		return reserva_service.getEspacio(idEspacio);
+		return espacio_service.getEspacio(idEspacio);
 	}
 
 }

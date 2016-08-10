@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.fileupload.business.entity.Attachment;
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -21,13 +20,10 @@ import es.fdi.reservas.users.business.entity.User;
 public class UserRestController {
 
 	private UserService user_service;
-	
-	private ReservaService reserva_service;
 
 	@Autowired
-	public UserRestController(UserService us, ReservaService rs) {
+	public UserRestController(UserService us) {
 		user_service = us;
-		reserva_service = rs;
 	}
 
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.DELETE)
@@ -63,14 +59,14 @@ public class UserRestController {
 		
 		if (fich.exists()){
 			Attachment attachment = new Attachment("");
-			if (reserva_service.getAttachmentByName(img).isEmpty()){
+			if (user_service.getAttachmentByName(img).isEmpty()){
 				//si no esta, lo añado
 				
 				attachment.setAttachmentUrl("/img/" + img);
 				attachment.setStorageKey(user_service.getUser(idUser).getUsername() + "/" + img);
 				//reserva_service.addAttachment(attachment);
 			}else{
-				attachment = reserva_service.getAttachmentByName(img).get(0);
+				attachment = user_service.getAttachmentByName(img).get(0);
 			}
 			user_service.editaUsuario(userActualizado, user, admin, gestor, attachment);
 			System.out.println(imagen + " Existe");
@@ -80,10 +76,12 @@ public class UserRestController {
 		
 	}
 	
-//	@RequestMapping(value = "/admin/administrar/usuarios/editar/{idUser}", method = RequestMethod.PUT)
-//	public void editarUsuario(@PathVariable("idUser") long idUser,	@RequestBody UserDTO userActualizado) {
-//		user_service.editaUsuario(userActualizado);
-//	}
+	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.POST)
+	public String crearUsuario(User us){
+		user_service.addNewUser(us);
+	   return "redirect:/admin/administrar";
+		//return "nuevoUsuario";
+	}
 
 	@RequestMapping(value = "/usuarios/tag/{tagName}", method = RequestMethod.GET)
 	public List<UserDTO> usuariosFiltro(@PathVariable("tagName") String tagName) {
