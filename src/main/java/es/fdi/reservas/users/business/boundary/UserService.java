@@ -7,7 +7,8 @@ import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +16,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
+import es.fdi.reservas.fileupload.business.control.AttachmentRepository;
+import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.control.FacultadRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
@@ -33,12 +37,18 @@ public class UserService implements UserDetailsService{
 	private PasswordEncoder password_encoder;
 	
 	private ReservaService reserva_service;
+
+	private AttachmentRepository attachment_repository;
+
+	private FacultadRepository facultad_repository;
 	
 	@Autowired
-	public UserService(UserRepository usuarios, PasswordEncoder passwordEncoder, ReservaService reserva_service){
+	public UserService(UserRepository usuarios, PasswordEncoder passwordEncoder, ReservaService rs, AttachmentRepository ar, FacultadRepository fr){
 		user_ropository = usuarios;
 		password_encoder = passwordEncoder;
-		reserva_service = reserva_service;
+		reserva_service = rs;
+		attachment_repository = ar;
+		facultad_repository = fr;
 	}
 	
 	public User getUser(Long idUsuario) {
@@ -71,9 +81,24 @@ public class UserService implements UserDetailsService{
 	}
 
 	public User addNewUser(User user){
-		User newUser = new User(user.getUsername(), user.getEmail());
+		User newUser = new User(user.getUsername(), user.getEmail(), user.getImagen());
 		newUser.addRole(new UserRole("ROLE_USER"));
 		newUser.setPassword(password_encoder.encode(user.getPassword()));
+		Attachment img = user.getImagen();
+		if (img == null){
+			//img = attachment_repository.getAttachmentByName("casa").get(0);
+			img = attachment_repository.findOne((long) 2);
+			newUser.setImagen(img);
+			//attachment_repository.save(img);
+		}
+		
+		Facultad fac = user.getFacultad();
+		if (fac == null){
+			fac = facultad_repository.findOne((long) 27);
+			newUser.setFacultad(fac);
+			//facultad_repository.save(fac);
+		}
+		//newUser.setImagen(user.getImagen());
 		newUser = user_ropository.save(newUser);
 		
 		return newUser;
@@ -99,14 +124,15 @@ public class UserService implements UserDetailsService{
 		
 	}
 
-	public User editaUsuario(UserDTO userActualizado, String user, String admin, String gestor) {
+	public User editaUsuario(UserDTO userActualizado, String user, String admin, String gestor, Attachment imagen) {
 		
 		User u = user_ropository.findOne(userActualizado.getId());
 		u.setUsername(userActualizado.getUsername());
 		u.setEmail(userActualizado.getEmail());
-		Facultad fac = reserva_service.getFacultad(userActualizado.getFacultad());
-		u.setFacultad(fac);
-		
+		//Facultad fac = reserva_service.getFacultad((long) userActualizado.getFacultad());
+		//u.setFacultad(fac);
+		u.setImagen(imagen);
+		attachment_repository.save(imagen);
 		if (user.equals("user") || admin.equals("admin") || gestor.equals("gestor")){//si hay alguno seleccionado
 			u.getAuthorities().clear();
 			if (user.equals("user")){

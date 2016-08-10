@@ -44,9 +44,9 @@
 		                     <label class="col-md-2 control-label">Facultad: </label>
 		                      <div class="col-md-10">
 		                      
-		                         <select id="facultad" name="idFacultad" title="Facultad">
+		                         <select id="idFacultad" name="id" title="Facultad">
 				          				
-							          <option th:each="f : ${facultades}" th:value="${f.id}" th:text="${f.nombreFacultad}"/>
+							          <option  th:each="f : ${facultades}" th:value="${f.nombreFacultad}" th:text="${f.nombreFacultad}"/>
 							          			
 							        </select>
 		                      </div>
@@ -55,7 +55,7 @@
 		         </div>
 		         <div class="form-group">
 					<label>Selecciona la imagen: 
-					<input type="file" class="form-control" id="idAttachment" /></label>
+					<input type="file" class="form-control" id="idAttachment" th:value="${edificio.imagen.attachmentUrl}"/></label>
 					
 				</div>
           	</div>              

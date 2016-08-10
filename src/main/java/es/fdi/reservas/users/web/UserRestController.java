@@ -1,5 +1,6 @@
 package es.fdi.reservas.users.web;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.fdi.reservas.fileupload.business.entity.Attachment;
+import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -18,10 +21,13 @@ import es.fdi.reservas.users.business.entity.User;
 public class UserRestController {
 
 	private UserService user_service;
+	
+	private ReservaService reserva_service;
 
 	@Autowired
-	public UserRestController(UserService us) {
+	public UserRestController(UserService us, ReservaService rs) {
 		user_service = us;
+		reserva_service = rs;
 	}
 
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.DELETE)
@@ -47,11 +53,31 @@ public class UserRestController {
 		return model;
 	}
 
-	@RequestMapping(value = "/admin/administrar/usuarios/editar/{idUser}/{user}/{admin}/{gestor}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/admin/administrar/usuarios/editar/{idUser}/{user}/{admin}/{gestor}/{user.imagen}", method = RequestMethod.PUT)
 	public void editarUsuario(@PathVariable("idUser") long idUser, @PathVariable("user") String user,
 			@PathVariable("admin") String admin, @PathVariable("gestor") String gestor,
-			@RequestBody UserDTO userActualizado) {
-		user_service.editaUsuario(userActualizado, user, admin, gestor);
+			@RequestBody UserDTO userActualizado, @PathVariable("user.imagen") String img) {
+		
+		String imagen = "A:/FDI-Reservas/src/main/webapp/img/" + img;
+		File fich = new File(imagen);
+		
+		if (fich.exists()){
+			Attachment attachment = new Attachment("");
+			if (reserva_service.getAttachmentByName(img).isEmpty()){
+				//si no esta, lo añado
+				
+				attachment.setAttachmentUrl("/img/" + img);
+				attachment.setStorageKey(user_service.getUser(idUser).getUsername() + "/" + img);
+				//reserva_service.addAttachment(attachment);
+			}else{
+				attachment = reserva_service.getAttachmentByName(img).get(0);
+			}
+			user_service.editaUsuario(userActualizado, user, admin, gestor, attachment);
+			System.out.println(imagen + " Existe");
+		}else{
+			System.out.println(imagen + " No existe");
+		}
+		
 	}
 	
 //	@RequestMapping(value = "/admin/administrar/usuarios/editar/{idUser}", method = RequestMethod.PUT)

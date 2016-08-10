@@ -1,20 +1,15 @@
 package es.fdi.reservas.reserva.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.users.business.boundary.UserService;
-import es.fdi.reservas.users.business.entity.User;
 
 @RestController
 public class FacultadRestController {

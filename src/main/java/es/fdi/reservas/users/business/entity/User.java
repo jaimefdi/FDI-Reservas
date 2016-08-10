@@ -3,11 +3,8 @@ package es.fdi.reservas.users.business.entity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -17,10 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
@@ -28,6 +24,7 @@ import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.GrupoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
@@ -71,17 +68,20 @@ public class User implements UserDetails{
 	@JoinColumn(name="FacultadId")
 	private Facultad facultad;
 
+	@OneToOne(optional=true)
+	@JoinColumn(name="ImagenId")
+	private Attachment imagen;
 
 	public User() {
 		
 	}
 	
-	public User(String username, String email) {
+	public User(String username, String email, Attachment img) {
 		this.username = username;
 		this.email = email;
 		this.enabled = true;
 		this.roles = new ArrayList<UserRole>();
-		
+		this.imagen = img;		
 	}
 	
 	public String getPassword() {
@@ -186,7 +186,48 @@ public class User implements UserDetails{
 	public void setFacultad(Facultad facultad) {
 		this.facultad = facultad;
 	}
-	
-	
-	
+
+	public boolean isAccountExpired() {
+		return accountExpired;
+	}
+
+	public void setAccountExpired(boolean accountExpired) {
+		this.accountExpired = accountExpired;
+	}
+
+	public boolean isAccountLocked() {
+		return accountLocked;
+	}
+
+	public void setAccountLocked(boolean accountLocked) {
+		this.accountLocked = accountLocked;
+	}
+
+	public boolean isCredentialsExpired() {
+		return credentialsExpired;
+	}
+
+	public void setCredentialsExpired(boolean credentialsExpired) {
+		this.credentialsExpired = credentialsExpired;
+	}
+
+	public Collection<UserRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Collection<UserRole> roles) {
+		this.roles = roles;
+	}
+
+	public Attachment getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(Attachment imagen) {
+		this.imagen = imagen;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}	
 }

@@ -1,22 +1,15 @@
 package es.fdi.reservas.reserva.web;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import es.fdi.reservas.fileupload.business.boundary.AttachmentManager;
-import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
 import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
@@ -43,12 +36,10 @@ public class EdificioRestController {
 		reserva_service.editarEdificioDeleted(idEdificio);
 	}
 	
-	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}/{edificio.imagen}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}/{edificio.imagen}/{edificio.facultad}", method = RequestMethod.PUT)
 	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody EdificioDTO edificioActualizado,
-			@PathVariable("edificio.imagen") String img){
-		
-		
-		
+			@PathVariable("edificio.imagen") String img, @PathVariable("edificio.facultad") String idFacul){
+
 		//A:\FDI-Reservas\src\main\webapp\img
 		
 		String imagen = "A:/FDI-Reservas/src/main/webapp/img/" + img;
@@ -65,7 +56,7 @@ public class EdificioRestController {
 			}else{
 				attachment = reserva_service.getAttachmentByName(img).get(0);
 			}
-			reserva_service.editarEdificio(edificioActualizado, attachment);
+			reserva_service.editarEdificio(edificioActualizado, attachment, idFacul);
 			System.out.println(imagen + " Existe");
 		}else{
 			System.out.println(imagen + " No existe");

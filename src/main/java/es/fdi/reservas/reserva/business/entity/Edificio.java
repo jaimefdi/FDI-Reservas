@@ -38,7 +38,7 @@ public class Edificio {
 	@NotNull
 	private boolean deleted;
 	
-	@OneToOne
+	@OneToOne(optional=true)
 	@JoinColumn(name="ImagenId")
 	private Attachment imagen;
 	
@@ -53,6 +53,7 @@ public class Edificio {
 		this.direccion = direccion;
 		this.deleted = false;
 		this.imagen = img;
+		this.facultad= facultad;
 	}
 
 	public boolean isDeleted() {

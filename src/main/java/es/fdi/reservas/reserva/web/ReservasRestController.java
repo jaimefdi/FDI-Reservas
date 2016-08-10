@@ -233,7 +233,7 @@ public class ReservasRestController {
 		facultades = reserva_service.getFacultadesPorTagName(tagName);
 				
 		for(Facultad f : facultades) {
-			result.add(FacultadDTO.fromFacultadDTO(f));
+			result.add(FacultadDTO.fromFacultadDTOAutocompletar(f));
 		}
 		 
 		return result;

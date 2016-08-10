@@ -4,18 +4,18 @@ import es.fdi.reservas.reserva.business.entity.Edificio;
 
 public class EdificioDTO {
 
-	private Long id;
+	private long id;
 	private String nombreEdificio;
 	private String direccion;
-	private Long idFacultad;
+	private String idFacultad;
 	
 	private boolean deleted;
 	
-	private Long idAttachment;
+	private long idAttachment;
 	
 	public EdificioDTO(){}
 	
-	public EdificioDTO(String nombre, String dir, Long idFac, boolean deleted, Long idAttachment){
+	public EdificioDTO(String nombre, String dir, String idFac, boolean deleted, long idAttachment){
 		
 		this.nombreEdificio = nombre;
 		this.direccion = dir;
@@ -24,11 +24,11 @@ public class EdificioDTO {
 		this.idAttachment = idAttachment;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -57,23 +57,23 @@ public class EdificioDTO {
 		this.direccion = direccion;
 	}
 	
-	public Long getIdFacultad() {
+	public String getIdFacultad() {
 		return idFacultad;
 	}
 
-	public void setIdFacultad(Long idFacultad) {
+	public void setIdFacultad(String idFacultad) {
 		this.idFacultad = idFacultad;
 	}
 	
-	public Long getIdAttachment() {
+	public long getIdAttachment() {
 		return idAttachment;
 	}
 
-	public void setIdAttachment(Long idAttachment) {
+	public void setIdAttachment(long idAttachment) {
 		this.idAttachment = idAttachment;
 	}
 
 	public static EdificioDTO fromEdificioDTO(Edificio e){
-		return new EdificioDTO(e.getNombreEdificio(), e.getDireccion(), e.getFacultad().getId(), e.isDeleted(), e.getImagen().getId());
+		return new EdificioDTO(e.getNombreEdificio(), e.getDireccion(), e.getFacultad().getNombreFacultad(), e.isDeleted(), e.getImagen().getId());
 	}
 }

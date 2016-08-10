@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
@@ -50,12 +51,13 @@ public class UserController {
     }
 	
 	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.GET)
-	public ModelAndView nuevoUsuario(){
-		ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
+	public String nuevoUsuario(Model model){
+		//ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
 		User u = user_service.getCurrentUser();
-		model.addObject("User", u);
-		model.addObject("view", "index");
-	   return model;
+		model.addAttribute("User", u);
+		model.addAttribute("us", new User());
+		model.addAttribute("view", "admin/nuevoUsuario");
+	   return "index";
 	}
 	
 	@RequestMapping(value="/admin/nuevoUser", method=RequestMethod.GET)
@@ -64,8 +66,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.POST)
-	public String crearUsuario(User u){
-		user_service.addNewUser(u);
+	public String crearUsuario(User us){
+		user_service.addNewUser(us);
 	   return "redirect:/admin/administrar";
 		//return "nuevoUsuario";
 	}
@@ -131,6 +133,7 @@ public class UserController {
 		model.addAttribute("User", u);
 		model.addAttribute("usuario", user_service.getUser(idUser));
 		model.addAttribute("facultades", reserva_service.getFacultades());
+		model.addAttribute("command", new NewFileCommand());
 		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarUsuario");
 		return "index";

@@ -10,7 +10,7 @@ import es.fdi.reservas.fileupload.business.entity.Attachment;
 
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
 
-	@Query("from Attachment f where lower(f.attachmentUrl) like lower(:img)")
+	@Query("from Attachment f where lower(f.attachmentUrl) like lower(concat('%',:img, '%'))")
 	List<Attachment> getAttachmentByName(@Param("img") String img);
 	
 }

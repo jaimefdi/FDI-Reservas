@@ -14,12 +14,14 @@
 	 		var roles = $(this).attr("roles");
 	 		var enabled = $(this).attr("act");
 	 		var accion = $(this).attr("data-accion");
-
+	 		var imagen = $(this).attr("img")
+	 		
 	 		$('#modalEditarUsuario #idNombre').text(username);
 	 		$('#modalEditarUsuario #idEmail').text(email);
 	 		$('#modalEditarUsuario #idFacul').text(facultad);
 	 		$('#modalEditarUsuario #idRoles').text(roles);
 	 		$('#modalEditarUsuario #idActivado').text(enabled);
+	 		$('#modalEditarEdificio #idAttachment').text(imagen);
 	 		$('#modalEditarUsuario #btn-editar').prop("href", baseURL + "admin/administrar/usuarios/editar/" + user.id)
 	 		
 	 		if (accion == 'Eliminar'){

@@ -13,35 +13,34 @@ $(document).ready(function(){
 			user.username = $("#idNombre").val();
 			user.email = $("#idEmail").val();
 			user.facultad = $("#idFacultad").val();
+			alert(user.facultad);
+			user.imagen = $("#idAttachment").val();
 	    	editarUsuario(user,reqHeaders);
 		});
 		
-		
-		$("#autoFacultades").autocomplete({
+		$("#idFacultad").autocomplete({
 			source:function(request, response){
 					var tag = request.term;
 					
 					$.ajax({
-						url: '/reservas/facultades/tag/' + tag,
+						url: '/reservas/facultad/tag/' + tag,
 						type: 'GET',
 						contentType: 'application/json',
 						success : function(datos) {
-							
 							console.log(datos);
-								
+							
 							response($.map(datos,function(item){
 								
 									var obj = new Object();
-									obj.label = item.id; 
-									obj.value = item.nombreFacultad;
-									obj.webFacultad = item.webFacultad;
+									obj.label = item.nombreFacultad; 
+									obj.value = item.id;
+									//obj.webFacultad = item.webFacultad;
 									return obj;
 				
 							}))
 							
 						},    
 					    error : function(xhr, status) {
-					    	
 					        alert('Disculpe, existió un problema');
 					    }
 					});
@@ -60,8 +59,7 @@ $(document).ready(function(){
 				                  '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
 				                  '</div>' + 
 				                  '<div class="media-body">' + 
-				                  '<h5 class="media-heading">'+ item.value +'</h5>' + 
-				                  '<p class="small text-muted">'+ item.webFacultad +'</p>' + 
+				                  '<h5 class="media-heading">'+ item.nombreFacultad +'</h5>' + 
 				                  '</div></div>';
 				                  
 				        
@@ -102,7 +100,7 @@ function editarUsuario(user, reqHeaders){
 	
 	$.ajax({
 			
-			url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario + '/' + usuario + '/' + admin + '/' + gestor + '/' + facultad,
+			url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario + '/' + usuario + '/' + admin + '/' + gestor + "/" + user.imagen,
 			//url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario ,
 			type: 'PUT',
 			headers : reqHeaders,

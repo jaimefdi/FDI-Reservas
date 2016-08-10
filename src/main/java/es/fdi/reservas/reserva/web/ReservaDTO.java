@@ -5,7 +5,6 @@ import java.util.Random;
 
 import org.joda.time.DateTime;
 
-import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 
 public class ReservaDTO {

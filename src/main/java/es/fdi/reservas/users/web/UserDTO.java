@@ -26,11 +26,12 @@ public class UserDTO {
 	
 	public UserDTO(){}
 	
-	public UserDTO(Long id, String username, String email) {
+	public UserDTO(Long id, String username, String email, Long facultad) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.email = email;
+		this.facultad = facultad;
 	}
 
 
@@ -86,22 +87,6 @@ public class UserDTO {
 	public void setEnabled(boolean en){
 		this.enabled = en;
 	}
-
-//	public Set<Facultad> getFacultades() {
-//		return facultades;
-//	}
-//
-//	public void setFacultades(Set<Facultad> facultades) {
-//		this.facultades = facultades;
-//	}
-//	
-//	public void addFacultad(Facultad f){
-//		this.facultades.add(f);
-//	}
-//	
-//	public void removeFacultad(Facultad f){
-//		this.facultades.remove(f);
-//	}
 	
 	public Long getFacultad() {
 		return facultad;
@@ -116,6 +101,6 @@ public class UserDTO {
 	}
 	
 	public static UserDTO fromUserDTOAutocompletar(User user){
-		return new UserDTO(user.getId(), user.getUsername(), user.getEmail());
+		return new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getFacultad().getId());
 	}
 }
