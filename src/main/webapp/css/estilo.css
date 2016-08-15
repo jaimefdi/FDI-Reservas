@@ -591,3 +591,6 @@ td a i{
 	background: #7fc242;
 }
 
+.owl-theme .owl-nav.disabled+.owl-dots{
+	margin-top: 0px;
+}
