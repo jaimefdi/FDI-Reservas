@@ -48,10 +48,10 @@
 	<div class="col-xs-10 col-xs-offset-1" style="padding-left: 0px; padding-right:0px;">
 	    <div class="alert alert-danger" role="alert" style="display:none;">
 	        <div class="media">	
-	        	<button type="button" class="close" data-dismiss="alert" aria-label="Close">			 
+	        	<button id="alertClose" type="button" class="close" aria-label="Close">			 
 				  <i class="zmdi zmdi-close"> </i>
 				</button>		 
-			    <b><p id="alertaMsg" style="margin-bottom: 5px;"></p></b>		 
+			    <b><p class="text-muted" id="alertMsg" style="margin-bottom: 5px;"></p></b>		 
 			</div>	
 	    </div> 
     </div> 
@@ -71,7 +71,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Crear reserva</h4>
+            <h4 class="modal-title" id="myModalLabel">Crear Reserva</h4>
           </div>
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{'/nueva'}" th:object="${Reserva}" method="post">
@@ -185,24 +185,6 @@
 								</div>
 							</div>
 							
-							<div id="repetirCadaMes" class="col-md-10 hidden">
-		   				   		<div class="form-group ">
-						            <label class="col-md-3 control-label">Repetir cada:</label>
-						            <div class="col-md-9">
-							            <div class="col-md-6 checkbox">
-							            	<label>
-										      <input id="checkDM" type="checkbox" />dia del mes
-										    </label>
-							            </div>
-							             <div class="col-md-6 checkbox">
-							             <label>
-										      <input id="checkDS" type="checkbox" />dia de la semana
-										    </label>
-							            </div>
-						            </div>					          					            
-								</div>
-							</div>
-							
 							<div id="diasSemana" class="col-md-10">
 							  <div class="form-group">
 							  	<label class="col-md-3 control-label">Repetir el:</label>
@@ -256,25 +238,19 @@
 							<div class="col-md-10">
 								<div class="form-group">
 									<label class="col-md-3 control-label"> Finaliza:</label>
-									<div class="col-md-9">
-										<div class="radio">
-											<label>
-												<input type="radio" name="op" id="op_1" th:checked="true"/> Nunca
-											</label>
-										</div>
-									</div>
-									<div class="col-md-9 col-md-offset-3">	
+									
+									<div class="col-md-9">	
 										
 											<div class="col-md-3" style='padding-left:0px;padding-right:0px'>
 												<div class="radio">
 													<label>
-														<input type="radio" name="op" id="op_2"  /> Al cabo de									
+														<input type="radio" name="op" id="op_1" th:checked="true" /> Al cabo de									
 													</label>
 												</div>
 											</div>
 										
 											<div class="col-md-3">
-												<input id="count_repet" type="text" class="form-control" />
+												<input id="count_repet" type="text" class="form-control" value="5"/>
 											</div>
 											<div class="col-md-4" style='padding-left:0px'>
 												<p class="form-control-static">repeticiones</p>
@@ -285,7 +261,7 @@
 										<div class="col-md-1" style='padding-left:0px;padding-right:0px'>
 												<div class="radio">
 													<label>
-														<input type="radio" name="op" id="op_3" /> El									
+														<input type="radio" name="op" id="op_2" /> El									
 													</label>
 												</div>
 											</div>
@@ -368,20 +344,28 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Eliminar reserva periódica</h4>
+            <h4 class="modal-title" id="myModalLabel">Eliminar Reserva Periódica</h4>
           </div>
           <div class="modal-body">
           	<div class="row">
-            	<div class="col-md-12">
-          	  	 <button id="solo_esta" class="btn-rec gray">Sólo éste</button>
-          	  	 Se eliminará sólo este evento.
+            	<div class="col-xs-12">
+            		<div class="col-xs-4">
+            			 <button id="solo_esta" class="btn-normal">Sólo ésta</button>
+            		</div>
+            		<div class="col-xs-8" style="padding-top:6px;">
+            			 Se eliminará sólo esta reserva.
+            		</div>
           		</div>
           	</div>
           	<br/>
           	<div class="row">
-          		<div class="col-md-12">
-          	  	 <button id="toda_la_serie" class="btn-rec gray">Toda la serie</button>
-          	  	 Se eliminarán todos los eventos.
+          		<div class="col-xs-12">
+	          		<div class="col-xs-4">
+	          			<button id="toda_la_serie" class="btn-normal">Toda la serie</button>
+	          		</div>         	  	 
+	          	  	<div class="col-xs-8" style="padding-top:6px;">
+	          	  	 	Se eliminarán todas las reservas de la serie.
+	          	  	</div>        	  	
           		</div>
           	</div>
           </div>
