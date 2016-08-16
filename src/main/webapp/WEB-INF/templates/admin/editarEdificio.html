@@ -37,35 +37,26 @@
 		                <input id="idDir" name="direccion" type="text" class="form-control" th:value="${edificio.direccion}"/>                 
                  </div>
                  
-                 <div class="row">
-                	<div class="col-md-12">
-		                 <!-- Asunto --> 
-		                 <div class="form-group">
-		                     <label class="col-md-2 control-label">Facultad: </label>
-		                      <div class="col-md-10">
-		                      
-		                         <select id="idFacultad" name="id" title="Facultad">
-				          				
-							          <option  th:each="f : ${facultades}" th:value="${f.nombreFacultad}" th:text="${f.nombreFacultad}"/>
-							          			
-							        </select>
-		                      </div>
-		                 </div>
-                   </div>
-		         </div>
+                 <div id="facultad"></div>
+                   	<div class="form-group">
+                     <label>Facultad:</label>              
+		                <input id="idFacultad" type="text" class="form-control" placeholder="Elige una facultad"/>                 
+                 	</div>				
+				 </div>
+                 
 		         <div class="form-group">
 					<label>Selecciona la imagen: 
 					<input type="file" class="form-control" id="idAttachment" th:value="${edificio.imagen.attachmentUrl}"/></label>
 					
 				</div>
-          	</div>              
+          	            
                    <div class="row">              	
 					    <div class="col-md-12 text-center">
 					         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>
 					    </div>                   
 				   </div>
 				   <!-- /.row -->
-				  
+				 
 	   </form>
 	   
 <!-- 	   <form action="#" th:action="@{/admin/editarEdificio}" th:object="${command}" -->

@@ -39,12 +39,12 @@ public class EdificioService {
 		return edificio_repository.findAll(pageRequest);
 	}
 	
-	public Edificio editarEdificio(EdificioDTO edificio, Attachment attachment, String facultad){
+	public Edificio editarEdificio(EdificioDTO edificio, Attachment attachment){
 		Edificio e = edificio_repository.findOne(edificio.getId());
 		
 		e.setNombreEdificio(edificio.getNombreEdificio());
 		e.setDireccion(edificio.getDireccion());
-		Facultad fac = facultad_repository.getFacultadesPorNombre(facultad);
+		Facultad fac = facultad_repository.getFacultadPorId(edificio.getIdFacultad());
 		e.setFacultad(fac);
 		//e.setFacultad(facultad_repository.getOne(edificio.getIdFacultad()));
 		e.setImagen(attachment);
@@ -113,6 +113,11 @@ public Edificio addNewEdificio(Edificio edificio) {
 		e.setDeleted(false);		
 		return edificio_repository.save(e);
 		
+	}
+
+	public List<Edificio> getEdificiosPorTagName(String tagName) {
+		// TODO Auto-generated method stub
+		return edificio_repository.getEdificiosPorTagName(tagName);
 	}
 
 }

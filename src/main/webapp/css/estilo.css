@@ -588,4 +588,28 @@ select:hover{
 }
 
 
-#00a550
+.resultSearch{
+	background: #F5F4F3;
+	padding: 10px 0px;
+	margin-bottom: 10px;
+	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.owl-carousel .thumbnail{
+	border-radius: 0px;
+	padding: 0px;
+	
+}
+
+.owl-carousel .thumbnail:hover{
+	-transform: translateY(5px);
+	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.clicked{
+	background: #7fc242;
+}
+
+.owl-theme .owl-nav.disabled+.owl-dots{
+	margin-top: 0px;
+}

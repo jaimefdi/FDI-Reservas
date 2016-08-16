@@ -108,8 +108,8 @@
 					 	</div>
 					 	    </div>     
 					<div class="form-group">
-						<label>Selecciona la imagen: 
-						<input type="file" class="form-control" id="idAttachment" th:value="${usuario.imagen.attachmentUrl}"/></label>
+						<label>Selecciona la imagen: </label>
+						<input type="file" id="idAttachment" th:value="${usuario.imagen.attachmentUrl}"/>
 						
 					</div>                         
                    <div class="row">              	
@@ -129,6 +129,7 @@
 <script th:inline="javascript">
 	var baseURL = /*[[@{/}]]*/ '/';
 	var idUsuario = /*[[${usuario.id}]]*/ '1';
+	var roles = /*[[${usuario.roles}]]*/ '1';
 // 	var usuario = /*[[$chkUser]]*/ '1';
 // 	var admin = /*[[$chkAdmin]]*/ '1';
 // 	var gestor = /*[[$chkSecre]]*/ '1';

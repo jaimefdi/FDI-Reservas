@@ -24,5 +24,7 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 
 	public List<Edificio> findByFacultadId(Long idFacultad);
 
-	
+	@Query("from Edificio f where lower(f.nombreEdificio) like lower(concat('%',:nombreEdificio, '%'))")
+	List<Edificio> getEdificiosPorTagName(@Param("nombreEdificio") String nombreEdificio);
+		
 }

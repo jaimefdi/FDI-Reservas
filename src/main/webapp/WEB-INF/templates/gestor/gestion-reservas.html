@@ -22,12 +22,18 @@
 <!-- Vista -->
 <div class="row">
 	<div class="col-md-6 text-center">
-		<select id="selec-busqueda">
-			<option value="user">User</option>
-			<option value="espacio">Espacio</option>
-		</select>:
-		<input type="text" id="texto-busqueda"></input>
-    	<button id="boton-busqueda">Buscar</button>
+		<div class="col-md-3">
+			<select id="selec-busqueda" class="form-control">
+				<option value="user">User</option>
+				<option value="espacio">Espacio</option>
+			</select>
+		</div>
+		<div class="col-md-9">
+		 <div class="input-group">        
+            <input type="text" id="texto-busqueda" class="form-control"></input>
+             <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          </div>
+    	</div>
 	</div>
 	<div class="col-md-2 col-md-offset-4 text-center">
 	    Ver como: 
@@ -38,7 +44,7 @@
 <hr/>
 
 <div id="vistaLista" class="row" >
-	<div  class="col-md-8 col-md-offset-2">
+	<div  class="col-md-10 col-md-offset-1">
         
         <div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults.content)}">
              <i class="fa fa-ban fa-5x"></i>
@@ -77,9 +83,9 @@
 						<!-- data-grupo=${r.grupoReserva.nombreGrupo}, -->
 							<a th:attr="data-id=${r.id}, data-user=${r.user.username},data-asunto=${r.asunto}, data-start=${#joda.isoDateTime(r.comienzo)},
 									    data-end=${#joda.isoDateTime(r.fin)}, data-espacio=${r.espacio.nombreEspacio},
-									    data-reservaColor=${r.reservaColor}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+									    data-reservaColor=${r.reservaColor}, data-grupo=${r.grupoReserva != null} ? ${r.grupoReserva.nombreCorto} : 'Ninguno', data-accion='Ver' " data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/gestor/editar/' + ${r.id}}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>						
+							<a th:attr="data-id=${r.id},data-recurrenteId=${r.startRecurrencia},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>						
 						</td>
 					</tr>
 				</tbody>                    
@@ -155,10 +161,10 @@
 
 				 <div class="row">
                 	<div class="col-md-12">
-		                 <!-- Asunto --> 
+		                 <!-- Usuario --> 
 		                 <div class="form-group">
 		                     <label class="col-md-1 control-label">Usuario: </label>
-		                      <div class="col-md-11">
+		                      <div class="col-md-11" style="padding-left: 20px;">
 		                         <p id="usuario" class="form-control-static"> </p>
 		                      </div>
 		                 </div>
@@ -272,7 +278,24 @@
      </div>
 </div>
 
- 
+ <!-- Modal Eliminar Reserva Simple -->
+ <div class="modal fade" id="modalEliminarReservaSimple" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">¿Eliminar reserva?</h4>
+          </div>
+          <div class="modal-body">
+          	
+          </div>
+          <div class="modal-footer">
+	        <a class="btn-rec gray" data-dismiss="modal" aria-label="Close" role="button">CANCELAR</a>
+	        <a id="aceptarEliminar" class="btn-rec blue" role="button">ACEPTAR</a>
+	      </div>
+       </div>
+     </div>
+</div>
         
  <script th:inline="javascript">
  	var baseURL = /*[[@{/}]]*/ '/';

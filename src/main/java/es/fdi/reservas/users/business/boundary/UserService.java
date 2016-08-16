@@ -120,8 +120,8 @@ public class UserService implements UserDetailsService{
 		User u = user_ropository.findOne(userActualizado.getId());
 		u.setUsername(userActualizado.getUsername());
 		u.setEmail(userActualizado.getEmail());
-		//Facultad fac = reserva_service.getFacultad((long) userActualizado.getFacultad());
-		//u.setFacultad(fac);
+		Facultad fac = facultad_repository.findOne(userActualizado.getFacultad());
+		u.setFacultad(fac);
 		u.setImagen(imagen);
 		attachment_repository.save(imagen);
 		if (user.equals("user") || admin.equals("admin") || gestor.equals("gestor")){//si hay alguno seleccionado

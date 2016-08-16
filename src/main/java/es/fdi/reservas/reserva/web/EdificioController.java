@@ -1,5 +1,8 @@
 package es.fdi.reservas.reserva.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +19,7 @@ import es.fdi.reservas.reserva.business.boundary.FacultadService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
+import es.fdi.reservas.users.web.UserDTO;
 
 @Controller
 public class EdificioController {
@@ -51,8 +55,6 @@ public class EdificioController {
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_edificios");
 		
-		
-		
         return "index";
     }
 	
@@ -74,7 +76,6 @@ public class EdificioController {
 		model.addAttribute("edificio", edificio_service.getEdificio(idEdificio));
 		model.addAttribute("facultades", facultad_service.getFacultades());
 		model.addAttribute("command", new NewFileCommand());
-		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarEdificio");
 		return "index";
 	}
@@ -88,5 +89,23 @@ public class EdificioController {
 		model.addAttribute("view", "admin/nuevoEdificio");
 		model.addAttribute("facultades", facultad_service.getFacultades());
 		return "index";
+	}
+	
+	@RequestMapping(value = "/edificio/tag/{tagName}", method = RequestMethod.GET)
+	public List<EdificioDTO> edificiosFiltro(@PathVariable("tagName") String tagName) {
+		
+		List<EdificioDTO> result = new ArrayList<>();
+		List<Edificio> edificios = new ArrayList<>();
+		
+		
+		edificios = edificio_service.getEdificiosPorTagName(tagName);
+		
+		
+		for(Edificio u : edificios) {
+			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
+		}
+		 
+		return result;
+
 	}
 }

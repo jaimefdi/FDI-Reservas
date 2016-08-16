@@ -8,14 +8,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import es.fdi.reservas.reserva.business.boundary.EspacioService;
 import es.fdi.reservas.reserva.business.entity.Espacio;
+import org.springframework.web.servlet.ModelAndView;
+
+import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.users.business.boundary.UserService;
+import es.fdi.reservas.users.business.entity.User;
 
 @RestController
 public class EspaciosRestController {
 
-	private EspacioService espacio_service;
+	private ReservaService reserva_service;
+	
+	private UserService user_service;
+	
 	@Autowired
-	public EspaciosRestController(EspacioService es){
-		espacio_service = es;
+	public EspaciosRestController(UserService userService, ReservaService reservaservice){
+		user_service = userService;
+		reserva_service = reservaservice;
+	}
+	
+	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.GET)
+	public EspacioDTO espacio(@PathVariable("idEspacio") long idEspacio) {
+		Espacio e = reserva_service.getEspacio(idEspacio);
+		
+		return EspacioDTO.fromEspacioDTO(e);
 	}
 	
 	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.DELETE)

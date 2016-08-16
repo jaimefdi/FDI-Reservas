@@ -7,7 +7,7 @@ public class EdificioDTO {
 	private long id;
 	private String nombreEdificio;
 	private String direccion;
-	private String idFacultad;
+	private long idFacultad;
 	
 	private boolean deleted;
 	
@@ -15,7 +15,7 @@ public class EdificioDTO {
 	
 	public EdificioDTO(){}
 	
-	public EdificioDTO(String nombre, String dir, String idFac, boolean deleted, long idAttachment){
+	public EdificioDTO(String nombre, String dir, long idFac, boolean deleted, long idAttachment){
 		
 		this.nombreEdificio = nombre;
 		this.direccion = dir;
@@ -24,6 +24,13 @@ public class EdificioDTO {
 		this.idAttachment = idAttachment;
 	}
 
+	public EdificioDTO(Long id, String nombre, String dir, long idFac, long idImg){
+		this.id = id;
+		this.nombreEdificio = nombre;
+		this.direccion = dir;
+		this.idFacultad = idFac;
+		this.idAttachment = idImg;
+	}
 	public long getId() {
 		return id;
 	}
@@ -57,11 +64,11 @@ public class EdificioDTO {
 		this.direccion = direccion;
 	}
 	
-	public String getIdFacultad() {
+	public long getIdFacultad() {
 		return idFacultad;
 	}
 
-	public void setIdFacultad(String idFacultad) {
+	public void setIdFacultad(long idFacultad) {
 		this.idFacultad = idFacultad;
 	}
 	
@@ -74,6 +81,10 @@ public class EdificioDTO {
 	}
 
 	public static EdificioDTO fromEdificioDTO(Edificio e){
-		return new EdificioDTO(e.getNombreEdificio(), e.getDireccion(), e.getFacultad().getNombreFacultad(), e.isDeleted(), e.getImagen().getId());
+		return new EdificioDTO(e.getNombreEdificio(), e.getDireccion(), e.getFacultad().getId(), e.isDeleted(), e.getImagen().getId());
+	}
+
+	public static EdificioDTO fromEdificioDTOAutocompletar(Edificio e) {
+		return new EdificioDTO(e.getId(), e.getNombreEdificio(), e.getDireccion(), e.getFacultad().getId(), e.getImagen().getId());
 	}
 }

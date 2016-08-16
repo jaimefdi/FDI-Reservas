@@ -14,14 +14,14 @@ import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 @Repository
 public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 
-	@Query("select f from #{#entityName} f where f.deleted=false and f.id = :id_edif")
-	public List<Espacio> findByEdificioId(Long idEdificio);
+	@Query("select f from #{#entityName} f where f.deleted=false and f.edificio.id = :idEdificio")
+	public List<Espacio> findByEdificioId(@Param("idEdificio") Long idEdificio);
 	
 	//@Query("select f from #{#entityName} f where f.deleted=false and f.id = :id and f.edificio.id = :idEdificio")
 	public List<Espacio> findById(Long Id); 
 
-	@Query("select f from #{#entityName} f where f.deleted=false and f.id = :id_edif")
-	public List<Espacio> findByEdificioIdAndTipoEspacio(Long idEdificio, TipoEspacio idTipoEspacio);
+	@Query("select f from #{#entityName} f where f.deleted=false and f.edificio.id = :idEdificio and f.tipoEspacio = :tipoEspacio")
+	public List<Espacio> findByEdificioIdAndTipoEspacio(@Param("idEdificio") Long idEdificio, @Param("tipoEspacio") TipoEspacio tipoEspacio);
 	
 	//public List<Espacio> findByNombre_espacio(String nombre);
 	

@@ -2,7 +2,6 @@ package es.fdi.reservas.reserva.business.entity;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,9 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import es.fdi.reservas.users.business.entity.User;
 
 @Entity
@@ -25,10 +22,10 @@ public class GrupoReserva {
 	@Column(name="GrupoReservaId")
 	private Long id;
 	
-	@NotNull @Size(min=1, max=15)
+	@Size(min=3, message = "Error: \"${validatedValue}\" es demasiado corto. Mínimo 3 caracteres.")
 	private String nombreCorto;
 	
-	@NotNull @Size(min=1, max=30)
+	@Size(min=10, message = "Error: \"${validatedValue}\" es demasiado corto. Mínimo 10 caracteres.")
 	private String nombreLargo;
 	
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="grupoReserva")
@@ -91,9 +88,9 @@ public class GrupoReserva {
 		this.user = user;
 	}
 	
-	public boolean equals(GrupoReserva gr)
-	{
-		return this.id.equals(gr.id);
+	public boolean equals(GrupoReserva gr){
+		return (this.id.equals(gr.id) 
+				|| this.nombreCorto.equals(gr.nombreCorto));
 	}
 	
 	

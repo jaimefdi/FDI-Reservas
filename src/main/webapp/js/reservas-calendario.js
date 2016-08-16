@@ -5,12 +5,19 @@ $(document).ready(function(){
  	var reqHeaders = [];
  	reqHeaders[header] = token;
  	
+ 	// Ocultar el msg de error al hacer click
+ 	$("#alertClose").click(function(){
+ 		$(".alert").css("display","none");
+ 	});
+ 	
  	/// Controla que la hora de fin no sea menor que la de inicio ///
  	$("#modalCrearReserva #datetimepicker1").change(function(){
  		var comienzo = es.ucm.fdi.dateUtils.toIso8601($('#modalCrearReserva #datetimepicker1').val());
  		var m = new moment(comienzo);
+ 		$("#empieza_el").val(m.format("DD/MM/YYYY"));
  		var fin = m.add(1,'hour');
- 		$('#modalCrearReserva #datetimepicker2').val(fin.format("DD/MM/YYYY HH:mm"));	
+ 		$('#modalCrearReserva #datetimepicker2').val(fin.format("DD/MM/YYYY HH:mm"));
+ 		
  	});
 
  	$("#modalCrearReserva #datetimepicker2").change(function(){
@@ -25,6 +32,7 @@ $(document).ready(function(){
  			$('#modalCrearReserva #datetimepicker2').val(end.format("DD/MM/YYYY HH:mm"));	
  		}
  		
+ 		$("#empieza_el").val(start.format("DD/MM/YYYY"));
  		
  	});
 
@@ -45,17 +53,12 @@ $(document).ready(function(){
  		eliminarReserva(reqHeaders, idReserva);
  	});
  	
- 	////////
-	$("#op_1").click(function(){
-		$("#count_repet").val("");
+ 	////////	
+	$("#op_1").click(function(){				
 		$("#datetimepicker3").val("");
 	});
 	
-	$("#op_2").click(function(){				
-		$("#datetimepicker3").val("");
-	});
-	
-	$("#op_3").click(function(){
+	$("#op_2").click(function(){
 		$("#count_repet").val("");				
 	});
  	/////////
@@ -78,12 +81,10 @@ $(document).ready(function(){
 		 	
  	$("#selec_frec").change(function(){
  		var t = $("#selec_frec option:selected").text();
- 		console.log(t);
  		desmarcarCkecks();
  		
  		if(t == 'Todos los lunes, miercoles y viernes'){
  			$("#repetirCada").addClass("hidden");
- 			$("#repetirCadaMes").addClass("hidden");
  			$("#diasSemana").addClass("hidden");
  			
  			var dow = ["L","X","V"];
@@ -92,7 +93,6 @@ $(document).ready(function(){
  		}
  		else if(t == 'Todos los martes y jueves'){	 			
  			$("#repetirCada").addClass("hidden");
- 			$("#repetirCadaMes").addClass("hidden");
  			$("#diasSemana").addClass("hidden");
  			
  			var dow = ["M","J"];
@@ -101,7 +101,6 @@ $(document).ready(function(){
  		}
 		else if(t == 'Todos los dias laborables (de lunes a viernes)'){				
  			$("#repetirCada").addClass("hidden");
- 			$("#repetirCadaMes").addClass("hidden");
  			$("#diasSemana").addClass("hidden");
  			
  			var dow = ["L","M","X","J","V"];
@@ -111,7 +110,6 @@ $(document).ready(function(){
 		else if(t == 'Cada dia'){
 			
 			$("#repetirCada").removeClass("hidden");
-			$("#repetirCadaMes").addClass("hidden");
 			$("#diasSemana").addClass("hidden");
 			var w = t.split(' ');
 			$("#lb_repetirCada").text(w[1] + 's');
@@ -120,7 +118,6 @@ $(document).ready(function(){
 		else if(t == 'Cada semana'){
 			
 			$("#repetirCada").removeClass("hidden");
-			$("#repetirCadaMes").addClass("hidden");
 			$("#diasSemana").removeClass("hidden");
 			var w = t.split(' ');
 			$("#lb_repetirCada").text(w[1] + 's');
@@ -129,14 +126,12 @@ $(document).ready(function(){
 		else if(t == 'Cada mes'){
 			
 			$("#repetirCada").removeClass("hidden");
-			$("#repetirCadaMes").removeClass("hidden");
 			$("#diasSemana").addClass("hidden");
-			// añadir nuevo div
+	
 			var w = t.split(' ');
 			$("#lb_repetirCada").text(w[1] + 'es');
 	    }
 		else{
-			$("#repetirCadaMes").addClass("hidden");
 			$("#diasSemana").addClass("hidden");
 			var w = t.split(' ');
 			$("#lb_repetirCada").text(w[1] + 's');
@@ -159,12 +154,12 @@ $(document).ready(function(){
  		}
  		
  		/// UNTIL Y COUNT ///
- 		if($("#op_3").is(':checked')){
+ 		if($("#op_2").is(':checked')){
  			var u = es.ucm.fdi.dateUtils.toIso8601($('#modalCrearReserva #datetimepicker3').val());
 	 		var until = "UNTIL=" + new moment(u).format("YYYY-MM-DD");
  			rrule += ";" + until;
  		}
- 		else if($("#op_2").is(':checked')){
+ 		else if($("#op_1").is(':checked')){
  			var count = "COUNT=" + $("#count_repet").val();
  			rrule += ";" +  count;
  		}
@@ -182,7 +177,7 @@ $(document).ready(function(){
  			rrule += ";" + bymonth;
  		}
  		
- 		var rdate = "RDATE:";
+ 		//var rdate = "RDATE:";
  		var exdate = "EXDATE:";
  		
  		
@@ -192,7 +187,15 @@ $(document).ready(function(){
  				 				
  		
  		var reservaAJAX = {};
- 		reservaAJAX.title = $("#modalCrearReserva #idAsunto").val();
+ 		var asunto = $("#modalCrearReserva #idAsunto").val();
+ 		
+ 		if(asunto.length === 0){
+ 			reservaAJAX.title = "Sin asunto";
+ 		}
+ 		else{
+ 			reservaAJAX.title = asunto;	
+ 		}
+ 		
  		reservaAJAX.start = es.ucm.fdi.dateUtils.toIso8601($('#modalCrearReserva #datetimepicker1').val());				
 		reservaAJAX.end = es.ucm.fdi.dateUtils.toIso8601($('#modalCrearReserva #datetimepicker2').val());
  		/// Calcular el nuevo comienzo que depende del byday ///	 		
@@ -402,6 +405,7 @@ function eliminarReserva(reqHeaders, idReserva){
 			headers : reqHeaders,
 			success : function(datos) {
 				$('#modalEliminarReservaSimple').modal('hide');
+				$('#modalRecurrente').modal('hide');
 				$("#calendar").fullCalendar('refetchEvents');
 			},    
 			error : function(xhr, status) {
@@ -422,8 +426,9 @@ function nuevaReserva(reserva, reqHeaders){
 				$("#modalCrearReserva").modal('hide');
 			},
 			error: function(xhr, status){
+				$("#modalCrearReserva").modal('hide');
 				var x = JSON.parse(xhr.responseText);
-				alert(x.msg);			
+				showAlertMsg(x.msg);
 			}
 		});
 }
@@ -533,4 +538,9 @@ function modalEliminarReservaRecurrente(){
 
 function closePopover(){
 	$('[role="tooltip"]').popover('hide');
+}
+
+function showAlertMsg(msg){
+	$(".alert").css("display","block");
+	$("#alertMsg").text(msg);
 }

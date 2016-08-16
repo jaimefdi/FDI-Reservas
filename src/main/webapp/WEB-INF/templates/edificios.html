@@ -31,7 +31,7 @@
 	    <h3 class="text-center" style="margin-top:10px;margin-bottom:20px;">Selecciona un edificio</h3>
 	    
 	   <ol>
- 		<li th:each="e : ${Edificios}">
+ 		<li th:each="e : ${Edificios}" role="button">
 		   <div class="edificio" th:attr="data-id=${e.id}">
 			<div class="media">
 			  <div class="media-left media-middle">			    
@@ -51,37 +51,16 @@
    </div>                  
 </div>
 <!-- /.row -->
-	
+<br/>	
 	 <div class="row">
-	    <div class="col-md-12 text-right page-header">
+	    <div class="col-md-12 text-right">
 	         <a id="edificio_link" th:href="@{''}"><button type="button" class="btn-normal">SIGUIENTE <i class="fa fa-angle-right"></i></button></a>
 	    </div>                   
 	</div>
 	<!-- /.row -->
 
 
-<script>
-	
-	$("li>div").click(function(){
-		var idEdificio = $(this).attr("data-id");
-		
-		$("li>div").each(function(){
-			$(this).removeClass("selectedEdif");
-		});
-		
-		$(this).addClass("selectedEdif");
-		var link = 'edificio/' + idEdificio + '/espacios';
-		$("#edificio_link").attr("href",link);
-	});
-	
-	$("#edificio_link").click(function(){
-		var link = $("#edificio_link").attr('href');
-		if(link == '')
-		   alert("Debes seleccionar un edificio.");
-		
-	});
-	
-</script>
+<script src="../../js/edificios.js" th:src="@{/js/edificios.js}"></script>
  </div>
 
             <!-- /.container-fluid -->

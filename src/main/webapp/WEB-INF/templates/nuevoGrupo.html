@@ -8,6 +8,7 @@
 
 <div class="container-fluid" th:fragment="contenido">
 
+<!-- Mensaje de exito -->
 <div class="row" th:if="${exito}">
 	<div class="col-md-12">
 		<div class="alert alert-success" role="alert">
@@ -25,11 +26,29 @@
 	</div>
 </div>
 
+<!-- Mensaje de error -->
+<div class="row" th:if="${error}">
+	<div class="col-md-12">
+		<div class="alert alert-danger" role="alert">
+	        <div class="media">	
+	       		 <button type="button" class="close" data-dismiss="alert" aria-label="Close">			 
+				  <i class="zmdi zmdi-close"> </i>
+				 </button>	 
+			  <div class="media-body">		
+			    <p class="text-muted" style="margin-bottom:5px;" th:inline="text" >
+			    	No se ha podido crear el grupo <b> [[${error}]]</b> debido a que ya existe un grupo con ese nombre.
+			    </p>
+			  </div>
+			</div>	
+	    </div>
+	</div>
+</div>
+
 <!-- Page Heading -->
 <div class="row">
     <div class="col-md-12">
         <h2 class="page-header text-center">
-           Grupo de reservas
+           Grupo de Reservas
         </h2>
     </div>
 </div>
@@ -41,15 +60,17 @@
         	<div class="form-group">
                 <label>Nombre corto</label>
                 <div class="form-group">           
-                  <input name="nombreCorto" type="text" class="form-control" />
-                  <p class="small help-block">Máximo 15 caracteres</p>
+                  <input name="nombreCorto" type="text" class="form-control" maxlength="15" />                
+	              <p class="small help-block">Máximo 15 caracteres</p>
+	              <p th:if="${#fields.hasErrors('nombreCorto')}" th:errors="*{nombreCorto}" style="color:red;font-weight:bold;">[errors]</p> 
                 </div>
             </div>
             <div class="form-group">
                 <label>Nombre largo</label>
                 <div class="form-group">           
-                  <input name="nombreLargo" type="text" class="form-control" />
+                  <input name="nombreLargo" type="text" class="form-control" maxlength="30" />
                   <p class="small help-block">Máximo 30 caracteres</p>
+                  <p th:if="${#fields.hasErrors('nombreLargo')}" th:errors="*{nombreLargo}" style="color:red;font-weight:bold;">[errors]</p>
                 </div>
             </div>
             <div class="row text-center">

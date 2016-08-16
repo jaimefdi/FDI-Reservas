@@ -28,9 +28,9 @@ public class EdificioRestController {
 		edificio_service.editarEdificioDeleted(idEdificio);
 	}
 	
-	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}/{edificio.imagen}/{edificio.facultad}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}/{edificio.imagen}", method = RequestMethod.PUT)
 	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody EdificioDTO edificioActualizado,
-			@PathVariable("edificio.imagen") String img, @PathVariable("edificio.facultad") String idFacul){
+			@PathVariable("edificio.imagen") String img){
 
 		//A:\FDI-Reservas\src\main\webapp\img
 		
@@ -48,7 +48,7 @@ public class EdificioRestController {
 			}else{
 				attachment = edificio_service.getAttachmentByName(img).get(0);
 			}
-			edificio_service.editarEdificio(edificioActualizado, attachment, idFacul);
+			edificio_service.editarEdificio(edificioActualizado, attachment);
 			System.out.println(imagen + " Existe");
 		}else{
 			System.out.println(imagen + " No existe");

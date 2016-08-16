@@ -5,8 +5,20 @@ $(document).ready(function(){
 	 	var reqHeaders = [];
 	 	reqHeaders[header] = token;
 	 	
+	 	console.log("jjjjjj");
+		console.log(roles);
 		
-		
+		for(var i in roles){
+			if(roles[i].role == "ROLE_USER"){
+				$("#chkUser").prop("checked","true");
+			}
+			else if(roles[i].role == "ROLE_ADMIN"){
+				$("#chkAdmin").prop("checked","true");
+			}
+			else{
+				$("#chkSecre").prop("checked","true");
+			}
+		}
 		
 		$("#enlaceGuardar").click(function(){
 			user.id = idUsuario;

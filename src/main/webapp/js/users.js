@@ -28,7 +28,7 @@
 	 			
 	 				modalEliminarUsuario(user, reqHeaders);	
 	 			
-	 		}else{
+	 		}else if(accion == 'Ver'){
 	 		
 	 			$('#modalEditarUsuario').modal('show');
 	 		}

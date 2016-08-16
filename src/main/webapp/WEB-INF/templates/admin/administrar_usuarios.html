@@ -10,19 +10,12 @@
 <div class="container-fluid" th:fragment="contenido">
 	<div class="row">
 	    <div class="col-md-12">
-	        <h1 class="page-header text-center">
-	            Administrar
-	        </h1>
+	        <h2 class="page-header text-center">
+	            <small>Lista de </small>Usuarios
+	        </h2>
 	    </div>
 	</div>
-	<!-- /.row -->
-	<div class="row">
-        <div class="col-md-12">
-            <h1 class="page-header text-center">
-                <small>Administrar usuarios</small>
-            </h1>
-        </div>
-    </div>
+	
 	<div class="row">
     	<div class="col-md-8 col-md-offset-2">
          	
@@ -56,31 +49,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:if="${r.enabled}" th:each="r : ${currentResults}"  class="success">
-                        	<td><img th:if="${r.id != User.id}" class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
-                            <td th:if="${r.id != User.id}" th:text="${r.username}"></td>
-                            <td th:if="${r.id != User.id}" th:text="${r.email}"></td>
-                            <td th:if="${r.id != User.id}" th:text="${r.facultad.nombreFacultad}"></td>
-                            <td th:if="${r.id != User.id}" th:text="${r.rolesToString()}"></td>
+                        <tr th:each="r : ${currentResults}" th:if="${r.id != User.id}" th:classappend="${r.enabled} ? 'success' : 'danger'">
+                        	<td ><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
+                            <td th:text="${r.username}"></td>
+                            <td th:text="${r.email}"></td>
+                            <td th:text="${r.facultad.nombreFacultad}"></td>
+                            <td th:text="${r.rolesToString()}"></td>
 <!--                             <span th:each="s:${roles}" th:text="${s}"></span></td> -->
-                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.attachmentUrl}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                            <td ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.attachmentUrl},data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                         </tr>   
-                        
-                        <tr th:if="${!r.enabled}" th:each="r : ${currentResults}"  class="danger">
-                        	<td><img th:if="${r.id != User.id}" class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
-                            <td th:if="${r.id != User.id}" th:text="${r.username}"></td>
-                            <td th:if="${r.id != User.id}" th:text="${r.email}"></td>
-                            <td th:if="${r.id != User.id}" th:text="${r.facultad.nombreFacultad}"></td>
-                            <td th:if="${r.id != User.id}" th:text="${r.rolesToString()}"></td>
-<!--                             <span th:each="s:${roles}" th:text="${s}"></span></td> -->
-                            <td th:if="${r.id != User.id}" ><a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.attachmentUrl}" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
-							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
-							</td>
-                        </tr>    
+                
                     </tbody>
                 </table>
             </div>

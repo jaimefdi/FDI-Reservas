@@ -11,9 +11,7 @@
 <!-- Page Heading -->
 <div class="row">  
 	<div class="col-md-12">
-        <h1 class="page-header text-center">
-            <small>Editar</small>
-        </h1>
+        <h2 class="page-header text-center">Editar Reserva</h2>
     </div>                  
 </div>
 <!-- /.row -->
@@ -55,19 +53,6 @@
 			             </div>                     
                  </div>
                  
-                 <!-- Grupo de Reservas --> 
-                 <div class="form-group">
-                     <label>Grupo:</label>                    
-                     <select id="selec_grupo" class="form-control" >            
-                   	   	<option value="0">Ninguno</option>
-                   	   	<option th:each="g : ${GruposReservas}"
-                   	   			th:text="${g.nombreCorto}"
-                   	   			th:value="${g.id}"
-                   	   			th:selected="${Reserva.grupoReserva != null} ? ${Reserva.grupoReserva.id}==${g.id}">
-                   	   	</option>
-                   	 </select>
-                    <p class="small help-block">Agrega esta reserva a un grupo de reservas.</p>
-                 </div>
                </div> 
                  
                 <div class="col-md-6">
@@ -88,17 +73,21 @@
                         </div>
                    </div>
                
-                    <!-- Asistentes  -->
-                   <div class="form-group">
-                       <label>Asistentes:</label>
-                        <div class="ui-widget">                      
-						    <input id="autoUsuarios" type="text"  class="form-control" placeholder="Agrega invitados"/>				    							                       	                    	
-                        </div>
-                   </div>
-                   
-                   <div id="asistencia"></div>
+                    
+	                 <!-- Grupo de Reservas --> 
+	                 <div class="form-group">
+	                     <label>Grupo:</label>                    
+	                     <select id="selec_grupo" class="form-control" >            
+	                   	   	<option value="0">Ninguno</option>
+	                   	   	<option th:each="g : ${GruposReservas}"
+	                   	   			th:text="${g.nombreCorto}"
+	                   	   			th:value="${g.id}"
+	                   	   			th:selected="${Reserva.grupoReserva != null} ? ${Reserva.grupoReserva.id}==${g.id}">
+	                   	   	</option>
+	                   	 </select>
+	                    <p class="small help-block text-right">Agrega esta reserva a un grupo de reservas.</p>
+	                 </div> 
                   </div> 
-                  
                    
                    <div class="row">              	
 					    <div class="col-md-12 text-center">

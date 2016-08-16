@@ -8,6 +8,8 @@ public class BusquedaFechaDTO {
 	private DateTime desde;
 	private DateTime hasta;
 	
+	public BusquedaFechaDTO() {}
+	
 	public BusquedaFechaDTO(Long id, DateTime ini, DateTime fin){
 		this.idEdificio = id;
 		this.desde = ini;

@@ -121,6 +121,7 @@ public class UserController {
 
 		model.addAttribute("User", u);
 		model.addAttribute("usuario", user_service.getUser(idUser));
+		model.addAttribute("rolesUsuario", user_service.getUser(idUser).getAuthorities().toArray());
 		model.addAttribute("facultades", facultad_service.getFacultades());
 		model.addAttribute("command", new NewFileCommand());
 		//System.out.println(user_service.getUser(idUser).getUsername());
