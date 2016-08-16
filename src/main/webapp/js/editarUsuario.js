@@ -24,10 +24,10 @@ $(document).ready(function(){
 			user.id = idUsuario;
 			user.username = $("#idNombre").val();
 			user.email = $("#idEmail").val();
-			user.facultad = $("#idFacultad").val();
+			//user.facultad = $("#idFacultad").val();
 			alert(user.facultad);
 			user.imagen = $("#idAttachment").val();
-	    	editarUsuario(user,reqHeaders);
+	    	//editarUsuario(user,reqHeaders);
 		});
 		
 		$("#idFacultad").autocomplete({
@@ -44,8 +44,8 @@ $(document).ready(function(){
 							response($.map(datos,function(item){
 								
 									var obj = new Object();
-									obj.label = item.nombreFacultad; 
-									obj.value = item.id;
+									obj.label = item.id;
+									obj.value = item.nombreFacultad; 
 									//obj.webFacultad = item.webFacultad;
 									return obj;
 				
@@ -58,10 +58,9 @@ $(document).ready(function(){
 					});
 			},
 			select: function(event, ui){
-				var img = '<img class="img-circle" src="http://placehold.it/30x30" data-toggle="tooltip" data-placement="bottom" title="' + ui.item.value + '" />' ;
-				$("#facultad").append(img);
-				$('[data-toggle="tooltip"]').tooltip();
-				
+				user.facultad = ui.item.label;
+				//console.log(idFacultad);
+				//$("#idFacultad").prop("name", idFacultad);
 			},
 			minLength: 3
 
@@ -71,7 +70,7 @@ $(document).ready(function(){
 				                  '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
 				                  '</div>' + 
 				                  '<div class="media-body">' + 
-				                  '<h5 class="media-heading">'+ item.nombreFacultad +'</h5>' + 
+				                  '<h5 class="media-heading">'+ item.value +'</h5>' + 
 				                  '</div></div>';
 				                  
 				        

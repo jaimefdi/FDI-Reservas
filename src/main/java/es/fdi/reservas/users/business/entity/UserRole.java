@@ -35,8 +35,7 @@ public class UserRole implements GrantedAuthority, Serializable {
 		return this.role;
 	}
 	
-	@Override
-	public String toString(){
+	public String rolToString(){
 		switch (role){
 		case "ROLE_USER":
 			return "Usuario básico";

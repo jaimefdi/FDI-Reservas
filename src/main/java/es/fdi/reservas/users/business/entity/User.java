@@ -129,7 +129,7 @@ public class User implements UserDetails{
     	this.getAuthorities().toArray(vec);
     	//str = vec.toString();
     	for (int i = 0; i < vec.length; i++){
-    		str[i] = vec[i].toString();
+    		str[i] = vec[i].rolToString();
     	}
     	
         return Arrays.toString(str);

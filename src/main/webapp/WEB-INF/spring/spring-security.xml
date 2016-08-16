@@ -38,7 +38,7 @@
 		
 		<form-login login-page="/login" authentication-failure-url="/login-error" 
 		username-parameter="username" password-parameter="password"
-		default-target-url="/welcome.html" />
+		default-target-url="/welcome" always-use-default-target="true"/>
 		<logout logout-url="/logout" logout-success-url="/"  />		
 	</http>
 

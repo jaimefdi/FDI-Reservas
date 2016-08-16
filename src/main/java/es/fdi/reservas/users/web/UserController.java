@@ -80,8 +80,8 @@ public class UserController {
 
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping({"/admin/administrar"})
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value="/admin/administrar",method=RequestMethod.GET)
 	public ModelAndView administrar(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();

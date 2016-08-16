@@ -18,19 +18,16 @@ import es.fdi.reservas.users.business.entity.User;
 @RestController
 public class EspaciosRestController {
 
-	private ReservaService reserva_service;
-	
-	private UserService user_service;
+	private EspacioService espacio_service;
 	
 	@Autowired
-	public EspaciosRestController(UserService userService, ReservaService reservaservice){
-		user_service = userService;
-		reserva_service = reservaservice;
+	public EspaciosRestController(EspacioService es){
+		espacio_service = es;
 	}
 	
 	@RequestMapping(value = "/espacio/{idEspacio}", method = RequestMethod.GET)
 	public EspacioDTO espacio(@PathVariable("idEspacio") long idEspacio) {
-		Espacio e = reserva_service.getEspacio(idEspacio);
+		Espacio e = espacio_service.getEspacio(idEspacio);
 		
 		return EspacioDTO.fromEspacioDTO(e);
 	}
