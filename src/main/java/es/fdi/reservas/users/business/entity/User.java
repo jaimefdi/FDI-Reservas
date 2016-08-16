@@ -143,6 +143,7 @@ public class User implements UserDetails{
 		this.gruposReservas = gruposReservas;
 	}
 
+	
 	public void addRole(UserRole role) {
 		this.roles.add(role);
 	}
@@ -154,7 +155,16 @@ public class User implements UserDetails{
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles;
 	}
-
+	
+	public List<String> getRoles(){
+		List<String> userRoles = new ArrayList<>();
+	        
+	    for(UserRole r : roles){
+		     userRoles.add(r.getAuthority());
+		}
+	    
+	    return userRoles;
+	}
 	
 	public boolean isAccountNonExpired() {
 		return ! accountExpired;
