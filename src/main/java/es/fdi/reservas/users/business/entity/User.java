@@ -136,6 +136,21 @@ public class User implements UserDetails{
         return Arrays.toString(str);
 	}
 
+	public boolean isAdmin(){
+		String cad = rolesToString();
+		return cad.contains("Administrador");
+	}
+	
+	public boolean isUser(){
+		String cad = rolesToString();
+		return cad.contains("Usuario");
+	}
+	
+	public boolean isGestor(){
+		String cad = rolesToString();
+		return cad.contains("Gestor");
+	}
+	
 	public Set<GrupoReserva> getGruposReservas() {
 		return gruposReservas;
 	}

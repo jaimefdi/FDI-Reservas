@@ -129,13 +129,13 @@ public class UserController {
 		return "index";
 	}
 	
-	@RequestMapping({"/administrar/administrar_espacios"})
+	@RequestMapping({"/admin/administrar/espacios"})
 	public ModelAndView administrarEspacios(){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
 		model.addObject("espacios", espacio_service.getEspacios());
-		model.addObject("view", "administrar_espacios");
+		model.addObject("view", "admin/administrar_espacios");
 		return model;
 	}
 

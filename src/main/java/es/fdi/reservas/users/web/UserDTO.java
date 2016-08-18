@@ -22,26 +22,30 @@ public class UserDTO {
 	
 	private Long facultad;
 	
+	private String imagen;
+	
 	//private Set<Facultad> facultades;
 	
 	public UserDTO(){}
 	
-	public UserDTO(Long id, String username, String email, Long facultad) {
+	public UserDTO(Long id, String username, String email, Long facultad, String imagen) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.facultad = facultad;
+		this.imagen = imagen;
 	}
 
 
 
-	public UserDTO(String username, String email, boolean enabled, Long facultad) {
+	public UserDTO(String username, String email, boolean enabled, Long facultad, String imagen) {
 		this.username = username;
 		this.email = email;
 		this.enabled = enabled;
 		this.roles = new ArrayList<UserRole>();
 		this.facultad = facultad;
+		this.imagen = imagen;
 	}
 	
 	public String getPassword() {
@@ -96,11 +100,31 @@ public class UserDTO {
 		this.facultad = facultad;
 	}
 
+	public Collection<UserRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Collection<UserRole> roles) {
+		this.roles = roles;
+	}
+
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public static UserDTO fromUserDTO(User user){
-		return new UserDTO(user.getUsername(), user.getEmail(), user.isEnabled(), user.getFacultad().getId());
+		return new UserDTO(user.getUsername(), user.getEmail(), user.isEnabled(), user.getFacultad().getId(), user.getImagen().getAttachmentUrl());
 	}
 	
 	public static UserDTO fromUserDTOAutocompletar(User user){
-		return new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getFacultad().getId());
+		return new UserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getFacultad().getId(), user.getImagen().getAttachmentUrl());
 	}
 }

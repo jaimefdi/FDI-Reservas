@@ -1,10 +1,13 @@
 package es.fdi.reservas.users.web;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.fdi.reservas.fileupload.business.boundary.AttachmentManager;
+import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
 import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -20,10 +25,12 @@ import es.fdi.reservas.users.business.entity.User;
 public class UserRestController {
 
 	private UserService user_service;
+	private AttachmentManager manager;
 
 	@Autowired
-	public UserRestController(UserService us) {
+	public UserRestController(UserService us, AttachmentManager manager) {
 		user_service = us;
+		this.manager = manager;
 	}
 
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.DELETE)
@@ -49,30 +56,38 @@ public class UserRestController {
 		return model;
 	}
 
-	@RequestMapping(value = "/admin/administrar/usuarios/editar/{idUser}/{user}/{admin}/{gestor}/{user.imagen}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/admin/administrar/usuarios/editar/{idUser}/{user}/{admin}/{gestor}", method = RequestMethod.PUT)
 	public void editarUsuario(@PathVariable("idUser") long idUser, @PathVariable("user") String user,
 			@PathVariable("admin") String admin, @PathVariable("gestor") String gestor,
-			@RequestBody UserDTO userActualizado, @PathVariable("user.imagen") String img) {
+			@RequestBody UserDTO userActualizado) {
 		
-		String imagen = "A:/FDI-Reservas/src/main/webapp/img/" + img;
-		File fich = new File(imagen);
+//		String imagen = "./img/" + userActualizado.getImagen();
+//		File fich = new File(imagen);
+//		File dir = new File(".");
+//		try {
+//		       System.out.println ("Directorio actual: " + dir.getAbsolutePath());
+//		       }
+//		     catch(Exception e) {
+//		       e.printStackTrace();
+//		       }
 		
-		if (fich.exists()){
+		//if (fich.exists()){
+			
 			Attachment attachment = new Attachment("");
-			if (user_service.getAttachmentByName(img).isEmpty()){
+			if (user_service.getAttachmentByName(userActualizado.getImagen()).isEmpty()){
 				//si no esta, lo añado
 				
-				attachment.setAttachmentUrl("/img/" + img);
-				attachment.setStorageKey(user_service.getUser(idUser).getUsername() + "/" + img);
+				attachment.setAttachmentUrl("/img/" + userActualizado.getImagen());
+				attachment.setStorageKey(user_service.getUser(idUser).getUsername() + "/" + userActualizado.getImagen());
 				//reserva_service.addAttachment(attachment);
 			}else{
-				attachment = user_service.getAttachmentByName(img).get(0);
+				attachment = user_service.getAttachmentByName(userActualizado.getImagen()).get(0);
 			}
 			user_service.editaUsuario(userActualizado, user, admin, gestor, attachment);
-			System.out.println(imagen + " Existe");
-		}else{
-			System.out.println(imagen + " No existe");
-		}
+			//System.out.println(imagen + " Existe");
+//		}else{
+//			System.out.println(imagen + " No existe");
+//		}
 		
 	}
 	

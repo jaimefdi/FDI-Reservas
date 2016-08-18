@@ -8,26 +8,27 @@ $(document).ready(function(){
 	 	console.log("jjjjjj");
 		console.log(roles);
 		
-		for(var i in roles){
-			if(roles[i].role == "ROLE_USER"){
-				$("#chkUser").prop("checked","true");
-			}
-			else if(roles[i].role == "ROLE_ADMIN"){
-				$("#chkAdmin").prop("checked","true");
-			}
-			else{
-				$("#chkSecre").prop("checked","true");
-			}
-		}
+//		for(var i in roles){
+//			if(roles[i].role == "ROLE_USER"){
+//				$("#chkUser").prop("checked","true");
+//			}
+//			else if(roles[i].role == "ROLE_ADMIN"){
+//				$("#chkAdmin").prop("checked","true");
+//			}
+//			else{
+//				$("#chkSecre").prop("checked","true");
+//			}
+//		}
 		
 		$("#enlaceGuardar").click(function(){
 			user.id = idUsuario;
 			user.username = $("#idNombre").val();
 			user.email = $("#idEmail").val();
 			//user.facultad = $("#idFacultad").val();
-			alert(user.facultad);
 			user.imagen = $("#idAttachment").val();
-	    	//editarUsuario(user,reqHeaders);
+			alert(user.imagen);
+			
+	    	editarUsuario(user,reqHeaders);
 		});
 		
 		$("#idFacultad").autocomplete({
@@ -111,7 +112,7 @@ function editarUsuario(user, reqHeaders){
 	
 	$.ajax({
 			
-			url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario + '/' + usuario + '/' + admin + '/' + gestor + "/" + user.imagen,
+			url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario + '/' + usuario + '/' + admin + '/' + gestor,
 			//url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario ,
 			type: 'PUT',
 			headers : reqHeaders,

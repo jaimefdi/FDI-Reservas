@@ -44,7 +44,7 @@
                   </thead>
                   <tbody>
                       <tr th:each="r : ${facultades}"
-                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}, dir=${r.webFacultad}">
+                      	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}, dir=${r.webFacultad}" class="danger">
                       	
                           <td th:text="${r.nombreFacultad}"></td>
                           <td th:text="${r.webFacultad}"></td>

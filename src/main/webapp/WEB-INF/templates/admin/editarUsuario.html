@@ -20,7 +20,7 @@
 
 <div class="row">
 	<div class="col-md-12">
-	   <form role="form" action="#" method="put">
+	   <form role="form" action="#" method="put" enctype="multipart/form-data">
 	   		<div class="col-md-6">
 	   		
 	   		<!-- Asunto --> 
@@ -36,19 +36,7 @@
                      <label>Correo:</label>                  
 		                <input id="idEmail" name="email" type="text" class="form-control" th:value="${usuario.email}"/>                 
                  </div>
-                 
-                                  
-                                  
-                	               
-                    <!-- Facultades  -->
-<!--                     <div class="form-group"> -->
-<!--                        <label>Facultad:</label> -->
-<!--                         <div class="ui-widget">                       -->
-<!-- 						    <input id="autoFacultades" type="text"  class="form-control" placeholder="Agrega facultad" th:value="${usuario.facultad.nombreFacultad}"/>				    							                       	                    	 -->
-<!--                         </div> -->
-<!--                    </div> -->
-                   
-                  
+                                   
                    	<div class="form-group">
                      <label>Facultad:</label>
 <!--                      	<select id="idFacultad" class="form-control"> -->
@@ -60,62 +48,57 @@
 					 
 					 <div class="col-md-6">
 					 	<div class="form-group">
-					 		<label>Roles:</label>
-<!-- 					 		<div class="form-group"> -->
-<!-- 		                     <label>Rol 1:</label> -->
-<!-- 		                     	<select id="idRolUno" class="form-control"> -->
-<!-- 		                     		<option value="vacio"></option> -->
-<!-- 		                     		<option value="admin">Administrador</option> -->
-<!-- 		                     		<option value="user">Usuario</option> -->
-<!-- 		                     		<option value="gestor">Gestor</option> -->
-<!-- 		                     	</select> -->
-<!-- 		                     </div> -->
-<!-- 		                     <div class="form-group"> -->
-<!-- 			                     <label>Rol 2:</label> -->
-<!-- 			                     	<select id="idRolDos" class="form-control"> -->
-<!-- 			                     		<option value="vacio"></option> -->
-<!-- 		                     		<option value="admin">Administrador</option> -->
-<!-- 		                     		<option value="user">Usuario</option> -->
-<!-- 		                     		<option value="gestor">Gestor</option> -->
-<!-- 			                     	</select> -->
-<!-- 		                     </div> -->
-<!-- 		                     <div class="form-group"> -->
-<!-- 			                     <label>Rol 3:</label> -->
-<!-- 			                     	<select id="idRolTres" class="form-control"> -->
-<!-- 			                     		<option value="vacio"></option> -->
-<!-- 		                     		<option value="admin">Administrador</option> -->
-<!-- 		                     		<option value="user">Usuario</option> -->
-<!-- 		                     		<option value="gestor">Gestor</option> -->
-<!-- 			                     	</select> -->
-<!-- 		                     </div>	                   -->
-		                              
+					 		<label>Roles:</label>	                              
                  	
 					 		<div class="checkbox">
-							    <label>
+							    <label th:if="${usuario.isAdmin()}">
+							      <input class="checkbox" type="checkbox" id="chkAdmin"  value="admin" checked='true'/> Administrador
+							    </label>
+							</div>
+							<div class="checkbox">
+							    <label th:if="${!usuario.isAdmin()}">
 							      <input class="checkbox" type="checkbox" id="chkAdmin"  value="admin"/> Administrador
 							    </label>
-							  </div>
+							</div>
+							
 							<div class="checkbox">
-							    <label>
+							    <label th:if="${usuario.isUser()}">
+							      <input class="checkbox" type="checkbox" id="chkUser" th:value="user" checked='true'/> Usuario básico
+							    </label>
+						    </div>
+						    
+						    <div class="checkbox">
+							    <label th:if="${!usuario.isUser()}">
 							      <input class="checkbox" type="checkbox" id="chkUser" th:value="user"/> Usuario básico
 							    </label>
-							  </div>
-							<div class="checkbox">
-							    <label>
+						    </div>
+							<div class="checkbox" >
+							    <label th:if="${usuario.isGestor()}">
+							      <input class="checkbox" type="checkbox" id="chkSecre" th:value="gestor" checked='true'/> Gestor
+							    </label>
+						    </div>
+						    <div class="checkbox">
+							    <label th:if="${!usuario.isGestor()}">
 							      <input class="checkbox" type="checkbox" id="chkSecre" th:value="gestor"/> Gestor
 							    </label>
-							  </div>
+						    </div>
 					 	</div>
-					 	    </div>     
-					<div class="form-group">
-						<label>Selecciona la imagen: </label>
-						<input type="file" id="idAttachment" th:value="${usuario.imagen.attachmentUrl}"/>
-						
-					</div>                         
-                   <div class="row">              	
-					    <div class="col-md-12 text-center">
-					         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>
-					    </div>                   
+			 	         
+						<div class="for-group">
+							<label>Imágen actual</label>
+							<br></br>
+							<img class="img-circle" th:title="${usuario.imagen.description}" th:alt="${usuario.imagen.description}" th:src="@{${usuario.imagen.attachmentUrl}}" height="100" width="100"></img>
+						</div>
+						<div class="form-group">
+							<label>Selecciona una imágen: </label>
+							<input type="file" id="idAttachment" th:src="${usuario.imagen.attachmentUrl}"/>
+							
+						</div>                         
+	                   <div class="row">              	
+						    <div class="col-md-12">
+						         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>
+						    </div>                   
+					   </div>
 				   </div>
 				   <!-- /.row -->
 				  

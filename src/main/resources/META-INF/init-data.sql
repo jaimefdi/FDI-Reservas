@@ -28,6 +28,11 @@ INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(27
 
 INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(1, 'Facultad de informatica', '/img/FDI.jpg', '123');
 INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(2, 'Edificio Basico', '/img/casa.jpg', '123');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(3, 'Facultad de Ciencias Biológicas', '/img/biologicas.jpg', '123');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(4, 'Facultad de Bellas Artes', '/img/bellas artes.jpg', '123');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(5, 'Facultad de Ciencias de la Documentación', '/img/documentacion.jpg', '123');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(6, 'Edificio multiusos', '/img/multiusos.jpg', '123');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(7, 'Facultad de Ciencias de la Información', '/img/cc_informacion.jpg', '123');
 
 INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (1, 'root', 'root@ucm.es', '$2a$10$//HU8yTgOoLrZX6z9cgXhuR/IJki.BtS/ZM4Pr8s/zBDCFIT.I3P6', true, false, false, false, 2, 1);
 INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', true, false, false, false, 1, 1);
@@ -42,11 +47,11 @@ INSERT INTO UserRole (user, role) VALUES(3, 'ROLE_GESTOR');
 
 
 INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(1,'FDI','C/ del Prof. José G! Santesmases, 9',1, false,1);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(2,'Multiusos','C/ del Prof. Aranguren, s/n',1, false,1);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(3,'Edificio de Bellas Artes','C/ Pintor el Greco, 2',2, false,1);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(4,'Edificio de Ciencias Biológicas','C/ José Antonio Novais, 12',3, false,1);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(5,'Edificio de la Documentación','C/ Santísima Trinidad, 37',4, false,1);
-INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(6,'Edificio de la Información','Av. Complutense, s/n',5, false,1);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(2,'Multiusos','C/ del Prof. Aranguren, s/n',1, false,6);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(3,'Edificio de Bellas Artes','C/ Pintor el Greco, 2',2, false,4);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(4,'Edificio de Ciencias Biológicas','C/ José Antonio Novais, 12',3, false,3);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(5,'Edificio de la Documentación','C/ Santísima Trinidad, 37',4, false,5);
+INSERT INTO Edificio(EdificioId, nombreEdificio, direccion, FacultadId, deleted, ImagenId) VALUES(6,'Edificio de la Información','Av. Complutense, s/n',5, false,7);
 
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(1,'Sala de Grados',70,true,true,1,1,1,2, false);
 INSERT INTO Espacio(EspacioId, nombreEspacio, capacidad, microfono, proyector, EdificioId, tipoEspacio, tipoAutorizacion, horasAutorizacion, deleted) VALUES(2,'Sala de Conferencias',180,true,true,1,1,0,0, false);
