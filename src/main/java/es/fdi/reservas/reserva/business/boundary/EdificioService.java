@@ -44,7 +44,7 @@ public class EdificioService {
 		
 		e.setNombreEdificio(edificio.getNombreEdificio());
 		e.setDireccion(edificio.getDireccion());
-		Facultad fac = facultad_repository.getFacultadPorId(edificio.getIdFacultad());
+		Facultad fac = facultad_repository.findOne(edificio.getIdFacultad());
 		e.setFacultad(fac);
 		//e.setFacultad(facultad_repository.getOne(edificio.getIdFacultad()));
 		e.setImagen(attachment);

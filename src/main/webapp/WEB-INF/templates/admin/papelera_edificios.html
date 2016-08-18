@@ -37,7 +37,7 @@
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
-                      	
+                      	  <th>Imágen</th>
                           <th>Nombre</th>
                           <th>Facultad</th>
                           <th>Acción</th>
@@ -46,7 +46,7 @@
                   <tbody>
                       <tr th:each="r : ${edificios}"
                       	th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},idFacultad=${r.facultad.id}" class = "danger">
-                      	
+                      	  <td><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.facultad.nombreFacultad}"></td>
                           <td><a th:href="@{'/admin/administrar/edificio/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>

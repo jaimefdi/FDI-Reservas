@@ -4,9 +4,6 @@ $(document).ready(function(){
 	 	var header = $("meta[name='_csrf_header']").attr("content");
 	 	var reqHeaders = [];
 	 	reqHeaders[header] = token;
-	 	
-	 	console.log("jjjjjj");
-		console.log(roles);
 		
 //		for(var i in roles){
 //			if(roles[i].role == "ROLE_USER"){
@@ -26,8 +23,6 @@ $(document).ready(function(){
 			user.email = $("#idEmail").val();
 			//user.facultad = $("#idFacultad").val();
 			user.imagen = $("#idAttachment").val();
-			alert(user.imagen);
-			
 	    	editarUsuario(user,reqHeaders);
 		});
 		

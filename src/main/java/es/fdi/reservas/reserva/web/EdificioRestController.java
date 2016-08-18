@@ -28,31 +28,30 @@ public class EdificioRestController {
 		edificio_service.editarEdificioDeleted(idEdificio);
 	}
 	
-	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}/{edificio.imagen}", method = RequestMethod.PUT)
-	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody EdificioDTO edificioActualizado,
-			@PathVariable("edificio.imagen") String img){
+	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}", method = RequestMethod.PUT)
+	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody EdificioDTO edificioActualizado){
 
 		//A:\FDI-Reservas\src\main\webapp\img
 		
-		String imagen = "A:/FDI-Reservas/src/main/webapp/img/" + img;
-		File fich = new File(imagen);
-		
-		if (fich.exists()){
+//		String imagen = "A:/FDI-Reservas/src/main/webapp/img/" + img;
+//		File fich = new File(imagen);
+//		
+//		if (fich.exists()){
 			Attachment attachment = new Attachment("");
-			if (edificio_service.getAttachmentByName(img).isEmpty()){
+			if (edificio_service.getAttachmentByName(edificioActualizado.getImagen()).isEmpty()){
 				//si no esta, lo añado
 				
-				attachment.setAttachmentUrl("/img/" + img);
-				attachment.setStorageKey(edificio_service.getEdificio(idEdificio).getNombreEdificio() + "/" + img);
+				attachment.setAttachmentUrl("/img/" + edificioActualizado.getImagen());
+				attachment.setStorageKey(edificio_service.getEdificio(idEdificio).getNombreEdificio() + "/" + edificioActualizado.getImagen());
 				//reserva_service.addAttachment(attachment);
 			}else{
-				attachment = edificio_service.getAttachmentByName(img).get(0);
+				attachment = edificio_service.getAttachmentByName(edificioActualizado.getImagen()).get(0);
 			}
 			edificio_service.editarEdificio(edificioActualizado, attachment);
-			System.out.println(imagen + " Existe");
-		}else{
-			System.out.println(imagen + " No existe");
-		}
+			//System.out.println(imagen + " Existe");
+//		}else{
+//			System.out.println(imagen + " No existe");
+//		}
 
 	}
 	

@@ -10,9 +10,8 @@ $(document).ready(function(){
 			edificio.id = idEdificio;
 			edificio.nombreEdificio = $("#idNombre").val();
 			edificio.direccion = $("#idDir").val();
-			edificio.facultad = $("#idFacultad").val();
+			//edificio.facultad = $("#idFacultad").val();
 			edificio.imagen = $("#idAttachment").val();
-			
 	    	editarEdificio(edificio,reqHeaders);
 	    	
 		});
@@ -31,8 +30,8 @@ $(document).ready(function(){
 							response($.map(datos,function(item){
 								
 									var obj = new Object();
-									obj.label = item.nombreFacultad; 
-									obj.value = item.id;
+									obj.label = item.id; 
+									obj.value = item.nombreFacultad;
 									//obj.webFacultad = item.webFacultad;
 									return obj;
 				
@@ -45,9 +44,10 @@ $(document).ready(function(){
 					});
 			},
 			select: function(event, ui){
-				var img = '<img class="img-circle" src="http://placehold.it/30x30" data-toggle="tooltip" data-placement="bottom" title="' + ui.item.value + '" />' ;
-				$("#facultad").append(img);
-				$('[data-toggle="tooltip"]').tooltip();
+				edificio.idFacultad = ui.item.label;
+//				var img = '<img class="img-circle" src="http://placehold.it/30x30" data-toggle="tooltip" data-placement="bottom" title="' + ui.item.value + '" />' ;
+//				$("#facultad").append(img);
+//				$('[data-toggle="tooltip"]').tooltip();
 				
 			},
 			minLength: 3
@@ -58,7 +58,7 @@ $(document).ready(function(){
 				                  '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
 				                  '</div>' + 
 				                  '<div class="media-body">' + 
-				                  '<h5 class="media-heading">'+ item.nombreFacultad +'</h5>' + 
+				                  '<h5 class="media-heading">'+ item.value +'</h5>' + 
 				                  '</div></div>';
 				                  
 				        
@@ -75,7 +75,7 @@ $(document).ready(function(){
 function editarEdificio(edificio, reqHeaders){
 	
 	$.ajax({
-			url: baseURL + 'admin/administrar/edificios/editar/' + idEdificio + "/" + edificio.imagen,
+			url: baseURL + 'admin/administrar/edificios/editar/' + idEdificio,
 			type: 'PUT',
 			headers : reqHeaders,
 			data: JSON.stringify(edificio),

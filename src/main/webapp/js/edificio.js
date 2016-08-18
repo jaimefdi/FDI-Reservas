@@ -14,6 +14,7 @@ $(document).ready(function(){
 	 		var deleted = $(this).attr("act");
 	 		var facultad = $(this).attr("fac");
 	 		var imagen = $(this).attr("img")
+	 		var accion = $(this).attr("data-accion");
 	 		
 	 		$('#modalEditarEdificio #idNombre').text(nombreEdificio);
 	 		$('#modalEditarEdificio #idDir').text(direccion);
@@ -22,33 +23,19 @@ $(document).ready(function(){
 	 		$('#modalEditarEdificio #idAttachment').text(imagen);
 	 		$('#modalEditarEdificio #btn-editar').prop("href", baseURL + "admin/administrar/edificios/editar/" + edificio.id);
 	 		
-	 		$('#modalEditarEdificio').modal('show');
+	 		if (accion == 'Eliminar'){
+	 			
+ 				modalEliminarEdificio(edificio, reqHeaders);	
+ 			
+	 		}else if(accion == 'Ver'){
+	 		
+	 			$('#modalEditarEdificio').modal('show');
+	 		}
 	 	});
+
+});
+function modalEliminarEdificio(edificio, reqHeaders){
 	 	
-//	 	$("#btn-guardar").click(function(){
-//	 		edificio.nombreEdificio = $("#modalEditarEdificio #idNombre").val();
-//	 		edificio.direccion = $('#modalEditarEdificio #idDir').val();
-//	 		
-//	 		$.ajax({
-//	 			url: baseURL + "edificio/" + edificio.id,
-//	 			type: 'PUT',
-//	 			headers : reqHeaders,
-//	 			data: JSON.stringify(edificio),
-//	 			contentType: 'application/json',
-//	 			success : function(datos) {   
-//	 				alert("Edificio actualizado");
-//	 				$('#modalEditarEdificio').modal('hide');
-//	 				
-//	 				$("#"+edificio.id +" td:nth-child(1)").text(edificio.nombreEdificio);
-//	 				$("#"+edificio.id +" td:nth-child(2)").text(edificio.direccion);
-//	 			},    
-//	 			error : function(xhr, status) {
-//	     			alert('Disculpe, existió un problema');
-//	 			}
-//	 		});
-//	 	});
-	 
-	 	$("#btn-eliminar").click(function(){
 	 		$.ajax({
 	 			url: baseURL + "edificio/" + edificio.id,
 	 			type: 'DELETE',
@@ -61,7 +48,7 @@ $(document).ready(function(){
 	 			error : function(xhr, status) {
 	 				alert('Disculpe, existió un problema');
 	 			}
-	 		});
-	 	});
+		 	});
+		 
+	 }
 	 
- });
