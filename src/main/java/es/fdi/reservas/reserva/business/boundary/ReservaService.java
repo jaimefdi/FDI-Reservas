@@ -111,10 +111,9 @@ public class ReservaService {
 		
 		for(Reserva r: reservas ){
 			if ( r.solapa(reserva) ) {
-				throw new ReservaSolapadaException(String.format("La reserva %s, solapa con la reserva %s", 
-						  reserva.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" + 
-				          reserva.getFin().toString("HH:mm"), 
-				          r.getComienzo().toString("dd/MM/yyyy HH:mm") + "-" +
+				throw new ReservaSolapadaException(String.format("La reserva que estás intentando realizar solapa con la reserva del %s", 
+				          r.getComienzo().toString("dd/MM/yyyy") + " de " +
+				          r.getComienzo().toString("HH:mm") + " a " +
 				          r.getFin().toString("HH:mm")));
 			}
 		}
