@@ -13,7 +13,7 @@ $(document).ready(function(){
 	 	var idGrupo2 = $("#selec_C2_grupo").val();
 	 	var idGrupo3 = $("#selec_C3_grupo").val();
 	 	var idGrupo4 = $("#selec_C4_grupo").val();
-	 	var newStart, newEnd;
+	 	var newStart, newEnd, duration;
 	 	
 		// cargar calendario 1
 	 	calendario($("#calendar11"), idGrupo);
@@ -221,49 +221,43 @@ $(document).ready(function(){
 						revert: true,      
 						revertDuration: 0
 					});
-					
-					
+										
 				},				
 				eventDragStart: function( event, jsEvent, ui, view ) {
-									
-					console.log('Calendar ' + idGrupo + ' eventDragStart');
-					console.log(event);
-//					newEnd = event.end;
-//					console.log("New End");
-//					console.log(newEnd);
+					// Cierro los popovers activos
+					$('[role="tooltip"]').popover('hide');
+					//console.log('Calendar ' + idGrupo + ' eventDragStart');
+					// Obtengo la duración en minutos de la reserva
+					duration = event.end.diff(event.start,'minutes');
 					
 				},
 				eventDragStop: function(event, jsEvent, ui, view) { 
-					console.log('Calendar ' + idGrupo + ' eventDragStop');
-					console.log(event);
-					//newEnd = event.end;
+					//console.log('Calendar ' + idGrupo + ' eventDragStop');					
 					// Dirty fix to remove highlighted blue background
 					$("td").removeClass("fc-highlight");
 				},
 				eventDrop: function(event, delta, revertFunc){
-					console.log('Calendar ' + idGrupo + ' eventDrop');
+					//console.log('Calendar ' + idGrupo + ' eventDrop');
+					
 					//editarReservaSimple(event, reqHeaders, event.id, revertFunc);
 				},
-				drop: function(date, jsEvent, ui) { 
-										
-					console.log('Calendar ' + idGrupo + ' drop');
-					console.log(date);
+				drop: function(date, jsEvent, ui) { 									
+					//console.log('Calendar ' + idGrupo + ' drop');
 					
-					
-					newStart = date;
-					console.log("Nuevo Comienzo");
-					console.log(newStart);
+					// Obtengo el nuevo comienzo al soltar la reserva
+					newStart = date;					
 				},
 				eventReceive: function(event) {  
-					console.log('Calendar ' + idGrupo + ' eventReceive');
+					//console.log('Calendar ' + idGrupo + ' eventReceive');
 					var y = newStart.get('year');
 					var m = newStart.get('month');
 					var d = newStart.get('date');					
-					
+					// Del nuevo comienzo solo me interesa la fecha, la hora se mantiene
 				    event.start = event.start.set({'year': y, 'month': m, 'date':d});
-				    newEnd = event.start.clone().add(1,'hour');
+				    // Al nuevo comienzo le sumo la duración para obtener el nuevo final
+				    newEnd = event.start.clone().add(duration,'minutes');
 					event.end = newEnd;
-					console.log(event);
+										
 					cambiarReservaDeCalendario(event, idGrupo, reqHeaders);
 				},
 				viewRender: function(view, element){
