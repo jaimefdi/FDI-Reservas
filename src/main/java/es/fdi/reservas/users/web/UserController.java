@@ -2,7 +2,6 @@ package es.fdi.reservas.users.web;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,14 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
-import es.fdi.reservas.reserva.business.entity.Edificio;
-import es.fdi.reservas.reserva.business.entity.Espacio;
-import es.fdi.reservas.reserva.business.entity.Facultad;
-import es.fdi.reservas.reserva.web.EdificioDTO;
-import es.fdi.reservas.reserva.web.EspacioTipoDTO;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
@@ -52,7 +46,7 @@ public class UserController {
 	
 	@RequestMapping(value ="/administrar/usuarios")
     public String usuarios() {
-        return "redirect:/administrar/usuarios/1";
+        return "redirect:/administrar/usuarios/page/1";
     }
 	
 	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.GET)
@@ -101,7 +95,7 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("userList", user_service.getUsuarios());
 		model.addObject("view", "administrar_usuarios");
 		model.addObject("url","/administrar/usuarios" );
@@ -111,7 +105,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value="/admin/administrar/usuarios/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/usuarios/page/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 	
@@ -162,6 +156,7 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "perfil");
 		
