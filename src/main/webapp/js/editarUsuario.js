@@ -63,7 +63,6 @@ $(document).ready(function(){
 		}).autocomplete("instance")._renderItem = function(ul,item){
 			
 				var inner_html = '<div class="media"><div class="media-left">' + 
-				                  '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
 				                  '</div>' + 
 				                  '<div class="media-body">' + 
 				                  '<h5 class="media-heading">'+ item.value +'</h5>' + 

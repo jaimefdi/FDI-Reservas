@@ -73,8 +73,15 @@ public class UserRestController {
 		
 		//if (fich.exists()){
 			
+			if (userActualizado.getFacultad() == null){
+				
+			}
+		
 			Attachment attachment = new Attachment("");
-			if (user_service.getAttachmentByName(userActualizado.getImagen()).isEmpty()){
+			if (userActualizado.getImagen().equals("")){
+				attachment = user_service.getUser(userActualizado.getId()).getImagen();
+			}
+			else if (user_service.getAttachmentByName(userActualizado.getImagen()).isEmpty()){
 				//si no esta, lo añado
 				
 				attachment.setAttachmentUrl("/img/" + userActualizado.getImagen());
