@@ -20,7 +20,7 @@
 	
 	<div class="row">
 	    <div class="col-md-6 col-md-offset-3 text-center">
-	        <img class="img-circle" src="http://placehold.it/150x150" />
+	        <img class="img-circle" th:src="@{${User.imagen.attachmentUrl}}" />
 	        <h3 th:text="${#strings.toUpperCase(User.username)}"></h3>
 	        <em class="text-muted" th:text="${User.email}"></em>
 	        <hr/>

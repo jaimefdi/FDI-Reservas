@@ -133,7 +133,7 @@ public class User implements UserDetails{
     		str[i] = vec[i].rolToString();
     	}
     	
-        return Arrays.toString(str);
+        return Arrays.toString(str).replace("[", "").replace("]", "");
 	}
 
 	public boolean isAdmin(){

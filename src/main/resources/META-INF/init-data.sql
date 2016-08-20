@@ -33,10 +33,12 @@ INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(
 INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(5, 'Facultad de Ciencias de la Documentación', '/img/documentacion.jpg', '123');
 INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(6, 'Edificio multiusos', '/img/multiusos.jpg', '123');
 INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(7, 'Facultad de Ciencias de la Información', '/img/cc_informacion.jpg', '123');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(8, 'Usuario 1', '/img/user.png', '123');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(9, 'Usuario 2', '/img/user2.png', '123');
 
-INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (1, 'root', 'root@ucm.es', '$2a$10$//HU8yTgOoLrZX6z9cgXhuR/IJki.BtS/ZM4Pr8s/zBDCFIT.I3P6', true, false, false, false, 2, 1);
-INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', true, false, false, false, 1, 1);
-INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (3, 'secre', 'secre@ucm.es', '$2a$10$fHAYSqISyxuhwcmWb3m1geDcMn5aGuXM.vvsN74v7JHwiUEYudgB6', true, false, false, false, 1, 1);
+INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (1, 'root', 'root@ucm.es', '$2a$10$//HU8yTgOoLrZX6z9cgXhuR/IJki.BtS/ZM4Pr8s/zBDCFIT.I3P6', true, false, false, false, 2, 8);
+INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', true, false, false, false, 1, 9);
+INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (3, 'secre', 'secre@ucm.es', '$2a$10$fHAYSqISyxuhwcmWb3m1geDcMn5aGuXM.vvsN74v7JHwiUEYudgB6', true, false, false, false, 1, 8);
 
 INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_USER');
 INSERT INTO UserRole (user, role) VALUES(1, 'ROLE_ADMIN');

@@ -284,7 +284,7 @@
                             <a th:href="@{/perfil}">
                                 <div class="media">
                                     <span class="pull-left">
-                                        <img class="img-circle" src="http://placehold.it/50x50" alt=""/>
+                                        <img class="img-circle" th:src="@{${User.imagen.attachmentUrl}}" th:alt="${User.imagen.description}"/>
                                     </span>
                                     <div class="media-body">
                                         <h5 class="media-heading"><strong th:text="${User.username}">John Smith</strong>
