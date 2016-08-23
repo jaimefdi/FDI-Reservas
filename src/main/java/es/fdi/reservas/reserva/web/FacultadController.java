@@ -80,7 +80,7 @@ public class FacultadController {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Facultad> currentResults = facultad_service.getFacultadesPaginadas(nombre, pageRequest);
+        Page<Facultad> currentResults = facultad_service.getFacultadesPaginadasPorNombre(nombre, pageRequest);
                 
         model.addAttribute("currentResults", currentResults);
         

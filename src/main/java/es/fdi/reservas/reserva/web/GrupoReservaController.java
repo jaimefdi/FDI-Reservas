@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
+import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.GrupoReserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -17,20 +19,24 @@ import es.fdi.reservas.users.business.entity.User;
 @Controller
 public class GrupoReservaController {
 
-	private GrupoReservaService grupo_service;	
+	private GrupoReservaService grupo_service;
+	private ReservaService reserva_service;
 	private UserService user_service;
 	
 	@Autowired
-	public GrupoReservaController(GrupoReservaService grs, UserService us){
+	public GrupoReservaController(GrupoReservaService grs, ReservaService rs, UserService us){
 		this.grupo_service = grs;
+		this.reserva_service = rs;
 		this.user_service = us;
 	}
+	
 	
 	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.GET)
     public ModelAndView verGrupo(@PathVariable("idGrupo") long idGrupo) {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("GrupoReservas", grupo_service.getGrupoReserva(idGrupo));
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "grupo-reservas");
@@ -43,6 +49,7 @@ public class GrupoReservaController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("GrupoReservas", grupo_service.getGrupoReserva(idGrupo));
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "editarGrupo");
@@ -55,7 +62,8 @@ public class GrupoReservaController {
     public ModelAndView crearGrupo() {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("User", u);	
+		model.addObject("User", u);
+        model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("GrupoReserva", new GrupoReserva());
 		model.addObject("view", "nuevoGrupo");
@@ -68,6 +76,7 @@ public class GrupoReservaController {
 		ModelAndView model = new ModelAndView("index");
 		User user = user_service.getCurrentUser();
 		model.addObject("User", user);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(user.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("view", "nuevoGrupo");
 		
 		if (bindingResult.hasErrors()) {

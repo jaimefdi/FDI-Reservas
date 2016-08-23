@@ -1,12 +1,12 @@
 package es.fdi.reservas.users.business.boundary;
 
 import java.util.List;
-
 import javax.swing.JOptionPane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,16 +32,16 @@ public class UserService implements UserDetailsService{
 	
 	private PasswordEncoder password_encoder;
 	
-	private AttachmentRepository attachment_repository;
-
 	private FacultadRepository facultad_repository;
 	
+	private AttachmentRepository attachment_repository;
+	
 	@Autowired
-	public UserService(UserRepository usuarios, PasswordEncoder passwordEncoder, AttachmentRepository ar, FacultadRepository fr){
+	public UserService(UserRepository usuarios, PasswordEncoder passwordEncoder, FacultadRepository fr, AttachmentRepository ar){
 		user_ropository = usuarios;
 		password_encoder = passwordEncoder;
-		attachment_repository = ar;
 		facultad_repository = fr;
+		attachment_repository = ar;
 	}
 	
 	public User getUser(Long idUsuario) {
@@ -60,12 +60,6 @@ public class UserService implements UserDetailsService{
 		return null;
 	}
 
-	public void setCurrentUser(User user){
-		Authentication request = new UsernamePasswordAuthenticationToken(user,user.getPassword());
-		//Authentication result = authenticationManager.authenticate(request);
-		SecurityContextHolder.getContext().setAuthentication(request);
-	}
-	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDetails user = user_ropository.findByEmail(username);
 		if (user == null)  {
@@ -79,37 +73,10 @@ public class UserService implements UserDetailsService{
 		return user;
 	}
 
-	public User editarUserDeleted(Long idUser){
-		User f = user_ropository.findOne(idUser);
-		if (!f.isEnabled()){//si ya esta eliminado
-			JOptionPane.showMessageDialog(null, "El usuario ya está eliminado", "Información", JOptionPane.OK_CANCEL_OPTION);
-			return f;
-		}else{
-			f.setEnabled(false);
-			return user_ropository.save(f);
-		}
-		
-	}
-	
 	public User addNewUser(User user){
 		User newUser = new User(user.getUsername(), user.getEmail(), user.getImagen());
 		newUser.addRole(new UserRole("ROLE_USER"));
 		newUser.setPassword(password_encoder.encode(user.getPassword()));
-		Attachment img = user.getImagen();
-		if (img == null){
-			//img = attachment_repository.getAttachmentByName("casa").get(0);
-			img = attachment_repository.findOne((long) 2);
-			newUser.setImagen(img);
-			//attachment_repository.save(img);
-		}
-		
-		Facultad fac = user.getFacultad();
-		if (fac == null){
-			fac = facultad_repository.findOne((long) 27);
-			newUser.setFacultad(fac);
-			//facultad_repository.save(fac);
-		}
-		//newUser.setImagen(user.getImagen());
 		newUser = user_ropository.save(newUser);
 		
 		return newUser;
@@ -121,6 +88,12 @@ public class UserService implements UserDetailsService{
 	
 	public void eliminarUsuario(long idUser) {
 		user_ropository.delete(idUser);
+	}
+	
+	public User editarUserDeleted(Long idUser){
+		User f = user_ropository.findOne(idUser);
+		f.setEnabled(false);
+		return user_ropository.save(f);
 	}
 
 	public User editaUsuario(UserDTO userActualizado, String user, String admin, String gestor, Attachment imagen) {
@@ -144,18 +117,13 @@ public class UserService implements UserDetailsService{
 				u.addRole(new UserRole("ROLE_GESTOR"));
 			}
 		}
-		
-		setCurrentUser(u);
-		
 		return user_ropository.save(u);
+		
+		
 	}
 	
 	public Page<User> getUsuariosPaginados(PageRequest pageRequest) {
 		return user_ropository.findAll(pageRequest);
-	}
-	
-	public List<User> getUsuariosPorFacultad(String nombreFacultad){
-		return user_ropository.getUsuariosPorFacultad(nombreFacultad);
 	}
 
 	public User restaurarUser(long idUser) {
@@ -172,6 +140,31 @@ public class UserService implements UserDetailsService{
 
 	public List<User> getUsuariosPorTagName(String tagName) {
 		return user_ropository.getUsuariosPorTagName(tagName);
+	}
+
+	public void editarPerfil(UserDTO userDTO) {
+		User user = getUser(userDTO.getId());
+		user.setUsername(userDTO.getUsername());
+		user.setEmail(userDTO.getEmail());
+		if(userDTO.getOldPassword() != null){
+			// Cambiar las contraseñas
+			if(password_encoder.matches(userDTO.getOldPassword(),user.getPassword())){
+				user.setPassword(password_encoder.encode(userDTO.getNewPassword()));
+			}
+			else{
+				// Error: las contraseñas no coinciden
+				throw new UserPasswordException("La contraseña actual no es correcta");
+			}
+		}
+		
+		// Actualiza el usuario actual sin cerrar sesión
+		Authentication request = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());		
+		SecurityContextHolder.getContext().setAuthentication(request);		
+		
+		// Guarda los cambios en la base de datos
+		user_ropository.save(user);
+		
+	
 	}
 	
 	public Attachment getAttachment(Long idAttachment){

@@ -284,6 +284,7 @@ $('#calendar').fullCalendar({
 		}).popover('show');
     },
     eventDragStart: function(event, jsEvent, ui, view){
+    	$('[role="tooltip"]').popover('hide');
     	if(esRecurrente(event)){
     		var w = event.recurrenteId.split("_");
         	var reservaPadre = w[0];

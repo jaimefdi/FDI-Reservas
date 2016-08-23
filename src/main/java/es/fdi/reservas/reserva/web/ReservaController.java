@@ -66,30 +66,14 @@ public class ReservaController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-        List<Reserva> pendientes = reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE);
-        model.addAttribute("reservasPendientes", pendientes.size()); 
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("User", u);
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "mis-reservas");
 		
         return "index";
     }
-	 /*
-	@RequestMapping(value="/nueva",method=RequestMethod.POST)
-    public String crearReserva(Reserva r) throws ReservaSolapadaException {
-		User u = user_service.getCurrentUser();
-		long id_esp = r.getEspacio().getId();
-		Espacio e = reserva_service.getSpaceById(id_esp);
-		r.setEspacio(e);
-		try{
-			reserva_service.agregarReserva(r,u.getUsername());
-		}
-		catch(ReservaSolapadaException ex){
-			logger.error("Problemas en la reserva", ex);
-		}
-        return "redirect:/mis-reservas";
-    }
-	*/
+	 
 	
 	
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
@@ -100,6 +84,7 @@ public class ReservaController {
 		List<Edificio> edificios = edificio_service.getEdificiosFacultad(user.getFacultad().getId());
 		if(edificios.size() > 1){
 		   model.addAttribute("Edificios", edificios);
+		   model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(user.getId(), EstadoReserva.PENDIENTE).size());
 		   model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
 		   model.addAttribute("view", "edificios");
 		   
@@ -122,6 +107,7 @@ public class ReservaController {
 		model.addObject("Edificio", edificio_service.getEdificio(idEdificio));		
 		model.addObject("TiposEspacio",espacio_service.tiposDeEspacios(idEdificio));
 		model.addObject("Espacios", espacio_service.getEspaciosEdificio(idEdificio));
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "espacios");
 		
@@ -130,7 +116,7 @@ public class ReservaController {
 	
 	
 	@RequestMapping(value="/edificio/{idEdificio}/espacio/{idEspacio}", method=RequestMethod.GET) 
-	public ModelAndView reservasEspacio(@PathVariable("idEdificio") long idEdificio,@PathVariable("idEspacio") long idEspacio) {
+	public ModelAndView reservarPorEspacio(@PathVariable("idEdificio") long idEdificio,@PathVariable("idEspacio") long idEspacio) {
 		ModelAndView model = new ModelAndView("index");
 		User user = user_service.getCurrentUser();
 		Espacio e = espacio_service.getEspacio(idEspacio);
@@ -139,6 +125,7 @@ public class ReservaController {
 		model.addObject("User", user);
 		model.addObject("Reserva", r);
 		model.addObject("IdEspacio", idEspacio);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(user.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
 		model.addObject("view", "reservas-calendario");
 		
@@ -147,68 +134,27 @@ public class ReservaController {
 	
 	
 	@RequestMapping(value="/reservas-fecha", method=RequestMethod.GET)
-    public ModelAndView reservasFecha() {
+    public ModelAndView reservarPorFecha() {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		List<Edificio> edificios = edificio_service.getEdificiosFacultad(u.getFacultad().getId());
 		model.addObject("User", u);
 		model.addObject("Edificios", edificios);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "reservas-fecha");
 		
         return model;
     }
-	
-
-//	@RequestMapping(value="/grupo/{idGrupo}", method=RequestMethod.GET)
-//    public ModelAndView verGrupo(@PathVariable("idGrupo") long idGrupo) {
-//		ModelAndView model = new ModelAndView("index");
-//		model.addObject("user", user_service.getCurrentUser());
-//		model.addObject("GrupoReservas", grupo_service.getGrupoReserva(idGrupo));
-//		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user_service.getCurrentUser().getId()));
-//		model.addObject("view", "grupo-reservas");
-//		
-//        return model;
-//    }
-	
-	
-//	@RequestMapping(value="/grupo/nuevo", method=RequestMethod.GET)
-//    public ModelAndView crearGrupo() {
-//		ModelAndView model = new ModelAndView("index");
-//		User u =  user_service.getCurrentUser();
-//		model.addObject("User", u);
-//		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
-//		model.addObject("view", "nuevoGrupo");
-//		
-//        return model;
-//    }
-	
-	
-//	@RequestMapping(value="/nuevoGrupo", method=RequestMethod.POST)
-//    public String nuevoGrupo(GrupoReserva g, Model model) {
-//		User user =  user_service.getCurrentUser();
-//		model.addAttribute("User", user);
-//		model.addAttribute("view", "nuevoGrupo");
-//		
-//		if(grupo_service.addNuevoGrupo(g, user) != null){			
-//			model.addAttribute("exito", "");
-//		}
-//		else{
-//			model.addAttribute("error", "");
-//		}
-//		
-//		model.addAttribute("GruposReservas", grupo_service.getGruposReservas());
-//		
-//		return "index";
-//    }
 
 	//@PreAuthorize("principal.username == 'user'")
 	//@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value="/editar/{idReserva}", method=RequestMethod.GET)
-    public String editarReserva(@PathVariable("idReserva") long idReserva, Model model) {
+    public String editarReservaSimple(@PathVariable("idReserva") long idReserva, Model model) {
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("Reserva", reserva_service.getReserva(idReserva));
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "editarReserva");
 		
@@ -239,6 +185,7 @@ public class ReservaController {
 		// el newStart y el newEnd pasarlos cen el modelo
 		
 		model.addAttribute("Reserva", r);
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "editarReserva");
 		

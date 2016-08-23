@@ -2,7 +2,6 @@ package es.fdi.reservas.users.web;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,18 +12,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
 import es.fdi.reservas.reserva.business.boundary.EspacioService;
 import es.fdi.reservas.reserva.business.boundary.FacultadService;
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
+
+import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
+
 
 @Controller
 public class UserController {
 
 	private UserService user_service;	
+	private ReservaService reserva_service;
 	private GrupoReservaService grupo_service;
 	private FacultadService facultad_service;
 	private EspacioService espacio_service;
@@ -42,6 +45,12 @@ public class UserController {
 	   return "login";
 	}
 
+	@RequestMapping(value="/login-error", method=RequestMethod.GET)
+    public String loginError(Model model) {
+		model.addAttribute("loginError", true);
+		return "login";
+  }
+	
 	@RequestMapping(value ="/administrar/usuarios")
     public String usuarios() {
         return "redirect:/administrar/usuarios/page/1";
@@ -86,6 +95,12 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
+
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addObject("userList", user_service.getUsuarios());
+		model.addObject("view", "administrar_usuarios");
+		model.addObject("url","/administrar/usuarios" );
+
 		model.addObject("view", "admin/administrar");
 
 		return model;
@@ -94,7 +109,6 @@ public class UserController {
 	@RequestMapping(value="/admin/administrar/usuarios/page/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
-
 	
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
         Page<User> currentResults = user_service.getUsuariosPaginados(pageRequest);
@@ -196,9 +210,6 @@ public class UserController {
 
 		model.addAttribute("User", u);
 		model.addAttribute("usuario", user_service.getUser(idUser));
-		model.addAttribute("rolesUsuario", user_service.getUser(idUser).getAuthorities().toArray());
-		model.addAttribute("facultades", facultad_service.getFacultades());
-		model.addAttribute("command", new NewFileCommand());
 		//System.out.println(user_service.getUser(idUser).getUsername());
 		model.addAttribute("view", "admin/editarUsuario");
 		return "index";
@@ -221,8 +232,21 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "perfil");
+		
+	   return model;
+	}
+	
+	@RequestMapping(value="/perfil/editar", method=RequestMethod.GET)
+	public ModelAndView editarPerfil(){
+		ModelAndView model = new ModelAndView("index");
+		User u = user_service.getCurrentUser();
+		model.addObject("User", u);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("view", "editarPerfil");
 		
 	   return model;
 	}

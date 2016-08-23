@@ -32,21 +32,21 @@ public class UserRestController {
 		user_service = us;
 		this.manager = manager;
 	}
-
+	
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.DELETE)
 	public String eliminarUsuario(@PathVariable("idUsuario") long idUser) {
 		user_service.editarUserDeleted(idUser);
 		return "redirect:/admin/administrar/usuarios/1";
 	}
-
+	
 	@RequestMapping(value = "/administrar/usuarios/{numPag}/restaurar/{idUsuario}", method = RequestMethod.GET)
-	public String restaurarUsuario(@PathVariable("idUsuario") Long idUser, @PathVariable("numPag") Long numPag) {
+	public String restaurarUsuario(@PathVariable("idUsuario") Long idUser, @PathVariable("numPag") Long numPag){
 		user_service.restaurarUser(idUser);
 		return "redirect:/reservas/administrar/usuarios/{numPag}";
 	}
-
+	
 	@RequestMapping(value = "/admin/administrar/usuarios/{numPag}/restaurar")
-	public ModelAndView restaurarUsers(@PathVariable("numPag") Long numPag) {
+	public ModelAndView restaurarUsers(@PathVariable("numPag") Long numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("usuarios", user_service.getEliminados());
@@ -55,8 +55,8 @@ public class UserRestController {
 		model.addObject("view", "/admin/papelera_usuarios");
 		return model;
 	}
-
-	@RequestMapping(value = "/admin/administrar/usuarios/editar/{idUser}/{user}/{admin}/{gestor}", method = RequestMethod.PUT)
+	
+	@RequestMapping(value="/admin/administrar/usuarios/editar/{idUser}/{user}/{admin}/{secre}", method=RequestMethod.PUT)
 	public void editarUsuario(@PathVariable("idUser") long idUser, @PathVariable("user") String user,
 			@PathVariable("admin") String admin, @PathVariable("gestor") String gestor,
 			@RequestBody UserDTO userActualizado) {
@@ -129,6 +129,11 @@ public class UserRestController {
 		}
 
 		return result;
+	}
+	
+	@RequestMapping(value = "/perfil/editar", method = RequestMethod.PUT)
+	public void editarPerfil(@RequestBody UserDTO userDTO){
+		user_service.editarPerfil(userDTO);
 	}
 	
 	@RequestMapping(value = "/admin/usuarios/tag/{tagName}", method = RequestMethod.GET)

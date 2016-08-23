@@ -13,6 +13,8 @@ public class UserDTO {
 	
 	private String password;
 	
+	private String oldPassword, newPassword;
+	
 	private String email;
 	
 	private boolean enabled;
@@ -76,6 +78,18 @@ public class UserDTO {
 		return id;
 	}
 	
+	public Long getFacultad() {
+		return facultad;
+	}
+
+	public void setFacultad(Long facultad) {
+		this.facultad = facultad;
+	}
+
+	public Collection<UserRole> getRoles() {
+		return roles;
+	}
+
 	public void addRole(UserRole role) {
 		this.roles.add(role);
 	}
@@ -90,18 +104,6 @@ public class UserDTO {
 	
 	public void setEnabled(boolean en){
 		this.enabled = en;
-	}
-	
-	public Long getFacultad() {
-		return facultad;
-	}
-
-	public void setFacultad(Long facultad) {
-		this.facultad = facultad;
-	}
-
-	public Collection<UserRole> getRoles() {
-		return roles;
 	}
 
 	public void setRoles(Collection<UserRole> roles) {
@@ -119,6 +121,31 @@ public class UserDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+
 
 	public static UserDTO fromUserDTO(User user){
 		return new UserDTO(user.getUsername(), user.getEmail(), user.isEnabled(), user.getFacultad().getId(), user.getImagen().getAttachmentUrl());

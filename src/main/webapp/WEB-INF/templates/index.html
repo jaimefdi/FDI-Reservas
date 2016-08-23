@@ -242,10 +242,13 @@
             <ul class="nav navbar-right top-nav">
                 <!-- Notificaciones  -->
                 <li class="dropdown">
-                    <a href="javascript.;" class="dropdown-toggle" data-toggle="dropdown"><span class="badge" th:text="${reservasPendientes}"></span> <i class="zmdi zmdi-notifications-none zmdi-hc-lg"> </i> <i class="fa fa-angle-down"></i></a>
+                    <a href="javascript.;" class="dropdown-toggle" data-toggle="dropdown"><span th:if="${reservasPendientes} > 0" class="badge" th:text="${reservasPendientes}"></span> <i class="zmdi zmdi-notifications-none zmdi-hc-lg"> </i> <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a th:href="@{/edificios}">Ver pendientes</a>
+                        <li th:if="${reservasPendientes} > 0">
+                            <a  th:href="@{/edificios}">Ver reservas pendientes</a>
+                        </li>
+                         <li th:if="${reservasPendientes} == 0">
+                            <p style="margin-bottom:0px;padding:7px 10px;">No hay reservas pendientes</p>
                         </li> 
                      </ul>  
                 </li>
