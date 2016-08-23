@@ -89,7 +89,10 @@ public class UserRestController {
 		return result;
 	}
 	
-	
+	@RequestMapping(value = "/perfil/editar", method = RequestMethod.PUT)
+	public void editarPerfil(@RequestBody UserDTO userDTO){
+		user_service.editarPerfil(userDTO);
+	}
 	
 	
 	

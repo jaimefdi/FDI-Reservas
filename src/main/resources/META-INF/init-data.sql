@@ -1,7 +1,7 @@
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(1,'Facultad de Informática','www.informatica.ucm.es', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(2,'Facultad de Bellas Artes','www.bellasartes.ucm.es', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(3,'Facultad de Ciencias Biológicas','www.biologicas.ucm.es', false);
-INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(4,'Facultad de Ciencias de la Documentación','www.documentacion.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(1,'Facultad de Informática','informatica.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(2,'Facultad de Bellas Artes','bellasartes.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(3,'Facultad de Ciencias Biológicas','biologicas.ucm.es', false);
+INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(4,'Facultad de Ciencias de la Documentación','documentacion.ucm.es', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(5,'Facultad de Ciencias de la Información','www.ccinformacion.ucm.es', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(6,'Facultad de Ciencias Económicas y Empresariales','www.ccinformacion.ucm.es', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(7,'Facultad de Ciencias Físicas','www.ccinformacion.ucm.es', false);

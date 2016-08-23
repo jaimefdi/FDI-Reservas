@@ -162,4 +162,16 @@ public class UserController {
 		
 	   return model;
 	}
+	
+	@RequestMapping(value="/perfil/editar", method=RequestMethod.GET)
+	public ModelAndView editarPerfil(){
+		ModelAndView model = new ModelAndView("index");
+		User u = user_service.getCurrentUser();
+		model.addObject("User", u);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("view", "editarPerfil");
+		
+	   return model;
+	}
 }

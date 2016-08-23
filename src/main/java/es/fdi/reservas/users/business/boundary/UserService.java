@@ -1,20 +1,18 @@
 package es.fdi.reservas.users.business.boundary;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import es.fdi.reservas.reserva.business.entity.Edificio;
-import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.users.business.control.UserRepository;
 import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.users.web.UserDTO;
@@ -127,6 +125,31 @@ public class UserService implements UserDetailsService{
 
 	public List<User> getUsuariosPorTagName(String tagName) {
 		return user_ropository.getUsuariosPorTagName(tagName);
+	}
+
+	public void editarPerfil(UserDTO userDTO) {
+		User user = getUser(userDTO.getId());
+		user.setUsername(userDTO.getUsername());
+		user.setEmail(userDTO.getEmail());
+		if(userDTO.getOldPassword() != null){
+			// Cambiar las contraseñas
+			if(password_encoder.matches(userDTO.getOldPassword(),user.getPassword())){
+				user.setPassword(password_encoder.encode(userDTO.getNewPassword()));
+			}
+			else{
+				// Error: las contraseñas no coinciden
+				throw new UserPasswordException("La contraseña actual no es correcta");
+			}
+		}
+		
+		// Actualiza el usuario actual sin cerrar sesión
+		Authentication request = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());		
+		SecurityContextHolder.getContext().setAuthentication(request);		
+		
+		// Guarda los cambios en la base de datos
+		user_ropository.save(user);
+		
+	
 	}
 	
 	

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import es.fdi.reservas.reserva.business.boundary.ReservaSolapadaException;
+import es.fdi.reservas.users.business.boundary.UserPasswordException;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
@@ -19,8 +20,18 @@ public class ExceptionHandlerController {
 	@ExceptionHandler(ReservaSolapadaException.class)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResult handleException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {    
+    public ErrorResult reservaSolapadaException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {    
  
 		return new ErrorResult(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
+	
+	
+	@ExceptionHandler(UserPasswordException.class)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResult userPasswordException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {    
+ 
+		return new ErrorResult(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
+	
 }

@@ -17,6 +17,8 @@ public class UserDTO {
 	
 	private String password;
 	
+	private String oldPassword, newPassword;
+	
 	private String email;
 	
 	private boolean enabled;
@@ -108,6 +110,31 @@ public class UserDTO {
 		this.facultades.remove(f);
 	}
 	
+	
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+
+
 	public static UserDTO fromUserDTO(User user){
 		return new UserDTO(user.getUsername(), user.getEmail(), user.isEnabled());
 	}
