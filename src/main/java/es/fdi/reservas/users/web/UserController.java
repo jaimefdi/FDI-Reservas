@@ -1,18 +1,17 @@
 package es.fdi.reservas.users.web;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
 import es.fdi.reservas.reserva.business.boundary.EspacioService;
 import es.fdi.reservas.reserva.business.boundary.FacultadService;
 import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
@@ -29,15 +28,14 @@ public class UserController {
 	private UserService user_service;	
 	private ReservaService reserva_service;
 	private GrupoReservaService grupo_service;
-	private FacultadService facultad_service;
 	private EspacioService espacio_service;
 	
 	@Autowired
-	public UserController(UserService userService, GrupoReservaService grs, FacultadService fs, EspacioService es){
+	public UserController(UserService userService, GrupoReservaService grs, EspacioService es, ReservaService rs){
 		user_service = userService;
 		grupo_service = grs;
-		facultad_service = fs;
 		espacio_service = es;
+		reserva_service = rs;
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
@@ -114,10 +112,14 @@ public class UserController {
         Page<User> currentResults = user_service.getUsuariosPaginados(pageRequest);
         
         model.addAttribute("currentResults", currentResults);
-        
+        String wsp = System.getProperty("user.dir");
+        File f = new File(u.getImagen().getAttachmentUrl());
+        wsp = f.getAbsolutePath();
         int current = currentResults.getNumber() + 1;
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
@@ -143,6 +145,8 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = 1;//Math.min(begin + 10, currentResults.getTotalPages()); 
 
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
@@ -168,6 +172,7 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, 1); 
 
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
@@ -193,6 +198,7 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, 1); 
 
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
@@ -211,6 +217,7 @@ public class UserController {
 		model.addAttribute("User", u);
 		model.addAttribute("usuario", user_service.getUser(idUser));
 		//System.out.println(user_service.getUser(idUser).getUsername());
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("view", "admin/editarUsuario");
 		return "index";
 	}
@@ -220,6 +227,7 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("espacios", espacio_service.getEspacios());
 		model.addObject("view", "admin/administrar_espacios");
 		return model;

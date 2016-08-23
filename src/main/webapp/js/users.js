@@ -178,6 +178,7 @@
 							
 			},    
 			error : function(xhr, status) {
+				console.log(obj);
 				alert('Disculpe, existió un problema');
 			}
 		});

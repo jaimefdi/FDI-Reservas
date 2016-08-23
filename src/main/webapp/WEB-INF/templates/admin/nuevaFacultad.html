@@ -15,22 +15,30 @@
 <body>
 
 <div class="container-fluid" th:fragment="contenido">
-        
+        <!-- Page Heading -->
+			<div class="row">
+			    <div class="col-md-12">
+			        <h2 class="page-header text-center">
+			           Crear Facultad
+			        </h2>
+			    </div>
+			</div>
+			<!-- /.row -->
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="div-login">
-                         <h2 class=" page-header text-center">Añadir facultad</h2>
+                <div class="col-md-6 col-md-offset-3">
+                    
                          <form role="form" action="#" th:action="@{/admin/nuevaFacultad}" th:object="${Facultad}" method="post">
+                         <!-- Nombre facultad -->
                          	<div class="form-group">
-                                <label for="ejemplo_email_1">Nombre facultad</label>
+                                <label>Nombre facultad</label>
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-building"></i></span>
                                   <input name="nombreFacultad" type="text" class="form-control" placeholder="Nombre de facultad"/>
                                 </div>
                             </div>
-                                                      
+                            <!-- Web -->                          
                             <div class="form-group">
-                                <label for="ejemplo_email_1">Página web</label>
+                                <label>Página web</label>
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-at"></i></span>
                                   <input name="webFacultad" type="text" class="form-control" placeholder="Introduce la pagina web"/>
@@ -38,7 +46,7 @@
                             </div>
                             
                             <div class="text-center">
-                                 <button type="submit" class="btn btn-default">Crear</button>
+                                 <button type="submit" class="btn btn-normal">Crear</button>
                             </div>
 
                          </form>
@@ -47,9 +55,6 @@
             </div>
             <!-- /.row -->
        
-
-
-        </div>
         <!-- /.container-fluid -->
 
         

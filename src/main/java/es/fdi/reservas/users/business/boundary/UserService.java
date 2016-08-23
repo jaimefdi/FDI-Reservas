@@ -1,5 +1,6 @@
 package es.fdi.reservas.users.business.boundary;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -181,6 +182,11 @@ public class UserService implements UserDetailsService{
 
 	public User getUsuariosPorNombre(Long nombre) {
 		return user_ropository.findOne(nombre);
+	}
+
+	public List<User> getUsuariosPorFacultad(String nombre) {
+		// TODO Auto-generated method stub
+		return user_ropository.getUsuariosPorFacultad(nombre);
 	}
 
 	

@@ -74,17 +74,22 @@ public class UserRestController {
 		//if (fich.exists()){
 					
 			Attachment attachment = new Attachment("");
+			
 			if (userActualizado.getImagen().equals("")){
 				attachment = user_service.getUser(userActualizado.getId()).getImagen();
 			}
-			else if (user_service.getAttachmentByName(userActualizado.getImagen()).isEmpty()){
-				//si no esta, lo añado
-				
-				attachment.setAttachmentUrl("/img/" + userActualizado.getImagen());
-				attachment.setStorageKey(user_service.getUser(idUser).getUsername() + "/" + userActualizado.getImagen());
-				//reserva_service.addAttachment(attachment);
-			}else{
-				attachment = user_service.getAttachmentByName(userActualizado.getImagen()).get(0);
+			else {
+				String img = "/img/users/" + user_service.getUser(idUser).getUsername() + "/" + userActualizado.getImagen();
+				if (user_service.getAttachmentByName(img).isEmpty()){
+			
+					//si no esta, lo añado
+					String wsp = System.getProperty("user.dir");					
+					attachment.setAttachmentUrl("/img/" + userActualizado.getImagen());
+					attachment.setStorageKey(user_service.getUser(idUser).getUsername() + "/" + userActualizado.getImagen());
+					//reserva_service.addAttachment(attachment);
+				}else{
+					attachment = user_service.getAttachmentByName(userActualizado.getImagen()).get(0);
+				}
 			}
 			user_service.editaUsuario(userActualizado, user, admin, gestor, attachment);
 			//System.out.println(imagen + " Existe");
@@ -172,7 +177,7 @@ public class UserRestController {
 		List<UserDTO> result = new ArrayList<>();
 		List<User> usuarios = new ArrayList<>();
 
-		//usuarios = user_service.getFacultadPorTagName(tagName);
+		usuarios = user_service.getUsuariosPorFacultad(tagName);
 
 		for (User u : usuarios) {
 			result.add(UserDTO.fromUserDTOAutocompletar(u));

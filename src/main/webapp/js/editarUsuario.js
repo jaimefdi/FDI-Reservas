@@ -81,40 +81,28 @@ $(document).ready(function(){
 });	
 
 function editarUsuario(user, reqHeaders){
-	
-	var usuario = null;
-	var admin = null;
-	var gestor = null;
-	var inputElements = document.getElementsByClassName('checkbox');
-	for(var i=0; inputElements[i]; ++i){
-	      if(inputElements[i].checked){
-	    	  if ((i == 1) || (i == 3)){
-	           admin = inputElements[i].value;
-//	           break;
-	    	  }
-	    	  else if ((i == 5) || (i == 7)){
-	           usuario = inputElements[i].value;
-//	           break;
-	    	  }
-	    	  else if ((9 == 1) || (i == 11)){
-	           gestor = inputElements[i].value;
-//	           break;
-	    	  }
-	      }
-	}
-	
-//	if ($("#chkAdmin").prop("checked") == true){
-//		admin = "admin";
-//	}
-//	if ($("#chkUser").prop("checked") == true){
-//		alert($("#chkUser").prop("checked"));
-//		user = true;
-//	}
-//	if ($("#chkGestor").prop("checked") == true){
-//		gestor = "gestor";
+
+	//var inputElements = document.getElementsByClassName('checkbox');
+//	for(var i=0; inputElements[i]; ++i){
+//	      if(inputElements[i].checked){
+//	    	  if ((i == 1) || (i == 3)){
+//	           admin = inputElements[i].value;
+////	           break;
+//	    	  }
+//	    	  else if ((i == 5) || (i == 7)){
+//	           usuario = inputElements[i].value;
+////	           break;
+//	    	  }
+//	    	  else if ((9 == 1) || (i == 11)){
+//	           gestor = inputElements[i].value;
+////	           break;
+//	    	  }
+//	      }
 //	}
 	
-//	var facultad = document.getElementById("idFacultad").value;
+	var usuario = document.getElementById("chkUser").checked.toString();
+	var admin = document.getElementById("chkAdmin").checked.toString();
+	var gestor = document.getElementById("chkSecre").checked.toString();
 	
 	$.ajax({
 			

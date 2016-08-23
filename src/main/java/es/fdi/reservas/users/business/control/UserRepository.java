@@ -36,10 +36,10 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	List<User> getUsuariosPorTagName(@Param("username") String username);
 
 	@Query("select e from #{#entityName} e where e.enabled=true and e.facultad.nombreFacultad = :nombre")
-	public List<User> getUsuariosPorFacultad(@Param("nombre") String nombre);
+	List<User> getUsuariosPorFacultad(@Param("nombre") String nombre);
 
 	@Query("from User u where lower(u.email) like lower(concat('%',:email, '%'))")
-	public List<User> getUsuariosPorEmail(@Param("email") String email);
+	List<User> getUsuariosPorEmail(@Param("email") String email);
 	
 	
 }

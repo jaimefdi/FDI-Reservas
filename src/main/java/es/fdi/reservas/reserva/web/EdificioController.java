@@ -16,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
 import es.fdi.reservas.reserva.business.boundary.EdificioService;
 import es.fdi.reservas.reserva.business.boundary.FacultadService;
+import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.users.web.UserDTO;
@@ -30,11 +32,14 @@ public class EdificioController {
 	
 	private FacultadService facultad_service;
 	
+	private ReservaService reserva_service;
+	
 	@Autowired
-	public EdificioController(UserService userService, EdificioService es, FacultadService fs){
+	public EdificioController(UserService userService, EdificioService es, FacultadService fs, ReservaService rs){
 		user_service = userService;
 		edificio_service = es;
 		facultad_service = fs;
+		reserva_service = rs;
 	}
 	
 	@RequestMapping(value="/admin/administrar/edificios/{pageNumber}", method=RequestMethod.GET)
@@ -49,6 +54,7 @@ public class EdificioController {
 	    int begin = Math.max(1, current - 5);
 	    int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 	
+	    model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 	    model.addAttribute("beginIndex", begin);
 	    model.addAttribute("endIndex", end);
 	    model.addAttribute("currentIndex", current); 
@@ -62,6 +68,7 @@ public class EdificioController {
 	public ModelAndView restaurarEdificios(@PathVariable("numPag") Long numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("User", u);
 		model.addObject("pagina", numPag);
 		model.addObject("edificios", edificio_service.getEdificiosEliminados());
@@ -76,6 +83,7 @@ public class EdificioController {
 		model.addAttribute("edificio", edificio_service.getEdificio(idEdificio));
 		model.addAttribute("facultades", facultad_service.getFacultades());
 		model.addAttribute("command", new NewFileCommand());
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("view", "admin/editarEdificio");
 		return "index";
 	}
@@ -87,6 +95,7 @@ public class EdificioController {
 		model.addAttribute("User", u);
 		model.addAttribute("Edificio", new Edificio());
 		model.addAttribute("view", "admin/nuevoEdificio");
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("facultades", facultad_service.getFacultades());
 		return "index";
 	}
