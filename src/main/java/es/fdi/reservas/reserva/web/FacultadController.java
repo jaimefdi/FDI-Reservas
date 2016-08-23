@@ -53,6 +53,50 @@ public class FacultadController {
         return "index";
     }
 	
+	@RequestMapping(value="/admin/administrar/facultad/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misFacultadesPaginadasPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+		User u = user_service.getCurrentUser();
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<Facultad> currentResults = facultad_service.getFacultadesPaginadasPorNombre(nombre, pageRequest);
+                
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/administrar_facultad");
+		
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/facultad/web/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misFacultadesPaginadasPorWeb(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+		User u = user_service.getCurrentUser();
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<Facultad> currentResults = facultad_service.getFacultadesPaginadas(nombre, pageRequest);
+                
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/administrar_facultad");
+		
+        return "index";
+    }
+	
 	@RequestMapping(value="/admin/administrar/facultad/editar/{idFacul}", method=RequestMethod.GET)
 	public String editarFacultad(@PathVariable("idFacul") long idFacul, Model model){
 		User u = user_service.getCurrentUser();

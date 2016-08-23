@@ -226,7 +226,7 @@ function loadCalendar(){
 	});
 }	
 
-
+});
 
 function editarReservaSimple(reserva, reqHeaders, idReserva, revertFunc){
 	$.ajax({

@@ -11,9 +11,9 @@
 	
 	<div class="row">
     	<div class="col-md-12">
-            <h1 class="page-header text-center">
-                <small>Lista de </small>Edificios
-            </h1>
+             <h2 class="page-header text-center">
+               <small>Lista de </small>Edificios
+            </h2>
         </div>
     </div>
            <!-- /.row -->
@@ -40,28 +40,18 @@
                   <tbody>
                   	<tr></tr>
                       <tr th:if="${!r.deleted}" th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'">
-                      	 <!--                       	<td th:text = "${r.imagen.getFile()}">Mi imagen</td> -->
-						  <td><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
-                          <td th:text="${r.nombreEdificio}"></td>
-                          <td th:text="${r.direccion}"></td>
-                          <td th:text="${r.facultad.nombreFacultad}"></td>
+                      	 <!-- <td th:text = "${r.imagen.getFile()}">Mi imagen</td> -->
+						  <td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
+                          <td th:text="${#strings.abbreviate(r.nombreEdificio,21)}"></td>
+                          <td th:text="${#strings.abbreviate(r.direccion,21)}"></td>
+                          <td th:text="${#strings.abbreviate(r.facultad.nombreFacultad,21)}"></td>
                           <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},fac=${r.facultad.nombreFacultad},dir=${r.direccion},act=${r.deleted},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr>
                       
-<!--                       <tr th:if="${r.deleted}" th:each="r : ${currentResults}" class="danger"> -->
-<!-- 							<td><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td> -->
-							
-<!--                           <td th:text="${r.nombreEdificio}"></td> -->
-<!--                           <td th:text="${r.direccion}"></td> -->
-<!--                           <td th:text="${r.facultad.nombreFacultad}"></td> -->
-<!--                           <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted,img=${r.imagen.attachmentUrl}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a> -->
-<!-- 							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a> -->
-<!-- 							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	 -->
-<!-- 							</td> -->
-<!--                       </tr>  -->
+
                                             
                   </tbody>
               </table>
@@ -73,20 +63,20 @@
 	</div>
 	
 	<!-- Pagination -->
- 	<div class="row">
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
     <div class="col-md-12 text-center">
-        <div class='pagination pagination-centered'>
+        <nav>
             <ul class="pagination">
                 <li th:class="${currentIndex == 1}? 'disabled' : ''">
-                    <span th:if='${currentIndex == 1}'>← Primera</span>
+                    <span th:if='${currentIndex == 1}'>Primera</span>
                     <a th:if='${currentIndex != 1}'
-                       th:href="@{1}">← Primera</a>
+                       th:href="@{1}">Primera</a>
                 </li>
                 <li th:class="${currentIndex != 1}? '' : 'disabled'">
-                    <span th:if='${currentIndex == 1}'>«</span>
+                    <span th:if='${currentIndex == 1}'><i class='fa fa-angle-left'></i></span>
                     <a th:if='${currentIndex != 1}'
                        th:href="@{${(currentIndex - 1)}}"
-                       title='Go to previous page'>«</a>
+                       title='Go to previous page'><i class='fa fa-angle-left'></i></a>
                 </li>
 
                 <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
@@ -101,17 +91,17 @@
                 </li>
 
                 <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
+                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
                     <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
                 </li>
                 <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>Última →</span>
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
                     <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${currentResults.totalPages}}">Última →</a>
+                       th:href="@{${currentResults.totalPages}}">Última</a>
                 </li>
             </ul>
-        </div>
+        </nav>
     </div>
 </div>
  <!-- /.Pagination -->

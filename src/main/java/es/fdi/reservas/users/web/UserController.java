@@ -44,7 +44,7 @@ public class UserController {
 
 	@RequestMapping(value ="/administrar/usuarios")
     public String usuarios() {
-        return "redirect:/administrar/usuarios/1";
+        return "redirect:/administrar/usuarios/page/1";
     }
 	
 	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.GET)
@@ -91,7 +91,7 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value="/admin/administrar/usuarios/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/usuarios/page/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 
@@ -107,7 +107,82 @@ public class UserController {
 
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current);
+        model.addAttribute("totalPages", currentResults.getTotalPages());
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/administrar_usuarios");
+		
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/user/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misUsuariosPaginadosPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+		User u = user_service.getCurrentUser();
+
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		ArrayList<User> currentResults = new ArrayList<User>();
+        currentResults.add(user_service.getUsuariosPorNombre(nombre));
+        
+        model.addAttribute("currentResults", currentResults);
+        
+        int current =  1;
+        int begin = Math.max(1, current - 5);
+        int end = 1;//Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current);
+        model.addAttribute("totalPages", 1);
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/administrar_usuarios");
+		
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/user/email/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misUsuariosPaginadosPorEmail(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+		User u = user_service.getCurrentUser();
+
+	
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		ArrayList<User> currentResults = new ArrayList<User>();
+        currentResults.add(user_service.getUsuariosPorNombre(nombre));
+        
+        model.addAttribute("currentResults", currentResults);
+        
+        int current =  1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, 1); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
+        model.addAttribute("totalPages", 1);
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/administrar_usuarios");
+		
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/user/facultad/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misUsuariosPaginadosPorFacultad(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+		User u = user_service.getCurrentUser();
+
+	
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		ArrayList<User> currentResults = new ArrayList<User>();
+        currentResults.add(user_service.getUsuariosPorNombre(nombre));
+        
+        model.addAttribute("currentResults", currentResults);
+        
+        int current =  1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, 1); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+        model.addAttribute("totalPages", 1);
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_usuarios");
 		

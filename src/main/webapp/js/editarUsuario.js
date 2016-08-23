@@ -23,6 +23,7 @@ $(document).ready(function(){
 			user.email = $("#idEmail").val();
 			//user.facultad = $("#idFacultad").val();
 			user.imagen = $("#idAttachment").val();
+			console.log(user);
 	    	editarUsuario(user,reqHeaders);
 		});
 		
@@ -87,20 +88,31 @@ function editarUsuario(user, reqHeaders){
 	var inputElements = document.getElementsByClassName('checkbox');
 	for(var i=0; inputElements[i]; ++i){
 	      if(inputElements[i].checked){
-	    	  if (i == 1){
+	    	  if ((i == 1) || (i == 3)){
 	           admin = inputElements[i].value;
 //	           break;
 	    	  }
-	    	  else if (i == 3){
+	    	  else if ((i == 5) || (i == 7)){
 	           usuario = inputElements[i].value;
 //	           break;
 	    	  }
-	    	  else if (i == 5){
+	    	  else if ((9 == 1) || (i == 11)){
 	           gestor = inputElements[i].value;
 //	           break;
 	    	  }
 	      }
 	}
+	
+//	if ($("#chkAdmin").prop("checked") == true){
+//		admin = "admin";
+//	}
+//	if ($("#chkUser").prop("checked") == true){
+//		alert($("#chkUser").prop("checked"));
+//		user = true;
+//	}
+//	if ($("#chkGestor").prop("checked") == true){
+//		gestor = "gestor";
+//	}
 	
 //	var facultad = document.getElementById("idFacultad").value;
 	
@@ -114,7 +126,7 @@ function editarUsuario(user, reqHeaders){
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/admin/administrar/usuarios/1";
+				 window.location = "/reservas/admin/administrar/usuarios/page/1";
 			},    
 			error : function(xhr, status) {
 				alert(usuario + admin + gestor),

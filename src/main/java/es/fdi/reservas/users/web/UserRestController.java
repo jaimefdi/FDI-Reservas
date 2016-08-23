@@ -72,11 +72,7 @@ public class UserRestController {
 //		       }
 		
 		//if (fich.exists()){
-			
-			if (userActualizado.getFacultad() == null){
-				
-			}
-		
+					
 			Attachment attachment = new Attachment("");
 			if (userActualizado.getImagen().equals("")){
 				attachment = user_service.getUser(userActualizado.getId()).getImagen();
@@ -127,6 +123,51 @@ public class UserRestController {
 		List<User> usuarios = new ArrayList<>();
 
 		usuarios = user_service.getUsuariosPorTagName(tagName);
+
+		for (User u : usuarios) {
+			result.add(UserDTO.fromUserDTOAutocompletar(u));
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/admin/usuarios/tag/{tagName}", method = RequestMethod.GET)
+	public List<UserDTO> usuariosFiltroAutocompletarAdmin(@PathVariable("tagName") String tagName) {
+
+		List<UserDTO> result = new ArrayList<>();
+		List<User> usuarios = new ArrayList<>();
+
+		usuarios = user_service.getUsuariosPorTagName(tagName);
+
+		for (User u : usuarios) {
+			result.add(UserDTO.fromUserDTOAutocompletar(u));
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/admin/email/tag/{tagName}", method = RequestMethod.GET)
+	public List<UserDTO> emailFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+
+		List<UserDTO> result = new ArrayList<>();
+		List<User> usuarios = new ArrayList<>();
+
+		usuarios = user_service.getUsuariosPorEmail(tagName);
+
+		for (User u : usuarios) {
+			result.add(UserDTO.fromUserDTOAutocompletar(u));
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/admin/facultad/tag/{tagName}", method = RequestMethod.GET)
+	public List<UserDTO> facultadFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+
+		List<UserDTO> result = new ArrayList<>();
+		List<User> usuarios = new ArrayList<>();
+
+		//usuarios = user_service.getFacultadPorTagName(tagName);
 
 		for (User u : usuarios) {
 			result.add(UserDTO.fromUserDTOAutocompletar(u));

@@ -89,4 +89,9 @@ public class FacultadService {
 		
 		return facultad_repository.recycleBin();
 	}
+
+	public Page<Facultad> getFacultadesPaginadasPorNombre(Long nombre, PageRequest pageRequest) {
+		
+		return null;
+	}
 }

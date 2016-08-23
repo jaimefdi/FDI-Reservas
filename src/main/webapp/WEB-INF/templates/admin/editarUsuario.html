@@ -80,7 +80,20 @@
 							    </label>
 						    </div>
 					 	</div>
-			 	         
+			 	        
+			 	         <div class="media">
+                             <span class="pull-left">
+                                 <img class="img-circle" th:title="${usuario.imagen.description}" th:alt="${usuario.imagen.description}" th:src="@{${usuario.imagen.attachmentUrl}}" height="75" width="75"></img>
+                             </span>
+                             <div class="media-body">
+                                <div class="form-group">
+									<label>Selecciona una imágen: </label>
+									<input type="file" id="idAttachment" th:src="${usuario.imagen.attachmentUrl}"/>
+									
+								</div>
+                             </div>
+                         </div>
+			 	        <!--   
 						<div class="for-group">
 							<label>Imágen actual</label>
 							<br></br>
@@ -90,16 +103,20 @@
 							<label>Selecciona una imágen: </label>
 							<input type="file" id="idAttachment" th:src="${usuario.imagen.attachmentUrl}"/>
 							
-						</div>                         
-	                   <div class="row">              	
-						    <div class="col-md-12">
-						         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>
-						    </div>                   
-					   </div>
+						</div>-->
+						
+						                         
+	                  
 				   </div>
 				   <!-- /.row -->
 				  
 	   </form>
+	   
+	    <div class="row">              	
+		    <div class="col-md-12 text-center">
+		         <button id="enlaceGuardar" type="button" class="btn-normal">GUARDAR</button>
+		    </div>                   
+	   </div>
    </div>                  
 </div>
 <!-- /.row -->

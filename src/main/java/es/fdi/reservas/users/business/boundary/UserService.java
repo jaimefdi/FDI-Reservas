@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -58,6 +60,12 @@ public class UserService implements UserDetailsService{
 		return null;
 	}
 
+	public void setCurrentUser(User user){
+		Authentication request = new UsernamePasswordAuthenticationToken(user,user.getPassword());
+		//Authentication result = authenticationManager.authenticate(request);
+		SecurityContextHolder.getContext().setAuthentication(request);
+	}
+	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDetails user = user_ropository.findByEmail(username);
 		if (user == null)  {
@@ -125,7 +133,7 @@ public class UserService implements UserDetailsService{
 		u.setImagen(imagen);
 		attachment_repository.save(imagen);
 		if (user.equals("user") || admin.equals("admin") || gestor.equals("gestor")){//si hay alguno seleccionado
-			u.getAuthorities().clear();
+			//u.getAuthorities().clear();
 			if (user.equals("user")){
 				u.addRole(new UserRole("ROLE_USER"));
 			}
@@ -136,6 +144,9 @@ public class UserService implements UserDetailsService{
 				u.addRole(new UserRole("ROLE_GESTOR"));
 			}
 		}
+		
+		setCurrentUser(u);
+		
 		return user_ropository.save(u);
 	}
 	
@@ -170,5 +181,15 @@ public class UserService implements UserDetailsService{
 	public List<Attachment> getAttachmentByName(String img) {
 		return attachment_repository.getAttachmentByName(img);
 	}
+
+	public List<User> getUsuariosPorEmail(String email) {
+		return user_ropository.getUsuariosPorEmail(email);
+	}
+
+	public User getUsuariosPorNombre(Long nombre) {
+		return user_ropository.findOne(nombre);
+	}
+
+	
 
 }
