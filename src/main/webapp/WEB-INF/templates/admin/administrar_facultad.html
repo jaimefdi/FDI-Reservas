@@ -63,15 +63,6 @@
 							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr> 
-<!--                       <tr th:if="${r.deleted}" th:each="r : ${currentResults}" class="danger"> -->
-                      	
-<!--                           <td th:text="${r.nombreFacultad}"></td> -->
-<!--                           <td th:text="${r.webFacultad}"></td> -->
-<!--                           <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a> -->
-<!-- 							<a th:href="@{'/admin/administrar/facultad/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a> -->
-<!-- 							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad},web=${r.webFacultad},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	 -->
-<!-- 							</td> -->
-<!--                       </tr>      -->
                   </tbody>
               </table>
               
@@ -81,20 +72,20 @@
 		</div>
 	</div>
 	<!-- Pagination -->
- 	<div class="row">
+ 	 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
     <div class="col-md-12 text-center">
-        <div class='pagination pagination-centered'>
+        <nav>
             <ul class="pagination">
                 <li th:class="${currentIndex == 1}? 'disabled' : ''">
-                    <span th:if='${currentIndex == 1}'>← Primera</span>
+                    <span th:if='${currentIndex == 1}'>Primera</span>
                     <a th:if='${currentIndex != 1}'
-                       th:href="@{1}">← Primera</a>
+                       th:href="@{1}">Primera</a>
                 </li>
                 <li th:class="${currentIndex != 1}? '' : 'disabled'">
-                    <span th:if='${currentIndex == 1}'>«</span>
+                    <span th:if='${currentIndex == 1}'><i class='fa fa-angle-left'></i></span>
                     <a th:if='${currentIndex != 1}'
                        th:href="@{${(currentIndex - 1)}}"
-                       title='Go to previous page'>«</a>
+                       title='Go to previous page'><i class='fa fa-angle-left'></i></a>
                 </li>
 
                 <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
@@ -108,18 +99,18 @@
                     </a>
                 </li>
 
-                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>»</span>
-                    <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'>»</a>
+                <li th:class="${currentIndex != totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == totalPages}'><i class='fa fa-angle-right'></i></span>
+                    <a th:if='${currentIndex !=  totalPages}'
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
                 </li>
-                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>Última →</span>
-                    <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${currentResults.totalPages}}">Última →</a>
+                <li th:class="${currentIndex ==  totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex ==  totalPages}'>Última</span>
+                    <a th:if='${currentIndex !=  totalPages}'
+                       th:href="@{${totalPages}}">Última</a>
                 </li>
             </ul>
-        </div>
+        </nav>
     </div>
 </div>
  <!-- /.Pagination -->

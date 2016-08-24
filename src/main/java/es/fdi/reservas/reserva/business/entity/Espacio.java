@@ -13,7 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+
+import es.fdi.reservas.fileupload.business.entity.Attachment;
 
 @Entity
 public class Espacio {
@@ -45,6 +48,10 @@ public class Espacio {
 	private int horasAutorizacion;
 	@NotNull
 	private boolean deleted;
+	
+	@OneToOne(optional=true)
+	@JoinColumn(name="ImagenId")
+	private Attachment imagen;
 	
 	public Espacio(){
 		
@@ -102,6 +109,14 @@ public class Espacio {
 
 	public Espacio(Long idEspacio){
 		id = idEspacio;
+	}
+	
+	public Attachment getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(Attachment imagen) {
+		this.imagen = imagen;
 	}
 
 	public String getNombreEspacio() {

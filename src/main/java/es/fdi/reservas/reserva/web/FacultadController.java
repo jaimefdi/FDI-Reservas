@@ -64,18 +64,20 @@ public class FacultadController {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Facultad> currentResults = facultad_service.getFacultadesPaginadasPorNombre(nombre, pageRequest);
+        ArrayList<Facultad> currentResults = new ArrayList<Facultad>();
+        currentResults.add(facultad_service.getFacultad(nombre));
                 
         model.addAttribute("currentResults", currentResults);
         
-        int current = currentResults.getNumber() + 1;
+        int current =  1;
         int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+        int end = Math.min(begin + 10, 1); 
 
         model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
+        model.addAttribute("totalPages", 1);
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_facultad");
 		
@@ -87,18 +89,20 @@ public class FacultadController {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Facultad> currentResults = facultad_service.getFacultadesPaginadasPorNombre(nombre, pageRequest);
+		ArrayList<Facultad> currentResults = new ArrayList<Facultad>();
+        currentResults.add(facultad_service.getFacultad(nombre));
                 
         model.addAttribute("currentResults", currentResults);
         
-        int current = currentResults.getNumber() + 1;
+        int current =  1;
         int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+        int end = Math.min(begin + 10, 1); 
 
         model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
+        model.addAttribute("totalPages", 1);
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_facultad");
 		

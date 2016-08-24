@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
+import es.fdi.reservas.users.business.entity.User;
 
 @Repository
 public interface EdificioRepository extends JpaRepository<Edificio, Long>{
@@ -26,5 +27,11 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 
 	@Query("from Edificio f where lower(f.nombreEdificio) like lower(concat('%',:nombreEdificio, '%'))")
 	List<Edificio> getEdificiosPorTagName(@Param("nombreEdificio") String nombreEdificio);
+
+	@Query("from Edificio f where lower(f.direccion) like lower(concat('%',:direccion, '%'))")
+	List<Edificio> getEdificiosPorDireccion(@Param("direccion") String tagName);
+	
+	@Query("select e from #{#entityName} e where e.deleted=false and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
+	List<Edificio> getEdificiosPorFacultad(@Param("nombre") String nombre);
 		
 }

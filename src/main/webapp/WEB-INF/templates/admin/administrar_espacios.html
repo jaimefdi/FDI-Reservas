@@ -30,6 +30,7 @@
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
+                      	  <th>Imágen</th>
                           <th>Nombre</th>                      
                           <th>Tipo de espacio</th>
                           <th>Acciones</th>
@@ -37,7 +38,7 @@
                   </thead>
                   <tbody>
                       <tr th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'">
-                      	
+                      	<td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
                         <td th:text="${r.nombreEspacio}"></td>                   
                         <td th:text="${r.tipoEspacio.tipo}"></td> 
                         <td><a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>

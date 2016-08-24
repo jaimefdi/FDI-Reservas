@@ -1,6 +1,8 @@
 package es.fdi.reservas.reserva.web;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.reserva.business.boundary.EdificioService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
+import es.fdi.reservas.users.business.entity.User;
+import es.fdi.reservas.users.web.UserDTO;
 
 @RestController
 public class EdificioRestController {
@@ -65,5 +69,50 @@ public class EdificioRestController {
 	public String crearEdificio(Edificio f){
 		edificio_service.addNewEdificio(f);
 	    return "redirect:/admin/administrar/edificios/1";
+	}
+	
+	@RequestMapping(value = "/admin/edificio/usuarios/tag/{tagName}", method = RequestMethod.GET)
+	public List<EdificioDTO> usuariosFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+
+		List<EdificioDTO> result = new ArrayList<>();
+		List<Edificio> usuarios = new ArrayList<>();
+
+		usuarios = edificio_service.getEdificiosPorTagName(tagName);
+
+		for (Edificio u : usuarios) {
+			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/admin/edificio/direccion/tag/{tagName}", method = RequestMethod.GET)
+	public List<EdificioDTO> direccionFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+
+		List<EdificioDTO> result = new ArrayList<>();
+		List<Edificio> usuarios = new ArrayList<>();
+
+		usuarios = edificio_service.getEdificiosPorDireccion(tagName);
+
+		for (Edificio u : usuarios) {
+			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/admin/edificio/facultad/tag/{tagName}", method = RequestMethod.GET)
+	public List<EdificioDTO> facultadFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+
+		List<EdificioDTO> result = new ArrayList<>();
+		List<Edificio> usuarios = new ArrayList<>();
+
+		usuarios = edificio_service.getEdificiosPorFacultad(tagName);
+
+		for (Edificio u : usuarios) {
+			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
+		}
+
+		return result;
 	}
 }

@@ -94,4 +94,9 @@ public class FacultadService {
 		
 		return null;
 	}
+
+	public List<Facultad> getFacultadesPorWeb(String tagName) {
+		
+		return facultad_repository.getFacultadesPorWeb(tagName);
+	}
 }

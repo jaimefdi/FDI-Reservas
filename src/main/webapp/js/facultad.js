@@ -61,7 +61,7 @@ $(document).ready(function(){
 	 			if ($("#selec-busqueda").val()=="nombre")
 	 			{
 	 				console.log($("#selec-busqueda").val())
-	 				response=autocompletarUser(tag, response);
+	 				response=autocompletarNombre(tag, response);
 	 			}
 	 			else if ($("#selec-busqueda").val() == "web")
 	 			{	
@@ -92,10 +92,7 @@ $(document).ready(function(){
 	 			                  '<p class="small text-muted">'+ item.info +'</p>'
 	 			                  '</div></a>';
 	 			                  */
-	 		var inner_html = '<a href="/reservas/admin/administrar/facultades/'+direccion+'/'+item.label+'/page/1">'+
-	 						'<div class="media"><div class="media-left">' + 
-	 				        '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
-	 				        '</div>' + 
+	 		var inner_html = '<a href="/reservas/admin/administrar/facultad/'+direccion+'/'+item.label+'/page/1">'+ 
 	 				        '<div class="media-body">' + 
 	 				        '<h5 class="media-heading">'+ item.value +'</h5>' + 
 	 				        '<p class="small text-muted">'+ item.info +'</p>' + 
@@ -127,10 +124,10 @@ $(document).ready(function(){
 	 
  });
 
-function autocompletarUser(tag, respuesta)
+function autocompletarNombre(tag, respuesta)
 {
 	$.ajax({
-		url: '/reservas/admin/facultad/tag/' + tag,
+		url: '/reservas/admin/facultad/nombre/tag/' + tag,
 		type: 'GET',
 		async: false,
 		contentType: 'application/json',
@@ -139,8 +136,8 @@ function autocompletarUser(tag, respuesta)
 			
 				var obj = new Object();
 				obj.label = item.id; 
-				obj.value = item.username;
-				obj.info = item.email;
+				obj.value = item.nombreFacultad;
+				obj.info = item.webFacultad;
 				return obj;
 			
 			}))
@@ -156,7 +153,7 @@ function autocompletarUser(tag, respuesta)
 function autocompletarWeb(tag, respuesta)
 {
 	$.ajax({
-		url: '/reservas/admin/web/tag/' + tag,
+		url: '/reservas/admin/facultad/web/tag/' + tag,
 		type: 'GET',
 		async: false,
 		contentType: 'application/json',
@@ -165,8 +162,8 @@ function autocompletarWeb(tag, respuesta)
 			
 				var obj = new Object();
 				obj.label = item.id; 
-				obj.value = item.username;
-				obj.info = item.email;
+				obj.value = item.nombreFacultad;
+				obj.info = item.webFacultad;
 				return obj;
 			
 			}))

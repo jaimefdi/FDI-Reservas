@@ -1,6 +1,7 @@
 package es.fdi.reservas.users.business.boundary;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -187,6 +188,18 @@ public class UserService implements UserDetailsService{
 	public List<User> getUsuariosPorFacultad(String nombre) {
 		// TODO Auto-generated method stub
 		return user_ropository.getUsuariosPorFacultad(nombre);
+	}
+
+	public void actualizaReferencias(String nombreViejo, String nombreNuevo) {
+		List<Attachment> imgs = attachment_repository.getAttachmentByName(nombreViejo);
+		Iterator<Attachment> it = imgs.iterator();
+		Attachment i;
+		while (it.hasNext()){
+			i = it.next();
+			i.setAttachmentUrl(i.getAttachmentUrl().replace(nombreViejo, nombreNuevo));
+			attachment_repository.save(i);
+		}
+		
 	}
 
 	

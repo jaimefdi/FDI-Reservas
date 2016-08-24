@@ -89,7 +89,7 @@
  	</div>
  	
  	<!-- Pagination -->
- 	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
     <div class="col-md-12 text-center">
         <nav>
             <ul class="pagination">
@@ -116,15 +116,15 @@
                     </a>
                 </li>
 
-                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
-                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
-                    <a th:if='${currentIndex != currentResults.totalPages}'
+                <li th:class="${currentIndex != totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == totalPages}'><i class='fa fa-angle-right'></i></span>
+                    <a th:if='${currentIndex !=  totalPages}'
                        th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
                 </li>
-                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
-                    <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${currentResults.totalPages}}">Última</a>
+                <li th:class="${currentIndex ==  totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex ==  totalPages}'>Última</span>
+                    <a th:if='${currentIndex !=  totalPages}'
+                       th:href="@{${totalPages}}">Última</a>
                 </li>
             </ul>
         </nav>

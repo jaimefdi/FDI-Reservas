@@ -14,6 +14,7 @@ import es.fdi.reservas.reserva.business.control.FacultadRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.web.EdificioDTO;
+import es.fdi.reservas.users.business.entity.User;
 
 @Service
 public class EdificioService {
@@ -118,6 +119,20 @@ public Edificio addNewEdificio(Edificio edificio) {
 	public List<Edificio> getEdificiosPorTagName(String tagName) {
 		// TODO Auto-generated method stub
 		return edificio_repository.getEdificiosPorTagName(tagName);
+	}
+
+	public Edificio getEdificiosPorNombre(Long nombre) {
+		return edificio_repository.findOne(nombre);
+	}
+
+	public List<Edificio> getEdificiosPorDireccion(String tagName) {
+		
+		return edificio_repository.getEdificiosPorDireccion(tagName);
+	}
+	
+	public List<Edificio> getEdificiosPorFacultad(String tagName) {
+		
+		return edificio_repository.getEdificiosPorFacultad(tagName);
 	}
 
 }

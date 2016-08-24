@@ -170,7 +170,6 @@
 					var obj = new Object();
 					obj.label = item.id; 
 					obj.value = item.username;
-					alert(obj.value);
 					obj.info = item.email;
 					return obj;
 				

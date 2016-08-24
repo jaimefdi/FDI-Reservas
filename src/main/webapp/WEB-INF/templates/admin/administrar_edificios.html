@@ -17,7 +17,29 @@
         </div>
     </div>
            <!-- /.row -->
-
+	<div class="row">
+		<div class="col-md-6 col-md-offset text-right">
+			<h5>Filtrar por...</h5>
+		</div>
+		<div class="col-md-6 col-md-offset-3 text-left">
+		
+			<div class="col-md-3">
+			
+				<select id="selec-busqueda" class="form-control">
+					<option value="nombre">Nombre</option>
+					<option value="direccion">Dirección</option>
+					<option value="facultad">Facultad</option>
+				</select>
+			</div>
+			<div class="col-md-9">
+			 <div class="input-group">        
+	            <input type="text" id="texto-busqueda" class="form-control" placeholder="Introduce nombre de edificio"></input>
+	             <span class="input-group-addon"><i class="fa fa-search"></i></span>
+	          </div>
+	    	</div>
+		</div>
+	</div>
+<hr/>
     <div class="row">
 		<div class="col-md-8 col-md-offset-2">
     	
@@ -41,10 +63,10 @@
                   	<tr></tr>
                       <tr th:if="${!r.deleted}" th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'">
                       	 <!-- <td th:text = "${r.imagen.getFile()}">Mi imagen</td> -->
-						  <td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
-                          <td th:text="${#strings.abbreviate(r.nombreEdificio,21)}"></td>
-                          <td th:text="${#strings.abbreviate(r.direccion,21)}"></td>
-                          <td th:text="${#strings.abbreviate(r.facultad.nombreFacultad,21)}"></td>
+						  <td class="text-center"><img class="img-circle" th:title="${r.imagen.description}" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
+                          <td th:text="${#strings.abbreviate(r.nombreEdificio,21)}" th:title="${r.nombreEdificio}"></td>
+                          <td th:text="${#strings.abbreviate(r.direccion,21)}" th:title="${r.direccion}"></td>
+                          <td th:text="${#strings.abbreviate(r.facultad.nombreFacultad,21)}" th:title="${r.facultad.nombreFacultad}"></td>
                           <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
 							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},fac=${r.facultad.nombreFacultad},dir=${r.direccion},act=${r.deleted},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
@@ -63,7 +85,7 @@
 	</div>
 	
 	<!-- Pagination -->
- 	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
     <div class="col-md-12 text-center">
         <nav>
             <ul class="pagination">
@@ -90,15 +112,15 @@
                     </a>
                 </li>
 
-                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
-                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
-                    <a th:if='${currentIndex != currentResults.totalPages}'
+                <li th:class="${currentIndex != totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == totalPages}'><i class='fa fa-angle-right'></i></span>
+                    <a th:if='${currentIndex != totalPages}'
                        th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
                 </li>
-                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
-                    <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${currentResults.totalPages}}">Última</a>
+                <li th:class="${currentIndex == totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == totalPages}'>Última</span>
+                    <a th:if='${currentIndex != totalPages}'
+                       th:href="@{${totalPages}}">Última</a>
                 </li>
             </ul>
         </nav>

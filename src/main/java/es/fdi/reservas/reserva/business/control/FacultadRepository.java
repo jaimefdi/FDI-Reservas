@@ -31,4 +31,7 @@ public interface FacultadRepository extends JpaRepository<Facultad, Long>{
 	@Modifying
 	@Query("update #{#entityName} e set e.deleted=true where e.id= :idFacultad")
 	void softDelete(@Param("idFacultad") Long idFacultad);
+
+	@Query("from Facultad f where f.webFacultad like lower(concat('%',:nombre, '%'))")
+	List<Facultad> getFacultadesPorWeb(@Param("nombre") String nombre);
 }

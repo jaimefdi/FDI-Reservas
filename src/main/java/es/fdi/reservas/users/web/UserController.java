@@ -113,7 +113,7 @@ public class UserController {
         
         model.addAttribute("currentResults", currentResults);
         String wsp = System.getProperty("user.dir");
-        File f = new File(u.getImagen().getAttachmentUrl());
+        File f = new File("user.png");
         wsp = f.getAbsolutePath();
         int current = currentResults.getNumber() + 1;
         int begin = Math.max(1, current - 5);

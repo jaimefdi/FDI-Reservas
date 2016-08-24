@@ -58,28 +58,38 @@
                  
                  <div class="form-group">
                      <label>Tipo Espacio:</label>
-                     <select id = "idProy" title="Activado">
-                    		<option th:if="${espacio.tipoEspacio.tipo} == 'Sala'" value="1" selected="selected">Sala</option>
-                    		<option value="1">Sala</option>
-                    		<option th:if="${espacio.tipoEspacio.tipo} == 'Aula'" value="1" selected="selected">Aula</option>
-			          		<option value="2">Aula</option>
-			          		<option th:if="${espacio.tipoEspacio.tipo} == 'Laboratorio'" value="1" selected="selected">Laboratorio</option>
-		          			<option value="3">Laboratorio</option>
+                     <select id = "idProy" >
+                    		<option th:if="${espacio.tipoEspacio.tipo} == 'Sala'" value="sala" selected="selected">Sala</option>
+                    		<option th:unless="${espacio.tipoEspacio.tipo} == 'Sala'" value="sala">Sala</option>
+                    		<option th:if="${espacio.tipoEspacio.tipo} == 'Aula'" value="aula" selected="selected">Aula</option>
+			          		<option th:unless="${espacio.tipoEspacio.tipo} == 'Aula'" value="aula">Aula</option>
+			          		<option th:if="${espacio.tipoEspacio.tipo} == 'Laboratorio'" value="laboratorio" selected="selected">Laboratorio</option>
+		          			<option th:unless="${espacio.tipoEspacio.tipo} == 'Laboratorio'" value="laboratorio">Laboratorio</option>
 			          	
                    	</select>                  
 		                                 
                  </div>
                  
-<!--                  <div class="form-group"> -->
-<!-- 			 		<label>Eliminado:</label> -->
-<!-- 			 		<br/> -->
-<!-- 			 		<select id = "idActivado" title="Activado"> -->
-<!--                     		<option value="true">Si</option> -->
-<!-- 			          	<option value="false">No</option> -->
-			          	
-<!--                     	</select> -->
-<!-- 			 	</div> -->
-                        
+                 <!-- Facultad -->                  
+                 <div class="form-group">
+                     <label>Edificio:</label>                  
+		                <input id="idEdificio" name="email" type="text" class="form-control" placeholder="Elige un edificio"/>                 
+                 	</div>				
+				 </div>
+                 
+                 <!-- Imagen -->
+	 	         <div class="media">
+                         <span class="pull-left">
+                             <img class="img-circle" th:title="${espacio.imagen.description}" th:alt="${espacio.imagen.description}" th:src="@{${espacio.imagen.attachmentUrl}}" height="75" width="75"></img>
+                         </span>
+                         <div class="media-body">
+                            <div class="form-group">
+								<label>Selecciona una imágen: </label>
+								<input type="file" id="idAttachment" th:src="${espacio.imagen.attachmentUrl}"/>
+								
+							</div>
+                         </div>
+                </div>                        
           	</div>              
                    <div class="row">              	
 					    <div class="col-md-12 text-center">

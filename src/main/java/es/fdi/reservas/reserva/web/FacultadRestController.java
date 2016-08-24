@@ -1,5 +1,8 @@
 package es.fdi.reservas.reserva.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.fdi.reservas.reserva.business.boundary.FacultadService;
 import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.users.business.entity.User;
+import es.fdi.reservas.users.web.UserDTO;
 
 
 @RestController
@@ -45,5 +50,35 @@ public class FacultadRestController {
 	public String crearFacultad(Facultad f){
 		facultad_service.addNewFacultad(f);
 	   return "redirect:/admin/administrar/facultad/1";
+	}
+	
+	@RequestMapping(value = "/admin/facultad/nombre/tag/{tagName}", method = RequestMethod.GET)
+	public List<FacultadDTO> facultadesFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+
+		List<FacultadDTO> result = new ArrayList<>();
+		List<Facultad> usuarios = new ArrayList<>();
+
+		usuarios = facultad_service.getFacultadesPorTagName(tagName);
+
+		for (Facultad u : usuarios) {
+			result.add(FacultadDTO.fromFacultadDTOAutocompletar(u));
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/admin/facultad/web/tag/{tagName}", method = RequestMethod.GET)
+	public List<FacultadDTO> emailFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+
+		List<FacultadDTO> result = new ArrayList<>();
+		List<Facultad> usuarios = new ArrayList<>();
+
+		usuarios = facultad_service.getFacultadesPorWeb(tagName);
+
+		for (Facultad u : usuarios) {
+			result.add(FacultadDTO.fromFacultadDTOAutocompletar(u));
+		}
+
+		return result;
 	}
 }
