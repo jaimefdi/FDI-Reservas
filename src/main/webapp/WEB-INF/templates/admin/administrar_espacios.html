@@ -18,6 +18,23 @@
     </div>
            <!-- /.row -->
 
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3 text-center">
+			<div class="col-md-3">
+				<select id="selec-busqueda" class="form-control">
+					<option value="nombre">Nombre</option>
+					<option value="edificio">Edificio</option>
+				</select>
+			</div>
+			<div class="col-md-9">
+			 <div class="input-group">        
+	            <input type="text" id="texto-busqueda" class="form-control" placeholder="Introduce nombre de espacio"></input>
+	             <span class="input-group-addon"><i class="fa fa-search"></i></span>
+	          </div>
+	    	</div>
+		</div>
+	</div>
+<hr/>
     <div class="row">
 		<div class="col-md-8 col-md-offset-2">
     	
@@ -41,9 +58,9 @@
                       	<td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
                         <td th:text="${r.nombreEspacio}"></td>                   
                         <td th:text="${r.tipoEspacio.tipo}"></td> 
-                        <td><a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                        <td><a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 						<a th:href="@{'/admin/administrar/espacio/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-						<a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+						<a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 						</td>
                       </tr>  
                       
@@ -59,7 +76,7 @@
 	</div>
 	
 	<!-- Pagination -->
- 	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
     <div class="col-md-12 text-center">
         <nav>
             <ul class="pagination">
@@ -86,15 +103,15 @@
                     </a>
                 </li>
 
-                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
-                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
-                    <a th:if='${currentIndex != currentResults.totalPages}'
+                <li th:class="${currentIndex != totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == totalPages}'><i class='fa fa-angle-right'></i></span>
+                    <a th:if='${currentIndex != totalPages}'
                        th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
                 </li>
-                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
-                    <a th:if='${currentIndex != currentResults.totalPages}'
-                       th:href="@{${currentResults.totalPages}}">Última</a>
+                <li th:class="${currentIndex == totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == totalPages}'>Última</span>
+                    <a th:if='${currentIndex != totalPages}'
+                       th:href="@{${totalPages}}">Última</a>
                 </li>
             </ul>
         </nav>
@@ -150,17 +167,6 @@
 		                 </div>
                    </div>
 		         </div>
-<!--                  <div class="form-group"> -->
-<!--                      <label for="ejemplo_3" class="col-md-3 control-label">Microfono:</label> -->
-<!--                      <div class="col-md-9"> -->
-		               
-<!-- 		               <select id = "idMicro" title="¿Tiene microfono"> -->
-<!--                      		<option value="true">Si</option> -->
-<!-- 				          	<option value="false">No</option> -->
-				          	
-<!--                      	</select> -->
-<!--                      </div> -->
-<!--                  </div> -->
                  
                  <!-- Proyector --> 
                  <div class="row">
@@ -174,17 +180,6 @@
 		                 </div>
                    </div>
 		         </div>
-<!--                  <div class="form-group"> -->
-<!--                      <label for="ejemplo_3" class="col-md-3 control-label">Proyector:</label> -->
-<!--                      <div class="col-md-9"> -->
-<!--                      	<select id = "idProy" title="¿Tiene proyector?"> -->
-<!--                      		<option value="true">Si</option> -->
-<!-- 				          	<option value="false">No</option> -->
-				          	
-<!--                      	</select> -->
-		               		               
-<!--                      </div> -->
-<!--                  </div> -->
                  
                  <!-- Tipo espacio -->
                  <div class="row">
@@ -198,18 +193,18 @@
 		                 </div>
                    </div>
                   </div>
-<!--                  <div class="form-group"> -->
-<!--                      <label for="ejemplo_3" class="col-md-3 control-label">Tipo:</label> -->
-<!--                      <div class="col-md-9"> -->
-<!--                      	<select id = "idTipo" title="Tipo de espacio"> -->
-<!--                      		<option value="Sala">Sala</option> -->
-<!-- 				          	<option value="Aula">Aula</option> -->
-<!-- 				          	<option value="Laboratorio">Laboratorio</option> -->
-<!--                      	</select> -->
-		               
-		               
-<!--                      </div> -->
-<!--                  </div> -->
+				
+				<!-- Edificio -->
+				<div class="row">
+                	<div class="col-md-12">
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Edificio: </label>
+		                      <div class="col-md-10">
+		                         <p id="idEdificio" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+                  </div>
                  
                  <div class="row">
                 	<div class="col-md-12">

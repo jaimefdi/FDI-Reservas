@@ -5,9 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
+import es.fdi.reservas.fileupload.business.control.AttachmentRepository;
+import es.fdi.reservas.fileupload.business.entity.Attachment;
+import es.fdi.reservas.reserva.business.control.EdificioRepository;
 import es.fdi.reservas.reserva.business.control.EspacioRepository;
+import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import es.fdi.reservas.reserva.web.EspacioDTO;
@@ -16,11 +22,15 @@ import es.fdi.reservas.reserva.web.EspacioDTO;
 public class EspacioService {
 
 	private EspacioRepository espacio_repository;
+	private EdificioRepository edificio_repository;
+	private AttachmentRepository attachment_repository;
 	
 	@Autowired
-	public EspacioService(EspacioRepository espacio_repository) {
+	public EspacioService(EspacioRepository espacio_repository, AttachmentRepository ar, EdificioRepository er) {
 		super();
 		this.espacio_repository = espacio_repository;
+		this.attachment_repository = ar;
+		this.edificio_repository = er;
 	}
 
 	public List<Espacio> getEspaciosEdificio(long idEdificio) {
@@ -58,14 +68,16 @@ public class EspacioService {
 		return espacio_repository.save(e);
 	}
 	
-	public Espacio editarEspacio(EspacioDTO espacio){
+	public Espacio editarEspacio(EspacioDTO espacio, Attachment attachment){
 		Espacio e = espacio_repository.findOne(espacio.getId());
 		e.setNombreEspacio(espacio.getNombreEspacio());
 		e.setCapacidad(espacio.getCapacidad());
 		e.setMicrofono(espacio.isMicrofono());
 		e.setProyector(espacio.isProyector());
 		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
-		
+		Long id = Long.decode(espacio.getEdificio());
+		e.setEdificio(edificio_repository.findOne(id));
+		e.setImagen(attachment);
 		return espacio_repository.save(e);
 	}
 	
@@ -92,4 +104,24 @@ public class EspacioService {
 		return espacio_repository.save(e);
 		
 	}
+
+	public List<Attachment> getAttachmentByName(String imagen) {
+		return attachment_repository.getAttachmentByName(imagen);
+	}
+
+	public List<Edificio> getEdificiosPorTagName(String tagName) {
+		
+		return edificio_repository.getEdificiosPorTagName(tagName);
+	}
+
+	public Espacio getEspaciosPorNombre(Long nombre) {
+		// TODO Auto-generated method stub
+		return espacio_repository.findOne(nombre);
+	}
+
+	public List<Espacio> getEspaciosPorEdificio(String tagName) {
+		// TODO Auto-generated method stub
+		return espacio_repository.getEspaciosPorEdificio(tagName);
+	}
+
 }

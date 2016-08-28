@@ -20,7 +20,7 @@
 
 <div class="row">
 	<div class="col-md-12">
-	   <form role="form" action="#" method="put">
+	   <form role="form" action="#" method="put" enctype="multipart/form-data">
 	   		<div class="col-md-6">
 	   		
 	   		<!-- Asunto --> 
@@ -58,13 +58,18 @@
                  
                  <div class="form-group">
                      <label>Tipo Espacio:</label>
-                     <select id = "idProy" >
-                    		<option th:if="${espacio.tipoEspacio.tipo} == 'Sala'" value="sala" selected="selected">Sala</option>
-                    		<option th:unless="${espacio.tipoEspacio.tipo} == 'Sala'" value="sala">Sala</option>
-                    		<option th:if="${espacio.tipoEspacio.tipo} == 'Aula'" value="aula" selected="selected">Aula</option>
-			          		<option th:unless="${espacio.tipoEspacio.tipo} == 'Aula'" value="aula">Aula</option>
-			          		<option th:if="${espacio.tipoEspacio.tipo} == 'Laboratorio'" value="laboratorio" selected="selected">Laboratorio</option>
-		          			<option th:unless="${espacio.tipoEspacio.tipo} == 'Laboratorio'" value="laboratorio">Laboratorio</option>
+                     <select id = "idTipo" >
+                     <option value="aula">Aula</option>
+                     <option th:if="${espacio.tipoEspacio.tipo} == 'Sala'" value="sala" selected="selected">Sala</option>
+                    		<option th:if="${espacio.tipoEspacio.tipo} != 'Sala'" value="sala">Sala</option>
+			          		
+		          			<option value="laboratorio">Laboratorio</option>
+<!--                     		<option th:if="${espacio.tipoEspacio.tipo} == 'Sala'" value="sala" selected="selected">Sala</option> -->
+<!--                     		<option th:if="${espacio.tipoEspacio.tipo} != 'Sala'" value="sala">Sala</option> -->
+<!--                     		<option th:if="${espacio.tipoEspacio.tipo} == 'Aula'" value="aula" selected="selected">Aula</option> -->
+<!-- 			          		<option th:if="${espacio.tipoEspacio.tipo} != 'Aula'" value="aula">Aula</option> -->
+<!-- 			          		<option th:if="${espacio.tipoEspacio.tipo} == 'Laboratorio'" value="laboratorio" selected="selected">Laboratorio</option> -->
+<!-- 		          			<option th:if="${espacio.tipoEspacio.tipo} != 'Laboratorio'" value="laboratorio">Laboratorio</option> -->
 			          	
                    	</select>                  
 		                                 
@@ -75,7 +80,7 @@
                      <label>Edificio:</label>                  
 		                <input id="idEdificio" name="email" type="text" class="form-control" placeholder="Elige un edificio"/>                 
                  	</div>				
-				 </div>
+				 
                  
                  <!-- Imagen -->
 	 	         <div class="media">
@@ -90,7 +95,7 @@
 							</div>
                          </div>
                 </div>                        
-          	</div>              
+          	      </div>      
                    <div class="row">              	
 					    <div class="col-md-12 text-center">
 					         <button id="enlaceGuardar" type="button" class="btn-rec blue">GUARDAR</button>

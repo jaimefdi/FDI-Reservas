@@ -40,7 +40,7 @@ public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 	
 	@Query("from #{#entityName} e where lower(e.nombreEspacio) like lower(concat('%',:nombreEspacio, '%'))")
 	List<Espacio> getEspaciosByTagName(@Param("nombreEspacio") String nombreEspacio);
-	
-//	@Query("FROM #{#entityName} e WHERE e.EdificioId IN( SELECT EdificioId FROM #{#edificio} d WHERE d.EdificioId = e.EdificioId AND d.FacultadId IN( SELECT facultad.FacultadId FROM #{#facultad} f WHERE f.FacultadId = d.FacultadId AND f.nombreFacultad = :nombreFacultad ) )")
-//	List<Espacio> getEspacioPorFacultad(@Param("nombreFacultad") String nombreFacultad);
+
+	@Query("select e from #{#entityName} e where e.deleted=false and e.edificio.nombreEdificio like lower(concat('%',:nombre, '%'))")
+	public List<Espacio> getEspaciosPorEdificio(@Param("nombre") String nombre);
 }

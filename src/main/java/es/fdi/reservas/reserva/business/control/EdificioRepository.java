@@ -33,5 +33,8 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 	
 	@Query("select e from #{#entityName} e where e.deleted=false and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
 	List<Edificio> getEdificiosPorFacultad(@Param("nombre") String nombre);
+	
+	@Query("select e from #{#entityName} e where e.deleted=false and e.nombreEdificio = :edificio")
+	Edificio getEdificiosPorNombre(@Param("edificio") String edificio);
 		
 }

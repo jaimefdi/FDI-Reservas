@@ -1,5 +1,7 @@
 package es.fdi.reservas.reserva.web;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,6 +55,54 @@ public class EspacioController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/administrar_espacios");	
+				
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/espacios/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEspaciosPaginadosPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+		User u = user_service.getCurrentUser();
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		ArrayList<Espacio> currentResults = new ArrayList<Espacio>();
+        currentResults.add(espacio_service.getEspaciosPorNombre(nombre));
+        
+        model.addAttribute("currentResults", currentResults);
+        
+        int current =  1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, 1); 
+
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+        model.addAttribute("totalPages", 1);
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/administrar_espacios");	
+				
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/espacios/edificio/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEspaciosPaginadosPorEdificio(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+		User u = user_service.getCurrentUser();
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		ArrayList<Espacio> currentResults = new ArrayList<Espacio>();
+        currentResults.add(espacio_service.getEspaciosPorNombre(nombre));
+        
+        model.addAttribute("currentResults", currentResults);
+        
+        int current =  1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, 1);
+
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+        model.addAttribute("totalPages", 1);
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_espacios");	
 				

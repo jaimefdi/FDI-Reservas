@@ -97,6 +97,14 @@ public class EspacioDTO {
 	public void setTipoEspacio(String tipoEspacio) {
 		this.tipoEspacio = tipoEspacio;
 	}
+	
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
 
 	public static EspacioDTO fromEspacioDTO(Espacio e){
 		return new EspacioDTO(e.getId(), e.getNombreEspacio(), e.getEdificio().getNombreEdificio(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo(), e.getImagen().getAttachmentUrl());
