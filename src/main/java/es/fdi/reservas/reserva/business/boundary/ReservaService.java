@@ -141,7 +141,7 @@ public class ReservaService {
 
 	// todas las reservas de un espacio
 	public List<Reserva> getReservasEspacio(long idEspacio) {
-		return reserva_repository.findByEspacioId(idEspacio);
+		return reserva_repository.reservasEspacio(idEspacio);
 	}
 	// todos los espacios de un edificio 
 	public List<Espacio> getEspaciosEdificio(long idEdificio) {
@@ -480,7 +480,7 @@ public class ReservaService {
 	}
 
 	public List<Reserva> getReservasGrupo(long idGrupo, long idUsuario) {
-		return reserva_repository.findByGrupoReservaIdAndUserId(idGrupo, idUsuario);
+		return reserva_repository.reservasGrupoUsuario(idGrupo, idUsuario);
 	}
 
 
@@ -520,6 +520,10 @@ public class ReservaService {
 		
 		reserva_repository.save(r);
 		
+	}
+
+	public List<Reserva> misReservasCalendario(Long idUsuario) {
+		return reserva_repository.misReservasCalendario(idUsuario);
 	}
 
 

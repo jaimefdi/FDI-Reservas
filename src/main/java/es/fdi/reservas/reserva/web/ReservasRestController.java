@@ -138,10 +138,10 @@ public class ReservasRestController {
 		return result;
 	}
 	
-	@RequestMapping(value="/misEventos", method=RequestMethod.GET)
+	@RequestMapping(value="/reservasCalendario", method=RequestMethod.GET)
 	public List<ReservaDTO> reservasUsuario(){
 		User user = user_service.getCurrentUser();
-		List<Reserva> userReser = reserva_service.getReservasUsuario(user.getId());
+		List<Reserva> userReser = reserva_service.misReservasCalendario(user.getId());
 		List<Reserva> reservasTotales = new ArrayList<>();
 		for(Reserva r : userReser) {
 			if(!r.getReglasRecurrencia().isEmpty()){
