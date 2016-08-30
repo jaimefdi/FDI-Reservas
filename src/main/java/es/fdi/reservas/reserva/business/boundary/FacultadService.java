@@ -7,16 +7,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import es.fdi.reservas.reserva.business.control.FacultadRepository;
 import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.users.business.boundary.UserService;
+import es.fdi.reservas.users.business.entity.User;
 
 
 @Service
 public class FacultadService {
 
 	private FacultadRepository facultad_repository;
+	private UserService user_service;
 	
 	@Autowired
-	public FacultadService(FacultadRepository fr){
+	public FacultadService(FacultadRepository fr, UserService us){
 		facultad_repository = fr;
+		user_service = us;
+	}
+	
+	public User getCurrentUser(){
+		return user_service.getCurrentUser();
 	}
 	
 	public Facultad getFacultad(long idFacultad){
