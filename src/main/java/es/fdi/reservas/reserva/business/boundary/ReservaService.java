@@ -2,18 +2,11 @@ package es.fdi.reservas.reserva.business.boundary;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
-
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import es.fdi.reservas.reserva.business.control.EdificioRepository;
-import es.fdi.reservas.reserva.business.control.EspacioRepository;
-import es.fdi.reservas.reserva.business.control.FacultadRepository;
-import es.fdi.reservas.reserva.business.control.GrupoReservaRepository;
 import es.fdi.reservas.reserva.business.control.ReservaRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
@@ -22,11 +15,9 @@ import es.fdi.reservas.reserva.business.entity.Facultad;
 import es.fdi.reservas.reserva.business.entity.GrupoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
-import es.fdi.reservas.reserva.web.ReservaFullCalendarDTO;
+import es.fdi.reservas.users.business.boundary.UserService;
+import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.reserva.web.ReservaDTO;
-import org.springframework.data.domain.Page;
-
-
 import es.fdi.reservas.reserva.web.*;
 
 
@@ -34,19 +25,21 @@ import es.fdi.reservas.reserva.web.*;
 public class ReservaService {
 	
 	private ReservaRepository reserva_repository;
-	private FacultadRepository facultad_repository;
-	private EdificioRepository edificio_repository;
-	private EspacioRepository espacio_repository;
-	private GrupoReservaRepository grupo_repository;
+	private FacultadService facultad_service;
+	private EdificioService edificio_service;
+	private EspacioService espacio_service;
+	private GrupoReservaService grupo_service;
+	private UserService user_service;
 	
 	@Autowired
-	public ReservaService(ReservaRepository rr, FacultadRepository fr, EdificioRepository er, 
-							EspacioRepository sr, GrupoReservaRepository gr){
+	public ReservaService(ReservaRepository rr, FacultadService fs, EdificioService es, 
+						EspacioService ess, GrupoReservaService grs, UserService us){
 		reserva_repository = rr;
-		facultad_repository = fr;
-		edificio_repository = er;
-		espacio_repository = sr;
-		grupo_repository = gr;
+		facultad_service = fs;
+		edificio_service = es;
+		espacio_service = ess;
+		grupo_service = grs;
+		user_service = us;
 	}
 
 	public List<Reserva> getAllReservasConflictivas(Long idEspacio, DateTime start, DateTime end){
@@ -73,10 +66,10 @@ public class ReservaService {
 
 	public Reserva compruebaAutorizacion(Reserva reserva)
 	{
-		List<Espacio> lista= espacio_repository.findById(reserva.getEspacio().getId());
+		Espacio esp = espacio_service.getEspacio(reserva.getEspacio().getId());
 		//List<Espacio> lista= espacio_repository.findAll();
 		
-		Espacio esp=lista.get(0);
+		//Espacio esp=lista.get(0);
 		
 		if (esp.getTipoAutorizacion().toString()=="Necesaria")
 			//Autorizacion Obligatoria
@@ -136,7 +129,7 @@ public class ReservaService {
 	}
 
 	public Iterable<Edificio> getEdificios(){
-		return edificio_repository.findAll();
+		return edificio_service.getEdificios();
 	}
 
 	// todas las reservas de un espacio
@@ -145,15 +138,15 @@ public class ReservaService {
 	}
 	// todos los espacios de un edificio 
 	public List<Espacio> getEspaciosEdificio(long idEdificio) {
-		return espacio_repository.findByEdificioId(idEdificio);
+		return espacio_service.getEspaciosEdificio(idEdificio);
 	}
 
-	public Espacio getEspacio(long id_espacio) {
-		return espacio_repository.findOne(id_espacio);
+	public Espacio getEspacio(long idEspacio) {
+		return espacio_service.getEspacio(idEspacio);
 	}
 
 	public List<Espacio> getTiposEspacio(long idEdificio, TipoEspacio idTipoEspacio) {
-		return espacio_repository.findByEdificioIdAndTipoEspacio(idEdificio, idTipoEspacio);
+		return espacio_service.getTiposEspacio(idEdificio, idTipoEspacio);
 	}
 
 	public Reserva getReserva(long idReserva) {
@@ -161,15 +154,15 @@ public class ReservaService {
 	}
 
 	public Iterable<Facultad> getFacultades() {
-		return facultad_repository.findAll();
+		return facultad_service.getFacultades();
 	}
 	
 	public Iterable<Espacio> getEspacios() {
-		return espacio_repository.findAll();
+		return espacio_service.getEspacios();
 	}
 
 	public List<Edificio> getEdificiosFacultad(long idFacultad) {
-		return edificio_repository.findByFacultadId(idFacultad);
+		return edificio_service.getEdificiosFacultad(idFacultad);
 	}
 
 	public Reserva editarReservaSimple(ReservaDTO reservaActualizada) {
@@ -204,9 +197,9 @@ public class ReservaService {
 		r.setComienzo(reservaActualizada.getStart());
 		r.setFin(reservaActualizada.getEnd());
 		r.setAsunto(reservaActualizada.getTitle());
-		r.setEspacio(espacio_repository.getOne(reservaActualizada.getIdEspacio()));
+		r.setEspacio(getEspacio(reservaActualizada.getIdEspacio()));
 		r.setReservaColor(reservaActualizada.getColor());
-		r.setGrupoReserva(grupo_repository.findOne(reservaActualizada.getIdGrupo()));
+		r.setGrupoReserva(grupo_service.getGrupoReserva(reservaActualizada.getIdGrupo()));
 		if(reservaActualizada.getEstado() != null){
 		  r.setEstadoReserva(EstadoReserva.fromEstadoReserva(reservaActualizada.getEstado()));
 		}
@@ -226,152 +219,103 @@ public class ReservaService {
 		return reserva_repository.findByEspacioId(espacio, pageRequest);
 	}
 
-	public void eliminarEdificio(long idEdificio) {
-		//edificio_repository.delete(idEdificio);
-		edificio_repository.softDelete(Long.toString(idEdificio));
+	public void desactivarEdificio(long idEdificio) {
+		edificio_service.desactivarEdificio(idEdificio);
 	}
 	
 	public Edificio editarEdificioDeleted(Long idEdificio){
-		Edificio f = edificio_repository.findOne(idEdificio);
-		f.setDeleted(true);
-		return edificio_repository.save(f);
+		Edificio e = getEdificio(idEdificio);
+		e.setDeleted(true);
+		
+		return edificio_service.save(e);
 	}
 	
 	public Page<Edificio> getEdificiosPaginados(PageRequest pageRequest) {
-		return edificio_repository.findAll(pageRequest);
+		return edificio_service.getEdificiosPaginados(pageRequest);
 	}
 	
 	public Edificio editarEdificio(EdificioDTO edificio){
-		Edificio e = edificio_repository.findOne(edificio.getId());
-
+		Edificio e = getEdificio(edificio.getId());
 		e.setNombreEdificio(edificio.getNombreEdificio());
 		e.setDireccion(edificio.getDireccion());
 		
-		return edificio_repository.save(e);
+		return edificio_service.save(e);
 	}
 	
 	public void eliminarFacultad(Long idFacultad) {
-		//String aux = Long.toString(idFacultad);
-		facultad_repository.softDelete(idFacultad);
-		
+		facultad_service.eliminarFacultad(idFacultad);	
 	}
 	
-	public Facultad getFacultad(long idFacul){
-		return facultad_repository.findOne(idFacul);
+	public Facultad getFacultad(long idFacultad){
+		return facultad_service.getFacultad(idFacultad);
 	}
 	
 	public Page<Facultad> getFacultadesPaginadas(PageRequest pageRequest) {
-		return facultad_repository.findAll(pageRequest);
+		return facultad_service.getFacultadesPaginadas(pageRequest);
 	}
 	
 	public Page<Reserva> getTodasReservasPaginadas(PageRequest pageRequest) {
-		/*List<Reserva> lista = reserva_repository.findAll();
-		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
-		return pagina;*/
 		return reserva_repository.findAll(pageRequest);
 	}
 	
-	/*public Facultad eliminarFacultad(FacultadDTO facultad) {
-	Facultad f = facultad_repository.findOne(facultad.getId());
+	public Facultad eliminarFacultad(FacultadDTO facultad) {
+	Facultad f = getFacultad(facultad.getId());
 	f.setDeleted(true);
-	return facultad_repository.save(f);
 	
-}*/
+	return facultad_service.save(f);	
+	}
 	
 	public Facultad editarFacultad(FacultadDTO facultad){
-		Facultad f = facultad_repository.findOne(facultad.getId());
+		Facultad f = getFacultad(facultad.getId());
 		f.setNombreFacultad(facultad.getNombreFacultad());
 		f.setWebFacultad(facultad.getWebFacultad());
-		return facultad_repository.save(f);
+		
+		return facultad_service.save(f);
 	}
 	
 	public Facultad editarFacultadDeleted(Long idFacultad){
-		Facultad f = facultad_repository.findOne(idFacultad);
+		Facultad f = getFacultad(idFacultad);
 		f.setDeleted(true);
-		return facultad_repository.save(f);
+		return facultad_service.save(f);
 	}
 	
 	public List<Espacio> getEspaciosPorTagName(String tag) {
-		return espacio_repository.getEspaciosByTagName(tag);
+		return espacio_service.getEspaciosPorTagName(tag);
 	}
 	
 	public void eliminarEspacio(long idEspacio) {
-		//espacio_repository.delete(idEspacio);
-		espacio_repository.softDelete(Long.toString(idEspacio));
+		espacio_service.eliminarEspacio(idEspacio);
 	}
 	
 	public Page<Espacio> getEspaciosPaginados(PageRequest pageRequest) {
-		return espacio_repository.findAll(pageRequest);
+		return espacio_service.getEspaciosPaginados(pageRequest);
 	}
 	
 	public Espacio editarEspacioDeleted(Long idEspacio){
-		Espacio e = espacio_repository.findOne(idEspacio);
+		Espacio e = getEspacio(idEspacio);
 		e.setDeleted(true);
-		return espacio_repository.save(e);
+		return espacio_service.save(e);
 	}
 	
 	public Espacio editarEspacio(EspacioDTO espacio){
-		Espacio e = espacio_repository.findOne(espacio.getId());
+		Espacio e = getEspacio(espacio.getId());
 		e.setNombreEspacio(espacio.getNombreEspacio());
 //		e.setCapacidad(espacio.getCapacidad());
 //		e.setMicrofono(espacio.isMicrofono());
 //		e.setProyector(espacio.isProyector());
 //		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
 		
-		return espacio_repository.save(e);
+		return espacio_service.save(e);
 	}
 	
-	/*public Page<Reserva> getReservasPaginadasUser(PageRequest pageRequest, Long idUsuario) {
-		List<Reserva> lista = reserva_repository.findByUserId(idUsuario);
-		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
-		return pagina;
-	}
-	
-	public Page<Reserva> getReservasPaginadas(PageRequest pageRequest, Long sala) {
-		List<Reserva> lista = reserva_repository.findByEspacioId(sala);
-		Page<Reserva> pagina = new PageImpl<Reserva>(lista,pageRequest, 5);
-		return pagina;
-	}
-	
-	public Page<Reserva> getReservasUsuario(String username, PageRequest pageRequest) {
-		return reserva_repository.findByUsername(username, pageRequest);
-	} 
-	
-	public Edificio editarEdificio(Edificio edificio){
-		Edificio e = edificio_repository.findOne(edificio.getId());
-		e.setNombreEdificio(edificio.getNombreEdificio());
-		e.setFacultad(edificio.getFacultad());
-		return edificio_repository.save(e);
-	}
-	
-	public void eliminarFacultad(long idFacultad) {
-		facultad_repository.delete(idFacultad);
-		
-	}
-	
-	public Facultad editarFacultad(Facultad facultad){
-		Facultad f = facultad_repository.findOne(facultad.getId());
-		f.setNombreFacultad(facultad.getNombreFacultad());
-		return facultad_repository.save(f);
-	}
-	
-	public Espacio editarEspacio(Espacio espacio){
-		Espacio e = espacio_repository.findOne(espacio.getId());
-		e.setNombreEspacio(espacio.getNombreEspacio());
-		e.setCapacidad(espacio.getCapacidad());
-		e.setMicrofono(espacio.isMicrofono());
-		e.setProyector(espacio.isProyector());
-		e.setTipoEspacio(espacio.getTipoEspacio());
-		return espacio_repository.save(e);
-	}*/
 
 	public List<Facultad> getFacultadesPorTagName(String tagName) {
-		return facultad_repository.getFacultadesPorTagName(tagName);
+		return facultad_service.getFacultadesPorTagName(tagName);
 	}
 	
 	public Facultad addNewFacultad(Facultad facultad){
 		Facultad newFacultad = new Facultad(facultad.getNombreFacultad(), facultad.getWebFacultad());
-		newFacultad = facultad_repository.save(newFacultad);
+		newFacultad = facultad_service.save(newFacultad);
 		
 		if (newFacultad != null){
 			System.out.println("Facultad añadida correctamente");
@@ -391,7 +335,7 @@ public class ReservaService {
 	}
 
 	public List<TipoEspacio> tiposDeEspacios(long idEdificio) {
-		return espacio_repository.tiposDeEspacios(idEdificio);
+		return espacio_service.tiposDeEspacios(idEdificio);
 	}
 
 	public Edificio addNewEdificio(EdificioDTO edificio) {
@@ -403,44 +347,41 @@ public class ReservaService {
 		
 	}
 
-	public List<Edificio> getEdificiosEliminados() {
-		
-		return edificio_repository.recycleBin();
+	public List<Edificio> getEdificiosEliminados() {		
+		return edificio_service.getEdificiosEliminados();
 	}
 
-	public List<Facultad> getFacultadesEliminadas() {
-		
-		return facultad_repository.recycleBin();
+	public List<Facultad> getFacultadesEliminadas() {		
+		return facultad_service.getFacultadesEliminadas();
 	}
 	
-	public List<Espacio> getEspaciosEliminados() {
-		
-		return espacio_repository.recycleBin();
+	public List<Espacio> getEspaciosEliminados() {		
+		return espacio_service.getEspaciosEliminados();
 	}
 
 	public Edificio restaurarEdificio(Long idEdificio) {
-		Edificio e = edificio_repository.findOne(idEdificio);
-		e.setDeleted(false);		
-		return edificio_repository.save(e);
+		Edificio e = getEdificio(idEdificio);
+		e.setDeleted(false);	
 		
+		return edificio_service.save(e);		
 	}
 	
 	public Facultad restaurarFacultad(Long idFacultad) {
-		Facultad e = facultad_repository.findOne(idFacultad);
-		e.setDeleted(false);		
-		return facultad_repository.save(e);
+		Facultad e = getFacultad(idFacultad);
+		e.setDeleted(false);	
 		
+		return facultad_service.save(e);		
 	}
 	
 	public Espacio restaurarEspacio(Long idEspacio) {
-		Espacio e = espacio_repository.findOne(idEspacio);
-		e.setDeleted(false);		
-		return espacio_repository.save(e);
+		Espacio e = getEspacio(idEspacio);
+		e.setDeleted(false);	
 		
+		return espacio_service.save(e);	
 	}
 	
 	public Edificio getEdificio(long idEdificio) {
-		return edificio_repository.findOne(idEdificio);
+		return edificio_service.getEdificio(idEdificio);
 	}
 
 	public List<Reserva> getReservasEspacioDeMañana(long idEspacio) {
@@ -488,7 +429,7 @@ public class ReservaService {
 		Reserva reserva = getReserva(rfDTO.getId());
 		reserva.setComienzo(rfDTO.getStart());
 		reserva.setFin(rfDTO.getEnd());
-		GrupoReserva grupo = grupo_repository.getOne(idGrupo2);
+		GrupoReserva grupo = grupo_service.getGrupoReserva(idGrupo2);
 		reserva.setGrupoReserva(grupo);
 		
 		reserva_repository.save(reserva);
@@ -524,6 +465,14 @@ public class ReservaService {
 
 	public List<Reserva> misReservasCalendario(Long idUsuario) {
 		return reserva_repository.misReservasCalendario(idUsuario);
+	}
+
+	public List<GrupoReserva> getGruposUsuario(Long idUsuario) {
+		return grupo_service.getGruposUsuario(idUsuario);
+	}
+
+	public User getCurrentUser() {
+		return user_service.getCurrentUser();
 	}
 
 

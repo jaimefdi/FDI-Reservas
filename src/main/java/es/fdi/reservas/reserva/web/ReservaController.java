@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.Reserva;
-import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
 
@@ -26,14 +24,10 @@ import es.fdi.reservas.users.business.entity.User;
 public class ReservaController {
 	
 	private ReservaService reserva_service;
-	private GrupoReservaService grupo_service;
-	private UserService user_service;
 	
 	@Autowired
-	public ReservaController(ReservaService rs, GrupoReservaService grr, UserService us){
+	public ReservaController(ReservaService rs){
 		reserva_service = rs;
-		grupo_service = grr;
-		user_service = us;
 	}
 	
 	
@@ -44,7 +38,7 @@ public class ReservaController {
 	
 	@RequestMapping(value="/mis-reservas/page/{pageNumber}", method=RequestMethod.GET)
     public String misReservasPaginadas(@PathVariable Integer pageNumber, Model model) {
-		User u = user_service.getCurrentUser();
+		User u = reserva_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 7, new Sort(new Sort.Order(Sort.Direction.ASC,"comienzo")));
         Page<Reserva> currentResults = reserva_service.getReservasUsuario(u.getId(),pageRequest);
@@ -60,7 +54,7 @@ public class ReservaController {
         model.addAttribute("currentIndex", current); 
         model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("User", u);
-		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addAttribute("GruposReservas", reserva_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "mis-reservas");
 		
         return "index";
@@ -70,13 +64,13 @@ public class ReservaController {
 	@RequestMapping(value="/edificios", method=RequestMethod.GET)
     public String edificios(Model model) {
 		
-		User user = user_service.getCurrentUser();
+		User user = reserva_service.getCurrentUser();
 		model.addAttribute("User", user);
 		List<Edificio> edificios = reserva_service.getEdificiosFacultad(user.getFacultad().getId());
 		if(edificios.size() > 1){
 		   model.addAttribute("Edificios", edificios);
 		   model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(user.getId(), EstadoReserva.PENDIENTE).size());
-		   model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
+		   model.addAttribute("GruposReservas", reserva_service.getGruposUsuario(user.getId()));
 		   model.addAttribute("view", "edificios");
 		   
 		   return "index";
@@ -93,13 +87,13 @@ public class ReservaController {
 	@RequestMapping(value="/edificio/{idEdificio}/espacios", method=RequestMethod.GET)
     public ModelAndView espacios(@PathVariable("idEdificio") long idEdificio) {
 		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
+		User u = reserva_service.getCurrentUser();
 		model.addObject("User", u);
 		model.addObject("Edificio", reserva_service.getEdificio(idEdificio));		
 		model.addObject("TiposEspacio",reserva_service.tiposDeEspacios(idEdificio));
 		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addObject("Espacios", reserva_service.getEspaciosEdificio(idEdificio));
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("GruposReservas", reserva_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "espacios");
 		
         return model;
@@ -109,7 +103,7 @@ public class ReservaController {
 	@RequestMapping(value="/edificio/{idEdificio}/espacio/{idEspacio}", method=RequestMethod.GET) 
 	public ModelAndView reservarPorEspacio(@PathVariable("idEdificio") long idEdificio,@PathVariable("idEspacio") long idEspacio) {
 		ModelAndView model = new ModelAndView("index");
-		User user = user_service.getCurrentUser();
+		User user = reserva_service.getCurrentUser();
 		Espacio e = reserva_service.getEspacio(idEspacio);
 		Reserva r = new Reserva();
 		r.setEspacio(e);	
@@ -117,7 +111,7 @@ public class ReservaController {
 		model.addObject("Reserva", r);
 		model.addObject("IdEspacio", idEspacio);
 		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(user.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(user.getId()));
+		model.addObject("GruposReservas", reserva_service.getGruposUsuario(user.getId()));
 		model.addObject("view", "reservas-calendario");
 		
         return model;
@@ -127,12 +121,12 @@ public class ReservaController {
 	@RequestMapping(value="/reservas-fecha", method=RequestMethod.GET)
     public ModelAndView reservarPorFecha() {
 		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
+		User u = reserva_service.getCurrentUser();
 		List<Edificio> edificios = reserva_service.getEdificiosFacultad(u.getFacultad().getId());
 		model.addObject("User", u);
 		model.addObject("Edificios", edificios);
 		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("GruposReservas", reserva_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "reservas-fecha");
 		
         return model;
@@ -142,11 +136,11 @@ public class ReservaController {
 	//@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value="/editar/{idReserva}", method=RequestMethod.GET)
     public String editarReservaSimple(@PathVariable("idReserva") long idReserva, Model model) {
-		User u = user_service.getCurrentUser();
+		User u = reserva_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("Reserva", reserva_service.getReserva(idReserva));
 		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addAttribute("GruposReservas", reserva_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "editarReserva");
 		
 
@@ -155,7 +149,7 @@ public class ReservaController {
 	
 	@RequestMapping(value="/editar/{idReserva}/{recurrenteId}", method=RequestMethod.GET)
     public String editarReservaRecurrente(@PathVariable("idReserva") long idReserva, @PathVariable("recurrenteId") String recurrenteId, Model model) {
-		User u = user_service.getCurrentUser();
+		User u = reserva_service.getCurrentUser();
 		model.addAttribute("User", u);
 		String[] w = recurrenteId.split("_");
 		Reserva r = reserva_service.getReserva(idReserva);
@@ -177,7 +171,7 @@ public class ReservaController {
 		
 		model.addAttribute("Reserva", r);
 		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addAttribute("GruposReservas", reserva_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "editarReserva");
 		
 
