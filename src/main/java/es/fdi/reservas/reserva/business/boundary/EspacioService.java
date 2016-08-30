@@ -6,17 +6,32 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import es.fdi.reservas.reserva.business.control.EspacioRepository;
+import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
+import es.fdi.reservas.users.business.boundary.UserService;
+import es.fdi.reservas.users.business.entity.User;
 
 @Service
 public class EspacioService {
 	
 	private EspacioRepository espacio_repository;
+	private UserService user_service;
+	private EdificioService edificio_service;
 	
 	@Autowired
-	public EspacioService(EspacioRepository er){
+	public EspacioService(EspacioRepository er, UserService us, EdificioService es){
 		espacio_repository = er;
+		user_service = us;
+		edificio_service = es;
+	}
+	
+	public User getCurrentUser(){
+		return user_service.getCurrentUser();
+	}
+	
+	public Iterable<Edificio> getEdificios(){
+		return edificio_service.getEdificios();
 	}
 	
 	public Espacio getEspacio(long idEspacio){

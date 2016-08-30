@@ -9,31 +9,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.boundary.EspacioService;
 import es.fdi.reservas.reserva.business.entity.Espacio;
-import es.fdi.reservas.users.business.boundary.UserService;
-import es.fdi.reservas.users.business.entity.User;
 
 @Controller
 public class EspacioController {
 
-	private ReservaService reserva_service;
-	
-	private UserService user_service;
+	private EspacioService espacio_service;
 	
 	@Autowired
-	public EspacioController(UserService userService, ReservaService reservaservice){
-		user_service = userService;
-		reserva_service = reservaservice;
+	public EspacioController(EspacioService es){
+		espacio_service = es;
 	}
 	
 	@RequestMapping(value="/admin/administrar/espacios/{pageNumber}", method=RequestMethod.GET)
     public String misEspaciosPaginados(@PathVariable Integer pageNumber, Model model) {
-		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        Page<Espacio> currentResults = reserva_service.getEspaciosPaginados(pageRequest);
+        Page<Espacio> currentResults = espacio_service.getEspaciosPaginados(pageRequest);
                 
         model.addAttribute("currentResults", currentResults);
         
@@ -44,7 +37,7 @@ public class EspacioController {
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-		model.addAttribute("User", u);
+		model.addAttribute("User", espacio_service.getCurrentUser());
 		model.addAttribute("view", "admin/administrar_espacios");
 		
         return "index";
@@ -53,17 +46,17 @@ public class EspacioController {
 	@RequestMapping(value="/admin/nuevoEspacio",method=RequestMethod.GET)
 	public ModelAndView nuevoEspacio(){
 		ModelAndView model = new ModelAndView("admin/nuevoEspacio", "Espacio", new Espacio());
-		model.addObject("edificios", reserva_service.getEdificios());
+		model.addObject("edificios", espacio_service.getEdificios());
+		
 		return model;
 	}
 	
 	@RequestMapping(value="/admin/administrar/espacio/editar/{idEspacio}", method=RequestMethod.GET)
 	public String editarEspacio(@PathVariable("idEspacio") long idEspacio, Model model){
-		User u = user_service.getCurrentUser();
-		model.addAttribute("User", u);
-		model.addAttribute("espacio", reserva_service.getEspacio(idEspacio));
-		//System.out.println(user_service.getUser(idUser).getUsername());
+		model.addAttribute("User", espacio_service.getCurrentUser());
+		model.addAttribute("espacio", espacio_service.getEspacio(idEspacio));
 		model.addAttribute("view", "admin/editarEspacio");
+		
 		return "index";
 	}
 	
@@ -71,11 +64,11 @@ public class EspacioController {
 	@RequestMapping(value = "/admin/administrar/espacio/{numPag}/restaurar")
 	public ModelAndView restaurarEspacios(@PathVariable("numPag") String numPag){
 		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
-		model.addObject("User", u);
+		model.addObject("User", espacio_service.getCurrentUser());
 		model.addObject("pagina", numPag);
-		model.addObject("espacios", reserva_service.getEspaciosEliminados());
+		model.addObject("espacios", espacio_service.getEspaciosEliminados());
 		model.addObject("view", "admin/papelera_espacios");
+		
 		return model;
 	}
 }
