@@ -7,16 +7,31 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import es.fdi.reservas.reserva.business.control.EdificioRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
+import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.users.business.boundary.UserService;
+import es.fdi.reservas.users.business.entity.User;
 
 
 @Service
 public class EdificioService {
 
 	private EdificioRepository edificio_repository;
+	private UserService user_service;
+	private FacultadService facultad_service;
 	
 	@Autowired
-	public EdificioService(EdificioRepository er){
+	public EdificioService(EdificioRepository er, UserService us, FacultadService fs){
 		edificio_repository = er;
+		user_service = us;
+		facultad_service = fs;
+	}
+	
+	public User getCurrentUser(){
+		return user_service.getCurrentUser();
+	}
+	
+	public Iterable<Facultad> getFacultades(){
+		return facultad_service.getFacultades();
 	}
 	
 	public Edificio getEdificio(long idEdificio){
