@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -23,14 +21,10 @@ import es.fdi.reservas.users.business.entity.User;
 public class UserController {
 
 	private UserService user_service;	
-	private ReservaService reserva_service;
-	private GrupoReservaService grupo_service;
 	
 	@Autowired
-	public UserController(UserService userService, ReservaService reservaservice, GrupoReservaService grs){
-		user_service = userService;
-		reserva_service = reservaservice;
-		grupo_service = grs;
+	public UserController(UserService us){
+		user_service = us;
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
@@ -95,7 +89,7 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addObject("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(),EstadoReserva.PENDIENTE).size());
 		model.addObject("userList", user_service.getUsuarios());
 		model.addObject("view", "administrar_usuarios");
 		model.addObject("url","/administrar/usuarios" );
@@ -144,7 +138,7 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("espacios", reserva_service.getEspacios());
+		model.addObject("espacios", user_service.getEspacios());
 		model.addObject("view", "administrar_espacios");
 		return model;
 	}
@@ -156,8 +150,8 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(),EstadoReserva.PENDIENTE).size());
+		model.addObject("GruposReservas", user_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "perfil");
 		
 	   return model;
@@ -168,8 +162,8 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(),EstadoReserva.PENDIENTE).size());
+		model.addObject("GruposReservas", user_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "editarPerfil");
 		
 	   return model;

@@ -2,9 +2,9 @@ package es.fdi.reservas.users.business.boundary;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +13,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
+import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
+import es.fdi.reservas.reserva.business.entity.GrupoReserva;
+import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.users.business.control.UserRepository;
 import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.users.web.UserDTO;
@@ -23,22 +29,24 @@ import es.fdi.reservas.users.business.entity.UserRole;
 public class UserService implements UserDetailsService{
 
 	private UserRepository user_ropository;
-	
 	private PasswordEncoder password_encoder;
+	private ReservaService reserva_service;
 	
 	@Autowired
-	public UserService(UserRepository usuarios, PasswordEncoder passwordEncoder){
-		user_ropository = usuarios;
-		password_encoder = passwordEncoder;
+	public UserService(UserRepository ur, PasswordEncoder pe){
+		user_ropository = ur;
+		password_encoder = pe;
+		//reserva_service = rs;
+	}
+	
+	@Autowired @Lazy
+	public void setReservaService(ReservaService rs){
+		reserva_service = rs;
 	}
 	
 	public User getUser(Long idUsuario) {
 		return user_ropository.findOne(idUsuario);
 	}
-	
-	/*public List<User> getUsers(String idUsuario) {
-		return user_ropository.findByUsername(idUsuario);
-	}*/
 	
 	public User getCurrentUser() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -78,15 +86,16 @@ public class UserService implements UserDetailsService{
 		user_ropository.delete(idUser);
 	}
 	
-	public User editarUserDeleted(Long idUser){
-		User f = user_ropository.findOne(idUser);
-		f.setEnabled(false);
-		return user_ropository.save(f);
+	public User editarUserDeleted(Long idUsuario){
+		User u = getUser(idUsuario);
+		u.setEnabled(false);
+		
+		return user_ropository.save(u);
 	}
 
 	public User editaUsuario(UserDTO userActualizado, String user, String admin, String secre) {
 		
-		User u = user_ropository.findOne(userActualizado.getId());
+		User u = getUser(userActualizado.getId());
 		u.setUsername(userActualizado.getUsername());
 		u.setEmail(userActualizado.getEmail());
 		u.setEnabled(userActualizado.isEnabled());
@@ -111,14 +120,14 @@ public class UserService implements UserDetailsService{
 		return user_ropository.findAll(pageRequest);
 	}
 
-	public User restaurarUser(long idUser) {
-		User f = user_ropository.findOne(idUser);
-		f.setEnabled(true);
-		return user_ropository.save(f);		
+	public User restaurarUser(long idUsuario) {
+		User u = getUser(idUsuario);
+		u.setEnabled(true);
+		
+		return user_ropository.save(u);		
 	}
 
-	public List<User> getEliminados() {
-		
+	public List<User> getEliminados() {		
 		return user_ropository.recycleBin();
 	}
 
@@ -148,8 +157,18 @@ public class UserService implements UserDetailsService{
 		
 		// Guarda los cambios en la base de datos
 		user_ropository.save(user);
-		
-	
+	}
+
+	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estadoReserva) {
+		return reserva_service.reservasPendientesUsuario(idUsuario, estadoReserva);
+	}
+
+	public Iterable<Espacio> getEspacios() {
+		return reserva_service.getEspacios();
+	}
+
+	public List<GrupoReserva> getGruposUsuario(Long idUsuario) {
+		return reserva_service.getGruposUsuario(idUsuario);
 	}
 	
 	
