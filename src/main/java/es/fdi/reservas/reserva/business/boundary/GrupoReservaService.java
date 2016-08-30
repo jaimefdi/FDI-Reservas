@@ -6,18 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.fdi.reservas.reserva.business.control.GrupoReservaRepository;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.GrupoReserva;
+import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.web.GrupoReservaDTO;
+import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
 @Service
 public class GrupoReservaService {
 
 	private GrupoReservaRepository grupo_repository;
+	private UserService user_service;
 	
 	@Autowired
-	public GrupoReservaService(GrupoReservaRepository grr){
-		this.grupo_repository = grr;
+	public GrupoReservaService(GrupoReservaRepository grr, UserService us){
+		grupo_repository = grr;
+		user_service = us;
 	}
 	
 	public GrupoReserva addNuevoGrupo(GrupoReserva grupo, User user){
@@ -61,6 +66,14 @@ public class GrupoReservaService {
 		grupo.setNombreLargo(grDTO.getNombreLargo());
 		
 		grupo_repository.save(grupo);		
+	}
+
+	public User getCurrentUser() {
+		return user_service.getCurrentUser();
+	}
+
+	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estadoReserva) {
+		return user_service.reservasPendientesUsuario(idUsuario, estadoReserva);
 	}
 	
 }
