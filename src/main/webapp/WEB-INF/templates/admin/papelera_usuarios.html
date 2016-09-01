@@ -11,7 +11,7 @@
 	<div class="row">
 	    <div class="col-md-12">
 	        <h1 class="page-header text-center">
-	            Administrar
+	            Restaurar
 	        </h1>
 	    </div>
 	</div>
@@ -19,10 +19,32 @@
 	<div class="row">
         <div class="col-md-12">
             <h1 class="page-header text-center">
-                <small>Restaurar usuarios</small>
+                <small>Usuarios</small>
             </h1>
         </div>
     </div>
+    
+    <div class="row">
+		<div class="col-md-8 col-md-offset-2 text-center">
+			<div class="col-md-2">
+				<label class="form-group" style="margin-top:5px;">Filtrar por: </label>
+			</div>
+			<div class="col-md-2">
+				<select id="selec-busqueda" class="form-control">
+					<option value="nombre">Nombre</option>
+					<option value="email">Email</option>
+					<option value="facultad">Facultad</option>
+				</select>
+			</div>
+			<div class="col-md-8">
+			 <div class="input-group">        
+	            <input type="text" id="texto-busqueda" class="form-control" placeholder="Introduce nombre de usuario"></input>
+	             <span class="input-group-addon"><a id="busquedaUsuario"><i class="fa fa-search"></i></a></span>
+	          </div>
+	    	</div>
+		</div>
+	</div>
+	<hr/>
 	<div class="row">
     	<div class="col-md-8 col-md-offset-2">
          	
@@ -47,7 +69,12 @@
                         	<td ><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
                             <td th:text="${r.username}"></td>
                             <td th:text="${r.email}"></td>
-                            <td><a th:href="@{'/administrar/usuarios/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
+                            <td>
+                            	<a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.attachmentUrl},data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+								<a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},data-accion='Restaurar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-refresh"> </i></a>	
+							
+<!--                             <a th:href="@{'/administrar/usuarios/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a> -->
+                            </td>
                         </tr>     
                     </tbody>
                 </table>
@@ -57,6 +84,136 @@
      	</div>
  	</div>
 
+	<!-- Pagination -->
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
+    <div class="col-md-12 text-center">
+        <nav>
+            <ul class="pagination">
+                <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                    <span th:if='${currentIndex == 1}'>Primera</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{1}">Primera</a>
+                </li>
+                <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                    <span th:if='${currentIndex == 1}'><i class='fa fa-angle-left'></i></span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{${(currentIndex - 1)}}"
+                       title='Go to previous page'><i class='fa fa-angle-left'></i></a>
+                </li>
+
+                <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+                    th:class="${item == currentIndex ? 'active' : '' }">
+
+                    <span th:if='${item == currentIndex}' th:text='${item}'>1</span>
+
+                    <a th:if='${item != currentIndex}'
+                       th:href="@{${item}}">
+                        <span th:text='${item}'>1</span>
+                    </a>
+                </li>
+
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
+                </li>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Última</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+ <!-- /.Pagination -->
+ 	
+ 	<div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Usuario</h4>
+          </div>
+          <div class="modal-body">
+          		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${User}" method="put">             
+				
+				<div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Nombre: </label>
+		                      <div class="col-md-10">
+		                         <p id="idNombre" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+				 
+				 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Email: </label>
+		                      <div class="col-md-10">
+		                         <p id="idEmail" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+				          
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Facultad: </label>
+		                      <div class="col-md-10">
+		                         <p id="idFacul" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+		         
+		         <div class="row">
+                	<div class="col-md-12">
+<!-- 		                 Asunto  -->
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Activado: </label>
+		                      <div class="col-md-10">
+		                         <p id="idActivado" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+                 
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Roles: </label>
+		                      <div class="col-md-10">
+		                         <p id="idRoles" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+		                     
+             </form>
+             </div>
+                 <div class="modal-footer">
+<!-- 			        <a id="btn-eliminar" href="#" class="btn-rec gray">ELIMINAR</a> -->
+			        <a id="btn-editar" th:href="@{''}" class="btn-rec blue">EDITAR</a>
+			      </div> 
+          
+        </div>
+      </div>
+    </div>
+ <!-- /.row -->
+
+ <script th:inline="javascript">
+ 	var baseURL = /*[[@{/}]]*/ '/';
+ </script>
+ <script src="../../js/restaurarUsuario.js" th:src="@{/js/restaurarUsuario.js}"></script>
  
 </div>
 </body>

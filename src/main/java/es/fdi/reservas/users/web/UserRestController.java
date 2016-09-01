@@ -45,17 +45,6 @@ public class UserRestController {
 		return "redirect:/reservas/administrar/usuarios/{numPag}";
 	}
 	
-	@RequestMapping(value = "/admin/administrar/usuarios/{numPag}/restaurar")
-	public ModelAndView restaurarUsers(@PathVariable("numPag") Long numPag){
-		ModelAndView model = new ModelAndView("index");
-		User u = user_service.getCurrentUser();
-		model.addObject("usuarios", user_service.getEliminados());
-		model.addObject("User", u);
-		model.addObject("pagina", numPag);
-		model.addObject("view", "/admin/papelera_usuarios");
-		return model;
-	}
-	
 	@RequestMapping(value="/admin/administrar/usuarios/editar/{idUser}/{user}/{admin}/{gestor}", method=RequestMethod.PUT)
 	public void editarUsuario(@PathVariable("idUser") long idUser, @PathVariable("user") String user,
 			@PathVariable("admin") String admin, @PathVariable("gestor") String gestor,

@@ -62,6 +62,10 @@ public class FacultadService {
 		return facultad_repository.getFacultadesPorTagName(tagName, pagerequest);
 	}
 	
+	public Page<Facultad> getFacultadesEliminadasPorTagName(String tagName, Pageable pagerequest) {
+		return facultad_repository.getFacultadesEliminadasPorTagName(tagName, pagerequest);
+	}
+	
 	public List<Facultad> getFacultadesPorTagName(String tagName) {
 		return facultad_repository.getFacultadesPorTagName(tagName);
 	}
@@ -103,5 +107,10 @@ public class FacultadService {
 	public Page<Facultad> getFacultadesPorWeb(String tagName, Pageable pagerequest) {
 		
 		return facultad_repository.getFacultadesPorWeb(tagName, pagerequest);
+	}
+	
+public Page<Facultad> getFacultadesEliminadasPorWeb(String tagName, Pageable pagerequest) {
+		
+		return facultad_repository.getFacultadesEliminadasPorWeb(tagName, pagerequest);
 	}
 }

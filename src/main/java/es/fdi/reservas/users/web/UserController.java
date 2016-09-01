@@ -29,13 +29,11 @@ public class UserController {
 	private UserService user_service;	
 	private ReservaService reserva_service;
 	private GrupoReservaService grupo_service;
-	private EspacioService espacio_service;
 	
 	@Autowired
-	public UserController(UserService userService, GrupoReservaService grs, EspacioService es, ReservaService rs){
+	public UserController(UserService userService, GrupoReservaService grs, ReservaService rs){
 		user_service = userService;
 		grupo_service = grs;
-		espacio_service = es;
 		reserva_service = rs;
 	}
 	
@@ -132,6 +130,10 @@ public class UserController {
         return "index";
     }
 	
+	/*
+	 * Filtro por nombre
+	 */
+	
 	@RequestMapping(value="/admin/administrar/usuarios/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginadosPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
@@ -157,6 +159,35 @@ public class UserController {
         return "index";
     }
 	
+	@RequestMapping(value="/admin/administrar/usuarios/restaurar/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misUsuariosPaginadosPorNombreRest(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
+		User u = user_service.getCurrentUser();
+
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		Page<User> currentResults = user_service.getUsuariosEliminadosPorNombre(nombre,pageRequest);
+        
+        
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current);
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/papelera_usuarios");
+		
+        return "index";
+    }
+	
+	/*
+	 * Filtrar por email
+	 */
+	
 	@RequestMapping(value="/admin/administrar/usuarios/email/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginadosPorEmail(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
@@ -181,6 +212,33 @@ public class UserController {
         return "index";
     }
 	
+	@RequestMapping(value="/admin/administrar/usuarios/restaurar/email/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misUsuariosPaginadosPorEmailRest(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
+		User u = user_service.getCurrentUser();
+
+	
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		Page<User> currentResults = user_service.getUsuariosEliminadosPorEmail(nombre, pageRequest);
+        
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/papelera_usuarios");
+		
+        return "index";
+    }
+	
+	/*
+	 * Filtrar por facultad
+	 */
 	@RequestMapping(value="/admin/administrar/usuarios/facultad/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
     public String misUsuariosPaginadosPorFacultad(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
@@ -201,6 +259,30 @@ public class UserController {
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_usuarios");
+		
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/usuarios/restaurar/facultad/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misUsuariosPaginadosPorFacultadRest(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
+		User u = user_service.getCurrentUser();
+
+	
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		Page<User> currentResults = user_service.getUsuariosEliminadosPorFacultad(nombre, pageRequest);
+        
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/papelera_usuarios");
 		
         return "index";
     }
@@ -230,6 +312,17 @@ public class UserController {
 //	}
 
 	
+	@RequestMapping(value = "/admin/administrar/usuarios/page/{numPag}/restaurar",method=RequestMethod.GET)
+	public ModelAndView restaurarUsuarios(@PathVariable("numPag") Long numPag){
+		ModelAndView model = new ModelAndView("index");
+		User u = user_service.getCurrentUser();
+		model.addObject("User", u);
+		model.addObject("usuarios", user_service.getUsuariosEliminados());
+		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addObject("pagina", numPag);
+		model.addObject("view", "admin/papelera_usuarios");
+		return model;
+	}	
 
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)
 	public ModelAndView verPerfil(){

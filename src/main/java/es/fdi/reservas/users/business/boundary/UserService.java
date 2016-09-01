@@ -135,7 +135,7 @@ public class UserService implements UserDetailsService{
 		return user_ropository.save(f);		
 	}
 
-	public List<User> getEliminados() {
+	public List<User> getUsuariosEliminados() {
 		
 		return user_ropository.recycleBin();
 	}
@@ -189,6 +189,19 @@ public class UserService implements UserDetailsService{
 	public Page<User> getUsuariosPorFacultad(String nombre, Pageable pagerequest) {
 		// TODO Auto-generated method stub
 		return user_ropository.getUsuariosPorFacultad(nombre, pagerequest);
+	}
+	
+	public Page<User> getUsuariosEliminadosPorEmail(String email, Pageable pagerequest) {
+		return user_ropository.getUsuariosEliminadosPorEmail(email, pagerequest);
+	}
+
+	public Page<User> getUsuariosEliminadosPorNombre(String nombre, Pageable pagerequest) {
+		return user_ropository.getUsuariosEliminadosPorTagName(nombre, pagerequest);
+	}
+
+	public Page<User> getUsuariosEliminadosPorFacultad(String nombre, Pageable pagerequest) {
+		// TODO Auto-generated method stub
+		return user_ropository.getUsuariosEliminadosPorFacultad(nombre, pagerequest);
 	}
 
 	public void actualizaReferencias(String nombreViejo, String nombreNuevo) {

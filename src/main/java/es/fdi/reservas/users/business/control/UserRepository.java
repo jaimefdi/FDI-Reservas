@@ -35,14 +35,23 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query("from User u where lower(u.username) like lower(concat('%',:username, '%'))")
 	Page<User> getUsuariosPorTagName(@Param("username") String username, Pageable pagerequest);
 	
+	@Query("from User u where u.enabled=false and lower(u.username) like lower(concat('%',:username, '%'))")
+	Page<User> getUsuariosEliminadosPorTagName(@Param("username") String username, Pageable pagerequest);
+	
 	@Query("from User u where lower(u.username) like lower(concat('%',:username, '%'))")
 	List<User> getUsuariosPorTagName(@Param("username") String username);
 
 	@Query("select e from #{#entityName} e where e.enabled=true and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
 	Page<User> getUsuariosPorFacultad(@Param("nombre") String nombre, Pageable pagerequest);
+	
+	@Query("select e from #{#entityName} e where e.enabled=false and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
+	Page<User> getUsuariosEliminadosPorFacultad(@Param("nombre") String nombre, Pageable pagerequest);
 
 	@Query("from User u where lower(u.email) like lower(concat('%',:email, '%'))")
 	Page<User> getUsuariosPorEmail(@Param("email") String email, Pageable pagerequest);
+	
+	@Query("from User u where u.enabled=false and lower(u.email) like lower(concat('%',:email, '%'))")
+	Page<User> getUsuariosEliminadosPorEmail(@Param("email") String email, Pageable pagerequest);
 	
 	@Query("select e from #{#entityName} e where e.enabled=true and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
 	List<User> getUsuariosPorFacultad(@Param("nombre") String nombre);

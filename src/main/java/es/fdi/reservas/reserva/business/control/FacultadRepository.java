@@ -18,6 +18,9 @@ public interface FacultadRepository extends JpaRepository<Facultad, Long>{
 	@Query("from Facultad f where lower(f.nombreFacultad) like lower(concat('%',:nombreFacultad, '%'))")
 	Page<Facultad> getFacultadesPorTagName(@Param("nombreFacultad") String nombreFacultad, Pageable pagerequest);
 	
+	@Query("from Facultad f where f.deleted=true and lower(f.nombreFacultad) like lower(concat('%',:nombreFacultad, '%'))")
+	Page<Facultad> getFacultadesEliminadasPorTagName(@Param("nombreFacultad") String nombreFacultad, Pageable pagerequest);
+	
 	@Query("from Facultad f where lower(f.nombreFacultad) like lower(concat('%',:nombreFacultad, '%'))")
 	List<Facultad> getFacultadesPorTagName(@Param("nombreFacultad") String nombreFacultad);
 	
@@ -39,6 +42,9 @@ public interface FacultadRepository extends JpaRepository<Facultad, Long>{
 
 	@Query("from Facultad f where f.webFacultad like lower(concat('%',:nombre, '%'))")
 	Page<Facultad> getFacultadesPorWeb(@Param("nombre") String nombre, Pageable pagerequest);
+	
+	@Query("from Facultad f where f.deleted=true and f.webFacultad like lower(concat('%',:nombre, '%'))")
+	Page<Facultad> getFacultadesEliminadasPorWeb(@Param("nombre") String nombre, Pageable pagerequest);
 	
 	@Query("from Facultad f where f.webFacultad like lower(concat('%',:nombre, '%'))")
 	List<Facultad> getFacultadesPorWeb(@Param("nombre") String nombre);
