@@ -118,33 +118,33 @@ public class EspaciosRestController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/admin/espacio/tag/{tagName}", method = RequestMethod.GET)
-	public List<EspacioDTO> espacioFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-
-		List<EspacioDTO> result = new ArrayList<>();
-		List<Espacio> usuarios = new ArrayList<>();
-
-		usuarios = espacio_service.getEspaciosPorTagName(tagName);
-
-		for (Espacio u : usuarios) {
-			result.add(EspacioDTO.fromEspacioDTOAutocompletar(u));
-		}
-
-		return result;
-	}
-	
-	@RequestMapping(value = "/admin/espacio/edificio/tag/{tagName}", method = RequestMethod.GET)
-	public List<EspacioDTO> espacioEdificioFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-
-		List<EspacioDTO> result = new ArrayList<>();
-		List<Espacio> usuarios = new ArrayList<>();
-
-		usuarios = espacio_service.getEspaciosPorEdificio(tagName);
-
-		for (Espacio u : usuarios) {
-			result.add(EspacioDTO.fromEspacioDTOAutocompletar(u));
-		}
-
-		return result;
-	}
+//	@RequestMapping(value = "/admin/espacio/tag/{tagName}", method = RequestMethod.GET)
+//	public List<EspacioDTO> espacioFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+//
+//		List<EspacioDTO> result = new ArrayList<>();
+//		List<Espacio> usuarios = new ArrayList<>();
+//
+//		usuarios = espacio_service.getEspaciosPorTagName(tagName);
+//
+//		for (Espacio u : usuarios) {
+//			result.add(EspacioDTO.fromEspacioDTOAutocompletar(u));
+//		}
+//
+//		return result;
+//	}
+//	
+//	@RequestMapping(value = "/admin/espacio/edificio/tag/{tagName}", method = RequestMethod.GET)
+//	public List<EspacioDTO> espacioEdificioFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+//
+//		List<EspacioDTO> result = new ArrayList<>();
+//		List<Espacio> usuarios = new ArrayList<>();
+//
+//		usuarios = espacio_service.getEspaciosPorEdificio(tagName);
+//
+//		for (Espacio u : usuarios) {
+//			result.add(EspacioDTO.fromEspacioDTOAutocompletar(u));
+//		}
+//
+//		return result;
+//	}
 }

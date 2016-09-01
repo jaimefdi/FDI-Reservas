@@ -36,7 +36,12 @@ public class FacultadController {
 		reserva_service = rs;
 	}
 	
-	@RequestMapping(value="/admin/administrar/facultad/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/facultad")
+	public String espacios(){
+		return "redirect:/admin/administrar/facultad/page/1";
+	}
+	
+	@RequestMapping(value="/admin/administrar/facultad/page/{pageNumber}", method=RequestMethod.GET)
     public String misFacultadesPaginadas(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		
@@ -133,7 +138,7 @@ public class FacultadController {
 	
 	
 	
-	@RequestMapping(value = "/admin/administrar/facultad/{numPag}/restaurar",method=RequestMethod.GET)
+	@RequestMapping(value = "/admin/administrar/facultad/page/{numPag}/restaurar",method=RequestMethod.GET)
 	public ModelAndView restaurarFacultades(@PathVariable("numPag") Long numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();

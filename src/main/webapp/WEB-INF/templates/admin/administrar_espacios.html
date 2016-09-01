@@ -19,17 +19,20 @@
            <!-- /.row -->
 
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3 text-center">
-			<div class="col-md-3">
+		<div class="col-md-8 col-md-offset-2 text-center">
+			<div class="col-md-2">
+				<label class="form-group" style="margin-top:5px;">Filtrar por: </label>
+			</div>
+			<div class="col-md-2">
 				<select id="selec-busqueda" class="form-control">
 					<option value="nombre">Nombre</option>
 					<option value="edificio">Edificio</option>
 				</select>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-8">
 			 <div class="input-group">        
 	            <input type="text" id="texto-busqueda" class="form-control" placeholder="Introduce nombre de espacio"></input>
-	             <span class="input-group-addon"><i class="fa fa-search"></i></span>
+	             <span class="input-group-addon"><a id="busquedaEspacio"><i class="fa fa-search"></i></a></span>
 	          </div>
 	    	</div>
 		</div>
@@ -48,19 +51,21 @@
                   <thead>
                       <tr>
                       	  <th>Imágen</th>
+                      	  <th>Edificio</th>
                           <th>Nombre</th>                      
                           <th>Tipo de espacio</th>
                           <th>Acciones</th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'">
+                      <tr th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'" th:attr="id=${r.id}">
                       	<td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
+                      	<td  th:text="${r.edificio.nombreEdificio}"></td>
                         <td th:text="${r.nombreEspacio}"></td>                   
                         <td th:text="${r.tipoEspacio.tipo}"></td> 
-                        <td><a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                        <td><a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 						<a th:href="@{'/admin/administrar/espacio/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-						<a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted}" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+						<a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 						</td>
                       </tr>  
                       
@@ -76,7 +81,7 @@
 	</div>
 	
 	<!-- Pagination -->
- 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
     <div class="col-md-12 text-center">
         <nav>
             <ul class="pagination">
@@ -103,15 +108,15 @@
                     </a>
                 </li>
 
-                <li th:class="${currentIndex != totalPages}? '' : 'disabled'">
-                    <span th:if='${currentIndex == totalPages}'><i class='fa fa-angle-right'></i></span>
-                    <a th:if='${currentIndex != totalPages}'
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
                        th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
                 </li>
-                <li th:class="${currentIndex == totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex == totalPages}'>Última</span>
-                    <a th:if='${currentIndex != totalPages}'
-                       th:href="@{${totalPages}}">Última</a>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Última</a>
                 </li>
             </ul>
         </nav>

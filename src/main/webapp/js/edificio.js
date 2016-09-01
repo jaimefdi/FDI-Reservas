@@ -13,15 +13,16 @@ $(document).ready(function(){
 	 		var direccion = $(this).attr("dir");
 	 		var deleted = $(this).attr("act");
 	 		var facultad = $(this).attr("fac");
-	 		var imagen = $(this).attr("img")
+	 		var imagen = "../../.." + $(this).attr("img");
 	 		var accion = $(this).attr("data-accion");
 	 		
 	 		$('#modalEditarEdificio #idNombre').text(nombreEdificio);
 	 		$('#modalEditarEdificio #idDir').text(direccion);
 	 		$('#modalEditarEdificio #idFacul').text(facultad);
 	 		$('#modalEditarEdificio #idActivado').text(deleted);
-	 		$('#modalEditarEdificio #idAttachment').text(imagen);
+	 		$('#modalEditarEdificio #idAttachment').attr("src",imagen);
 	 		$('#modalEditarEdificio #btn-editar').prop("href", baseURL + "admin/administrar/edificios/editar/" + edificio.id);
+	 		
 	 		
 	 		if (accion == 'Eliminar'){
 	 			
@@ -193,7 +194,8 @@ function modalEliminarEdificio(edificio, reqHeaders){
 	 			success : function(datos) {
 	 				alert("Edificio eliminado");
 	 				$('#modalEditarEdificio').modal('hide');
-	 				$("#"+edificio.id).remove();
+	 				$("#" + edificio.id).remove();
+	 			
 	 			},    
 	 			error : function(xhr, status) {
 	 				alert('Disculpe, existió un problema');

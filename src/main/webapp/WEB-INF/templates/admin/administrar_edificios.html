@@ -18,20 +18,18 @@
     </div>
            <!-- /.row -->
 	<div class="row">
-		<div class="col-md-6 col-md-offset text-right">
-			<h5>Filtrar por...</h5>
-		</div>
-		<div class="col-md-6 col-md-offset-3 text-left">
-		
-			<div class="col-md-3">
-			
+		<div class="col-md-8 col-md-offset-2 text-center">
+			<div class="col-md-2">
+				<label class="form-group" style="margin-top:5px;">Filtrar por: </label>
+			</div>
+			<div class="col-md-2">
 				<select id="selec-busqueda" class="form-control">
 					<option value="nombre">Nombre</option>
 					<option value="direccion">Dirección</option>
 					<option value="facultad">Facultad</option>
 				</select>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-8">
 			 <div class="input-group">        
 	            <input type="text" id="texto-busqueda" class="form-control" placeholder="Introduce nombre de edificio"></input>
 	             <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -61,15 +59,15 @@
                   </thead>
                   <tbody>
                   	<tr></tr>
-                      <tr th:if="${!r.deleted}" th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'">
-                      	 <!-- <td th:text = "${r.imagen.getFile()}">Mi imagen</td> -->
+                      <tr th:if="${!r.deleted}" th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'" th:attr="id=${r.id}">
+                      	 
 						  <td class="text-center"><img class="img-circle" th:title="${r.imagen.description}" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
                           <td th:text="${#strings.abbreviate(r.nombreEdificio,21)}" th:title="${r.nombreEdificio}"></td>
                           <td th:text="${#strings.abbreviate(r.direccion,21)}" th:title="${r.direccion}"></td>
                           <td th:text="${#strings.abbreviate(r.facultad.nombreFacultad,21)}" th:title="${r.facultad.nombreFacultad}"></td>
                           <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/admin/administrar/edificios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},fac=${r.facultad.nombreFacultad},dir=${r.direccion},act=${r.deleted},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+							<a th:attr="data-id=${r.id},name=${r.nombreEdificio},fac=${r.facultad.nombreFacultad},dir=${r.direccion},act=${r.deleted},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                       </tr>
                       
@@ -80,7 +78,7 @@
                 
           	</div> 
         <!-- /.table-responsive-->
-    	<a th:href="@{'/admin/administrar/edificios/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar edificios"/></a>
+    	<a th:href="@{'/admin/administrar/edificios/page/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar edificios"/></a>
 		</div>
 	</div>
 	
@@ -189,18 +187,18 @@
                    </div>
 		         </div>
 		         
-<!-- 		         <div class="row"> -->
-<!--                 	<div class="col-md-12"> -->
+		         <div class="row">
+                	<div class="col-md-12">
 		                 
-<!-- 		                 <div class="form-group"> -->
-<!-- 		                     <label class="col-md-2 control-label">Imágen: </label> -->
-<!-- 		                      <div class="col-md-10"> -->
-<!-- 		                      <img class="img-circle" id="idAttachment" alt="" th:src="@{'A:/FDI-Reservas/src/main/webapp' + ${idAttachment}}" height="42" width="42"></img> -->
-<!-- 		                         <p  class="form-control-static"> </p> -->
-<!-- 		                      </div> -->
-<!-- 		                 </div> -->
-<!--                    </div> -->
-<!-- 		         </div> -->
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Imágen: </label>
+		                      <div class="col-md-10">
+		                      <img class="img-circle" id="idAttachment" alt="" th:src="@{'../..' + ${idAttachment}}" height="42" width="42"></img>
+		                         <p  class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
                     
              </form>
                  

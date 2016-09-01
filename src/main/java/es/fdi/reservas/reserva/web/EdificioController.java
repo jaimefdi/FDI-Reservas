@@ -42,7 +42,12 @@ public class EdificioController {
 		reserva_service = rs;
 	}
 	
-	@RequestMapping(value="/admin/administrar/edificios/{pageNumber}", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/administrar/edificios")
+	public String espacios(){
+		return "redirect:/admin/administrar/edificios/page/1";
+	}
+	
+	@RequestMapping(value="/admin/administrar/edificios/page/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
@@ -135,7 +140,7 @@ public class EdificioController {
         return "index";
     }
 	
-	@RequestMapping(value = "/admin/administrar/edificios/{numPag}/restaurar")
+	@RequestMapping(value = "/admin/administrar/edificios/page/{numPag}/restaurar")
 	public ModelAndView restaurarEdificios(@PathVariable("numPag") Long numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();

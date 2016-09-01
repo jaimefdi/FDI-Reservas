@@ -1,9 +1,21 @@
 $(document).ready(function(){
 	 	var espacio = {};
+	 	var tipoBusqueda;
 	 	var token = $("meta[name='_csrf']").attr("content");
 	 	var header = $("meta[name='_csrf_header']").attr("content");
 	 	var reqHeaders = [];
 	 	reqHeaders[header] = token;
+	 	
+	 	$("#texto-busqueda").keyup(function(){
+	 		var searchTerm = $('#texto-busqueda').val();
+	 		tipoBusqueda = $('#selec-busqueda').val();
+	 		
+	 		var link = '/reservas/admin/administrar/espacios/' + tipoBusqueda + '/' + searchTerm + '/page/1';
+	 		$("#busquedaEspacio").attr("href",link);
+	 		
+	 	});
+	 	
+
 	 	
 	 	$('td a').click(function(){
 	 		
@@ -16,6 +28,7 @@ $(document).ready(function(){
 	 		var tipoEspacio = $(this).attr("tipo");
 	 		var edificio = $(this).attr("edif");
 	 		var eliminado = $(this).attr("act");
+	 		var accion = $(this).attr("data-accion");
 
 	 		//$('#modalEditarEspacio #idEspacio').text(espacio.id);
 	 		$('#modalEditarEspacio #idNombre').text(nombreEspacio);
@@ -26,71 +39,30 @@ $(document).ready(function(){
 	 		$('#modalEditarEspacio #idEdificio').text(edificio);
 	 		$('#modalEditarEspacio #idActivado').text(eliminado);
 	 		$('#modalEditarEspacio #btn-editar').prop("href", baseURL + 'admin/administrar/espacio/editar/' + espacio.id);
-	 		$('#modalEditarEspacio').modal('show');
+	 	
+	 		if (accion == 'Eliminar'){
+	 			
+ 				modalEliminarEspacio(edificio, reqHeaders);	
+ 			
+	 		}else if(accion == 'Ver'){
 	 		
+	 			$('#modalEditarEspacio').modal('show');
+	 		}
 	 	});
 	 	
 	 	$('#selec-busqueda').change(function(){
+	 		
 	 		$('#texto-busqueda').val("");
 	 		if ($(this).val()=="nombre")
-	 			$('#texto-busqueda').prop("placeholder", "Introduce nombre de usuario");
+	 			$('#texto-busqueda').prop("placeholder", "Introduce el nombre del espacio");
 	 		else if ($(this).val()=="edificio")
-	 			$('#texto-busqueda').prop("placeholder", "Introduce el edificio");
+	 			$('#texto-busqueda').prop("placeholder", "Introduce el nombre del edificio");
 	 	});
 	 	
-	 	 $("#texto-busqueda").autocomplete({
-	 		source:function(request, response){
-	 			var tag = request.term;
-	 			var info;
-	 			if ($("#selec-busqueda").val()=="nombre")
-	 			{
-	 				console.log($("#selec-busqueda").val())
-	 				response=autocompletarNombre(tag, response);
-	 			}
-	 			else if ($("#selec-busqueda").val() == "edificio")
-	 			{	
-	 				$("#selec-busqueda").val()
-	 				response=autocompletarEdificio(tag, response);
-	 			}
-	 				
-	 		},
-	 		minLength: 2
-	 	}).autocomplete("instance")._renderItem = function(ul,item){	
-	 	 	var direccion;
-	 	 	console.log("selector busqueda:" + $('#selec_busqueda').val());
-	 		if ($('#selec-busqueda').val()=="nombre")
-	 			direccion="nombre";
-	 		else if ($('#selec-busqueda').val()=="edificio")
-	 			direccion="edificio";
-	 		console.log("id:" + item.label);
-	 		console.log("titulo:" + item.value);
-	 		console.log("subtitulo:" + item.info);
-	 		/*
-	 			var inner_html =  '<a href="/reservas/gestor/gestion-reservas/'+direccion+'/'+item.label+'/page/1">'+
-	 							  '<div class="col-md-2" style="padding-top:3px;">' +
-	 			                  '<img class="media-object" src="http://placehold.it/50x50"/>' + 
-	 			                  '</div>' + 
-	 			                  '<div class="col-md-10">' + 
-	 			                  '<p>'+ item.value +'</p>' + 
-	 			                  '<p class="small text-muted">'+ item.info +'</p>'
-	 			                  '</div></a>';
-	 			                  */
-	 		var inner_html = '<a href="/reservas/admin/administrar/espacios/'+direccion+'/'+item.label+'/page/1">'+
-	 						'<div class="media"><div class="media-left">' + 
-	 				        '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
-	 				        '</div>' + 
-	 				        '<div class="media-body">' + 
-	 				        '<h5 class="media-heading">'+ item.value +'</h5>' + 
-	 				        '</div></div></a>';
-	         
-	 	            return $("<li></li>")
-	 	                    .data("item.autocomplete", item)
-	 	                    .append(inner_html)
-	 	                    .appendTo(ul);
-	 		
-	 	};
+});	
+
+function modalEliminarEspacio(espacio, reqHeaders){	 	
 	 	
-	 	$("#btn-eliminar").click(function(){
 	 		$.ajax({
 	 			url: baseURL + "espacio/" + espacio.id,
 	 			type: 'DELETE',
@@ -98,62 +70,14 @@ $(document).ready(function(){
 	 			success : function(datos) {
 	 				alert("Espacio eliminado");
 	 				$('#modalEditarEspacio').modal('hide');
-	 				$("#"+espacio.id).remove();
+	 				$("#" + espacio.id).remove();
 	 			},    
 	 			error : function(xhr, status) {
+	 				alert(espacio.id);
 	 				alert('Disculpe, existió un problema');
 	 			}
 	 		});
-	 	});
+	 	
+} 	
 	 
- });
 
-function autocompletarNombre(tag, respuesta)
-{
-	$.ajax({
-		url: '/reservas/admin/espacio/tag/' + tag,
-		type: 'GET',
-		async: false,
-		contentType: 'application/json',
-		success : function(datos) {				
-			respuesta($.map(datos,function(item){
-			
-				var obj = new Object();
-				obj.label = item.id; 
-				obj.value = item.nombreEspacio;
-				return obj;
-			
-			}))
-						
-		},    
-		error : function(xhr, status) {
-			alert('Disculpe, existió un problema');
-		}
-	});
-	return item;
-}
-
-function autocompletarEdificio(tag, respuesta)
-{
-	$.ajax({
-		url: '/reservas/admin/espacio/edificio/tag/' + tag,
-		type: 'GET',
-		async: false,
-		contentType: 'application/json',
-		success : function(datos) {				
-			respuesta($.map(datos,function(item){
-			
-				var obj = new Object();
-				obj.label = item.id; 
-				obj.value = item.nombreEspacio;
-				return obj;
-			
-			}))
-						
-		},    
-		error : function(xhr, status) {
-			alert('Disculpe, existió un problema');
-		}
-	});
-	return item;
-}

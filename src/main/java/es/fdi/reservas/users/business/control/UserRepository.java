@@ -33,13 +33,21 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	public List<User> recycleBin();
 	
 	@Query("from User u where lower(u.username) like lower(concat('%',:username, '%'))")
+	Page<User> getUsuariosPorTagName(@Param("username") String username, Pageable pagerequest);
+	
+	@Query("from User u where lower(u.username) like lower(concat('%',:username, '%'))")
 	List<User> getUsuariosPorTagName(@Param("username") String username);
 
+	@Query("select e from #{#entityName} e where e.enabled=true and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
+	Page<User> getUsuariosPorFacultad(@Param("nombre") String nombre, Pageable pagerequest);
+
+	@Query("from User u where lower(u.email) like lower(concat('%',:email, '%'))")
+	Page<User> getUsuariosPorEmail(@Param("email") String email, Pageable pagerequest);
+	
 	@Query("select e from #{#entityName} e where e.enabled=true and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
 	List<User> getUsuariosPorFacultad(@Param("nombre") String nombre);
 
 	@Query("from User u where lower(u.email) like lower(concat('%',:email, '%'))")
 	List<User> getUsuariosPorEmail(@Param("email") String email);
-	
 	
 }

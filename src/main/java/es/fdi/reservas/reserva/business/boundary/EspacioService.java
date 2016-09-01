@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -58,7 +59,7 @@ public class EspacioService {
 		espacio_repository.softDelete(Long.toString(idEspacio));
 	}
 	
-	public Page<Espacio> getEspaciosPaginados(PageRequest pageRequest) {
+	public Page<Espacio> getEspaciosPaginados(Pageable pageRequest) {
 		return espacio_repository.findAll(pageRequest);
 	}
 	
@@ -114,14 +115,14 @@ public class EspacioService {
 		return edificio_repository.getEdificiosPorTagName(tagName);
 	}
 
-	public Espacio getEspaciosPorNombre(Long nombre) {
+	public Page<Espacio> getEspaciosPorNombre(String nombre, Pageable pagerequest) {
 		// TODO Auto-generated method stub
-		return espacio_repository.findOne(nombre);
+		return espacio_repository.getEspaciosByTagName(nombre,pagerequest);
 	}
 
-	public List<Espacio> getEspaciosPorEdificio(String tagName) {
+	public Page<Espacio> getEspaciosPorEdificio(String tagName, Pageable pagerequest) {
 		// TODO Auto-generated method stub
-		return espacio_repository.getEspaciosPorEdificio(tagName);
+		return espacio_repository.getEspaciosPorEdificio(tagName, pagerequest);
 	}
 
 }

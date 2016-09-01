@@ -81,7 +81,8 @@ public class UserRestController {
 //					boolean correcto = dirNuevo.mkdir();
 //					
 //				}
-				
+//				File file = new File("/img/" + userActualizado.getImagen());
+//				boolean ex = file.exists();
 				if (user_service.getAttachmentByName(userActualizado.getImagen()).isEmpty()){
 			
 					//si no esta, lo añado
@@ -158,34 +159,34 @@ public class UserRestController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/admin/email/tag/{tagName}", method = RequestMethod.GET)
-	public List<UserDTO> emailFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-
-		List<UserDTO> result = new ArrayList<>();
-		List<User> usuarios = new ArrayList<>();
-
-		usuarios = user_service.getUsuariosPorEmail(tagName);
-
-		for (User u : usuarios) {
-			result.add(UserDTO.fromUserDTOAutocompletar(u));
-		}
-
-		return result;
-	}
-	
-	@RequestMapping(value = "/admin/facultad/tag/{tagName}", method = RequestMethod.GET)
-	public List<UserDTO> facultadFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-
-		List<UserDTO> result = new ArrayList<>();
-		List<User> usuarios = new ArrayList<>();
-
-		usuarios = user_service.getUsuariosPorFacultad(tagName);
-
-		for (User u : usuarios) {
-			result.add(UserDTO.fromUserDTOAutocompletar(u));
-		}
-
-		return result;
-	}
+//	@RequestMapping(value = "/admin/email/tag/{tagName}", method = RequestMethod.GET)
+//	public List<UserDTO> emailFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+//
+//		List<UserDTO> result = new ArrayList<>();
+//		List<User> usuarios = new ArrayList<>();
+//
+//		usuarios = user_service.getUsuariosPorEmail(tagName);
+//
+//		for (User u : usuarios) {
+//			result.add(UserDTO.fromUserDTOAutocompletar(u));
+//		}
+//
+//		return result;
+//	}
+//	
+//	@RequestMapping(value = "/admin/facultad/tag/{tagName}", method = RequestMethod.GET)
+//	public List<UserDTO> facultadFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+//
+//		List<UserDTO> result = new ArrayList<>();
+//		List<User> usuarios = new ArrayList<>();
+//
+//		usuarios = user_service.getUsuariosPorFacultad(tagName);
+//
+//		for (User u : usuarios) {
+//			result.add(UserDTO.fromUserDTOAutocompletar(u));
+//		}
+//
+//		return result;
+//	}
 
 }

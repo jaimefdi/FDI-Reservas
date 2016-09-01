@@ -106,11 +106,11 @@ public class EspacioDTO {
 		this.imagen = imagen;
 	}
 
-	public static EspacioDTO fromEspacioDTO(Espacio e){
+	public static EspacioDTO fromEspacioDTOAutocompletar(Espacio e){
 		return new EspacioDTO(e.getId(), e.getNombreEspacio(), e.getEdificio().getNombreEdificio(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo(), e.getImagen().getAttachmentUrl());
 	}
 	
-	public static EspacioDTO fromEspacioDTOAutocompletar(Espacio e){
+	public static EspacioDTO fromEspacioDTO(Espacio e){
 		return new EspacioDTO(e.getNombreEspacio(), e.getEdificio().getNombreEdificio(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo(), e.getImagen().getAttachmentUrl());
 	}
 }

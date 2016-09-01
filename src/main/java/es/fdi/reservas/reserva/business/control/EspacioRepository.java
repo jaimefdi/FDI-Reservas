@@ -2,6 +2,8 @@ package es.fdi.reservas.reserva.business.control;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -39,8 +41,13 @@ public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 	void softDelete(@Param("idEspacio") String idEspacio);
 	
 	@Query("from #{#entityName} e where lower(e.nombreEspacio) like lower(concat('%',:nombreEspacio, '%'))")
-	List<Espacio> getEspaciosByTagName(@Param("nombreEspacio") String nombreEspacio);
+	public Page<Espacio> getEspaciosByTagName(@Param("nombreEspacio") String nombreEspacio, Pageable pagerequest);
+	
+	@Query("from #{#entityName} e where lower(e.nombreEspacio) like lower(concat('%',:nombreEspacio, '%'))")
+	public List<Espacio> getEspaciosByTagName(@Param("nombreEspacio") String nombreEspacio);
 
 	@Query("select e from #{#entityName} e where e.deleted=false and e.edificio.nombreEdificio like lower(concat('%',:nombre, '%'))")
-	public List<Espacio> getEspaciosPorEdificio(@Param("nombre") String nombre);
+	public Page<Espacio> getEspaciosPorEdificio(@Param("nombre") String nombre, Pageable pagerequest);
+	
+	
 }

@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -177,17 +178,17 @@ public class UserService implements UserDetailsService{
 		return attachment_repository.getAttachmentByName(img);
 	}
 
-	public List<User> getUsuariosPorEmail(String email) {
-		return user_ropository.getUsuariosPorEmail(email);
+	public Page<User> getUsuariosPorEmail(String email, Pageable pagerequest) {
+		return user_ropository.getUsuariosPorEmail(email, pagerequest);
 	}
 
-	public User getUsuariosPorNombre(Long nombre) {
-		return user_ropository.findOne(nombre);
+	public Page<User> getUsuariosPorNombre(String nombre, Pageable pagerequest) {
+		return user_ropository.getUsuariosPorTagName(nombre, pagerequest);
 	}
 
-	public List<User> getUsuariosPorFacultad(String nombre) {
+	public Page<User> getUsuariosPorFacultad(String nombre, Pageable pagerequest) {
 		// TODO Auto-generated method stub
-		return user_ropository.getUsuariosPorFacultad(nombre);
+		return user_ropository.getUsuariosPorFacultad(nombre, pagerequest);
 	}
 
 	public void actualizaReferencias(String nombreViejo, String nombreNuevo) {

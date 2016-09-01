@@ -1,6 +1,5 @@
 package es.fdi.reservas.reserva.web;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.reserva.business.boundary.EdificioService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
-import es.fdi.reservas.users.business.entity.User;
-import es.fdi.reservas.users.web.UserDTO;
 
 @RestController
 public class EdificioRestController {

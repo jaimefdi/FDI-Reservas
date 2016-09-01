@@ -17,18 +17,21 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3 text-center">
-			<div class="col-md-3">
+		<div class="col-md-8 col-md-offset-2 text-center">
+			<div class="col-md-2">
+				<label class="form-group" style="margin-top:5px;">Filtrar por: </label>
+			</div>
+			<div class="col-md-2">
 				<select id="selec-busqueda" class="form-control">
 					<option value="nombre">Nombre</option>
 					<option value="email">Email</option>
 					<option value="facultad">Facultad</option>
 				</select>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-8">
 			 <div class="input-group">        
 	            <input type="text" id="texto-busqueda" class="form-control" placeholder="Introduce nombre de usuario"></input>
-	             <span class="input-group-addon"><i class="fa fa-search"></i></span>
+	             <span class="input-group-addon"><a id="busquedaUsuario"><i class="fa fa-search"></i></a></span>
 	          </div>
 	    	</div>
 		</div>
@@ -89,7 +92,7 @@
  	</div>
  	
  	<!-- Pagination -->
- 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
     <div class="col-md-12 text-center">
         <nav>
             <ul class="pagination">
@@ -116,15 +119,15 @@
                     </a>
                 </li>
 
-                <li th:class="${currentIndex != totalPages}? '' : 'disabled'">
-                    <span th:if='${currentIndex == totalPages}'><i class='fa fa-angle-right'></i></span>
-                    <a th:if='${currentIndex !=  totalPages}'
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
                        th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
                 </li>
-                <li th:class="${currentIndex ==  totalPages}? 'disabled' : ''">
-                    <span th:if='${currentIndex ==  totalPages}'>Última</span>
-                    <a th:if='${currentIndex !=  totalPages}'
-                       th:href="@{${totalPages}}">Última</a>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Última</a>
                 </li>
             </ul>
         </nav>

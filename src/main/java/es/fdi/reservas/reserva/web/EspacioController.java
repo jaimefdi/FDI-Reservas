@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
 
 @Controller
+@RequestMapping(value="/admin")
 public class EspacioController {
 
 	private UserService user_service;
@@ -39,10 +41,18 @@ public class EspacioController {
 		reserva_service = rs;
 	}
 	
-	@RequestMapping(value="/admin/administrar/espacios/{pageNumber}", method=RequestMethod.GET)
-    public String misEspaciosPaginados(@PathVariable Integer pageNumber, Model model) {
+	
+	
+	@RequestMapping(value="/administrar/espacios")
+	public String espacios(){
+		return "redirect:/admin/administrar/espacios/page/1";
+	}
+	
+	
+	@RequestMapping(value="/administrar/espacios/page/{pageNumber}", method=RequestMethod.GET)
+    public String espaciosPaginados(@PathVariable Integer pageNumber, Model model) {
 		User u = user_service.getCurrentUser();
-		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		Pageable pageRequest = new PageRequest(pageNumber - 1, 5);
         Page<Espacio> currentResults = espacio_service.getEspaciosPaginados(pageRequest);
                 
         model.addAttribute("currentResults", currentResults);
@@ -61,55 +71,53 @@ public class EspacioController {
         return "index";
     }
 	
-	@RequestMapping(value="/admin/administrar/espacios/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
-    public String misEspaciosPaginadosPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+	
+	
+	@RequestMapping(value="/administrar/espacios/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEspaciosPaginadosPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
-		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-		ArrayList<Espacio> currentResults = new ArrayList<Espacio>();
-        currentResults.add(espacio_service.getEspaciosPorNombre(nombre));
+		Pageable pageRequest = new PageRequest(pageNumber - 1, 5);
+        Page<Espacio> currentResults = espacio_service.getEspaciosPorNombre(nombre,pageRequest);
         
         model.addAttribute("currentResults", currentResults);
         
-        int current =  1;
+        int current = currentResults.getNumber() + 1;
         int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, 1); 
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
         model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-        model.addAttribute("totalPages", 1);
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_espacios");	
 				
         return "index";
     }
 	
-	@RequestMapping(value="/admin/administrar/espacios/edificio/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
-    public String misEspaciosPaginadosPorEdificio(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+	@RequestMapping(value="/administrar/espacios/edificio/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEspaciosPaginadosPorEdificio(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-		ArrayList<Espacio> currentResults = new ArrayList<Espacio>();
-        currentResults.add(espacio_service.getEspaciosPorNombre(nombre));
+		Page<Espacio> currentResults = espacio_service.getEspaciosPorEdificio(nombre,pageRequest);
         
         model.addAttribute("currentResults", currentResults);
         
-        int current =  1;
+        int current = currentResults.getNumber() + 1;
         int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, 1);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
         model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
-        model.addAttribute("totalPages", 1);
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_espacios");	
 				
         return "index";
     }
 
-	@RequestMapping(value="/admin/nuevoEspacio",method=RequestMethod.GET)
+	@RequestMapping(value="/nuevoEspacio",method=RequestMethod.GET)
 	public String nuevoEspacio(Model model){
 		User u = user_service.getCurrentUser();
 		model.addAttribute("Espacio", new Espacio());
@@ -120,7 +128,7 @@ public class EspacioController {
 		return "index";
 	}
 	
-	@RequestMapping(value="/admin/administrar/espacio/editar/{idEspacio}", method=RequestMethod.GET)
+	@RequestMapping(value="/administrar/espacio/editar/{idEspacio}", method=RequestMethod.GET)
 	public String editarEspacio(@PathVariable("idEspacio") long idEspacio, Model model){
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
@@ -132,7 +140,7 @@ public class EspacioController {
 	}
 	
 
-	@RequestMapping(value = "/admin/administrar/espacio/{numPag}/restaurar")
+	@RequestMapping(value = "/administrar/espacio/{numPag}/restaurar")
 	public ModelAndView restaurarEspacios(@PathVariable("numPag") String numPag){
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
