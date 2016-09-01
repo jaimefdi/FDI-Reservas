@@ -83,33 +83,33 @@ public class EdificioRestController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/admin/edificio/direccion/tag/{tagName}", method = RequestMethod.GET)
-	public List<EdificioDTO> direccionFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-
-		List<EdificioDTO> result = new ArrayList<>();
-		List<Edificio> usuarios = new ArrayList<>();
-
-		usuarios = edificio_service.getEdificiosPorDireccion(tagName);
-
-		for (Edificio u : usuarios) {
-			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
-		}
-
-		return result;
-	}
-	
-	@RequestMapping(value = "/admin/edificio/facultad/tag/{tagName}", method = RequestMethod.GET)
-	public List<EdificioDTO> facultadFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-
-		List<EdificioDTO> result = new ArrayList<>();
-		List<Edificio> usuarios = new ArrayList<>();
-
-		usuarios = edificio_service.getEdificiosPorFacultad(tagName);
-
-		for (Edificio u : usuarios) {
-			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
-		}
-
-		return result;
-	}
+//	@RequestMapping(value = "/admin/edificio/direccion/tag/{tagName}", method = RequestMethod.GET)
+//	public List<EdificioDTO> direccionFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+//
+//		List<EdificioDTO> result = new ArrayList<>();
+//		List<Edificio> usuarios = new ArrayList<>();
+//
+//		usuarios = edificio_service.getEdificiosPorDireccion(tagName);
+//
+//		for (Edificio u : usuarios) {
+//			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
+//		}
+//
+//		return result;
+//	}
+//	
+//	@RequestMapping(value = "/admin/edificio/facultad/tag/{tagName}", method = RequestMethod.GET)
+//	public List<EdificioDTO> facultadFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+//
+//		List<EdificioDTO> result = new ArrayList<>();
+//		List<Edificio> usuarios = new ArrayList<>();
+//
+//		usuarios = edificio_service.getEdificiosPorFacultad(tagName);
+//
+//		for (Edificio u : usuarios) {
+//			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
+//		}
+//
+//		return result;
+//	}
 }

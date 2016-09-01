@@ -1,13 +1,15 @@
 package es.fdi.reservas.reserva.business.control;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
-import es.fdi.reservas.users.business.entity.User;
 
 @Repository
 public interface EdificioRepository extends JpaRepository<Edificio, Long>{
@@ -27,12 +29,21 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 
 	@Query("from Edificio f where lower(f.nombreEdificio) like lower(concat('%',:nombreEdificio, '%'))")
 	List<Edificio> getEdificiosPorTagName(@Param("nombreEdificio") String nombreEdificio);
+	
+	@Query("from Edificio f where lower(f.nombreEdificio) like lower(concat('%',:nombreEdificio, '%'))")
+	Page<Edificio> getEdificiosPorTagName(@Param("nombreEdificio") String nombreEdificio, Pageable pagerequest);
 
+//	@Query("from Edificio f where lower(f.direccion) like lower(concat('%',:direccion, '%'))")
+//	List<Edificio> getEdificiosPorDireccion(@Param("direccion") String tagName);
+	
 	@Query("from Edificio f where lower(f.direccion) like lower(concat('%',:direccion, '%'))")
-	List<Edificio> getEdificiosPorDireccion(@Param("direccion") String tagName);
+	Page<Edificio> getEdificiosPorDireccion(@Param("direccion") String tagName, Pageable pagerequest);
+	
+//	@Query("select e from #{#entityName} e where e.deleted=false and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
+//	List<Edificio> getEdificiosPorFacultad(@Param("nombre") String nombre);
 	
 	@Query("select e from #{#entityName} e where e.deleted=false and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
-	List<Edificio> getEdificiosPorFacultad(@Param("nombre") String nombre);
+	Page<Edificio> getEdificiosPorFacultad(@Param("nombre") String nombre, Pageable pagerequest);
 	
 	@Query("select e from #{#entityName} e where e.deleted=false and e.nombreEdificio = :edificio")
 	Edificio getEdificiosPorNombre(@Param("edificio") String edificio);

@@ -29,6 +29,7 @@ $(document).ready(function(){
 	 		var edificio = $(this).attr("edif");
 	 		var eliminado = $(this).attr("act");
 	 		var accion = $(this).attr("data-accion");
+	 		var imagen = "../../.." + $(this).attr("img");
 
 	 		//$('#modalEditarEspacio #idEspacio').text(espacio.id);
 	 		$('#modalEditarEspacio #idNombre').text(nombreEspacio);
@@ -38,6 +39,7 @@ $(document).ready(function(){
 	 		$('#modalEditarEspacio #idTipo').text(tipoEspacio);
 	 		$('#modalEditarEspacio #idEdificio').text(edificio);
 	 		$('#modalEditarEspacio #idActivado').text(eliminado);
+	 		$('#modalEditarEdificio #idAttachment').attr("src",imagen);
 	 		$('#modalEditarEspacio #btn-editar').prop("href", baseURL + 'admin/administrar/espacio/editar/' + espacio.id);
 	 	
 	 		if (accion == 'Eliminar'){

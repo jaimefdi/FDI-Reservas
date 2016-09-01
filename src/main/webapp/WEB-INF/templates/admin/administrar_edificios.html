@@ -32,7 +32,7 @@
 			<div class="col-md-8">
 			 <div class="input-group">        
 	            <input type="text" id="texto-busqueda" class="form-control" placeholder="Introduce nombre de edificio"></input>
-	             <span class="input-group-addon"><i class="fa fa-search"></i></span>
+	             <span class="input-group-addon"><a id="busquedaEdificio"><i class="fa fa-search"></i></a></span>
 	          </div>
 	    	</div>
 		</div>
@@ -213,7 +213,7 @@
  	  <script th:inline="javascript">
  	var baseURL = /*[[@{/}]]*/ '/';
  </script>
- <script src="../../js/edificio.js" th:src="@{/js/edificio.js}"></script>	
+ <script src="../../js/edificioAdministrar.js" th:src="@{/js/edificioAdministrar.js}"></script>	
  </div>
 </body>
 </html>

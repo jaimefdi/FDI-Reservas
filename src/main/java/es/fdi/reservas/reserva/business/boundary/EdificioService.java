@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import es.fdi.reservas.fileupload.business.control.AttachmentRepository;
@@ -116,8 +117,12 @@ public Edificio addNewEdificio(Edificio edificio) {
 		
 	}
 
-	public List<Edificio> getEdificiosPorTagName(String tagName) {
+	public Page<Edificio> getEdificiosPorTagName(String tagName, Pageable pagerequest) {
 		// TODO Auto-generated method stub
+		return edificio_repository.getEdificiosPorTagName(tagName, pagerequest);
+	}
+	
+	public List<Edificio> getEdificiosPorTagName(String tagName) {
 		return edificio_repository.getEdificiosPorTagName(tagName);
 	}
 
@@ -125,14 +130,14 @@ public Edificio addNewEdificio(Edificio edificio) {
 		return edificio_repository.findOne(nombre);
 	}
 
-	public List<Edificio> getEdificiosPorDireccion(String tagName) {
+	public Page<Edificio> getEdificiosPorDireccion(String tagName, Pageable pagerequest) {
 		
-		return edificio_repository.getEdificiosPorDireccion(tagName);
+		return edificio_repository.getEdificiosPorDireccion(tagName, pagerequest);
 	}
 	
-	public List<Edificio> getEdificiosPorFacultad(String tagName) {
+	public Page<Edificio> getEdificiosPorFacultad(String tagName, Pageable pagerequest) {
 		
-		return edificio_repository.getEdificiosPorFacultad(tagName);
+		return edificio_repository.getEdificiosPorFacultad(tagName, pagerequest);
 	}
 
 }
