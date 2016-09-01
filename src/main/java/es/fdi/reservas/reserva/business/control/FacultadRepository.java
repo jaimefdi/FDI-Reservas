@@ -2,6 +2,8 @@ package es.fdi.reservas.reserva.business.control;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +15,9 @@ import es.fdi.reservas.reserva.business.entity.Facultad;
 @Repository
 public interface FacultadRepository extends JpaRepository<Facultad, Long>{
 
+	@Query("from Facultad f where lower(f.nombreFacultad) like lower(concat('%',:nombreFacultad, '%'))")
+	Page<Facultad> getFacultadesPorTagName(@Param("nombreFacultad") String nombreFacultad, Pageable pagerequest);
+	
 	@Query("from Facultad f where lower(f.nombreFacultad) like lower(concat('%',:nombreFacultad, '%'))")
 	List<Facultad> getFacultadesPorTagName(@Param("nombreFacultad") String nombreFacultad);
 	
@@ -32,6 +37,9 @@ public interface FacultadRepository extends JpaRepository<Facultad, Long>{
 	@Query("update #{#entityName} e set e.deleted=true where e.id= :idFacultad")
 	void softDelete(@Param("idFacultad") Long idFacultad);
 
+	@Query("from Facultad f where f.webFacultad like lower(concat('%',:nombre, '%'))")
+	Page<Facultad> getFacultadesPorWeb(@Param("nombre") String nombre, Pageable pagerequest);
+	
 	@Query("from Facultad f where f.webFacultad like lower(concat('%',:nombre, '%'))")
 	List<Facultad> getFacultadesPorWeb(@Param("nombre") String nombre);
 }

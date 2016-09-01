@@ -65,24 +65,22 @@ public class FacultadController {
     }
 	
 	@RequestMapping(value="/admin/administrar/facultad/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
-    public String misFacultadesPaginadasPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+    public String misFacultadesPaginadasPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-        ArrayList<Facultad> currentResults = new ArrayList<Facultad>();
-        currentResults.add(facultad_service.getFacultad(nombre));
-                
+        Page<Facultad> currentResults = facultad_service.getFacultadesPorTagName(nombre, pageRequest);
+               
         model.addAttribute("currentResults", currentResults);
         
-        int current =  1;
+        int current = currentResults.getNumber() + 1;
         int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, 1); 
+        int end = Math.min(begin + 10, currentResults.getTotalPages());
 
         model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
-        model.addAttribute("currentIndex", current); 
-        model.addAttribute("totalPages", 1);
+        model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_facultad");
 		
@@ -90,24 +88,22 @@ public class FacultadController {
     }
 	
 	@RequestMapping(value="/admin/administrar/facultad/web/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
-    public String misFacultadesPaginadasPorWeb(@PathVariable Integer pageNumber, Model model, @PathVariable Long nombre) {
+    public String misFacultadesPaginadasPorWeb(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
-		ArrayList<Facultad> currentResults = new ArrayList<Facultad>();
-        currentResults.add(facultad_service.getFacultad(nombre));
+		Page<Facultad> currentResults = facultad_service.getFacultadesPorWeb(nombre, pageRequest);
                 
         model.addAttribute("currentResults", currentResults);
         
-        int current =  1;
+        int current = currentResults.getNumber() + 1;
         int begin = Math.max(1, current - 5);
-        int end = Math.min(begin + 10, 1); 
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
         model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
-        model.addAttribute("currentIndex", current); 
-        model.addAttribute("totalPages", 1);
+        model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_facultad");
 		

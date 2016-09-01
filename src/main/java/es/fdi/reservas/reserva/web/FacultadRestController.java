@@ -52,33 +52,33 @@ public class FacultadRestController {
 	   return "redirect:/admin/administrar/facultad/1";
 	}
 	
-	@RequestMapping(value = "/admin/facultad/nombre/tag/{tagName}", method = RequestMethod.GET)
-	public List<FacultadDTO> facultadesFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-
-		List<FacultadDTO> result = new ArrayList<>();
-		List<Facultad> usuarios = new ArrayList<>();
-
-		usuarios = facultad_service.getFacultadesPorTagName(tagName);
-
-		for (Facultad u : usuarios) {
-			result.add(FacultadDTO.fromFacultadDTOAutocompletar(u));
-		}
-
-		return result;
-	}
-	
-	@RequestMapping(value = "/admin/facultad/web/tag/{tagName}", method = RequestMethod.GET)
-	public List<FacultadDTO> emailFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-
-		List<FacultadDTO> result = new ArrayList<>();
-		List<Facultad> usuarios = new ArrayList<>();
-
-		usuarios = facultad_service.getFacultadesPorWeb(tagName);
-
-		for (Facultad u : usuarios) {
-			result.add(FacultadDTO.fromFacultadDTOAutocompletar(u));
-		}
-
-		return result;
-	}
+//	@RequestMapping(value = "/admin/facultad/nombre/tag/{tagName}", method = RequestMethod.GET)
+//	public List<FacultadDTO> facultadesFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+//
+//		List<FacultadDTO> result = new ArrayList<>();
+//		List<Facultad> usuarios = new ArrayList<>();
+//
+//		usuarios = facultad_service.getFacultadesPorTagName(tagName);
+//
+//		for (Facultad u : usuarios) {
+//			result.add(FacultadDTO.fromFacultadDTOAutocompletar(u));
+//		}
+//
+//		return result;
+//	}
+//	
+//	@RequestMapping(value = "/admin/facultad/web/tag/{tagName}", method = RequestMethod.GET)
+//	public List<FacultadDTO> emailFiltroAutocompletar(@PathVariable("tagName") String tagName) {
+//
+//		List<FacultadDTO> result = new ArrayList<>();
+//		List<Facultad> usuarios = new ArrayList<>();
+//
+//		usuarios = facultad_service.getFacultadesPorWeb(tagName);
+//
+//		for (Facultad u : usuarios) {
+//			result.add(FacultadDTO.fromFacultadDTOAutocompletar(u));
+//		}
+//
+//		return result;
+//	}
 }

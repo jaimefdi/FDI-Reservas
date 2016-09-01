@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import es.fdi.reservas.reserva.business.control.FacultadRepository;
@@ -57,6 +58,10 @@ public class FacultadService {
 		return facultad_repository.save(f);
 	}
 	
+	public Page<Facultad> getFacultadesPorTagName(String tagName, Pageable pagerequest) {
+		return facultad_repository.getFacultadesPorTagName(tagName, pagerequest);
+	}
+	
 	public List<Facultad> getFacultadesPorTagName(String tagName) {
 		return facultad_repository.getFacultadesPorTagName(tagName);
 	}
@@ -95,8 +100,8 @@ public class FacultadService {
 		return null;
 	}
 
-	public List<Facultad> getFacultadesPorWeb(String tagName) {
+	public Page<Facultad> getFacultadesPorWeb(String tagName, Pageable pagerequest) {
 		
-		return facultad_repository.getFacultadesPorWeb(tagName);
+		return facultad_repository.getFacultadesPorWeb(tagName, pagerequest);
 	}
 }
