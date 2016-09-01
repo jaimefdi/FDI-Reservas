@@ -59,7 +59,7 @@
                   </thead>
                   <tbody>
                   	<tr></tr>
-                      <tr th:if="${!r.deleted}" th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'" th:attr="id=${r.id}">
+                      <tr th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'" th:attr="id=${r.id}">
                       	 
 						  <td class="text-center"><img class="img-circle" th:title="${r.imagen.description}" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
                           <td th:text="${#strings.abbreviate(r.nombreEdificio,21)}" th:title="${r.nombreEdificio}"></td>
@@ -204,7 +204,6 @@
                  
           </div>
           <div class="modal-footer">
-	        <a id="btn-eliminar" href="#" class="btn-rec gray">ELIMINAR</a>
 	        <a id="btn-editar" th:href="@{''}" class="btn-rec blue">EDITAR</a>
 	      </div>
         </div>

@@ -44,7 +44,7 @@ $(document).ready(function(){
 	 	
 	 		if (accion == 'Eliminar'){
 	 			
- 				modalEliminarEspacio(edificio, reqHeaders);	
+ 				modalEliminarEspacio(espacio, reqHeaders);	
  			
 	 		}else if(accion == 'Ver'){
 	 		
@@ -75,7 +75,7 @@ function modalEliminarEspacio(espacio, reqHeaders){
 	 				$("#" + espacio.id).remove();
 	 			},    
 	 			error : function(xhr, status) {
-	 				alert(espacio.id);
+	 				console.log(espacio);
 	 				alert('Disculpe, existió un problema');
 	 			}
 	 		});

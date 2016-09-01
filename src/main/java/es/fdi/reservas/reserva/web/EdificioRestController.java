@@ -56,7 +56,7 @@ public class EdificioRestController {
 
 	}
 	
-	@RequestMapping(value = "/admin/administrar/edificio/{numPag}/restaurar/{idEdificio}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/administrar/edificio/{numPag}/restaurar/{idEdificio}", method = RequestMethod.DELETE)
 	public String restaurarEdificio(@PathVariable("numPag") Long numPag, @PathVariable("idEdificio") Long idEdificio){
 		edificio_service.restaurarEdificio(idEdificio);
 		return "redirect:/administrar/edificio/{numPag}/restaurar";

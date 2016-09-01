@@ -11,7 +11,7 @@
 	<div class="row">
 	    <div class="col-md-12">
 	        <h1 class="page-header text-center">
-	            Administrar
+	            Restaurar
 	        </h1>
 	    </div>
 	</div>
@@ -19,10 +19,32 @@
 	<div class="row">
         <div class="col-md-12">
             <h1 class="page-header text-center">
-                <small>Restaurar espacios</small>
+                <small>Espacios</small>
             </h1>
         </div>
     </div>
+    
+    <div class="row">
+		<div class="col-md-8 col-md-offset-2 text-center">
+			<div class="col-md-2">
+				<label class="form-group" style="margin-top:5px;">Filtrar por: </label>
+			</div>
+			<div class="col-md-2">
+				<select id="selec-busqueda" class="form-control">
+					<option value="nombre">Nombre</option>
+					<option value="edificio">Edificio</option>
+				</select>
+			</div>
+			<div class="col-md-8">
+			 <div class="input-group">        
+	            <input type="text" id="texto-busqueda" class="form-control" placeholder="Introduce nombre de espacio"></input>
+	             <span class="input-group-addon"><a id="busquedaEspacio"><i class="fa fa-search"></i></a></span>
+	          </div>
+	    	</div>
+		</div>
+	</div>
+<hr/>
+    
 	<div class="row">
     	<div class="col-md-8 col-md-offset-2">
          	
@@ -35,6 +57,7 @@
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
+                      	<th>Imágen</th>
                           <th>Nombre</th>
                           <th>Capacidad</th>
                           <th>Micrófono</th>
@@ -45,9 +68,8 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr th:each="r : ${espacios}"
-                      	th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo}, edificio = ${r.edificio.nombreEdificio}">
-                      	
+                      <tr th:each="r : ${espacios}" th:attr="data-id=${r.id}" class="danger">
+                      	<td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
                         <td th:text="${r.nombreEspacio}"></td>
                         <td th:text="${r.capacidad}"></td>
                         <td th:if="${!r.microfono}">No</td>
@@ -56,7 +78,12 @@
                         <td th:if="${r.proyector}">Si</td>
                         <td th:text="${r.tipoEspacio.tipo}"></td> 
                         <td th:text="${r.edificio.nombreEdificio}"></td> 
-                        <td><a th:href="@{'/administrar/espacio/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a></td>
+                        <td>
+	                        <a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+							
+							<a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted},data-accion='Restaurar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-refresh"></i></a>
+<!--                         <a th:href="@{'/administrar/espacio/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a> -->
+                        </td>
                       </tr>     
                   </tbody>
               </table>
@@ -64,7 +91,164 @@
          
      	</div>
  	</div>
+	<!-- Pagination -->
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
+    <div class="col-md-12 text-center">
+        <nav>
+            <ul class="pagination">
+                <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                    <span th:if='${currentIndex == 1}'>Primera</span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{1}">Primera</a>
+                </li>
+                <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                    <span th:if='${currentIndex == 1}'><i class='fa fa-angle-left'></i></span>
+                    <a th:if='${currentIndex != 1}'
+                       th:href="@{${(currentIndex - 1)}}"
+                       title='Go to previous page'><i class='fa fa-angle-left'></i></a>
+                </li>
 
+                <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+                    th:class="${item == currentIndex ? 'active' : '' }">
+
+                    <span th:if='${item == currentIndex}' th:text='${item}'>1</span>
+
+                    <a th:if='${item != currentIndex}'
+                       th:href="@{${item}}">
+                        <span th:text='${item}'>1</span>
+                    </a>
+                </li>
+
+                <li th:class="${currentIndex != currentResults.totalPages}? '' : 'disabled'">
+                    <span th:if='${currentIndex == currentResults.totalPages}'><i class='fa fa-angle-right'></i></span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${(currentIndex + 1)}}" title='Go to next page'><i class='fa fa-angle-right'></i></a>
+                </li>
+                <li th:class="${currentIndex == currentResults.totalPages}? 'disabled' : ''">
+                    <span th:if='${currentIndex == currentResults.totalPages}'>Última</span>
+                    <a th:if='${currentIndex != currentResults.totalPages}'
+                       th:href="@{${currentResults.totalPages}}">Última</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+ <!-- /.Pagination -->
+	
+	<div class="modal fade" id="modalEditarEspacio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Editar espacio</h4>
+          </div>
+          <div class="modal-body">
+          		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Espacio}" method="put">             
+				
+				 <!-- Nombre de edificio --> 
+				 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Nombre: </label>
+		                      <div class="col-md-10">
+		                         <p id="idNombre" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+                 
+                 <!-- Capacidad --> 
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Capacidad: </label>
+		                      <div class="col-md-10">
+		                         <p id="idCapa" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+                                  
+                 <!-- Microfono --> 
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Micrófono: </label>
+		                      <div class="col-md-10">
+		                         <p id="idMicro" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+                 
+                 <!-- Proyector --> 
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Proyector: </label>
+		                      <div class="col-md-10">
+		                         <p id="idProy" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+                 
+                 <!-- Tipo espacio -->
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Tipo de espacio: </label>
+		                      <div class="col-md-10">
+		                         <p id="idTipo" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+                  </div>
+				
+				<!-- Edificio -->
+				<div class="row">
+                	<div class="col-md-12">
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Edificio: </label>
+		                      <div class="col-md-10">
+		                         <p id="idEdificio" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+                  </div>
+                 
+                 <div class="row">
+                	<div class="col-md-12">
+		                 <!-- Asunto --> 
+		                 <div class="form-group">
+		                     <label class="col-md-2 control-label">Eliminado: </label>
+		                      <div class="col-md-10">
+		                         <p id="idActivado" class="form-control-static"> </p>
+		                      </div>
+		                 </div>
+                   </div>
+		         </div>
+                               
+             </form>
+                 
+          </div>
+          
+          <div class="modal-footer">
+	        <a id="btn-editar" th:href="@{''}" class="btn-rec blue">EDITAR</a>
+	      </div>
+        </div>
+      </div>
+    </div>
+   <script th:inline="javascript">
+ 	var baseURL = /*[[@{/}]]*/ '/';
+ 	var pag = /*[[${currentIndex}]]*/ '/';
+ </script>
+ <script src="../../js/restaurarEspacio.js" th:src="@{/js/restaurarEspacio.js}"></script>	
  </div>
 </div>
 </body>

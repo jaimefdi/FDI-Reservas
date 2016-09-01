@@ -124,5 +124,15 @@ public class EspacioService {
 		// TODO Auto-generated method stub
 		return espacio_repository.getEspaciosPorEdificio(tagName, pagerequest);
 	}
+	
+	public Page<Espacio> getEspaciosEliminadosPorNombre(String nombre, Pageable pagerequest) {
+		// TODO Auto-generated method stub
+		return espacio_repository.getEspaciosEliminadosByTagName(nombre,pagerequest);
+	}
+
+	public Page<Espacio> getEspaciosEliminadosPorEdificio(String tagName, Pageable pagerequest) {
+		// TODO Auto-generated method stub
+		return espacio_repository.getEspaciosEliminadosPorEdificio(tagName, pagerequest);
+	}
 
 }

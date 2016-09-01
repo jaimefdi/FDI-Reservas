@@ -70,6 +70,9 @@ public class EdificioController {
         return "index";
     }
 	
+	/*
+	 * Filtrar por nombre de edificio
+	 */
 	@RequestMapping(value="/admin/administrar/edificios/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginadosPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
@@ -93,6 +96,35 @@ public class EdificioController {
         return "index";
     }
 	
+	/*
+	 * Filtrar por edificios eliminados (nombre)
+	 */
+	@RequestMapping(value="/admin/administrar/edificios/restaurar/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEdificiosPaginadosPorNombreRestaurar(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
+		User u = user_service.getCurrentUser();
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+   
+		Page<Edificio> currentResults = edificio_service.getEdificiosEliminadosPorTagName(nombre, pageRequest);
+        
+	    model.addAttribute("currentResults", currentResults);
+	    
+	    int current = currentResults.getNumber() + 1;
+	    int begin = Math.max(1, current - 5);
+	    int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+	
+	    model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+	    model.addAttribute("beginIndex", begin);
+	    model.addAttribute("endIndex", end);
+	    model.addAttribute("currentIndex", current);
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/papelera_edificios");
+		
+        return "index";
+    }
+	
+	/*
+	 * Filtrar por direccion del edificio
+	 */
 	@RequestMapping(value="/admin/administrar/edificios/direccion/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginadosPorDireccion(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
@@ -115,6 +147,31 @@ public class EdificioController {
         return "index";
     }
 	
+	@RequestMapping(value="/admin/administrar/restaurar/edificios/direccion/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEdificiosPaginadosPorDireccionRestaurar(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
+		User u = user_service.getCurrentUser();
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		Page<Edificio> currentResults = edificio_service.getEdificiosEliminadosPorTagName(nombre, pageRequest);
+        
+	    model.addAttribute("currentResults", currentResults);
+	    
+	    int current = currentResults.getNumber() + 1;
+	    int begin = Math.max(1, current - 5);
+	    int end = Math.min(begin + 10, currentResults.getTotalPages());
+	
+	    model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+	    model.addAttribute("beginIndex", begin);
+	    model.addAttribute("endIndex", end);
+	    model.addAttribute("currentIndex", current);
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/papelera_edificios");
+		
+        return "index";
+    }
+	
+	/*
+	 * Filtrar por facultad
+	 */
 	@RequestMapping(value="/admin/administrar/edificios/facultad/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginadosPorFacultad(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
@@ -133,6 +190,28 @@ public class EdificioController {
 	    model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_edificios");
+		
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/edificios/restaurar/facultad/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEdificiosPaginadosPorFacultadRestaurar(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
+		User u = user_service.getCurrentUser();
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
+		Page<Edificio> currentResults = edificio_service.getEdificiosEliminadosPorFacultad(nombre, pageRequest);
+        
+	    model.addAttribute("currentResults", currentResults);
+	    
+	    int current = currentResults.getNumber() + 1;
+	    int begin = Math.max(1, current - 5);
+	    int end = Math.min(begin + 10, currentResults.getTotalPages());
+	
+	    model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+	    model.addAttribute("beginIndex", begin);
+	    model.addAttribute("endIndex", end);
+	    model.addAttribute("currentIndex", current);
+		model.addAttribute("User", u);
+		model.addAttribute("view", "admin/papelera_edificios");
 		
         return "index";
     }

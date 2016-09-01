@@ -118,8 +118,11 @@ public Edificio addNewEdificio(Edificio edificio) {
 	}
 
 	public Page<Edificio> getEdificiosPorTagName(String tagName, Pageable pagerequest) {
-		// TODO Auto-generated method stub
 		return edificio_repository.getEdificiosPorTagName(tagName, pagerequest);
+	}
+	
+	public Page<Edificio> getEdificiosEliminadosPorTagName(String tagName, Pageable pagerequest) {
+		return edificio_repository.getEdificiosEliminadosPorTagName(tagName, pagerequest);
 	}
 	
 	public List<Edificio> getEdificiosPorTagName(String tagName) {
@@ -135,9 +138,19 @@ public Edificio addNewEdificio(Edificio edificio) {
 		return edificio_repository.getEdificiosPorDireccion(tagName, pagerequest);
 	}
 	
+	public Page<Edificio> getEdificiosEliminadosPorDireccion(String tagName, Pageable pagerequest) {
+		
+		return edificio_repository.getEdificiosEliminadosPorDireccion(tagName, pagerequest);
+	}
+	
 	public Page<Edificio> getEdificiosPorFacultad(String tagName, Pageable pagerequest) {
 		
 		return edificio_repository.getEdificiosPorFacultad(tagName, pagerequest);
+	}
+	
+	public Page<Edificio> getEdificiosEliminadosPorFacultad(String tagName, Pageable pagerequest) {
+		
+		return edificio_repository.getEdificiosEliminadosPorFacultad(tagName, pagerequest);
 	}
 
 }

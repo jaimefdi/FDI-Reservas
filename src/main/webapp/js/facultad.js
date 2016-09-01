@@ -20,13 +20,18 @@ $(document).ready(function(){
 	 		var nombreFacultad = $(this).attr("name");
 			var webFacultad = $(this).attr("web");
 			var deleted = $(this).attr("act");
+			var accion = $(this).attr("data-accion");
 			
 	 		$('#modalEditarFacultad #idNombre').text(nombreFacultad);
 	 		$('#modalEditarFacultad #idWeb').text(webFacultad);
 	 		$('#modalEditarFacultad #idActivado').text(deleted);
 	 		$('#modalEditarFacultad #btn-editar').prop("href", baseURL + "admin/administrar/facultad/editar/" + facultad.id);
 	 		
-	 		$('#modalEditarFacultad').modal('show');
+	 		if (accion == 'Ver'){
+	 			$('#modalEditarFacultad').modal('show');
+	 		}else{
+	 			modalEliminarFacultad(facultad, reqHeaders);
+	 		}
 	 	});
 	 	
 	 	$('#selec-busqueda').change(function(){

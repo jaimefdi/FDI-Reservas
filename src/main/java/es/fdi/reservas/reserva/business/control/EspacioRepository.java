@@ -43,11 +43,17 @@ public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 	@Query("from #{#entityName} e where lower(e.nombreEspacio) like lower(concat('%',:nombreEspacio, '%'))")
 	public Page<Espacio> getEspaciosByTagName(@Param("nombreEspacio") String nombreEspacio, Pageable pagerequest);
 	
+	@Query("from #{#entityName} e where e.deleted=true and lower(e.nombreEspacio) like lower(concat('%',:nombreEspacio, '%'))")
+	public Page<Espacio> getEspaciosEliminadosByTagName(@Param("nombreEspacio") String nombreEspacio, Pageable pagerequest);
+	
 	@Query("from #{#entityName} e where lower(e.nombreEspacio) like lower(concat('%',:nombreEspacio, '%'))")
 	public List<Espacio> getEspaciosByTagName(@Param("nombreEspacio") String nombreEspacio);
 
 	@Query("select e from #{#entityName} e where e.deleted=false and e.edificio.nombreEdificio like lower(concat('%',:nombre, '%'))")
 	public Page<Espacio> getEspaciosPorEdificio(@Param("nombre") String nombre, Pageable pagerequest);
+	
+	@Query("select e from #{#entityName} e where e.deleted=true and e.edificio.nombreEdificio like lower(concat('%',:nombre, '%'))")
+	public Page<Espacio> getEspaciosEliminadosPorEdificio(@Param("nombre") String nombre, Pageable pagerequest);
 	
 	
 }

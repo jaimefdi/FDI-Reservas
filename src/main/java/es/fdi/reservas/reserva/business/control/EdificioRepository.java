@@ -27,20 +27,29 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 
 	public List<Edificio> findByFacultadId(Long idFacultad);
 
-	@Query("from Edificio f where lower(f.nombreEdificio) like lower(concat('%',:nombreEdificio, '%'))")
+	@Query("from Edificio f where f.deleted=false and lower(f.nombreEdificio) like lower(concat('%',:nombreEdificio, '%'))")
 	List<Edificio> getEdificiosPorTagName(@Param("nombreEdificio") String nombreEdificio);
 	
-	@Query("from Edificio f where lower(f.nombreEdificio) like lower(concat('%',:nombreEdificio, '%'))")
+	@Query("from Edificio f where f.deleted=false and lower(f.nombreEdificio) like lower(concat('%',:nombreEdificio, '%'))")
 	Page<Edificio> getEdificiosPorTagName(@Param("nombreEdificio") String nombreEdificio, Pageable pagerequest);
 
+	@Query("from Edificio f where f.deleted=true and lower(f.nombreEdificio) like lower(concat('%',:nombreEdificio, '%'))")
+	Page<Edificio> getEdificiosEliminadosPorTagName(@Param("nombreEdificio") String nombreEdificio, Pageable pagerequest);
+	
 //	@Query("from Edificio f where lower(f.direccion) like lower(concat('%',:direccion, '%'))")
 //	List<Edificio> getEdificiosPorDireccion(@Param("direccion") String tagName);
 	
-	@Query("from Edificio f where lower(f.direccion) like lower(concat('%',:direccion, '%'))")
+	@Query("from Edificio f where f.deleted=false and lower(f.direccion) like lower(concat('%',:direccion, '%'))")
 	Page<Edificio> getEdificiosPorDireccion(@Param("direccion") String tagName, Pageable pagerequest);
+	
+	@Query("from Edificio f where lower(f.direccion) like lower(concat('%',:direccion, '%'))")
+	Page<Edificio> getEdificiosEliminadosPorDireccion(@Param("direccion") String tagName, Pageable pagerequest);
 	
 //	@Query("select e from #{#entityName} e where e.deleted=false and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
 //	List<Edificio> getEdificiosPorFacultad(@Param("nombre") String nombre);
+	
+	@Query("select e from #{#entityName} e where e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
+	Page<Edificio> getEdificiosEliminadosPorFacultad(@Param("nombre") String nombre, Pageable pagerequest);
 	
 	@Query("select e from #{#entityName} e where e.deleted=false and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
 	Page<Edificio> getEdificiosPorFacultad(@Param("nombre") String nombre, Pageable pagerequest);
