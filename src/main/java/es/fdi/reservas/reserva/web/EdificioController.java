@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
 import es.fdi.reservas.reserva.business.boundary.EdificioService;
 import es.fdi.reservas.reserva.business.boundary.FacultadService;
 import es.fdi.reservas.reserva.business.boundary.ReservaService;
@@ -234,7 +233,6 @@ public class EdificioController {
 		model.addAttribute("User", u);
 		model.addAttribute("edificio", edificio_service.getEdificio(idEdificio));
 		model.addAttribute("facultades", facultad_service.getFacultades());
-		model.addAttribute("command", new NewFileCommand());
 		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("view", "admin/editarEdificio");
 		return "index";

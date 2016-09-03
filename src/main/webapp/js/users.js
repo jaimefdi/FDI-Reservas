@@ -23,14 +23,17 @@
 	 		var roles = $(this).attr("roles");
 	 		var enabled = $(this).attr("act");
 	 		var accion = $(this).attr("data-accion");
-	 		var imagen = $(this).attr("img")
+	 		var imagen = "../../../../../.." + $(this).attr("img");
+	 		console.log(enabled);
+	 		
+	 		var x = isEnabled(enabled);
 	 		
 	 		$('#modalEditarUsuario #idNombre').text(username);
 	 		$('#modalEditarUsuario #idEmail').text(email);
 	 		$('#modalEditarUsuario #idFacul').text(facultad);
 	 		$('#modalEditarUsuario #idRoles').text(roles);
-	 		$('#modalEditarUsuario #idActivado').text(enabled);
-	 		$('#modalEditarEdificio #idAttachment').text(imagen);
+	 		$('#modalEditarUsuario #idActivado').text(x);
+	 		$('#modalEditarUsuario #idAttachment').attr("src",imagen);
 	 		$('#modalEditarUsuario #btn-editar').prop("href", baseURL + "admin/administrar/usuarios/editar/" + user.id)
 	 		
 	 		if (accion == 'Eliminar'){
@@ -53,138 +56,7 @@
 	 			$('#texto-busqueda').prop("placeholder", "Introduce el nombre de la facultad");
 	 	});
  });
-	 	
-//	 	 $("#texto-busqueda").autocomplete({
-//	 		source:function(request, response){
-//	 			var tag = request.term;
-//	 			var info;
-//	 			if ($("#selec-busqueda").val()=="nombre")
-//	 			{
-//	 				console.log($("#selec-busqueda").val())
-//	 				response=autocompletarUser(tag, response);
-//	 			}
-//	 			else if ($("#selec-busqueda").val() == "email")
-//	 			{	
-//	 				$("#selec-busqueda").val()
-//	 				response=autocompletarEmail(tag, response);
-//	 			}
-//	 			else
-//	 			{	
-//	 				$("#selec-busqueda").val()
-//	 				response=autocompletarFacultad(tag, response);
-//	 			}
-//	 				
-//	 		},
-//	 		minLength: 2
-//	 	}).autocomplete("instance")._renderItem = function(ul,item){	
-//	 	 	var direccion;
-//	 	 	console.log("selector busqueda:" + $('#selec_busqueda').val());
-//	 		if ($('#selec-busqueda').val()=="nombre")
-//	 			direccion="nombre";
-//	 		else if ($('#selec-busqueda').val()=="email")
-//	 			direccion="email";
-//	 		else
-//	 			direccion="facultad";
-//	 		console.log("id:" + item.label);
-//	 		console.log("titulo:" + item.value);
-//	 		console.log("subtitulo:" + item.info);
-//	 		
-//	 		var inner_html = '<a href="/reservas/admin/administrar/user/'+direccion+'/'+item.label+'/page/1">'+
-//	 						'<div class="media"><div class="media-left">' + 
-//	 				        '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
-//	 				        '</div>' + 
-//	 				        '<div class="media-body">' + 
-//	 				        '<h5 class="media-heading">'+ item.value +'</h5>' + 
-//	 				        '<p class="small text-muted">'+ item.info +'</p>' + 
-//	 				        '</div></div></a>';
-//	         
-//	 	            return $("<li></li>")
-//	 	                    .data("item.autocomplete", item)
-//	 	                    .append(inner_html)
-//	 	                    .appendTo(ul);
-//	 		
-//	 	};
-// });
-//
-// function autocompletarUser(tag, respuesta)
-//	{
-//		$.ajax({
-//			url: '/reservas/admin/usuarios/tag/' + tag,
-//			type: 'GET',
-//			async: false,
-//			contentType: 'application/json',
-//			success : function(datos) {				
-//				respuesta($.map(datos,function(item){
-//				
-//					var obj = new Object();
-//					obj.label = item.id; 
-//					obj.value = item.username;
-//					obj.info = item.email;
-//					return obj;
-//				
-//				}))
-//							
-//			},    
-//			error : function(xhr, status) {
-//				alert('Disculpe, existió un problema');
-//			}
-//		});
-//		return item;
-//	}
-// 
-// function autocompletarEmail(tag, respuesta)
-//	{
-//		$.ajax({
-//			url: '/reservas/admin/email/tag/' + tag,
-//			type: 'GET',
-//			async: false,
-//			contentType: 'application/json',
-//			success : function(datos) {				
-//				respuesta($.map(datos,function(item){
-//				
-//					var obj = new Object();
-//					obj.label = item.id; 
-//					obj.value = item.username;
-//					obj.info = item.email;
-//					return obj;
-//				
-//				}))
-//							
-//			},    
-//			error : function(xhr, status) {
-//				alert('Disculpe, existió un problema');
-//			}
-//		});
-//		return item;
-//	}
-// 
-// function autocompletarFacultad(tag, respuesta)
-//	{
-//		$.ajax({
-//			url: '/reservas/admin/facultad/tag/' + tag,
-//			type: 'GET',
-//			async: false,
-//			contentType: 'application/json',
-//			success : function(datos) {				
-//				respuesta($.map(datos,function(item){
-//				
-//					var obj = new Object();
-//					obj.label = item.id; 
-//					obj.value = item.username;
-//					obj.info = item.email;
-//					return obj;
-//				
-//				}))
-//							
-//			},    
-//			error : function(xhr, status) {
-//				console.log(obj);
-//				alert('Disculpe, existió un problema');
-//			}
-//		});
-//		return item;
-//	}
- 
+	 	 
  function modalEliminarUsuario(user, reqHeaders){
 	 	 	
 	 		$.ajax({
@@ -201,4 +73,12 @@
 	 			}
 	 	});
 	 
+ }
+ 
+ function isEnabled(enabled){
+	 if(enabled == "true")
+		 return "Sí";
+	 else
+		 return "No";
+	
  }

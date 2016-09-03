@@ -30,7 +30,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	public UserDetails findByUsername(String username);
 
 	@Query("select e from #{#entityName} e where e.enabled=false")
-	public List<User> recycleBin();
+	public Page<User> recycleBin(Pageable pagerequest);
 	
 	@Query("from User u where lower(u.username) like lower(concat('%',:username, '%'))")
 	Page<User> getUsuariosPorTagName(@Param("username") String username, Pageable pagerequest);

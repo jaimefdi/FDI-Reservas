@@ -135,10 +135,15 @@ public class UserService implements UserDetailsService{
 		return user_ropository.save(f);		
 	}
 
-	public List<User> getUsuariosEliminados() {
-		
-		return user_ropository.recycleBin();
-	}
+//	public List<User> getUsuariosEliminados() {
+//		
+//		return user_ropository.recycleBin();
+//	}
+	
+//	public Page<User> getUsuariosEliminados() {
+//		
+//		return user_ropository.recycleBin();
+//	}
 
 
 	public List<User> getUsuariosPorTagName(String tagName) {
@@ -214,6 +219,11 @@ public class UserService implements UserDetailsService{
 			attachment_repository.save(i);
 		}
 		
+	}
+
+	public Page<User> getUsuariosEliminadosPaginados(Pageable pageRequest) {
+		// TODO Auto-generated method stub
+		return user_ropository.recycleBin(pageRequest);
 	}
 
 	

@@ -22,7 +22,7 @@ $(document).ready(function(){
 	 		var direccion = $(this).attr("dir");
 	 		var deleted = $(this).attr("act");
 	 		var facultad = $(this).attr("fac");
-	 		var imagen = "../../.." + $(this).attr("img");
+	 		var imagen = "../../../.." + $(this).attr("img");
 	 		var accion = $(this).attr("data-accion");
 	 		
 	 		$('#modalEditarEdificio #idNombre').text(nombreEdificio);

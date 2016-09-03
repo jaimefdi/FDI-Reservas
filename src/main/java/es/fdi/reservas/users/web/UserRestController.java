@@ -1,22 +1,15 @@
 package es.fdi.reservas.users.web;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
-import es.fdi.reservas.fileupload.business.boundary.AttachmentManager;
-import es.fdi.reservas.fileupload.business.boundary.NewFileCommand;
 import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -25,12 +18,10 @@ import es.fdi.reservas.users.business.entity.User;
 public class UserRestController {
 
 	private UserService user_service;
-	private AttachmentManager manager;
 
 	@Autowired
-	public UserRestController(UserService us, AttachmentManager manager) {
+	public UserRestController(UserService us) {
 		user_service = us;
-		this.manager = manager;
 	}
 	
 	@RequestMapping(value = "/user/{idUsuario}", method = RequestMethod.DELETE)
@@ -39,7 +30,7 @@ public class UserRestController {
 		return "redirect:/admin/administrar/usuarios/1";
 	}
 	
-	@RequestMapping(value = "/administrar/usuarios/{numPag}/restaurar/{idUsuario}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/administrar/usuarios/{numPag}/restaurar/{idUsuario}", method = RequestMethod.DELETE)
 	public String restaurarUsuario(@PathVariable("idUsuario") Long idUser, @PathVariable("numPag") Long numPag){
 		user_service.restaurarUser(idUser);
 		return "redirect:/reservas/administrar/usuarios/{numPag}";
@@ -59,26 +50,18 @@ public class UserRestController {
 				attachment = user_service.getUser(userActualizado.getId()).getImagen();
 			}
 			else {
-//				String img = "/img/users/" + user_service.getUser(idUser).getUsername();
-//				String nombreViejo = user_service.getUser(idUser).getUsername();
-//				String nombreNuevo = userActualizado.getUsername();
-//				
-//				if (!nombreViejo.equalsIgnoreCase(nombreNuevo)){
-//					//si el nombre de usuario ha cambiado, hay que renombrar el directorio y las referencias
-//					//File dirViejo = new File("../src/main/webapp/img/"  + nombreViejo);
-//					File dirNuevo = new File("../../img/"  + nombreNuevo);
-//					boolean correcto = dirNuevo.mkdir();
-//					
-//				}
-//				File file = new File("/img/" + userActualizado.getImagen());
-//				boolean ex = file.exists();
+
 				if (user_service.getAttachmentByName(userActualizado.getImagen()).isEmpty()){
 			
 					//si no esta, lo añado
-									
-					attachment.setAttachmentUrl("/img/" + userActualizado.getImagen());
-					attachment.setStorageKey(user_service.getUser(idUser).getUsername() + "/" + userActualizado.getImagen());
-					//reserva_service.addAttachment(attachment);
+					String img = userActualizado.getImagen();
+					int pos = img.lastIndexOf(".");
+					String punto = img.substring(0, pos);
+					String fin = img.substring(pos+1, img.length());
+					String nom = punto + "-" + idUser + "." + fin;
+					nom = nom.replace(nom, "/img/" + nom);
+					attachment.setAttachmentUrl(nom);
+					attachment.setStorageKey("/img/" + userActualizado.getImagen());
 				}else{
 					attachment = user_service.getAttachmentByName(userActualizado.getImagen()).get(0);
 				}

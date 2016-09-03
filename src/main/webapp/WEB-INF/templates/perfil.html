@@ -23,17 +23,13 @@
 	
 	<div class="row">
 	    <div class="col-md-6 col-md-offset-3 text-center">
-	        <img class="img-circle" th:src="@{${User.imagen.attachmentUrl}}" width="150" height="150"/>
+	        <img class="img-circle" th:src="@{${User.imagen.storageKey}}" width="150" height="150"/>
 	        <h3 th:text="${#strings.toUpperCase(User.username)}"></h3>
 	        <em class="text-muted" th:text="${User.email}"></em>
 	        <hr/>
 	        <i class="fa fa-building fa-2x"> </i>
 		    <h4 th:text="${User.facultad.nombreFacultad}"></h4>
 			<p class="small text-muted" th:text="${User.facultad.webFacultad}"></p>    
-	    </div>
-	    
-	    <div class="col-md-6 col-md-offset-3 text-center">
-	    	<a th:href="@{'/admin/administrar/usuarios/editar/' + ${User.id}}"><input type="button" class="btn btn-default" value="Editar datos"/></a>
 	    </div>
 	</div>
 	<!-- /.row -->

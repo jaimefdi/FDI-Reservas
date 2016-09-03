@@ -287,7 +287,7 @@
                             <a th:href="@{/perfil}">
                                 <div class="media">
                                     <span class="pull-left">
-                                        <img class="img-circle" th:src="@{${User.imagen.attachmentUrl}}" th:alt="${User.imagen.description}" width="50" height="50" />
+                                        <img class="img-circle" th:src="@{${User.imagen.storageKey}}" th:alt="${User.imagen.description}" width="50" height="50" />
                                     </span>
                                     <div class="media-body">
                                         <h5 class="media-heading"><strong th:text="${User.username}">John Smith</strong>

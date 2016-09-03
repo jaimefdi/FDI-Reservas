@@ -58,6 +58,7 @@ public class UserController {
 		//ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("us", new User());
 		model.addAttribute("view", "admin/nuevoUsuario");
 	   return "index";
@@ -300,28 +301,28 @@ public class UserController {
 		return "index";
 	}
 	
-//	@RequestMapping({"/admin/administrar/espacios"})
-//	public ModelAndView administrarEspacios(){
-//		ModelAndView model = new ModelAndView("index");
-//		User u = user_service.getCurrentUser();
-//		model.addObject("User", u);
-//		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-//		model.addObject("espacios", espacio_service.getEspacios());
-//		model.addObject("view", "admin/administrar_espacios");
-//		return model;
-//	}
-
-	
-	@RequestMapping(value = "/admin/administrar/usuarios/page/{numPag}/restaurar",method=RequestMethod.GET)
-	public ModelAndView restaurarUsuarios(@PathVariable("numPag") Long numPag){
-		ModelAndView model = new ModelAndView("index");
+	@RequestMapping(value = "/admin/administrar/usuarios/restaurar/page/{numPag}",method=RequestMethod.GET)
+	public String restaurarUsuarios(@PathVariable("numPag") Integer numPag, Model model){
+		//ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("User", u);
-		model.addObject("usuarios", user_service.getUsuariosEliminados());
-		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("pagina", numPag);
-		model.addObject("view", "admin/papelera_usuarios");
-		return model;
+		
+		PageRequest pageRequest = new PageRequest(numPag - 1, 5);
+		Page<User> currentResults = user_service.getUsuariosEliminadosPaginados(pageRequest);
+        
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+		
+		model.addAttribute("User", u);
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("pagina", numPag);
+		model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("view", "admin/papelera_usuarios");
+		return "index";
 	}	
 
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)

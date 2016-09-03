@@ -22,9 +22,11 @@ $(document).ready(function(){
 			var deleted = $(this).attr("act");
 			var accion = $(this).attr("data-accion");
 			
+			var x = isEnabled(deleted);
+			
 	 		$('#modalEditarFacultad #idNombre').text(nombreFacultad);
 	 		$('#modalEditarFacultad #idWeb').text(webFacultad);
-	 		$('#modalEditarFacultad #idActivado').text(deleted);
+	 		$('#modalEditarFacultad #idActivado').text(x);
 	 		$('#modalEditarFacultad #btn-editar').prop("href", baseURL + "admin/administrar/facultad/editar/" + facultad.id);
 	 		
 	 		if (accion == 'Ver'){
@@ -45,111 +47,7 @@ $(document).ready(function(){
 	 	});
 });
 	 	
-//	 	 $("#texto-busqueda").autocomplete({
-//	 		source:function(request, response){
-//	 			var tag = request.term;
-//	 			var info;
-//	 			if ($("#selec-busqueda").val()=="nombre")
-//	 			{
-//	 				console.log($("#selec-busqueda").val())
-//	 				response=autocompletarNombre(tag, response);
-//	 			}
-//	 			else if ($("#selec-busqueda").val() == "web")
-//	 			{	
-//	 				$("#selec-busqueda").val()
-//	 				response=autocompletarWeb(tag, response);
-//	 			}
-//	 				
-//	 		},
-//	 		minLength: 2
-//	 	}).autocomplete("instance")._renderItem = function(ul,item){	
-//	 	 	var direccion;
-//	 	 	console.log("selector busqueda:" + $('#selec_busqueda').val());
-//	 		if ($('#selec-busqueda').val()=="nombre")
-//	 			direccion="nombre";
-//	 		else if ($('#selec-busqueda').val()=="web")
-//	 			direccion="web";
-//	 		
-//	 		console.log("id:" + item.label);
-//	 		console.log("titulo:" + item.value);
-//	 		console.log("subtitulo:" + item.info);
-//	 		/*
-//	 			var inner_html =  '<a href="/reservas/gestor/gestion-reservas/'+direccion+'/'+item.label+'/page/1">'+
-//	 							  '<div class="col-md-2" style="padding-top:3px;">' +
-//	 			                  '<img class="media-object" src="http://placehold.it/50x50"/>' + 
-//	 			                  '</div>' + 
-//	 			                  '<div class="col-md-10">' + 
-//	 			                  '<p>'+ item.value +'</p>' + 
-//	 			                  '<p class="small text-muted">'+ item.info +'</p>'
-//	 			                  '</div></a>';
-//	 			                  */
-//	 		var inner_html = '<a href="/reservas/admin/administrar/facultad/'+direccion+'/'+item.label+'/page/1">'+ 
-//	 				        '<div class="media-body">' + 
-//	 				        '<h5 class="media-heading">'+ item.value +'</h5>' + 
-//	 				        '<p class="small text-muted">'+ item.info +'</p>' + 
-//	 				        '</div></div></a>';
-//	         
-//	 	            return $("<li></li>")
-//	 	                    .data("item.autocomplete", item)
-//	 	                    .append(inner_html)
-//	 	                    .appendTo(ul);
-//	 		
-//	 	};
-//	 	
-//	 
-// });
-//
-//function autocompletarNombre(tag, respuesta)
-//{
-//	$.ajax({
-//		url: '/reservas/admin/facultad/nombre/tag/' + tag,
-//		type: 'GET',
-//		async: false,
-//		contentType: 'application/json',
-//		success : function(datos) {				
-//			respuesta($.map(datos,function(item){
-//			
-//				var obj = new Object();
-//				obj.label = item.id; 
-//				obj.value = item.nombreFacultad;
-//				obj.info = item.webFacultad;
-//				return obj;
-//			
-//			}))
-//						
-//		},    
-//		error : function(xhr, status) {
-//			alert('Disculpe, existió un problema');
-//		}
-//	});
-//	return item;
-//}
-//
-//function autocompletarWeb(tag, respuesta)
-//{
-//	$.ajax({
-//		url: '/reservas/admin/facultad/web/tag/' + tag,
-//		type: 'GET',
-//		async: false,
-//		contentType: 'application/json',
-//		success : function(datos) {				
-//			respuesta($.map(datos,function(item){
-//			
-//				var obj = new Object();
-//				obj.label = item.id; 
-//				obj.value = item.nombreFacultad;
-//				obj.info = item.webFacultad;
-//				return obj;
-//			
-//			}))
-//						
-//		},    
-//		error : function(xhr, status) {
-//			alert('Disculpe, existió un problema');
-//		}
-//	});
-//	return item;
-//}
+
 function modalEliminarFacultad(facultad, reqHeaders){
 
 		$.ajax({
@@ -167,4 +65,12 @@ function modalEliminarFacultad(facultad, reqHeaders){
 				alert('Disculpe, existió un problema');
 			}
 		});
+}
+
+function isEnabled(deleted){
+	 if(deleted == "true")
+		 return "Sí";
+	 else
+		 return "No";
+	
 }

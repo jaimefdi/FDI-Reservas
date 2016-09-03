@@ -10,67 +10,104 @@
 
 	<div class="container-fluid" th:fragment="contenido">
         
+         <!-- Page Heading -->
+			<div class="row">
+			    <div class="col-md-12">
+			        <h2 class="page-header text-center">
+			           Espacio
+			        </h2>
+			    </div>
+			</div>
+		<!-- /.row -->
+			
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="div-login">
-                         <h2 class=" page-header text-center">Añadir espacio</h2>
-                         <form role="form" action="#" th:action="@{/admin/nuevoEspacio}" th:object="${Espacio}" method="post">
-                         	<div class="form-group">
-                                <label for="ejemplo_email_1">Nombre espacio</label>
+                <div class="col-md-6 col-md-offset-3">
+                       <form role="form" action="#" th:action="@{/admin/nuevoEspacio}" th:object="${Espacio}" method="post">
+                       
+                       	<div class="form-group">
+                              <label>Nombre</label>
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                                <input name="nombreEspacio" type="text" class="form-control" placeholder="Nombre del espacio"/>
+                              </div>
+                          </div>
+                          
+<!--                           <div class="form-group"> -->
+<!--                               <label>Aforo</label> -->
+<!--                               <div class="input-group"> -->
+<!--                                 <span class="input-group-addon"><i class="fa fa-users"></i></span> -->
+<!--                                 <input name="capacidad" type="text" class="form-control" placeholder="Introduce la capacidad del espacio"/> -->
+<!--                               </div> -->
+<!--                           </div> -->
+                          
+<!--                           <div class="form-group"> -->
+<!--                               <label>Microfono</label> -->
+<!--                                   <select id="microfono" name="microfono" title="¿Tiene microfono?" class="form-control"> -->
+					          
+<!-- 					          <option value="true">Sí</option> -->
+<!-- 					          <option value="false">No</option> -->
+<!-- 					        </select> -->
+<!--                           </div> -->
+                          
+<!--                           <div class="form-group"> -->
+<!--                               <label>Proyector</label> -->
+<!--                                   <select id="proyector" name="proyector" title="¿Tiene proyector?" class="form-control"> -->
+					          
+<!-- 					          <option value="true">Sí</option> -->
+<!-- 					          <option value="false">No</option> -->
+<!-- 					        </select> -->
+<!--                           </div> -->
+                          
+                          <div class="form-group">
+                              <label>Tipo de Espacio</label>
+                                  <select id="tipoEspacio" name="tipoEspacio" title="Tipo de espacio" class="form-control">
+					          
+					          <option th:value="Aula">Aula</option>
+					          <option th:value="Sala">Sala</option>
+					          <option th:value="Laboratorio">Laboratorio</option>
+					        </select>
+                          </div>
+                          
+                          <!-- Facultad -->
+                            <div class="form-group">
+                                <label>Facultad</label>
+                                <div class="input-group">
+                                  <span class="input-group-addon"><i class="zmdi zmdi-library"></i></span>
+                                  <select name="idFacultad" title="Facultad" class="form-control">
+				          
+							          <option th:each="f : ${facultades}" th:value="${f.id}" th:text="${f.nombreFacultad}"/>
+							          			
+							        </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Edificio -->
+                            <div class="form-group">
+                                <label>Edificio</label>
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                  <input name="nombreEspacio" type="text" class="form-control" placeholder="Nombre del espacio"/>
+                                  <select name="idFacultad" title="Facultad" class="form-control">				     
+							          <option th:each="f : ${facultades}" 
+							          		  th:value="${f.id}" 
+							          		  th:text="${f.nombreFacultad}"/>							          			
+							        </select>					        
                                 </div>
+                                <p class="small help-block text-left">Agregar este espacio a un edificio.</p>
                             </div>
-                            <div class="form-group">
-                                <label for="ejemplo_email_1">Capacidad</label>
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="fa fa-users"></i></span>
-                                  <input name="capacidad" type="text" class="form-control" placeholder="Introduce la capacidad del espacio"/>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="ejemplo_email_1">Microfono</label>
-                                    <select id="microfono" name="microfono" title="¿Tiene microfono?">
-							          
-							          <option value="true">Sí</option>
-							          <option value="false">No</option>
-							        </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="ejemplo_email_1">Proyector</label>
-                                    <select id="proyector" name="proyector" title="¿Tiene proyector?">
-							          
-							          <option value="true">Sí</option>
-							          <option value="false">No</option>
-							        </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="ejemplo_email_1">Tipo espacio</label>
-                                    <select id="tipoEspacio" name="tipoEspacio" title="Tipo de espacio">
-							          
-							          <option th:value="Aula">Aula</option>
-							          <option th:value="Sala">Sala</option>
-							          <option th:value="Laboratorio">Laboratorio</option>
-							        </select>
-                            </div>
-                            
+                          
 <!--                             <div class="form-group"> -->
 <!--                                 <label for="ejemplo_email_1">Edificio</label> -->
 <!-- 	                            <select id="idEdif" name="edificio" title="Edificio"> -->
-					          
+			          
 <!-- 						          <option th:each="f : ${edificios}" th:value="${f.id}" th:text="${f.nombreEdificio}"/>  -->
 <!-- 						        </select> -->
 <!-- 					        </div> -->
-                            <div class="text-center">
-                                 <button type="submit" class="btn btn-default">Crear</button>
-                            </div>
+                          <div class="text-center">
+                               <button type="submit" class="btn-normal">CREAR</button>
+                          </div>
 
-                         </form>
-                    </div>
+                       </form>
+                   
                 </div>
             </div>
             <!-- /.row -->
