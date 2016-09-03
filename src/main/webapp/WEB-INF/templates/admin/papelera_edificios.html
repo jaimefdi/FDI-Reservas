@@ -10,20 +10,13 @@
 <div class="container-fluid" th:fragment="contenido">
 	<div class="row">
 	    <div class="col-md-12">
-	        <h1 class="page-header text-center">
-	            Restaurar
-	        </h1>
+	        <h2 class="page-header text-center">
+	              <small>Restaurar</small> Edificios
+	        </h2>
 	    </div>
 	</div>
 	<!-- /.row -->
-	<div class="row">
-    	<div class="col-md-12">
-            <h1 class="page-header text-center">
-                <small>Edificios</small>
-            </h1>
-        </div>
-    </div>
-           <!-- /.row -->
+	
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2 text-center">
 			<div class="col-md-2">
@@ -48,12 +41,12 @@
     <div class="row">
 		<div class="col-md-8 col-md-offset-2">
     	
-			<div class="jumbotron text-center" th:if="${#lists.isEmpty(edificios)}">
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults.content)}">
            			<i class="fa fa-ban fa-5x"></i>
            			<h4>¡Uups! No hay ningún edificio.</h4>
       		</div> 
 
-          	<div class="table-responsive" th:unless="${#lists.isEmpty(edificios)}">
+          	<div class="table-responsive" th:unless="${#lists.isEmpty(currentResults.content)}">
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
@@ -64,8 +57,8 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr th:each="r : ${edificios}" th:attr="id=${r.id}" class = "danger" >
-                      	  <td><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
+                      <tr th:each="r : ${currentResults}" th:attr="id=${r.id}" class = "danger" >
+                      	  <td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.facultad.nombreFacultad}"></td>
                           <td><a th:attr="data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
@@ -84,7 +77,7 @@
 	</div>
 	
 	<!-- Pagination -->
- 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
     <div class="col-md-12 text-center">
         <nav>
             <ul class="pagination">
@@ -132,7 +125,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Editar edificio</h4>
+            <h4 class="modal-title text-center" id="myModalLabel">Datos del edificio</h4>
           </div>
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${Edificio}" method="put">             

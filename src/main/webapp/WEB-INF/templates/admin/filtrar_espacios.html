@@ -51,8 +51,8 @@
                   <thead>
                       <tr>
                       	  <th>Imágen</th>
-                          <th>Nombre</th> 
-                          <th>Edificio</th>                     
+                      	  <th>Edificio</th>
+                          <th>Nombre</th>                      
                           <th>Tipo de espacio</th>
                           <th>Acciones</th>
                       </tr>
@@ -60,8 +60,8 @@
                   <tbody>
                       <tr th:each="r : ${currentResults}" th:classappend="${!r.deleted} ? 'success' : 'danger'" th:attr="id=${r.id}">
                       	<td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
-                        <td th:text="${r.nombreEspacio}"></td>    
-                        <td  th:text="${r.edificio.nombreEdificio}"></td>               
+                      	<td  th:text="${r.edificio.nombreEdificio}"></td>
+                        <td th:text="${r.nombreEspacio}"></td>                   
                         <td th:text="${r.tipoEspacio.tipo}"></td> 
                         <td><a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 						<a th:href="@{'/admin/administrar/espacio/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
@@ -250,7 +250,7 @@
   <script th:inline="javascript">
  	var baseURL = /*[[@{/}]]*/ '/';
  </script>
- <script src="../../js/espacioAdministrar.js" th:src="@{/js/espacioAdministrar.js}"></script>			
+ <script src="../../js/espacioFiltrar.js" th:src="@{/js/espacioFiltrar.js}"></script>			
  </div>
 </body>
 </html>

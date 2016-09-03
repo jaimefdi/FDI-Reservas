@@ -155,7 +155,7 @@ public class UserController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_usuarios");
+		model.addAttribute("view", "admin/filtrar_usuarios");
 		
         return "index";
     }
@@ -208,7 +208,7 @@ public class UserController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_usuarios");
+		model.addAttribute("view", "admin/filtrar_usuarios");
 		
         return "index";
     }
@@ -259,7 +259,7 @@ public class UserController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_usuarios");
+		model.addAttribute("view", "admin/filtrar_usuarios");
 		
         return "index";
     }

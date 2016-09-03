@@ -19,7 +19,7 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 	List<Edificio> findAll();
 
 	@Query("select e from #{#entityName} e where e.deleted=true")
-	List<Edificio> recycleBin();
+	Page<Edificio> recycleBin(Pageable pr);
 	
 	@Modifying
 	@Query("update #{#entityName} e set e.deleted=true where e.id= :idEdificio")

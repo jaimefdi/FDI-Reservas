@@ -26,16 +26,19 @@ $(document).ready(function(){
  		var edificio = $(this).attr("edif");
  		var eliminado = $(this).attr("act");
  		var accion = $(this).attr("data-accion");
- 		var imagen = "../../../+ $(this).attr("img");
+ 		var imagen = "../../../.." + $(this).attr("img");
 
- 		//$('#modalEditarEspacio #idEspacio').text(espacio.id);
+ 		var x = isEnabled(eliminado);
+ 		var pr = isEnabled(proyector);
+ 		var mic = isEnabled(microfono);
+ 	
  		$('#modalEditarEspacio #idNombre').text(nombreEspacio);
  		$('#modalEditarEspacio #idCapa').text(capacidad);
- 		$('#modalEditarEspacio #idMicro').text(microfono);
- 		$('#modalEditarEspacio #idProy').text(proyector);
+ 		$('#modalEditarEspacio #idMicro').text(mic);
+ 		$('#modalEditarEspacio #idProy').text(pr);
  		$('#modalEditarEspacio #idTipo').text(tipoEspacio);
  		$('#modalEditarEspacio #idEdificio').text(edificio);
- 		$('#modalEditarEspacio #idActivado').text(eliminado);
+ 		$('#modalEditarEspacio #idActivado').text(x);
  		$('#modalEditarEspacio #idAttachment').attr("src",imagen);
  		$('#modalEditarEspacio #btn-editar').prop("href", baseURL + 'admin/administrar/espacio/editar/' + espacio.id);
  	
@@ -63,12 +66,12 @@ $(document).ready(function(){
 function modalRestaurarEspacio(espacio, reqHeaders){
  	
 		$.ajax({
-			url: baseURL + "/admin/administrar/espacio/" + pag + "/restaurar/" + edificio.id,
+			url: baseURL + "/admin/administrar/espacio/" + pag + "/restaurar/" + espacio.id,
 			type: 'DELETE',
 			headers : reqHeaders,
 			success : function(datos) {
-				alert("Edificio eliminado");
-				$('#modalEditarEdificio').modal('hide');
+				alert("Espacio restaurado");
+				$('#modalEditarEspacio').modal('hide');
 				$("#" + edificio.id).remove();
 			
 			},    
@@ -77,4 +80,12 @@ function modalRestaurarEspacio(espacio, reqHeaders){
 			}
  	});
  
+}
+
+function isEnabled(deleted){
+	 if(deleted == "true")
+		 return "Sí";
+	 else
+		 return "No";
+	
 }

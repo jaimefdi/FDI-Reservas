@@ -50,7 +50,7 @@
             <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults.content)}" >
                 <table class="table table-bordered table-hover">
                     <thead>
-                        <tr>
+                        <tr class="text-center">
                         	<th>Imágen</th>
                             <th>Nombre</th>
                             <th>Email</th>
@@ -58,12 +58,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="r : ${currentResults}" th:attr="id=${r.id}" class="danger">
-                        	<td ><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
+                        <tr th:each="r : ${currentResults}" th:attr="id=${r.id}" class="danger ">
+                        	<td class="text-center"><img class="img-circle " th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
                             <td th:text="${r.username}"></td>
                             <td th:text="${r.email}"></td>
                             <td>
-                            	<a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.attachmentUrl},data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                            	<a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 								<a th:attr="id=${r.id},data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.attachmentUrl},data-accion='Restaurar'" role="button" data-toggle="tooltip" data-placement="top" title="Restaurar"><i class="zmdi zmdi-refresh"> </i></a>	
 							
 <!--                             <a th:href="@{'/administrar/usuarios/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a> -->
@@ -126,7 +126,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Usuario</h4>
+            <h4 class="modal-title text-center" id="myModalLabel">Datos del Usuario</h4>
           </div>
           <div class="modal-body">
           		<form class="form-horizontal" role="form" action="#" th:action="@{/editar}" th:object="${User}" method="put">             

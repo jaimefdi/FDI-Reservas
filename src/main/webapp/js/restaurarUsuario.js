@@ -25,11 +25,13 @@ $(document).ready(function(){
  		var accion = $(this).attr("data-accion");
  		var imagen = "../../../../.." + $(this).attr("img");
  		
+ 		var x = isEnabled(enabled);
+ 		
  		$('#modalEditarUsuario #idNombre').text(username);
  		$('#modalEditarUsuario #idEmail').text(email);
  		$('#modalEditarUsuario #idFacul').text(facultad);
  		$('#modalEditarUsuario #idRoles').text(roles);
- 		$('#modalEditarUsuario #idActivado').text(enabled);
+ 		$('#modalEditarUsuario #idActivado').text(x);
  		$('#modalEditarUsuario #idAttachment').attr("src",imagen);
  		$('#modalEditarUsuario #btn-editar').prop("href", baseURL + "admin/administrar/usuarios/editar/" + user.id)
  		
@@ -71,4 +73,12 @@ function modalRestaurarUsuario(user, reqHeaders){
 			}
  	});
  
+}
+
+function isEnabled(enabled){
+	 if(enabled == "true")
+		 return "Sí";
+	 else
+		 return "No";
+	
 }

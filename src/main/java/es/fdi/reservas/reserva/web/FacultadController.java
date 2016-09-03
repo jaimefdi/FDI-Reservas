@@ -85,7 +85,7 @@ public class FacultadController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_facultad");
+		model.addAttribute("view", "admin/filtrar_facultad");
 		
         return "index";
     }
@@ -108,7 +108,7 @@ public class FacultadController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/papelera_facultad");
+		model.addAttribute("view", "admin/papelera_facultades");
 		
         return "index";
     }
@@ -135,7 +135,7 @@ public class FacultadController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_facultad");
+		model.addAttribute("view", "admin/filtrar_facultad");
 		
         return "index";
     }
@@ -158,7 +158,7 @@ public class FacultadController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_facultad");
+		model.addAttribute("view", "admin/papelera_facultades");
 		
         return "index";
     }

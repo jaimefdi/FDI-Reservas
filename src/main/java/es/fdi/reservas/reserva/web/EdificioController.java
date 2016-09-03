@@ -20,7 +20,6 @@ import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
-import es.fdi.reservas.users.web.UserDTO;
 
 @Controller
 public class EdificioController {
@@ -90,14 +89,11 @@ public class EdificioController {
 	    model.addAttribute("endIndex", end);
 	    model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_edificios");
+		model.addAttribute("view", "admin/filtrar_edificios");
 		
         return "index";
     }
-	
-	/*
-	 * Filtrar por edificios eliminados (nombre)
-	 */
+
 	@RequestMapping(value="/admin/administrar/edificios/restaurar/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginadosPorNombreRestaurar(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		User u = user_service.getCurrentUser();
@@ -141,7 +137,7 @@ public class EdificioController {
 	    model.addAttribute("endIndex", end);
 	    model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_edificios");
+		model.addAttribute("view", "admin/filtrar_edificios");
 		
         return "index";
     }
@@ -188,7 +184,7 @@ public class EdificioController {
 	    model.addAttribute("endIndex", end);
 	    model.addAttribute("currentIndex", current);
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_edificios");
+		model.addAttribute("view", "admin/filtrar_edificios");
 		
         return "index";
     }
@@ -215,16 +211,27 @@ public class EdificioController {
         return "index";
     }
 	
-	@RequestMapping(value = "/admin/administrar/edificios/page/{numPag}/restaurar")
-	public ModelAndView restaurarEdificios(@PathVariable("numPag") Long numPag){
-		ModelAndView model = new ModelAndView("index");
+	@RequestMapping(value = "/admin/administrar/edificios/restaurar/page/{numPag}")
+	public String restaurarEdificios(@PathVariable("numPag") Integer numPag, Model model){
+		
 		User u = user_service.getCurrentUser();
-		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("User", u);
-		model.addObject("pagina", numPag);
-		model.addObject("edificios", edificio_service.getEdificiosEliminados());
-		model.addObject("view", "admin/papelera_edificios");
-		return model;
+		
+		PageRequest pageRequest = new PageRequest(numPag - 1, 5);
+		Page<Edificio> currentResults = edificio_service.getEdificiosEliminadosPaginados(pageRequest);
+		
+		int current = currentResults.getNumber() + 1;
+	    int begin = Math.max(1, current - 5);
+	    int end = Math.min(begin + 10, currentResults.getTotalPages());
+	
+	    model.addAttribute("currentResults", currentResults);
+	    model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+	    model.addAttribute("beginIndex", begin);
+	    model.addAttribute("endIndex", end);
+	    model.addAttribute("currentIndex", current);
+		model.addAttribute("User", u);
+		model.addAttribute("pagina", numPag);
+		model.addAttribute("view", "admin/papelera_edificios");
+		return "index";
 	}
 	
 	@RequestMapping(value="/admin/administrar/edificios/editar/{idEdificio}", method=RequestMethod.GET)

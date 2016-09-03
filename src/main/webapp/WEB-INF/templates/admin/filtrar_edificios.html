@@ -78,7 +78,7 @@
                 
           	</div> 
         <!-- /.table-responsive-->
-    	<a th:href="@{'/admin/administrar/edificios/restaurar/page/' + ${currentIndex}}"><input type="button" class="btn btn-default" value="Restaurar edificios"/></a>
+    	<a th:href="@{'/admin/administrar/edificios/page/' + ${currentIndex} + '/restaurar'}"><input type="button" class="btn btn-default" value="Restaurar edificios"/></a>
 		</div>
 	</div>
 	
@@ -212,7 +212,7 @@
  	  <script th:inline="javascript">
  	var baseURL = /*[[@{/}]]*/ '/';
  </script>
- <script src="../../js/edificioAdministrar.js" th:src="@{/js/edificioAdministrar.js}"></script>	
+ <script src="../../js/edificioFiltrar.js" th:src="@{/js/edificioFiltrar.js}"></script>	
  </div>
 </body>
 </html>

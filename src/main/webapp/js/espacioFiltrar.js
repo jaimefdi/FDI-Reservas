@@ -29,12 +29,12 @@ $(document).ready(function(){
 	 		var edificio = $(this).attr("edif");
 	 		var eliminado = $(this).attr("act");
 	 		var accion = $(this).attr("data-accion");
-	 		var imagen = "../../../.." + $(this).attr("img");
-
+	 		var imagen = "../../../../../.." + $(this).attr("img");
+	 		
 	 		var x = isEnabled(eliminado);
 	 		var pr = isEnabled(proyector);
 	 		var mic = isEnabled(microfono);
-	 		
+
 	 		//$('#modalEditarEspacio #idEspacio').text(espacio.id);
 	 		$('#modalEditarEspacio #idNombre').text(nombreEspacio);
 	 		$('#modalEditarEspacio #idCapa').text(capacidad);

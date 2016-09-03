@@ -78,9 +78,9 @@ public Edificio addNewEdificio(Edificio edificio) {
 		
 	}
 
-	public List<Edificio> getEdificiosEliminados() {
+	public Page<Edificio> getEdificiosEliminadosPaginados(Pageable pr) {
 		
-		return edificio_repository.recycleBin();
+		return edificio_repository.recycleBin(pr);
 	}
 	
 	public Edificio getEdificio(long idEdificio) {

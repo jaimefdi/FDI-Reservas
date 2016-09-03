@@ -90,7 +90,7 @@ public class EspacioController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_espacios");	
+		model.addAttribute("view", "admin/filtrar_espacios");	
 				
         return "index";
     }
@@ -137,7 +137,7 @@ public class EspacioController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
-		model.addAttribute("view", "admin/administrar_espacios");	
+		model.addAttribute("view", "admin/filtrar_espacios");	
 				
         return "index";
     }
