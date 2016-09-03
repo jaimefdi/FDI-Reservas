@@ -48,12 +48,12 @@
     <div class="row">
 		<div class="col-md-8 col-md-offset-2">
     	
-			<div class="jumbotron text-center" th:if="${#lists.isEmpty(facultades)}">
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults.content)}">
            			<i class="fa fa-ban fa-5x"></i>
            			<h4>¡Uups! No hay ninguna facultad.</h4>
       		</div> 
 
-          	<div class="table-responsive" th:unless="${#lists.isEmpty(facultades)}">
+          	<div class="table-responsive" th:unless="${#lists.isEmpty(currentResults.content)}">
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
@@ -63,7 +63,7 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr th:each="r : ${facultades}" th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}, dir=${r.webFacultad}" class="danger">
+                      <tr th:each="r : ${currentResults}" th:attr="id=${r.id},data-id=${r.id},name=${r.nombreFacultad}, dir=${r.webFacultad}" class="danger">
                       	
                           <td th:text="${r.nombreFacultad}"></td>
                           <td th:text="${r.webFacultad}"></td>

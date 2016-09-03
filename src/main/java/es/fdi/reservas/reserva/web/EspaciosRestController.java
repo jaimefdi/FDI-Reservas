@@ -56,24 +56,21 @@ public class EspaciosRestController {
 			attachment = espacio_service.getEspacio(espacioActualizado.getId()).getImagen();
 		}
 		else {
-//			String img = "/img/users/" + user_service.getUser(idUser).getUsername();
-//			String nombreViejo = user_service.getUser(idUser).getUsername();
-//			String nombreNuevo = userActualizado.getUsername();
-//			
-//			if (!nombreViejo.equalsIgnoreCase(nombreNuevo)){
-//				//si el nombre de usuario ha cambiado, hay que renombrar el directorio y las referencias
-//				//File dirViejo = new File("../src/main/webapp/img/"  + nombreViejo);
-//				File dirNuevo = new File("../../img/"  + nombreNuevo);
-//				boolean correcto = dirNuevo.mkdir();
-//				
-//			}
+
 			
 			if (espacio_service.getAttachmentByName(espacioActualizado.getImagen()).isEmpty()){
 		
 				//si no esta, lo añado
-								
+				String img = espacioActualizado.getImagen();
+				int pos = img.lastIndexOf(".");
+				String punto = img.substring(0, pos);
+				String fin = img.substring(pos+1, img.length());
+				String nom = punto + "-" + idEspacio + "." + fin;
+				nom = nom.replace(nom, "/img/" + nom);
+				
+				
 				attachment.setAttachmentUrl("/img/" + espacioActualizado.getImagen());
-				attachment.setStorageKey(espacio_service.getEspacio(idEspacio).getNombreEspacio() + "/" + espacioActualizado.getImagen());
+				attachment.setStorageKey(nom);
 				//reserva_service.addAttachment(attachment);
 			}else{
 				attachment = espacio_service.getAttachmentByName(espacioActualizado.getImagen()).get(0);

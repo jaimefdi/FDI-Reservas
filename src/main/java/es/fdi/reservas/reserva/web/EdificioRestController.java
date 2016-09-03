@@ -41,9 +41,16 @@ public class EdificioRestController {
 			Attachment attachment = new Attachment("");
 			if (edificio_service.getAttachmentByName(edificioActualizado.getImagen()).isEmpty()){
 				//si no esta, lo añado
+				String img = edificioActualizado.getImagen();
+				int pos = img.lastIndexOf(".");
+				String punto = img.substring(0, pos);
+				String fin = img.substring(pos+1, img.length());
+				String nom = punto + "-" + idEdificio + "." + fin;
+				nom = nom.replace(nom, "/img/" + nom);
+				
 				
 				attachment.setAttachmentUrl("/img/" + edificioActualizado.getImagen());
-				attachment.setStorageKey(edificio_service.getEdificio(idEdificio).getNombreEdificio() + "/" + edificioActualizado.getImagen());
+				attachment.setStorageKey(nom);
 				//reserva_service.addAttachment(attachment);
 			}else{
 				attachment = edificio_service.getAttachmentByName(edificioActualizado.getImagen()).get(0);
@@ -83,33 +90,4 @@ public class EdificioRestController {
 		return result;
 	}
 	
-//	@RequestMapping(value = "/admin/edificio/direccion/tag/{tagName}", method = RequestMethod.GET)
-//	public List<EdificioDTO> direccionFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-//
-//		List<EdificioDTO> result = new ArrayList<>();
-//		List<Edificio> usuarios = new ArrayList<>();
-//
-//		usuarios = edificio_service.getEdificiosPorDireccion(tagName);
-//
-//		for (Edificio u : usuarios) {
-//			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
-//		}
-//
-//		return result;
-//	}
-//	
-//	@RequestMapping(value = "/admin/edificio/facultad/tag/{tagName}", method = RequestMethod.GET)
-//	public List<EdificioDTO> facultadFiltroAutocompletar(@PathVariable("tagName") String tagName) {
-//
-//		List<EdificioDTO> result = new ArrayList<>();
-//		List<Edificio> usuarios = new ArrayList<>();
-//
-//		usuarios = edificio_service.getEdificiosPorFacultad(tagName);
-//
-//		for (Edificio u : usuarios) {
-//			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
-//		}
-//
-//		return result;
-//	}
 }

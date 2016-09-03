@@ -23,7 +23,7 @@ $(document).ready(function(){
  		var roles = $(this).attr("roles");
  		var enabled = $(this).attr("act");
  		var accion = $(this).attr("data-accion");
- 		var imagen = "../../../.." + $(this).attr("img");
+ 		var imagen = "../../../../.." + $(this).attr("img");
  		
  		$('#modalEditarUsuario #idNombre').text(username);
  		$('#modalEditarUsuario #idEmail').text(email);

@@ -23,7 +23,7 @@
 	 		var roles = $(this).attr("roles");
 	 		var enabled = $(this).attr("act");
 	 		var accion = $(this).attr("data-accion");
-	 		var imagen = "../../../../../.." + $(this).attr("img");
+	 		var imagen = "../../../.." + $(this).attr("img");
 	 		console.log(enabled);
 	 		
 	 		var x = isEnabled(enabled);

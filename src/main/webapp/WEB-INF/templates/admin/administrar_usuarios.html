@@ -71,15 +71,15 @@
                     </thead>
                     <tbody>
                         <tr th:each="r : ${currentResults}" th:if="${r.id != User.id}" th:classappend="${r.enabled} ? 'success' : 'danger'" th:attr="id=${r.id}">
-                        	<td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.storageKey}}" height="25" width="25"></img></td>
+                        	<td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
                             <td th:text="${r.username}"></td>
                             <td th:text="${r.email}"></td>
                             <td th:text="${r.facultad.nombreFacultad}"></td>
                             <td th:text="${r.rolesToString()}"></td>
 <!--                             <span th:each="s:${roles}" th:text="${s}"></span></td> -->
-                            <td ><a th:attr="data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.storageKey},data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                            <td ><a th:attr="data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.attachmentUrl},data-accion='Ver'" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 							<a th:href="@{'/admin/administrar/usuarios/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-							<a th:attr="data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+							<a th:attr="data-id=${r.id},name=${r.username},email=${r.email},facul=${r.facultad.nombreFacultad},roles=${r.rolesToString()},act=${r.enabled},img=${r.imagen.attachmentUrl},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 							</td>
                         </tr>   
                 

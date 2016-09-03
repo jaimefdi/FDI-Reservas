@@ -94,9 +94,9 @@ public class FacultadService {
 		return facultad_repository.getFacultadPorId(l);
 	}
 	
-	public List<Facultad> getFacultadesEliminadas() {
+	public Page<Facultad> getFacultadesEliminadasPaginadas(Pageable pr) {
 		
-		return facultad_repository.recycleBin();
+		return facultad_repository.recycleBin(pr);
 	}
 
 	public Page<Facultad> getFacultadesPaginadasPorNombre(Long nombre, PageRequest pageRequest) {

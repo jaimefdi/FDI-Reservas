@@ -64,11 +64,11 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr th:each="r : ${edificios}" th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},idFacultad=${r.facultad.id}" class = "danger" >
+                      <tr th:each="r : ${edificios}" th:attr="id=${r.id}" class = "danger" >
                       	  <td><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.facultad.nombreFacultad}"></td>
-                          <td><a th:attr="id=${r.id},data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                          <td><a th:attr="data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
                           <a th:attr="data-id=${r.id},name=${r.nombreEdificio},fac=${r.facultad.nombreFacultad},dir=${r.direccion},act=${r.deleted},data-accion='Restaurar'" role="button" data-toggle="tooltip" data-placement="top" title="Restaurar"><i class="zmdi zmdi-refresh"></i></a>
 <!--                           <a th:href="@{'/admin/administrar/edificio/' + ${pagina} + '/restaurar/' + ${r.id}}"><input type="button" class="btn btn-default" value="Restaurar"/></a> -->
                           </td>
@@ -194,7 +194,7 @@
 		                 <div class="form-group">
 		                     <label class="col-md-2 control-label">Imágen: </label>
 		                      <div class="col-md-10">
-		                      <img class="img-circle" id="idAttachment" alt="" th:src="@{'../..' + ${idAttachment}}" height="42" width="42"></img>
+		                      <img class="img-circle" id="idAttachment" alt="" src="" height="42" width="42"></img>
 		                         <p  class="form-control-static"> </p>
 		                      </div>
 		                 </div>

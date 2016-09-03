@@ -34,7 +34,7 @@ public interface FacultadRepository extends JpaRepository<Facultad, Long>{
 	List<Facultad> findAll();
 
 	@Query("select e from #{#entityName} e where e.deleted=true")
-	List<Facultad> recycleBin();
+	Page<Facultad> recycleBin(Pageable page);
 	
 	@Modifying
 	@Query("update #{#entityName} e set e.deleted=true where e.id= :idFacultad")

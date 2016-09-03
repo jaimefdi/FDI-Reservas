@@ -187,16 +187,27 @@ public class FacultadController {
 	
 	
 	
-	@RequestMapping(value = "/admin/administrar/facultad/page/{numPag}/restaurar",method=RequestMethod.GET)
-	public ModelAndView restaurarFacultades(@PathVariable("numPag") Long numPag){
-		ModelAndView model = new ModelAndView("index");
+	@RequestMapping(value = "/admin/administrar/facultad/restaurar/page/{numPag}",method=RequestMethod.GET)
+	public String restaurarFacultades(@PathVariable("numPag") Integer numPag, Model model){
+		//ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		model.addObject("User", u);
-		model.addObject("facultades", facultad_service.getFacultadesEliminadas());
-		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("pagina", numPag);
-		model.addObject("view", "admin/papelera_facultades");
-		return model;
+		
+		PageRequest pageRequest = new PageRequest(numPag - 1, 5);
+		Page<Facultad> currentResults = facultad_service.getFacultadesEliminadasPaginadas(pageRequest);
+		
+		int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+		
+		model.addAttribute("currentResults", currentResults);
+		model.addAttribute("User", u);
+		model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current);
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("pagina", numPag);
+		model.addAttribute("view", "admin/papelera_facultades");
+		return "index";
 	}
 	
 

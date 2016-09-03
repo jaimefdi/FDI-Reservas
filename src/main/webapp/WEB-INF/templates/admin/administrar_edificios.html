@@ -41,12 +41,12 @@
     <div class="row">
 		<div class="col-md-8 col-md-offset-2">
     	
-			<div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults)}">
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults.content)}">
            			<i class="fa fa-ban fa-5x"></i>
            			<h4>¡Uups! No hay ningún edificio.</h4>
       		</div> 
 
-          	<div class="table-responsive" th:unless="${#lists.isEmpty(currentResults)}">
+          	<div class="table-responsive" th:unless="${#lists.isEmpty(currentResults.content)}">
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
@@ -83,7 +83,7 @@
 	</div>
 	
 	<!-- Pagination -->
- 	<div class="row" th:unless="${#lists.isEmpty(currentResults)}">
+ 	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
     <div class="col-md-12 text-center">
         <nav>
             <ul class="pagination">
@@ -193,7 +193,7 @@
 		                 <div class="form-group">
 		                     <label class="col-md-2 control-label">Imágen: </label>
 		                      <div class="col-md-10">
-		                      <img class="img-circle" id="idAttachment" alt="" th:src="@{'../..' + ${idAttachment}}" height="42" width="42"></img>
+		                      <img class="img-circle" id="idAttachment" alt="" src="" height="42" width="42"></img>
 		                         <p  class="form-control-static"> </p>
 		                      </div>
 		                 </div>

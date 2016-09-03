@@ -60,8 +60,10 @@ public class UserRestController {
 					String fin = img.substring(pos+1, img.length());
 					String nom = punto + "-" + idUser + "." + fin;
 					nom = nom.replace(nom, "/img/" + nom);
-					attachment.setAttachmentUrl(nom);
-					attachment.setStorageKey("/img/" + userActualizado.getImagen());
+					
+					
+					attachment.setAttachmentUrl("/img/" + userActualizado.getImagen());
+					attachment.setStorageKey(nom);
 				}else{
 					attachment = user_service.getAttachmentByName(userActualizado.getImagen()).get(0);
 				}

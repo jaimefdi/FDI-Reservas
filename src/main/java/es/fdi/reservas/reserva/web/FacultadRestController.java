@@ -39,7 +39,7 @@ public class FacultadRestController {
 	}
 	
 
-	@RequestMapping(value = "/admin/administrar/facultad/{numPag}/restaurar/{idFacultad}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/administrar/facultad/{numPag}/restaurar/{idFacultad}", method = RequestMethod.DELETE)
 	public String restaurarFacultad(@PathVariable("idFacultad") Long idFacultad, @PathVariable("numPag") Long numPag){
 		facultad_service.restaurarFacultad(idFacultad);
 		return "redirect:admin/administrar/facultad/{numPag}";

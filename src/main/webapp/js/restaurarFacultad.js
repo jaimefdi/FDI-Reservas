@@ -22,9 +22,10 @@ $(document).ready(function(){
 		var deleted = $(this).attr("act");
 		var accion = $(this).attr("data-accion");
 		
+		var x = isEnabled(deleted);
  		$('#modalEditarFacultad #idNombre').text(nombreFacultad);
  		$('#modalEditarFacultad #idWeb').text(webFacultad);
- 		$('#modalEditarFacultad #idActivado').text(deleted);
+ 		$('#modalEditarFacultad #idActivado').text(x);
  		$('#modalEditarFacultad #btn-editar').prop("href", baseURL + "admin/administrar/facultad/editar/" + facultad.id);
  		
  		if (accion == 'Ver'){
@@ -48,13 +49,13 @@ $(document).ready(function(){
 function modalRestaurarFacultad(facultad, reqHeaders){
  	
 		$.ajax({
-			url: baseURL + "/admin/administrar/facultad/" + pag + "/restaurar/" + edificio.id,
+			url: baseURL + "/admin/administrar/facultad/" + pag + "/restaurar/" + facultad.id,
 			type: 'DELETE',
 			headers : reqHeaders,
 			success : function(datos) {
-				alert("Edificio eliminado");
-				$('#modalEditarEdificio').modal('hide');
-				$("#" + edificio.id).remove();
+				alert("Facultad restaurada");
+				$('#modalEditarFacultad').modal('hide');
+				$("#" + facultad.id).remove();
 			
 			},    
 			error : function(xhr, status) {
@@ -62,4 +63,12 @@ function modalRestaurarFacultad(facultad, reqHeaders){
 			}
  	});
  
+}
+
+function isEnabled(deleted){
+	 if(deleted == "true")
+		 return "Sí";
+	 else
+		 return "No";
+	
 }

@@ -26,16 +26,16 @@ INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(25
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(26,'Facultad de Veterinaria','www.ccinformacion.ucm.es', false);
 INSERT INTO Facultad(FacultadId, nombreFacultad, webFacultad, deleted) VALUES(27,'Sin asignar','www.ucm.es', false);
 
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(1, 'Facultad de informatica', '/img/FDI-1.jpg', '/img/FDI.jpg');
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(2, 'Edificio Basico', '/img/casa-2.jpg', '/img/casa.jpg');
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(3, 'Facultad de Ciencias Biológicas', '/img/biologicas-3.jpg', '/img/biologicas.jpg');
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(4, 'Facultad de Bellas Artes', '/img/bellas artes-4.jpg', '/img/bellas artes.jpg');
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(5, 'Facultad de Ciencias de la Documentación', '/img/documentacion-5.jpg', '/img/documentacion.jpg');
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(6, 'Edificio multiusos', '/img/multiusos-6.jpg', '/img/multiusos.jpg');
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(7, 'Facultad de Ciencias de la Información', '/img/cc_informacion-7.jpg', '/img/cc_informacion.jpg');
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(8, 'Usuario 1', '/img/root-8.png', '/img/root.png');
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(9, 'Usuario 2', '/img/user-9.png', '/img/user.png');
-INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(10, 'Usuario 3', '/img/secre-10.png', '/img/secre.png');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(1, 'Facultad de informatica', '/img/FDI.jpg', '/img/FDI-1.jpg');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(2, 'Edificio Basico', '/img/casa.jpg', '/img/casa-2.jpg');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(3, 'Facultad de Ciencias Biológicas', '/img/biologicas.jpg', '/img/biologicas*3.jpg');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(4, 'Facultad de Bellas Artes', '/img/bellas artes.jpg', '/img/bellas artes-4.jpg');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(5, 'Facultad de Ciencias de la Documentación', '/img/documentacion.jpg', '/img/documentacion-5.jpg');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(6, 'Edificio multiusos', '/img/multiusos.jpg', '/img/multiusos-6.jpg');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(7, 'Facultad de Ciencias de la Información', '/img/cc_informacion.jpg', '/img/cc_informacion-7.jpg');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(8, 'Usuario 1', '/img/root.png', '/img/root-8.png');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(9, 'Usuario 2', '/img/user.png', '/img/user-9.png');
+INSERT INTO Attachment(ImagenId, description, attachmentUrl, storageKey) VALUES(10, 'Usuario 3', '/img/secre.png', '/img/secre-10.png');
 
 INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (1, 'root', 'root@ucm.es', '$2a$10$//HU8yTgOoLrZX6z9cgXhuR/IJki.BtS/ZM4Pr8s/zBDCFIT.I3P6', true, false, false, false, 2, 8);
 INSERT INTO User (UserId, username, email, password, enabled, accountExpired, accountLocked, credentialsExpired, FacultadId, ImagenId) VALUES (2, 'user', 'user@ucm.es', '$2a$10$qspi.NK1570DsUrvDmxETekRTqpk/ZY2hmI3XCMER.RWPVlPAfpYK', true, false, false, false, 1, 9);

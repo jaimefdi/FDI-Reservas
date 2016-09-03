@@ -63,9 +63,9 @@
                       	<td  th:text="${r.edificio.nombreEdificio}"></td>
                         <td th:text="${r.nombreEspacio}"></td>                   
                         <td th:text="${r.tipoEspacio.tipo}"></td> 
-                        <td><a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted},img=${r.imagen.storageKey},,data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
+                        <td><a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>
 						<a th:href="@{'/admin/administrar/espacio/editar/' + ${r.id}}" role="button" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit zmdi-hc-lg"> </i></a>
-						<a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
+						<a th:attr="data-id=${r.id},name=${r.nombreEspacio},capacidad=${r.capacidad},micro=${r.microfono},proye=${r.proyector},tipo=${r.tipoEspacio.tipo},act=${r.deleted},edif=${r.edificio.nombreEdificio},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Eliminar'" role="button" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete zmdi-hc-lg"> </i></a>	
 						</td>
                       </tr>  
                       
