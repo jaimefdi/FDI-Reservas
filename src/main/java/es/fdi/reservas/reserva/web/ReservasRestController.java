@@ -300,10 +300,5 @@ public class ReservasRestController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/cambiarReservaDeCalendario/{idGrupo2}", method = RequestMethod.POST)
-	public void cambiarDeCalendario(@PathVariable("idGrupo2") Long idGrupo2, @RequestBody ReservaDTO rfDTO){
-		reserva_service.cambiarDeCalendario(idGrupo2, rfDTO);
-	}
-	
 
 }

@@ -425,17 +425,6 @@ public class ReservaService {
 	}
 
 
-	public void cambiarDeCalendario(Long idGrupo2, ReservaDTO rfDTO) {
-		Reserva reserva = getReserva(rfDTO.getId());
-		reserva.setComienzo(rfDTO.getStart());
-		reserva.setFin(rfDTO.getEnd());
-		GrupoReserva grupo = grupo_service.getGrupoReserva(idGrupo2);
-		reserva.setGrupoReserva(grupo);
-		
-		reserva_repository.save(reserva);
-		
-	}
-
 	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estado) {
 		return reserva_repository.reservasPendientesUsuario(idUsuario, estado);
 	}
