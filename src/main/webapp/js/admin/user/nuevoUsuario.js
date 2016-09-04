@@ -5,22 +5,11 @@ $(document).ready(function(){
 	 	var reqHeaders = [];
 	 	reqHeaders[header] = token;
 		
-//		for(var i in roles){
-//			if(roles[i].role == "ROLE_USER"){
-//				$("#chkUser").prop("checked","true");
-//			}
-//			else if(roles[i].role == "ROLE_ADMIN"){
-//				$("#chkAdmin").prop("checked","true");
-//			}
-//			else{
-//				$("#chkSecre").prop("checked","true");
-//			}
-//		}
-		
 		$("#enlaceGuardar").click(function(){
-			user.id = idUsuario;
+			
 			user.username = $("#idNombre").val();
 			user.email = $("#idEmail").val();
+			user.password = $("#idPassword").val();
 			//user.facultad = $("#idFacultad").val();
 			user.imagen = $("#idAttachment").val();
 			console.log(user);
@@ -43,7 +32,6 @@ $(document).ready(function(){
 									var obj = new Object();
 									obj.label = item.id;
 									obj.value = item.nombreFacultad; 
-									//obj.webFacultad = item.webFacultad;
 									return obj;
 				
 							}))
@@ -56,8 +44,6 @@ $(document).ready(function(){
 			},
 			select: function(event, ui){
 				user.facultad = ui.item.label;
-				//console.log(idFacultad);
-				//$("#idFacultad").prop("name", idFacultad);
 			},
 			minLength: 3
 
@@ -81,16 +67,11 @@ $(document).ready(function(){
 });	
 
 function editarUsuario(user, reqHeaders){
-	
-	var usuario = document.getElementById("chkUser").checked.toString();
-	var admin = document.getElementById("chkAdmin").checked.toString();
-	var gestor = document.getElementById("chkSecre").checked.toString();
-	
 	$.ajax({
 			
-			url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario + '/' + usuario + '/' + admin + '/' + gestor,
+			url: baseURL + 'admin/nuevoUsuario',
 			//url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario ,
-			type: 'PUT',
+			type: 'POST',
 			headers : reqHeaders,
 			data: JSON.stringify(user),
 			contentType: 'application/json',
@@ -99,26 +80,10 @@ function editarUsuario(user, reqHeaders){
 				 window.location = "/reservas/admin/administrar/usuarios/page/1";
 			},    
 			error : function(xhr, status) {
-				alert(usuario + admin + gestor),
+				
  			alert('Disculpe, existió un problema');
  			
 			}
 		});
 	
-}
-
-function calcAdmin()
-{
-  if (document.getElementById('chkAdmin').checked) 
-  {
-      $("#chkSecre").prop("checked", false);
-  } 
-}
-
-function calcGestor()
-{
-  if (document.getElementById('chkSecre').checked) 
-  {
-	  $("#chkAdmin").prop("checked", false);
-  } 
 }

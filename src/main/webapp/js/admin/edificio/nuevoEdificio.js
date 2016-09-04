@@ -1,30 +1,17 @@
 $(document).ready(function(){
-		var user = {};
+		var edificio = {};
 		var token = $("meta[name='_csrf']").attr("content");
 	 	var header = $("meta[name='_csrf_header']").attr("content");
 	 	var reqHeaders = [];
 	 	reqHeaders[header] = token;
 		
-//		for(var i in roles){
-//			if(roles[i].role == "ROLE_USER"){
-//				$("#chkUser").prop("checked","true");
-//			}
-//			else if(roles[i].role == "ROLE_ADMIN"){
-//				$("#chkAdmin").prop("checked","true");
-//			}
-//			else{
-//				$("#chkSecre").prop("checked","true");
-//			}
-//		}
 		
 		$("#enlaceGuardar").click(function(){
-			user.id = idUsuario;
-			user.username = $("#idNombre").val();
-			user.email = $("#idEmail").val();
-			//user.facultad = $("#idFacultad").val();
-			user.imagen = $("#idAttachment").val();
-			console.log(user);
-	    	editarUsuario(user,reqHeaders);
+			edificio.nombreEdificio = $("#idNombre").val();
+			edificio.direccion = $("#idDir").val();
+			edificio.imagen = $("#idAttachment").val();
+	    	editarEdificio(edificio,reqHeaders);
+	    	
 		});
 		
 		$("#idFacultad").autocomplete({
@@ -41,8 +28,8 @@ $(document).ready(function(){
 							response($.map(datos,function(item){
 								
 									var obj = new Object();
-									obj.label = item.id;
-									obj.value = item.nombreFacultad; 
+									obj.label = item.id; 
+									obj.value = item.nombreFacultad;
 									//obj.webFacultad = item.webFacultad;
 									return obj;
 				
@@ -55,15 +42,14 @@ $(document).ready(function(){
 					});
 			},
 			select: function(event, ui){
-				user.facultad = ui.item.label;
-				//console.log(idFacultad);
-				//$("#idFacultad").prop("name", idFacultad);
+				edificio.idFacultad = ui.item.label;				
 			},
 			minLength: 3
 
 		}).autocomplete("instance")._renderItem = function(ul,item){
 			
 				var inner_html = '<div class="media"><div class="media-left">' + 
+				                  '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
 				                  '</div>' + 
 				                  '<div class="media-body">' + 
 				                  '<h5 class="media-heading">'+ item.value +'</h5>' + 
@@ -80,45 +66,23 @@ $(document).ready(function(){
 		
 });	
 
-function editarUsuario(user, reqHeaders){
-	
-	var usuario = document.getElementById("chkUser").checked.toString();
-	var admin = document.getElementById("chkAdmin").checked.toString();
-	var gestor = document.getElementById("chkSecre").checked.toString();
+function editarEdificio(edificio, reqHeaders){
 	
 	$.ajax({
-			
-			url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario + '/' + usuario + '/' + admin + '/' + gestor,
-			//url: baseURL + 'admin/administrar/usuarios/editar/' + idUsuario ,
-			type: 'PUT',
+			url: baseURL + 'admin/nuevoEdificio',
+			type: 'POST',
 			headers : reqHeaders,
-			data: JSON.stringify(user),
+			data: JSON.stringify(edificio),
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/admin/administrar/usuarios/page/1";
+				 window.location = "/reservas/admin/administrar/edificios/1";
 			},    
 			error : function(xhr, status) {
-				alert(usuario + admin + gestor),
+				alert(baseURL),
  			alert('Disculpe, existió un problema');
  			
 			}
 		});
 	
-}
-
-function calcAdmin()
-{
-  if (document.getElementById('chkAdmin').checked) 
-  {
-      $("#chkSecre").prop("checked", false);
-  } 
-}
-
-function calcGestor()
-{
-  if (document.getElementById('chkSecre').checked) 
-  {
-	  $("#chkAdmin").prop("checked", false);
-  } 
 }

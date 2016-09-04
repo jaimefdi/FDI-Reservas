@@ -54,24 +54,16 @@ public class EdificioService {
 		return edificio_repository.save(e);
 	}
 	
-public Edificio addNewEdificio(Edificio edificio) {
+public Edificio addNewEdificio(EdificioDTO edificio) {
 		
-		Attachment img = edificio.getImagen();
-		if (img == null){
-			//img = attachment_repository.getAttachmentByName("casa").get(0);
-			img = attachment_repository.findOne((long) 2);
-			edificio.setImagen(img);
-			//attachment_repository.save(img);
-		}
-		
-		Facultad fac = edificio.getFacultad();
-		if (fac == null){
-			fac = facultad_repository.findOne((long) 27);
-			edificio.setFacultad(fac);
-			//facultad_repository.save(fac);
-		}
-		
-		Edificio newEdificio = new Edificio(edificio.getNombreEdificio(), edificio.getDireccion(),edificio.getFacultad(), edificio.getImagen());
+		Edificio newEdificio = new Edificio();
+		newEdificio.setNombreEdificio(edificio.getNombreEdificio());
+		newEdificio.setDeleted(false); 
+		newEdificio.setDireccion(edificio.getDireccion());
+		newEdificio.setFacultad(facultad_repository.getFacultadPorId(edificio.getIdFacultad()));
+				
+		newEdificio.setImagen(attachment_repository.findOne((long) 2));
+				
 		newEdificio = edificio_repository.save(newEdificio);
 
 		return null;
@@ -151,6 +143,11 @@ public Edificio addNewEdificio(Edificio edificio) {
 	public Page<Edificio> getEdificiosEliminadosPorFacultad(String tagName, Pageable pagerequest) {
 		
 		return edificio_repository.getEdificiosEliminadosPorFacultad(tagName, pagerequest);
+	}
+	
+	public List<Edificio> getEdificiosPorFacultad(String tagName) {
+		
+		return edificio_repository.getEdificiosPorFacultad(tagName);
 	}
 
 }

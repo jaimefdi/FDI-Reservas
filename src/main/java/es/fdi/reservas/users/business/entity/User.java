@@ -74,7 +74,7 @@ public class User implements UserDetails{
 	private Attachment imagen;
 
 	public User() {
-		
+		this.roles = new ArrayList<UserRole>();
 	}
 	
 	public User(String username, String email, Attachment img) {

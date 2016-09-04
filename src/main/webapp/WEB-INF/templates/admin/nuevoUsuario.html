@@ -21,13 +21,13 @@
 			
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3">
-			        <form role="form" action="#" th:action="@{/admin/nuevoUsuario}" th:object="${User}" method="POST">
+			        <form role="form" action="#"  method="POST">
 			        	<!-- Usuario -->
 			        	<div class="form-group">
 			                <label>Usuario</label>
 			                <div class="input-group">
-                                  <span class="input-group-addon"><i class="zmdi zmdi-account-o zmdi-hc-lg"></i></span>
-                                  <input name="username" type="text" class="form-control" placeholder="Nombre de usuario"/>
+                                  <span class="input-group-addon"><i class="zmdi zmdi-accounts-alt"></i></span>
+                                  <input name="username" id="idNombre" type="text" class="form-control" placeholder="Nombre de usuario"/>
                             </div>
 			            </div>
 			            <!-- Email -->
@@ -35,7 +35,7 @@
 			                <label>Email</label>
 			                 <div class="input-group">
                                  <span class="input-group-addon"><i class="fa fa-at"></i></span>
-                                 <input name="email" type="text" class="form-control" placeholder="Introduce tu email"/>
+                                 <input name="email" id="idEmail" type="text" class="form-control" placeholder="Introduce tu email"/>
                               </div>
 			            </div>
 			            <!-- Contraseña -->
@@ -43,52 +43,38 @@
 			                <label>Contraseña</label>
 			                  <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                  <input name="password" type="password" class="form-control" placeholder="Contraseña"/>
+                                  <input name="password" id="idPassword" type="password" class="form-control" placeholder="Contraseña"/>
                                 </div> 
 			            </div>
 			            <!-- Imagen usuario -->
 			            <div class="form-group">
 							<label>Selecciona la imagen: </label>
-							<input type="file" id="imagen" />								
+							<input type="file" id="idAttachment" />								
 						</div>
 						
 						 <!-- Facultad usuario -->
 			            <div class="form-group">
 							<label>Facultad: </label>
-							<input type="text" class="form-control" />								
+							<div class="input-group">
+								<span class="input-group-addon"><i class="zmdi zmdi-balance"></i></span>
+								<input type="text" id="idFacultad" class="form-control" placeholder="Introduce una facultad"/>	
+							</div>
+							<p class="small help-block text-left">Agregar este usuario a una facultad.</p>							
 						</div>
 						
 			            
 			            
 			            <div class="row text-center">
-			            <button type="submit" class="btn-normal"> CREAR </button>
+			            <button type="submit" id="enlaceGuardar" class="btn-normal"> CREAR </button>
 			            </div>
 			        </form>
 			    </div>
 			</div>
 			<!-- /.row -->
-        
-            
-                           <!--   <div class="form-group">
-                                <label for="ejemplo_password_1">Confirmar Contraseña</label>
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                  <input id="pass" type="password" class="form-control" placeholder="Confirmar contraseña"/>
-                                </div>                              
-                            </div> 
-                            
-                             <div class="form-group" th:object="${command}"> 
- 								<label>Select the file: <input 
-									type="file" class="form-control" name="imagen"
-									th:field="*{attachment}" /></label> 
-								
-							</div> -->
-                            
-                         
-            
-       
-
-
+			<script th:inline="javascript">
+			var baseURL = /*[[@{/}]]*/ '/';
+			</script>
+			<script src="../../js/admin/user/nuevoUsuario.js" th:src="@{/js/admin/user/nuevoUsuario.js}"></script>
         </div>
         <!-- /.container-fluid -->
 

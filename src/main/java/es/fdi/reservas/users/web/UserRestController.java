@@ -77,7 +77,7 @@ public class UserRestController {
 	}
 	
 	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.POST)
-	public String crearUsuario(User us){
+	public String crearUsuario(@RequestBody UserDTO us){
 		user_service.addNewUser(us);
 	   return "redirect:/admin/administrar";
 		//return "nuevoUsuario";

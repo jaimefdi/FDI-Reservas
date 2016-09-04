@@ -47,36 +47,36 @@
 				 	<div class="form-group">
 				 		<label>Roles:</label>	                              
                 	
-				 		<div class="radio">
+				 		<div class="checkbox">
 						    <label th:if="${usuario.isAdmin()}">
-						      <input class="radio" type="radio" id="chkAdmin"  value="admin" checked='true'/> Administrador
+						      <input class="checkbox" type="checkbox" id="chkAdmin"  value="admin" checked='true' onclick="calcAdmin();"/> Administrador
 						    </label>
 						</div>
-						<div class="radio">
+						<div class="checkbox">
 						    <label th:if="${!usuario.isAdmin()}">
-						      <input class="radio" type="radio" id="chkAdmin"  value="admin"/> Administrador
+						      <input class="checkbox" type="checkbox" id="chkAdmin"  value="admin" onclick="calcAdmin();"/> Administrador
 						    </label>
 						</div>
 						
-						<div class="radio">
+						<div class="checkbox">
 						    <label th:if="${usuario.isUser()}">
-						      <input class="radio" type="radio" id="chkUser" th:value="user" checked='true' disabled='true'/> Usuario básico
+						      <input class="checkbox" type="checkbox" id="chkUser" th:value="user" checked='true' disabled='true'/> Usuario básico
 						    </label>
 					    </div>
 					    
-					    <div class="radio">
+					    <div class="checkbox">
 						    <label th:if="${!usuario.isUser()}">
-						      <input class="radio" type="radio" id="chkUser" th:value="user" disabled='true'/> Usuario básico
+						      <input class="checkbox" type="checkbox" id="chkUser" th:value="user" disabled='true'/> Usuario básico
 						    </label>
 					    </div>
-						<div class="radio" >
+						<div class="checkbox" >
 						    <label th:if="${usuario.isGestor()}">
-						      <input class="radio" type="radio" id="chkSecre" th:value="gestor" checked='true'/> Gestor
+						      <input class="checkbox" type="checkbox" id="chkSecre" th:value="gestor" checked='true' onclick="calcGestor();"/> Gestor
 						    </label>
 					    </div>
-					    <div class="radio">
+					    <div class="checkbox">
 						    <label th:if="${!usuario.isGestor()}">
-						      <input class="radio" type="radio" id="chkSecre" th:value="gestor"/> Gestor
+						      <input class="checkbox" type="checkbox" id="chkSecre" th:value="gestor" onclick="calcGestor();"/> Gestor
 						    </label>
 					    </div>
 				 	</div>

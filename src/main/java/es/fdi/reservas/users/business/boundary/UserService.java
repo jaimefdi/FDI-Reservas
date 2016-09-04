@@ -76,9 +76,14 @@ public class UserService implements UserDetailsService{
 		return user;
 	}
 
-	public User addNewUser(User user){
-		User newUser = new User(user.getUsername(), user.getEmail(), user.getImagen());
+	public User addNewUser(UserDTO user){
+		User newUser = new User();
+		newUser.setUsername(user.getUsername());
+		newUser.setEmail(user.getEmail()); 
+		newUser.setImagen(attachment_repository.findOne((long) 10));
+		newUser.setFacultad(facultad_repository.getFacultadPorId(user.getFacultad()));
 		newUser.addRole(new UserRole("ROLE_USER"));
+		newUser.setEnabled(true);
 		newUser.setPassword(password_encoder.encode(user.getPassword()));
 		newUser = user_ropository.save(newUser);
 		
@@ -108,15 +113,15 @@ public class UserService implements UserDetailsService{
 		u.setFacultad(fac);
 		u.setImagen(imagen);
 		attachment_repository.save(imagen);
-		if (user.equals("user") || admin.equals("admin") || gestor.equals("gestor")){//si hay alguno seleccionado
-			//u.getAuthorities().clear();
-			if (user.equals("user")){
+		if (user.equals("true") || admin.equals("true") || gestor.equals("true")){//si hay alguno seleccionado
+			u.getAuthorities().clear();
+			if (user.equals("true")){
 				u.addRole(new UserRole("ROLE_USER"));
 			}
-			if (admin.equals("admin")){
+			if (admin.equals("true")){
 				u.addRole(new UserRole("ROLE_ADMIN"));
 			}
-			if (gestor.equals("gestor")){
+			if (gestor.equals("true")){
 				u.addRole(new UserRole("ROLE_GESTOR"));
 			}
 		}

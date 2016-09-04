@@ -51,7 +51,6 @@ public class EdificioRestController {
 				
 				attachment.setAttachmentUrl("/img/" + edificioActualizado.getImagen());
 				attachment.setStorageKey(nom);
-				//reserva_service.addAttachment(attachment);
 			}else{
 				attachment = edificio_service.getAttachmentByName(edificioActualizado.getImagen()).get(0);
 			}
@@ -70,7 +69,7 @@ public class EdificioRestController {
 	}
 	
 	@RequestMapping(value="/admin/nuevoEdificio", method=RequestMethod.POST)
-	public String crearEdificio(Edificio f){
+	public String crearEdificio(@RequestBody EdificioDTO f){
 		edificio_service.addNewEdificio(f);
 	    return "redirect:/admin/administrar/edificios/1";
 	}
@@ -82,6 +81,21 @@ public class EdificioRestController {
 		List<Edificio> usuarios = new ArrayList<>();
 
 		usuarios = edificio_service.getEdificiosPorTagName(tagName);
+
+		for (Edificio u : usuarios) {
+			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/admin/edificio/tag/{tagName}/{facultad}", method = RequestMethod.GET)
+	public List<EdificioDTO> edificiosFiltroAutocompletar(@PathVariable("tagName") String tagName, @PathVariable("facultad") String facultad) {
+
+		List<EdificioDTO> result = new ArrayList<>();
+		List<Edificio> usuarios = new ArrayList<>();
+
+		usuarios = edificio_service.getEdificiosPorFacultad(facultad);
 
 		for (Edificio u : usuarios) {
 			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));

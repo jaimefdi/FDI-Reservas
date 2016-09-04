@@ -45,8 +45,8 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 	@Query("from Edificio f where lower(f.direccion) like lower(concat('%',:direccion, '%'))")
 	Page<Edificio> getEdificiosEliminadosPorDireccion(@Param("direccion") String tagName, Pageable pagerequest);
 	
-//	@Query("select e from #{#entityName} e where e.deleted=false and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
-//	List<Edificio> getEdificiosPorFacultad(@Param("nombre") String nombre);
+	@Query("select e from #{#entityName} e where e.deleted=false and e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
+	List<Edificio> getEdificiosPorFacultad(@Param("nombre") String nombre);
 	
 	@Query("select e from #{#entityName} e where e.facultad.nombreFacultad like lower(concat('%',:nombre, '%'))")
 	Page<Edificio> getEdificiosEliminadosPorFacultad(@Param("nombre") String nombre, Pageable pagerequest);

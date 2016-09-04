@@ -95,7 +95,6 @@ public class UserController {
 		model.addObject("User", u);
 
 		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("userList", user_service.getUsuarios());
 		model.addObject("view", "administrar_usuarios");
 		model.addObject("url","/administrar/usuarios" );
 
