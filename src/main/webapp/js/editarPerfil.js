@@ -16,6 +16,7 @@ $(document).ready(function(){
 			user.oldPassword = $("#oldPassword").val();
 			user.username = $("#username").val();
 			user.email = $("#email").val();
+			user.imagen= $("#idAttachment").val();
 			
 			if(user.oldPassword != ""){// quiero cambiar de contraseña
 				if($("#newPassword1").val() != $("#newPassword2").val())

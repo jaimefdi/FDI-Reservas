@@ -169,6 +169,32 @@ public class UserService implements UserDetailsService{
 		Authentication request = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());		
 		SecurityContextHolder.getContext().setAuthentication(request);		
 		
+		//actualiza la imagen
+		Attachment attachment = new Attachment("");
+		if (userDTO.getImagen().equals("")){
+			attachment = user_ropository.findOne(userDTO.getId()).getImagen();
+		}
+		else {
+			if (attachment_repository.getAttachmentByName(userDTO.getImagen()).isEmpty()){
+		
+				//si no esta, lo añado
+				String img = userDTO.getImagen();
+				int pos = img.lastIndexOf(".");
+				String punto = img.substring(0, pos);
+				String fin = img.substring(pos+1, img.length());
+				String nom = punto + "-" + userDTO.getId() + "." + fin;
+				nom = nom.replace(nom, "/img/" + nom);
+				
+				
+				attachment.setAttachmentUrl("/img/" + userDTO.getImagen());
+				attachment.setStorageKey(nom);
+				attachment_repository.save(attachment);
+				//reserva_service.addAttachment(attachment);
+			}else{
+				attachment = attachment_repository.getAttachmentByName(userDTO.getImagen()).get(0);
+			}
+			user.setImagen(attachment);
+		}
 		// Guarda los cambios en la base de datos
 		user_ropository.save(user);
 		
