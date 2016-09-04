@@ -18,7 +18,7 @@
 	</div>
 	<!-- /.row -->
 	
-	<div class="row">
+	<div class="row" th:unless="${#lists.isEmpty(currentResults.content)}">
 		<div class="col-md-8 col-md-offset-2 text-center">
 			<div class="col-md-2">
 				<label class="form-group" style="margin-top:5px;">Filtrar por: </label>
@@ -182,7 +182,7 @@
  	var baseURL = /*[[@{/}]]*/ '/';
  	var pag = /*[[${currentIndex}]]*/ '/';
  </script>
- <script src="../../js/restaurarFacultad.js" th:src="@{/js/restaurarFacultad.js}"></script>
+ <script src="../../js/admin/facultad/restaurarFacultad.js" th:src="@{/js/admin/facultad/restaurarFacultad.js}"></script>
  
 </div>
 </body>

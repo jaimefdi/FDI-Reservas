@@ -47,36 +47,36 @@
 				 	<div class="form-group">
 				 		<label>Roles:</label>	                              
                 	
-				 		<div class="checkbox">
+				 		<div class="radio">
 						    <label th:if="${usuario.isAdmin()}">
-						      <input class="checkbox" type="checkbox" id="chkAdmin"  value="admin" checked='true'/> Administrador
+						      <input class="radio" type="radio" id="chkAdmin"  value="admin" checked='true'/> Administrador
 						    </label>
 						</div>
-						<div class="checkbox">
+						<div class="radio">
 						    <label th:if="${!usuario.isAdmin()}">
-						      <input class="checkbox" type="checkbox" id="chkAdmin"  value="admin"/> Administrador
+						      <input class="radio" type="radio" id="chkAdmin"  value="admin"/> Administrador
 						    </label>
 						</div>
 						
-						<div class="checkbox">
+						<div class="radio">
 						    <label th:if="${usuario.isUser()}">
-						      <input class="checkbox" type="checkbox" id="chkUser" th:value="user" checked='true'/> Usuario básico
+						      <input class="radio" type="radio" id="chkUser" th:value="user" checked='true' disabled='true'/> Usuario básico
 						    </label>
 					    </div>
 					    
-					    <div class="checkbox">
+					    <div class="radio">
 						    <label th:if="${!usuario.isUser()}">
-						      <input class="checkbox" type="checkbox" id="chkUser" th:value="user"/> Usuario básico
+						      <input class="radio" type="radio" id="chkUser" th:value="user" disabled='true'/> Usuario básico
 						    </label>
 					    </div>
-						<div class="checkbox" >
+						<div class="radio" >
 						    <label th:if="${usuario.isGestor()}">
-						      <input class="checkbox" type="checkbox" id="chkSecre" th:value="gestor" checked='true'/> Gestor
+						      <input class="radio" type="radio" id="chkSecre" th:value="gestor" checked='true'/> Gestor
 						    </label>
 					    </div>
-					    <div class="checkbox">
+					    <div class="radio">
 						    <label th:if="${!usuario.isGestor()}">
-						      <input class="checkbox" type="checkbox" id="chkSecre" th:value="gestor"/> Gestor
+						      <input class="radio" type="radio" id="chkSecre" th:value="gestor"/> Gestor
 						    </label>
 					    </div>
 				 	</div>
@@ -134,7 +134,7 @@
 	var rol2 = /*[[idRolDos]]*/ '1';
 	var rol3 = /*[[idRolTres]]*/ '1';
 </script>
-<script src="../../js/editarUsuario.js" th:src="@{/js/editarUsuario.js}"></script>
+<script src="../../js/admin/user/editarUsuario.js" th:src="@{/js/admin/user/editarUsuario.js}"></script>
 </div>
 
             <!-- /.container-fluid -->
