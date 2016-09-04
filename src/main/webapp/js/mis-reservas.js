@@ -116,8 +116,7 @@ function loadCalendar(){
 	        left: 'prev,next today',
 	        center: 'title',
 	        right: 'month,agendaWeek,agendaDay'
-	    },	    
-	    defaultDate: '2016-03-12',
+	    },
 	    editable: true,
 	    eventLimit: true,
 	    eventClick: function(event, jsEvent, view){
@@ -278,24 +277,6 @@ function modalEliminarReservaRecurrente(){
 	$('#modalVerReserva').modal('hide');
 	$('[role="tooltip"]').popover('hide');
 	$('#modalRecurrente').modal('show');	
-}
-
-function nuevaReserva(reserva, reqHeaders){
-	$.ajax({
-			url: baseURL + 'nuevaReservaAJAX',
-			headers : reqHeaders,
-			type: 'POST',		 				 			
-			data: JSON.stringify(reserva),
-			contentType: 'application/json',
-			success : function(datos) {  
-				$("#calendar").fullCalendar('refetchEvents');			
-			},
-			error: function(xhr, status){
-				var x = JSON.parse(xhr.responseText);
-				console.log(x.msg);
-				//borrar EXDATE
-			}
-		});
 }
 
 function esRecurrente(reserva){

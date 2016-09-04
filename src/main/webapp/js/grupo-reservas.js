@@ -166,7 +166,6 @@ $(document).ready(function(){
 			    },
 			    columnFormat: 'ddd',
 			    //defaultView: 'agendaWeek',
-			    defaultDate: '2016-03-12',
 			    editable: true,
 				droppable: true, 
 				dragRevertDuration: 0,
