@@ -1,15 +1,13 @@
 package es.fdi.reservas.users.business.boundary;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.JOptionPane;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +21,13 @@ import es.fdi.reservas.fileupload.business.control.AttachmentRepository;
 import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.reserva.business.control.FacultadRepository;
 import es.fdi.reservas.reserva.business.entity.Facultad;
+
+import es.fdi.reservas.reserva.business.boundary.ReservaService;
+import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
+import es.fdi.reservas.reserva.business.entity.GrupoReserva;
+import es.fdi.reservas.reserva.business.entity.Reserva;
+
 import es.fdi.reservas.users.business.control.UserRepository;
 import es.fdi.reservas.users.business.entity.User;
 import es.fdi.reservas.users.web.UserDTO;
@@ -32,28 +37,36 @@ import es.fdi.reservas.users.business.entity.UserRole;
 public class UserService implements UserDetailsService{
 
 	private UserRepository user_ropository;
-	
 	private PasswordEncoder password_encoder;
+	private ReservaService reserva_service;
 	
 	private FacultadRepository facultad_repository;
 	
 	private AttachmentRepository attachment_repository;
 	
 	@Autowired
+
 	public UserService(UserRepository usuarios, PasswordEncoder passwordEncoder, FacultadRepository fr, AttachmentRepository ar){
 		user_ropository = usuarios;
 		password_encoder = passwordEncoder;
 		facultad_repository = fr;
 		attachment_repository = ar;
 	}
+	public UserService(UserRepository ur, PasswordEncoder pe){
+		user_ropository = ur;
+		password_encoder = pe;
+		//reserva_service = rs;
+	}
+	
+	@Autowired @Lazy
+	public void setReservaService(ReservaService rs){
+		reserva_service = rs;
+
+	}
 	
 	public User getUser(Long idUsuario) {
 		return user_ropository.findOne(idUsuario);
 	}
-	
-	/*public List<User> getUsers(String idUsuario) {
-		return user_ropository.findByUsername(idUsuario);
-	}*/
 	
 	public User getCurrentUser() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -98,15 +111,16 @@ public class UserService implements UserDetailsService{
 		user_ropository.delete(idUser);
 	}
 	
-	public User editarUserDeleted(Long idUser){
-		User f = user_ropository.findOne(idUser);
-		f.setEnabled(false);
-		return user_ropository.save(f);
+	public User editarUserDeleted(Long idUsuario){
+		User u = getUser(idUsuario);
+		u.setEnabled(false);
+		
+		return user_ropository.save(u);
 	}
 
 	public User editaUsuario(UserDTO userActualizado, String user, String admin, String gestor, Attachment imagen) {
 		
-		User u = user_ropository.findOne(userActualizado.getId());
+		User u = getUser(userActualizado.getId());
 		u.setUsername(userActualizado.getUsername());
 		u.setEmail(userActualizado.getEmail());
 		Facultad fac = facultad_repository.findOne(userActualizado.getFacultad());
@@ -134,22 +148,17 @@ public class UserService implements UserDetailsService{
 		return user_ropository.findAll(pageRequest);
 	}
 
-	public User restaurarUser(long idUser) {
-		User f = user_ropository.findOne(idUser);
-		f.setEnabled(true);
-		return user_ropository.save(f);		
+	public User restaurarUser(long idUsuario) {
+		User u = getUser(idUsuario);
+		u.setEnabled(true);
+		
+		return user_ropository.save(u);		
 	}
 
-//	public List<User> getUsuariosEliminados() {
-//		
-//		return user_ropository.recycleBin();
-//	}
-	
-//	public Page<User> getUsuariosEliminados() {
-//		
-//		return user_ropository.recycleBin();
-//	}
 
+	public List<User> getEliminados() {		
+		return user_ropository.recycleBin();
+	}
 
 	public List<User> getUsuariosPorTagName(String tagName) {
 		return user_ropository.getUsuariosPorTagName(tagName);
@@ -202,8 +211,18 @@ public class UserService implements UserDetailsService{
 		}
 		// Guarda los cambios en la base de datos
 		user_ropository.save(user);
-		
-	
+	}
+
+	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estadoReserva) {
+		return reserva_service.reservasPendientesUsuario(idUsuario, estadoReserva);
+	}
+
+	public Iterable<Espacio> getEspacios() {
+		return reserva_service.getEspacios();
+	}
+
+	public List<GrupoReserva> getGruposUsuario(Long idUsuario) {
+		return reserva_service.getGruposUsuario(idUsuario);
 	}
 	
 	public Attachment getAttachment(Long idAttachment){

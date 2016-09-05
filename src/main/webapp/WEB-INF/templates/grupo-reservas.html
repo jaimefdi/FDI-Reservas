@@ -99,7 +99,59 @@
     </div>
 </div> 
 
-
+ <!-- Modal Eliminar Reserva Simple -->
+ <div class="modal fade" id="modalEliminarReservaSimple" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">¿Eliminar Reserva?</h4>
+          </div>
+          <div class="modal-body">
+          	
+          </div>
+          <div class="modal-footer">
+	        <a class="btn-rec gray" data-dismiss="modal" aria-label="Close" role="button">CANCELAR</a>
+	        <a id="aceptarEliminar" class="btn-rec blue" role="button">ACEPTAR</a>
+	      </div>
+       </div>
+     </div>
+</div>
+ 
+ <!-- Modal Eliminar Reserva Recurrente -->
+ <div class="modal fade" id="modalRecurrente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Eliminar Reserva Periódica</h4>
+          </div>
+          <div class="modal-body">
+          	<div class="row">
+            	<div class="col-xs-12">
+            		<div class="col-xs-4">
+            			 <button id="solo_esta" class="btn-normal">Sólo ésta</button>
+            		</div>
+            		<div class="col-xs-8" style="padding-top:6px;">
+            			 Se eliminará sólo esta reserva.
+            		</div>
+          		</div>
+          	</div>
+          	<br/>
+          	<div class="row">
+          		<div class="col-xs-12">
+	          		<div class="col-xs-4">
+	          			<button id="toda_la_serie" class="btn-normal">Toda la serie</button>
+	          		</div>         	  	 
+	          	  	<div class="col-xs-8" style="padding-top:6px;">
+	          	  	 	Se eliminarán todas las reservas de la serie.
+	          	  	</div>        	  	
+          		</div>
+          	</div>
+          </div>
+       </div>
+     </div>
+</div>
  
  <!-- Modal Eliminar Grupo -->
  <div class="modal fade" id="modalEliminarGrupo" tabindex="-1" role="dialog">

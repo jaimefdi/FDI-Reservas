@@ -30,6 +30,9 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query("select e from #{#entityName} e where e.enabled=false")
 	public Page<User> recycleBin(Pageable pagerequest);
 	
+	@Query("select e from #{#entityName} e where e.enabled=false")
+	public List<User> recycleBin();
+	
 	@Query("from User u where lower(u.username) like lower(concat('%',:username, '%'))")
 	Page<User> getUsuariosPorTagName(@Param("username") String username, Pageable pagerequest);
 	

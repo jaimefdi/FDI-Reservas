@@ -24,7 +24,7 @@ $(document).ready(function(){
  		var enabled = $(this).attr("act");
  		var accion = $(this).attr("data-accion");
  		var imagen = "../../../../.." + $(this).attr("img");
- 		
+ 		console.log(user);
  		var x = isEnabled(enabled);
  		
  		$('#modalEditarUsuario #idNombre').text(username);

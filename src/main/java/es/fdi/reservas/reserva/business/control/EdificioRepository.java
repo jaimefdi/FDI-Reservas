@@ -21,6 +21,9 @@ public interface EdificioRepository extends JpaRepository<Edificio, Long>{
 	@Query("select e from #{#entityName} e where e.deleted=true")
 	Page<Edificio> recycleBin(Pageable pr);
 	
+	@Query("select e from #{#entityName} e where e.deleted=true")
+	List<Edificio> recycleBin();
+	
 	@Modifying
 	@Query("update #{#entityName} e set e.deleted=true where e.id= :idEdificio")
 	void softDelete(@Param("idEdificio") String idEdificio);

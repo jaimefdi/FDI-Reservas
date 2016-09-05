@@ -45,7 +45,7 @@ public class EspaciosRestController {
 	}
 	
 	@RequestMapping(value = "/admin/administrar/espacio/editar/{idEspacio}", method = RequestMethod.PUT)
-	public String editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioDTO espacioActualizado) {
+	public void editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioDTO espacioActualizado) {
 		
 		Attachment attachment = new Attachment("");
 		
@@ -77,13 +77,8 @@ public class EspaciosRestController {
 			}
 		}
 		espacio_service.editarEspacio(espacioActualizado, attachment);
-		//System.out.println(imagen + " Existe");
-//	}else{
-//		System.out.println(imagen + " No existe");
-//	}
-		
-		//espacio_service.editarEspacio(espacioActualizado);
-		return "redirect:/admin/administrar/espacios/1";
+
+		//return "redirect:/admin/administrar/espacios/page/1";
 	}
 	
 	

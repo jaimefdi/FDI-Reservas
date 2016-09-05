@@ -1,6 +1,5 @@
 package es.fdi.reservas.users.web;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import es.fdi.reservas.reserva.business.boundary.EspacioService;
-import es.fdi.reservas.reserva.business.boundary.FacultadService;
-import es.fdi.reservas.reserva.business.boundary.GrupoReservaService;
 
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
-import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -27,14 +21,10 @@ import es.fdi.reservas.users.business.entity.User;
 public class UserController {
 
 	private UserService user_service;	
-	private ReservaService reserva_service;
-	private GrupoReservaService grupo_service;
 	
 	@Autowired
-	public UserController(UserService userService, GrupoReservaService grs, ReservaService rs){
-		user_service = userService;
-		grupo_service = grs;
-		reserva_service = rs;
+	public UserController(UserService us){
+		user_service = us;
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
@@ -58,7 +48,7 @@ public class UserController {
 		//ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
-		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("us", new User());
 		model.addAttribute("view", "admin/nuevoUsuario");
 	   return "index";
@@ -93,8 +83,9 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-
-		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addObject("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addObject("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(),EstadoReserva.PENDIENTE).size());
+		model.addObject("userList", user_service.getUsuarios());
 		model.addObject("view", "administrar_usuarios");
 		model.addObject("url","/administrar/usuarios" );
 
@@ -118,7 +109,7 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
-        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
@@ -148,7 +139,7 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
-        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
@@ -173,7 +164,7 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
-        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
@@ -202,7 +193,7 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
-        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
@@ -226,7 +217,7 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
-        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
@@ -253,7 +244,7 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
-        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
@@ -277,7 +268,7 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 
-        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+        model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
@@ -295,7 +286,7 @@ public class UserController {
 		model.addAttribute("User", u);
 		model.addAttribute("usuario", user_service.getUser(idUser));
 		//System.out.println(user_service.getUser(idUser).getUsername());
-		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("view", "admin/editarUsuario");
 		return "index";
 	}
@@ -304,7 +295,7 @@ public class UserController {
 	public String restaurarUsuarios(@PathVariable("numPag") Integer numPag, Model model){
 		//ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
-		
+
 		PageRequest pageRequest = new PageRequest(numPag - 1, 5);
 		Page<User> currentResults = user_service.getUsuariosEliminadosPaginados(pageRequest);
         
@@ -315,7 +306,7 @@ public class UserController {
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 		
 		model.addAttribute("User", u);
-		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("pagina", numPag);
 		model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
@@ -329,8 +320,8 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(),EstadoReserva.PENDIENTE).size());
+		model.addObject("GruposReservas", user_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "perfil");
 		
 	   return model;
@@ -341,8 +332,8 @@ public class UserController {
 		ModelAndView model = new ModelAndView("index");
 		User u = user_service.getCurrentUser();
 		model.addObject("User", u);
-		model.addObject("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addObject("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
+		model.addObject("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(),EstadoReserva.PENDIENTE).size());
+		model.addObject("GruposReservas", user_service.getGruposUsuario(u.getId()));
 		model.addObject("view", "editarPerfil");
 		
 	   return model;

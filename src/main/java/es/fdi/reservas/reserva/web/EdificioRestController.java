@@ -32,12 +32,6 @@ public class EdificioRestController {
 	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}", method = RequestMethod.PUT)
 	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody EdificioDTO edificioActualizado){
 
-		//A:\FDI-Reservas\src\main\webapp\img
-		
-//		String imagen = "A:/FDI-Reservas/src/main/webapp/img/" + img;
-//		File fich = new File(imagen);
-//		
-//		if (fich.exists()){
 			Attachment attachment = new Attachment("");
 			if (edificio_service.getAttachmentByName(edificioActualizado.getImagen()).isEmpty()){
 				//si no esta, lo añado
@@ -55,10 +49,6 @@ public class EdificioRestController {
 				attachment = edificio_service.getAttachmentByName(edificioActualizado.getImagen()).get(0);
 			}
 			edificio_service.editarEdificio(edificioActualizado, attachment);
-			//System.out.println(imagen + " Existe");
-//		}else{
-//			System.out.println(imagen + " No existe");
-//		}
 
 	}
 	

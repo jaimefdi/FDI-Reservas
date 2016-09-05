@@ -7,23 +7,23 @@ var reqHeaders = [];
 reqHeaders[header] = token;
 
 
-$("#modalEditarReserva #datetimepicker1").change(function(){
-	var comienzo = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker1').val());
+$("#modalVerReserva #datetimepicker1").change(function(){
+	var comienzo = es.ucm.fdi.dateUtils.toIso8601($('#modalVerReserva #datetimepicker1').val());
 	var m = new moment(comienzo);
 	var fin = m.add(1,'hour');
-	$('#modalEditarReserva #datetimepicker2').val(fin.format("DD/MM/YYYY HH:mm"));	
+	$('#modalVerReserva #datetimepicker2').val(fin.format("DD/MM/YYYY HH:mm"));	
 });
 
-$("#modalEditarReserva #datetimepicker2").change(function(){
-	var comienzo = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker1').val());
-	var fin = es.ucm.fdi.dateUtils.toIso8601($('#modalEditarReserva #datetimepicker2').val());
+$("#modalVerReserva #datetimepicker2").change(function(){
+	var comienzo = es.ucm.fdi.dateUtils.toIso8601($('#modalVerReserva #datetimepicker1').val());
+	var fin = es.ucm.fdi.dateUtils.toIso8601($('#modalVerReserva #datetimepicker2').val());
 	var start = new moment(comienzo)
 	var end = new moment(fin);
 	if(end.isBefore(start)){
-		$('#modalEditarReserva #datetimepicker2').val(start.add(1,'hour').format("DD/MM/YYYY HH:mm"));	
+		$('#modalVerReserva #datetimepicker2').val(start.add(1,'hour').format("DD/MM/YYYY HH:mm"));	
 	}
 	else{
-		$('#modalEditarReserva #datetimepicker2').val(end.format("DD/MM/YYYY HH:mm"));	
+		$('#modalVerReserva #datetimepicker2').val(end.format("DD/MM/YYYY HH:mm"));	
 	}
 	
 	
@@ -61,16 +61,16 @@ $('td a').click(function(){
 	
 	console.log(reserva.recurrenteId);
 	
-	$('#modalEditarReserva #asunto').text(asunto);
-	$('#modalEditarReserva #comienzo').text(es.ucm.fdi.dateUtils.fromIso8601(start));
-	$('#modalEditarReserva #fin').text(es.ucm.fdi.dateUtils.fromIso8601(end));
-	$('#modalEditarReserva #nombreEspacio').text(nombreEspacio);
-	$('#modalEditarReserva #nombreGrupo').text(nombreGrupo);
-	$('#modalEditarReserva #reservaColor').css("background",color);
-	$('#modalEditarReserva #enlaceEditar').prop("href", baseURL + "editar/" + reserva.id)
+	$('#modalVerReserva #asunto').text(asunto);
+	$('#modalVerReserva #comienzo').text(es.ucm.fdi.dateUtils.fromIso8601(start));
+	$('#modalVerReserva #fin').text(es.ucm.fdi.dateUtils.fromIso8601(end));
+	$('#modalVerReserva #nombreEspacio').text(nombreEspacio);
+	$('#modalVerReserva #nombreGrupo').text(nombreGrupo);
+	$('#modalVerReserva #reservaColor').css("background",color);
+	$('#modalVerReserva #enlaceEditar').prop("href", baseURL + "editar/" + reserva.id)
 	
 	if(accion == 'Ver'){
-		$('#modalEditarReserva').modal('show');
+		$('#modalVerReserva').modal('show');
 	}
 	else if(accion == 'Eliminar'){
 		modalEliminarReservaSimple();	
@@ -116,8 +116,7 @@ function loadCalendar(){
 	        left: 'prev,next today',
 	        center: 'title',
 	        right: 'month,agendaWeek,agendaDay'
-	    },	    
-	    defaultDate: '2016-03-12',
+	    },
 	    editable: true,
 	    eventLimit: true,
 	    eventClick: function(event, jsEvent, view){
@@ -218,7 +217,7 @@ function loadCalendar(){
 	    },
 	    eventSources: [ 
 		        {
-		        	url: '/reservas/misEventos',							   
+		        	url: '/reservas/reservasCalendario',							   
 		            textColor: 'black'  
 		        }	        
 	    ]
@@ -266,33 +265,15 @@ function eliminarReserva(reqHeaders, idReserva){
 }
 
 function modalEliminarReservaSimple(){
-	$('#modalEditarReserva').modal('hide');
+	$('#modalVerReserva').modal('hide');
 	$('[role="tooltip"]').popover('hide');
 	$('#modalEliminarReservaSimple').modal('show');	
 }
 
 function modalEliminarReservaRecurrente(){
-	$('#modalEditarReserva').modal('hide');
+	$('#modalVerReserva').modal('hide');
 	$('[role="tooltip"]').popover('hide');
 	$('#modalRecurrente').modal('show');	
-}
-
-function nuevaReserva(reserva, reqHeaders){
-	$.ajax({
-			url: baseURL + 'nuevaReservaAJAX',
-			headers : reqHeaders,
-			type: 'POST',		 				 			
-			data: JSON.stringify(reserva),
-			contentType: 'application/json',
-			success : function(datos) {  
-				$("#calendar").fullCalendar('refetchEvents');			
-			},
-			error: function(xhr, status){
-				var x = JSON.parse(xhr.responseText);
-				console.log(x.msg);
-				//borrar EXDATE
-			}
-		});
 }
 
 function esRecurrente(reserva){

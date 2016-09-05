@@ -18,45 +18,25 @@ import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import es.fdi.reservas.reserva.web.EspacioDTO;
+import es.fdi.reservas.users.business.boundary.UserService;
+import es.fdi.reservas.users.business.entity.User;
 
 @Service
 public class EspacioService {
 
 	private EspacioRepository espacio_repository;
 	private EdificioRepository edificio_repository;
+	private UserService user_service;
+	private EdificioService edificio_service;
 	private AttachmentRepository attachment_repository;
 	
 	@Autowired
-	public EspacioService(EspacioRepository espacio_repository, AttachmentRepository ar, EdificioRepository er) {
-		super();
-		this.espacio_repository = espacio_repository;
-		this.attachment_repository = ar;
-		this.edificio_repository = er;
-	}
-
-	public List<Espacio> getEspaciosEdificio(long idEdificio) {
-		return espacio_repository.findByEdificioId(idEdificio);
-	}
-
-	public Espacio getEspacio(long id_espacio) {
-		return espacio_repository.findOne(id_espacio);
-	}
-
-	public List<Espacio> getTiposEspacio(long idEdificio, TipoEspacio idTipoEspacio) {
-		return espacio_repository.findByEdificioIdAndTipoEspacio(idEdificio, idTipoEspacio);
-	}
-	
-	public Iterable<Espacio> getEspacios() {
-		return espacio_repository.findAll();
-	}
-	
-	public List<Espacio> getEspaciosPorTagName(String tag) {
-		return espacio_repository.getEspaciosByTagName(tag);
-	}
-	
-	public void eliminarEspacio(long idEspacio) {
-		//espacio_repository.delete(idEspacio);
-		espacio_repository.softDelete(Long.toString(idEspacio));
+	public EspacioService(EspacioRepository er, UserService us, EdificioService es, EdificioRepository ere, AttachmentRepository ar){
+		espacio_repository = er;
+		user_service = us;
+		edificio_service = es;
+		edificio_repository = ere;
+		attachment_repository = ar;
 	}
 	
 	public Page<Espacio> getEspaciosPaginados(Pageable pageRequest) {
@@ -88,15 +68,6 @@ public class EspacioService {
 		newEspacio = espacio_repository.save(newEspacio);
 		
 		return null;
-	}
-
-	public List<TipoEspacio> tiposDeEspacios(long idEdificio) {
-		return espacio_repository.tiposDeEspacios(idEdificio);
-	}
-
-	public List<Espacio> getEspaciosEliminados() {
-		
-		return espacio_repository.recycleBin();
 	}
 	
 	public Espacio restaurarEspacio(Long idEspacio) {
@@ -135,4 +106,59 @@ public class EspacioService {
 		return espacio_repository.getEspaciosEliminadosPorEdificio(tagName, pagerequest);
 	}
 
+	public User getCurrentUser(){
+		return user_service.getCurrentUser();
+	}
+	
+	public Iterable<Edificio> getEdificios(){
+		return edificio_service.getEdificios();
+	}
+	
+	public Espacio getEspacio(long idEspacio){
+		return espacio_repository.findOne(idEspacio);
+	}
+	
+	public Iterable<Espacio> getEspacios() {
+		return espacio_repository.findAll();
+	}
+	
+	public List<Espacio> getEspaciosEdificio(long idEdificio) {
+		return espacio_repository.findByEdificioId(idEdificio);
+	}
+	
+	// Espacios de un edificio de un TipoEspacio en concreto
+	public List<Espacio> getTiposEspacio(long idEdificio, TipoEspacio idTipoEspacio) {
+		return espacio_repository.findByEdificioIdAndTipoEspacio(idEdificio, idTipoEspacio);
+	}
+	
+	// Todos los TipoEspacio que tiene un edificio
+	public List<TipoEspacio> tiposDeEspacios(long idEdificio) {
+		return espacio_repository.tiposDeEspacios(idEdificio);
+	}
+	
+	public List<Espacio> getEspaciosPorTagName(String tag) {
+		return espacio_repository.getEspaciosByTagName(tag);
+	}
+	
+	public Page<Espacio> getEspaciosPaginados(PageRequest pageRequest) {
+		return espacio_repository.findAll(pageRequest);
+	}
+	
+	public void eliminarEspacio(long idEspacio) {
+		espacio_repository.softDelete(Long.toString(idEspacio));
+	}
+	
+	public List<Espacio> getEspaciosEliminados() {		
+		return espacio_repository.recycleBin();
+	}
+	
+	public Espacio save(Espacio e){
+		return espacio_repository.save(e);
+	}
+
+	public Page<Espacio> getEspaciosEliminadosPaginados(Pageable pageRequest) {
+		// TODO Auto-generated method stub
+		return espacio_repository.getEspaciosEliminadosPaginados(pageRequest);
+	}
 }
+

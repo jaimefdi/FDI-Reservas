@@ -85,7 +85,7 @@ function editarEspacio(espacio, reqHeaders){
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/admin/administrar/espacios/1";
+				 window.location = "/reservas/admin/administrar/espacios/page/1";
 			},    
 			error : function(xhr, status) {
  			alert('Disculpe, existió un problema');

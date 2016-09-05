@@ -239,8 +239,7 @@ $('#calendar').fullCalendar({
         left: 'prev,next today',
         center: 'title',
         right: 'month,agendaWeek,agendaDay'
-    },
-    defaultDate: '2016-03-12',			    
+    },			    
     eventLimit: true,		    
     eventClick: function(event, jsEvent, view){
     	$('[role="tooltip"]').popover('hide');

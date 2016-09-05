@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import es.fdi.reservas.reserva.business.entity.Espacio;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
+import es.fdi.reservas.users.business.entity.User;
 
 @Repository
 public interface EspacioRepository extends JpaRepository<Espacio, Long>{
@@ -54,6 +55,9 @@ public interface EspacioRepository extends JpaRepository<Espacio, Long>{
 	
 	@Query("select e from #{#entityName} e where e.deleted=true and e.edificio.nombreEdificio like lower(concat('%',:nombre, '%'))")
 	public Page<Espacio> getEspaciosEliminadosPorEdificio(@Param("nombre") String nombre, Pageable pagerequest);
+
+	@Query("select e from #{#entityName} e where e.deleted=true")
+	public Page<Espacio> getEspaciosEliminadosPaginados(Pageable page);
 	
 	
 }
