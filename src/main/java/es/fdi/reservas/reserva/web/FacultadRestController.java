@@ -45,7 +45,7 @@ public class FacultadRestController {
 	}
 	
 
-	@RequestMapping(value="/admin/nuevaFacultad", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/nuevaFacultad", method=RequestMethod.PUT)
 	public String crearFacultad(@RequestBody FacultadDTO f){
 		facultad_service.addNewFacultad(f);
 	   return "redirect:/admin/administrar/facultad/page/1";

@@ -9,7 +9,7 @@ $(document).ready(function(){
 		$("#enlaceGuardar").click(function(){
 			edificio.nombreEdificio = $("#idNombre").val();
 			edificio.direccion = $("#idDir").val();
-			edificio.imagen = $("#idAttachment").val();
+			//edificio.imagen = $("#idAttachment").val();
 	    	editarEdificio(edificio,reqHeaders);
 	    	
 		});
@@ -49,7 +49,6 @@ $(document).ready(function(){
 		}).autocomplete("instance")._renderItem = function(ul,item){
 			
 				var inner_html = '<div class="media"><div class="media-left">' + 
-				                  '<img class="img-circle" src="http://placehold.it/50x50"/>' + 
 				                  '</div>' + 
 				                  '<div class="media-body">' + 
 				                  '<h5 class="media-heading">'+ item.value +'</h5>' + 
@@ -76,7 +75,7 @@ function editarEdificio(edificio, reqHeaders){
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/admin/administrar/edificios/1";
+				 window.location = "/reservas/admin/administrar/edificios/page/1";
 			},    
 			error : function(xhr, status) {
 				alert(baseURL),

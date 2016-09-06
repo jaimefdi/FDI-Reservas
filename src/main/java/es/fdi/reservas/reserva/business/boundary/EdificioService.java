@@ -178,5 +178,20 @@ public class EdificioService {
 	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estadoReserva) {
 		return user_service.reservasPendientesUsuario(idUsuario, estadoReserva);
 	}
+
+	public Page<Edificio> getEdificiosPaginadosPorNombre(String nombre, PageRequest pagerequest) {
+		// TODO Auto-generated method stub
+		return edificio_repository.getEdificiosPorTagName(nombre, pagerequest);
+	}
+
+	public Page<Edificio> getEdificiosPaginadosPorFacultad(String nombre, PageRequest pagerequest) {
+		// TODO Auto-generated method stub
+		return edificio_repository.getEdificiosPorFacultad(nombre, pagerequest);
+	}
+
+	public Page<Edificio> getEdificiosPaginadosPorDireccion(String nombre, PageRequest pageRequest) {
+		// TODO Auto-generated method stub
+		return edificio_repository.getEdificiosPorDireccion(nombre, pageRequest);
+	}
 }
 
