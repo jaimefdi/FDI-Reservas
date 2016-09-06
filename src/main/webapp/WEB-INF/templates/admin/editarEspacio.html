@@ -40,8 +40,8 @@
                  <div class="form-group">
                      <label>Micrófono:</label>
                      <select id = "idMicro" title="Activado" th:value="${espacio.microfono}">
-                    		<option value="true">Si</option>
-			          		<option value="false">No</option>
+                    		<option value="true" th:selected="${espacio.microfono} == true">Si</option>
+			          		<option value="false" th:selected="${espacio.microfono} == false">No</option>
                     	</select>                  
 		                                 
                  </div>
@@ -50,20 +50,18 @@
                  <div class="form-group">
                      <label>Proyector:</label>
                      <select id = "idProy" title="Activado" th:value="${espacio.proyector}">
-                    		<option value="true">Si</option>
-			          		<option value="false">No</option>
+                    		<option value="true" th:selected="${espacio.proyector} == true">Si</option>
+			          		<option value="false" th:selected="${espacio.proyector} == false">No</option>
                     	</select>                  
 		                                 
                  </div>
                  
-                 <div class="form-group">
+                 <div class="form-group"> 
                      <label>Tipo Espacio:</label>
                      <select id = "idTipo" >
-                     <option value="aula">Aula</option>
-                     <option th:if="${espacio.tipoEspacio.tipo} == 'Sala'" value="sala" selected="selected">Sala</option>
-                    		<option th:if="${espacio.tipoEspacio.tipo} != 'Sala'" value="sala">Sala</option>
-			          		
-		          			<option value="laboratorio">Laboratorio</option>
+                     <option value="aula" th:selected="${espacio.tipoEspacio.tipo} == 'Aula'">Aula</option>
+                     <option value="sala" th:selected="${espacio.tipoEspacio.tipo} == 'Sala'">Sala</option>
+          			 <option value="laboratorio" th:selected="${espacio.tipoEspacio.tipo} == 'Laboratorio'">Laboratorio</option>
 <!--                     		<option th:if="${espacio.tipoEspacio.tipo} == 'Sala'" value="sala" selected="selected">Sala</option> -->
 <!--                     		<option th:if="${espacio.tipoEspacio.tipo} != 'Sala'" value="sala">Sala</option> -->
 <!--                     		<option th:if="${espacio.tipoEspacio.tipo} == 'Aula'" value="aula" selected="selected">Aula</option> -->

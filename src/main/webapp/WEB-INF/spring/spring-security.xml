@@ -25,6 +25,7 @@
 		<intercept-url pattern="/login-error" access="permitAll" />
 		<intercept-url pattern="/welcome" access="permitAll" />
 		<intercept-url pattern="/nuevoUsuario" access="permitAll" />
+		<intercept-url pattern="/nuevoUser" access="permitAll" />
 		<intercept-url pattern="/logout" access="isAuthenticated()" />
 		
 		<intercept-url pattern="/gestor/**" access="hasRole('ROLE_GESTOR')" />

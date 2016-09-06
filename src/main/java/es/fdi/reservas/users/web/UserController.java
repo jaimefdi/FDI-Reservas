@@ -45,7 +45,7 @@ public class UserController {
 	
 	@RequestMapping(value="/admin/nuevoUsuario", method=RequestMethod.GET)
 	public String nuevoUsuario(Model model){
-		//ModelAndView model = new ModelAndView("admin/nuevoUsuario", "User", new User());
+		
 		User u = user_service.getCurrentUser();
 		model.addAttribute("User", u);
 		model.addAttribute("reservasPendientes", user_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
@@ -54,9 +54,11 @@ public class UserController {
 	   return "index";
 	}
 	
-	@RequestMapping(value="/admin/nuevoUser", method=RequestMethod.GET)
-	public ModelAndView nuevoUser(){
-	   return new ModelAndView("admin/nuevoUsuario", "User", new User());
+	@RequestMapping(value="/nuevoUser", method=RequestMethod.GET)
+	public String nuevoUser(Model model){
+		model.addAttribute("us", new User());
+		model.addAttribute("view", "registro");
+		return "registro";
 	}	
 	
 	@RequestMapping(value = "usuario/tag/{tagName}", method = RequestMethod.GET)
@@ -102,9 +104,7 @@ public class UserController {
         Page<User> currentResults = user_service.getUsuariosPaginados(pageRequest);
         
         model.addAttribute("currentResults", currentResults);
-//        String wsp = System.getProperty("user.dir");
-//        File f = new File("user.png");
-//        wsp = f.getAbsolutePath();
+
         int current = currentResults.getNumber() + 1;
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, currentResults.getTotalPages()); 

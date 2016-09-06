@@ -2,13 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8"/>
-    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet"
+        href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+        th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"/>
+    <link rel="stylesheet"
+        href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+        th:href="@{/webjars/font-awesome/4.5.0/css/font-awesome.min.css}"/>
+    <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+        th:href="@{/webjars/material-design-iconic-font/2.2.0/dist/css/material-design-iconic-font.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../../css/estilo.css" th:href="@{/css/estilo.css}"/>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'/>
 	<title>UCM RESERVAS - Nuevo usuario</title>
-    
+    <script 
+        src="//code.jquery.com/jquery-2.1.4.min.js"
+        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    <script
+        src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+        th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
 </head>
 <body>
 	<div class="container-fluid" th:fragment="contenido">
-        
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Logotipo -->
+            <div class="navbar-header">               
+                <div class="navbar-brand">
+                    <a> <img class="img-circle" src="img/ucm-ws.png" width="30" height="30"/> UCM Reservas</a>
+                </div>      
+            </div>    
+            <!-- /.navbar-collapse -->
+        </nav>
         <!-- Page Heading -->
 			<div class="row">
 			    <div class="col-md-12">
@@ -46,23 +71,6 @@
                                   <input name="password" id="idPassword" type="password" class="form-control" placeholder="Contraseña"/>
                                 </div> 
 			            </div>
-<!-- 			            Imagen usuario -->
-<!-- 			            <div class="form-group"> -->
-<!-- 							<label>Selecciona la imagen: </label> -->
-<!-- 							<input type="file" id="idAttachment" />								 -->
-<!-- 						</div> -->
-						<!--/*/  <th:block sec:authorize="hasRole('ROLE_GESTOR') || hasRole('ROLE_ADMIN')"> /*/-->
-						 <!-- Facultad usuario -->
-			            <div class="form-group">
-							<label>Facultad: </label>
-							<div class="input-group">
-								<span class="input-group-addon"><i class="zmdi zmdi-balance"></i></span>
-								<input type="text" id="idFacultad" class="form-control" placeholder="Introduce una facultad"/>	
-							</div>
-							<p class="small help-block text-left">Agregar este usuario a una facultad.</p>							
-						</div>
-						
-			            <!--/*/  </th:block> /*/-->
 			            
 			            <div class="row text-center">
 			            <button type="button" id="enlaceGuardar" class="btn-normal"> CREAR </button>
@@ -74,7 +82,7 @@
 			<script th:inline="javascript">
 			var baseURL = /*[[@{/}]]*/ '/';
 			</script>
-			<script src="../../js/admin/user/nuevoUsuario.js" th:src="@{/js/admin/user/nuevoUsuario.js}"></script>
+			<script src="../../js/admin/user/registro.js" th:src="@{/js/admin/user/registro.js}"></script>
         </div>
         <!-- /.container-fluid -->
 

@@ -65,10 +65,10 @@ function modalRestaurarEdificio(edificio, reqHeaders){
 			type: 'DELETE',
 			headers : reqHeaders,
 			success : function(datos) {
-				alert("Edificio eliminado");
+				alert("Edificio restaurado");
 				$('#modalEditarEdificio').modal('hide');
 				$("#" + edificio.id).remove();
-			
+				window.location = "/reservas/admin/administrar/edificios/page/1";
 			},    
 			error : function(xhr, status) {
 				alert('Disculpe, existió un problema');

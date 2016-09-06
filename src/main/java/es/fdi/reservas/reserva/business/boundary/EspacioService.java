@@ -54,7 +54,7 @@ public class EspacioService {
 		}
 		
 		if (espacioDTO.getImagen().equals("")){
-			attachment = espacio_repository.getOne(espacioDTO.getId()).getImagen();
+			attachment = espacio_repository.findOne(espacioDTO.getId()).getImagen();
 		}
 		else {
 
@@ -93,7 +93,7 @@ public class EspacioService {
 		TipoEspacio tipoEspacio = TipoEspacio.fromTipoEspacio(espacioDTO.getTipoEspacio());
 		Espacio newEspacio = new Espacio(espacioDTO.getNombreEspacio(),espacioDTO.getCapacidad(), tipoEspacio); 
 
-		newEspacio.setEdificio(edificio_service.getEdificio(1));
+		newEspacio.setEdificio(edificio_service.getEdificio(espacioDTO.getIdEdificio()));
 		newEspacio.setImagen(attachment_repository.findOne((long) 1));
 		newEspacio = espacio_repository.save(newEspacio);
 		

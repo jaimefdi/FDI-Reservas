@@ -82,6 +82,13 @@ public class UserRestController {
 	   return "redirect:/admin/administrar";
 		//return "nuevoUsuario";
 	}
+	
+	@RequestMapping(value="/nuevoUser", method=RequestMethod.POST)
+	public String crearUsuarioLogin(@RequestBody UserDTO us){
+		user_service.addNewUserLogin(us);
+	   return "redirect:/login";
+		//return "nuevoUsuario";
+	}
 
 	@RequestMapping(value = "/usuarios/tag/{tagName}", method = RequestMethod.GET)
 	public List<UserDTO> usuariosFiltro(@PathVariable("tagName") String tagName) {

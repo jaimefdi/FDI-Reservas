@@ -66,6 +66,7 @@ function modalRestaurarUsuario(user, reqHeaders){
 				alert("Usuario restaurado");
 				$('#modalEditarUsuario').modal('hide');
 				$("#" + user.id).remove();
+				window.location = "/reservas/admin/administrar/usuarios/page/1";
 			
 			},    
 			error : function(xhr, status) {

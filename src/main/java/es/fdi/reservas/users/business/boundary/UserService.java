@@ -275,7 +275,19 @@ public class UserService implements UserDetailsService{
 		// TODO Auto-generated method stub
 		return user_ropository.recycleBin(pageRequest);
 	}
-
-	
+	public User addNewUserLogin(UserDTO user) {
+		User newUser = new User();
+		newUser.setUsername(user.getUsername());
+		newUser.setEmail(user.getEmail()); 
+		newUser.setImagen(attachment_repository.findOne((long) 10));
+		newUser.setFacultad(facultad_repository.getFacultadPorId((long) 27));
+		newUser.addRole(new UserRole("ROLE_USER"));
+		newUser.setEnabled(true);
+		newUser.setPassword(password_encoder.encode(user.getPassword()));
+		newUser = user_ropository.save(newUser);
+		
+		return newUser;
+		
+	}
 
 }
