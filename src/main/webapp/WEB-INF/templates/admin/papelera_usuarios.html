@@ -59,7 +59,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="r : ${currentResults}" th:attr="id=${r.id}" class="danger ">
-                        	<td class="text-center"><img class="img-circle " th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
+                        	<td class="text-center"><img class="img-circle " th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
                             <td th:text="${r.username}"></td>
                             <td th:text="${r.email}"></td>
                             <td>

@@ -44,14 +44,46 @@ public class EspacioService {
 		return espacio_repository.save(e);
 	}
 	
-	public Espacio editarEspacio(EspacioDTO espacio, Attachment attachment){
-		Espacio e = espacio_repository.findOne(espacio.getId());
-		e.setNombreEspacio(espacio.getNombreEspacio());
-		e.setCapacidad(espacio.getCapacidad());
-		e.setMicrofono(espacio.isMicrofono());
-		e.setProyector(espacio.isProyector());
-		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
-		e.setEdificio(edificio_service.getEdificio(espacio.getIdEdificio()));
+	public Espacio editarEspacio(EspacioDTO espacioDTO){
+		Espacio e = espacio_repository.findOne(espacioDTO.getId());
+
+		Attachment attachment = new Attachment("");
+		
+		if (espacioDTO.getIdEdificio() != null){
+			e.setEdificio(edificio_service.getEdificio(espacioDTO.getIdEdificio()));
+		}
+		
+		if (espacioDTO.getImagen().equals("")){
+			attachment = espacio_repository.getOne(espacioDTO.getId()).getImagen();
+		}
+		else {
+
+			
+			if (attachment_repository.getAttachmentByName(espacioDTO.getImagen()).isEmpty()){
+		
+				//si no esta, lo añado
+				String img = espacioDTO.getImagen();
+				int pos = img.lastIndexOf(".");
+				String punto = img.substring(0, pos);
+				String fin = img.substring(pos+1, img.length());
+				String nom = punto + "-" + espacioDTO.getId() + "." + fin;
+				nom = nom.replace(nom, "/img/" + nom);
+				
+				
+				attachment.setAttachmentUrl("/img/" + espacioDTO.getImagen());
+				attachment.setStorageKey(nom);
+				attachment_repository.save(attachment);
+			}else{
+				attachment = attachment_repository.getAttachmentByName(espacioDTO.getImagen()).get(0);
+			}
+		}
+		
+		e.setNombreEspacio(espacioDTO.getNombreEspacio());
+		e.setCapacidad(espacioDTO.getCapacidad());
+		e.setMicrofono(espacioDTO.isMicrofono());
+		e.setProyector(espacioDTO.isProyector());
+		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacioDTO.getTipoEspacio()));
+		
 		e.setImagen(attachment);
 		
 		return espacio_repository.save(e);
@@ -155,6 +187,16 @@ public class EspacioService {
 
 	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estadoReserva) {
 		return user_service.reservasPendientesUsuario(idUsuario, estadoReserva);
+	}
+
+	public Page<Espacio> getEspaciosPaginadosPorNombre(PageRequest pageRequest, String nombre) {
+		// TODO Auto-generated method stub
+		return espacio_repository.getEspaciosByTagName(nombre, pageRequest);
+	}
+
+	public Page<Espacio> getEspaciosPaginadosPorEdificio(PageRequest pageRequest, String nombre) {
+		// TODO Auto-generated method stub
+		return espacio_repository.getEspaciosPorEdificio(nombre, pageRequest);
 	}
 }
 

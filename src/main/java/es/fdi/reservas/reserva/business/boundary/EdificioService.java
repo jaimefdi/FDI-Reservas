@@ -38,16 +38,35 @@ public class EdificioService {
 		attachment_repository = ar;
 	}
 
-	public Edificio editarEdificio(EdificioDTO edificio, Attachment attachment){
-		Edificio e = edificio_repository.findOne(edificio.getId());
+	public Edificio editarEdificio(EdificioDTO edificioDTO){
+		Edificio e = edificio_repository.findOne(edificioDTO.getId());
 		
-		e.setNombreEdificio(edificio.getNombreEdificio());
-		e.setDireccion(edificio.getDireccion());
-		Facultad fac = facultad_service.getFacultadPorId(edificio.getIdFacultad());
-		e.setFacultad(fac);
-		//e.setFacultad(facultad_repository.getOne(edificio.getIdFacultad()));
+		if (edificioDTO.getIdFacultad() != null){
+			e.setFacultad(facultad_service.getFacultad(edificioDTO.getIdFacultad()));
+		}
+		
+		Attachment attachment = new Attachment("");
+		if ((edificioDTO.getImagen() != null) && attachment_repository.getAttachmentByName(edificioDTO.getImagen()).isEmpty()){
+			//si no esta, lo añado
+			String img = edificioDTO.getImagen();
+			int pos = img.lastIndexOf(".");
+			String punto = img.substring(0, pos);
+			String fin = img.substring(pos+1, img.length());
+			String nom = punto + "-" + edificioDTO.getId() + "." + fin;
+			nom = nom.replace(nom, "/img/" + nom);
+			
+			
+			attachment.setAttachmentUrl("/img/" + edificioDTO.getImagen());
+			attachment.setStorageKey(nom);
+		}else{
+			attachment = attachment_repository.getAttachmentByName(edificioDTO.getImagen()).get(0);
+		}
+		
+		e.setNombreEdificio(edificioDTO.getNombreEdificio());
+		e.setDireccion(edificioDTO.getDireccion());
 		e.setImagen(attachment);
 		attachment_repository.save(attachment);
+		
 		return edificio_repository.save(e);
 	}
 	

@@ -16,7 +16,7 @@ $(document).ready(function(){
 			espacio.proyector = $("#idProy").val();
 			espacio.tipoEspacio = $("#idTipo").val();
 			espacio.imagen = $("#idAttachment").val();
-			
+			//espacio.edificio = $("#idEdificio").val();
 			console.log(espacio);
 	    	editarEspacio(espacio,reqHeaders);
   	
@@ -50,7 +50,7 @@ $(document).ready(function(){
 					});
 			},
 			select: function(event, ui){
-				espacio.edificio = ui.item.label;
+				espacio.idEdificio = ui.item.label;
 				//console.log(idFacultad);
 				//$("#idFacultad").prop("name", idFacultad);
 			},

@@ -70,6 +70,7 @@ public class GestorController {
 		model.addAttribute("user", u);
 		model.addAttribute("view", "mis-reservas");
 		model.addAttribute("User", u);
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("Reservas", reserva_service.getReservasUsuario(u.getId()));
 		model.addAttribute("GruposReservas", grupo_service.getGruposReservas());
 		model.addAttribute("view", "mis-reservas");
@@ -93,6 +94,7 @@ public class GestorController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("view", "gestor/gestion-reservas");
 		
@@ -114,6 +116,7 @@ public class GestorController {
 
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
+        model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
 		model.addAttribute("view", "gestor/gestion-reservas");
@@ -138,6 +141,7 @@ public class GestorController {
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("view", "gestor/gestion-reservas");
 		
         return "index";
@@ -150,6 +154,7 @@ public class GestorController {
 		model.addAttribute("User", u);	
 		model.addAttribute("Reserva", reserva_service.getReserva(idReserva));
 		model.addAttribute("EstadosReserva", lista);
+		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		Long id= reserva_service.getReserva(idReserva).getUser().getId();
 		model.addAttribute("GruposReservas", grupo_service.getGruposUsuario(u.getId()));
 		model.addAttribute("GruposReservasUser", grupo_service.getGruposUsuario(id));

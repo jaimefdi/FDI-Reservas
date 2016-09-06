@@ -57,12 +57,12 @@ public class EspacioController {
 	 */
 	
 	@RequestMapping(value="/admin/administrar/espacios/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
-    public String misEspaciosPaginadosPorNombre(@PathVariable Integer pageNumber, Model model) {
+    public String misEspaciosPaginadosPorNombre(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
 		
 		User u = espacio_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);		
-        Page<Espacio> currentResults = espacio_service.getEspaciosPaginados(pageRequest);
+        Page<Espacio> currentResults = espacio_service.getEspaciosPaginadosPorNombre(pageRequest, nombre);
                 
         model.addAttribute("currentResults", currentResults);
         
@@ -75,11 +75,87 @@ public class EspacioController {
         model.addAttribute("currentIndex", current); 
 		model.addAttribute("User", u);
 		model.addAttribute("reservasPendientes", espacio_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
-		model.addAttribute("view", "admin/administrar_espacios");	
+		model.addAttribute("view", "admin/filtrar_espacios");	
+				
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/espacios/restaurar/nombre/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEspaciosPaginadosPorNombreRestaurar(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
+		
+		User u = espacio_service.getCurrentUser();
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);		
+        Page<Espacio> currentResults = espacio_service.getEspaciosEliminadosPorNombre(nombre, pageRequest);
+                
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("User", u);
+		model.addAttribute("reservasPendientes", espacio_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("view", "admin/filtrar_espacios");	
 				
         return "index";
     }
 
+	/*
+	 * Filtro edificio
+	 */
+	
+	@RequestMapping(value="/admin/administrar/espacios/edificio/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEspaciosPaginadosPorEdificio(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
+		
+		User u = espacio_service.getCurrentUser();
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);		
+        Page<Espacio> currentResults = espacio_service.getEspaciosPaginadosPorEdificio(pageRequest, nombre);
+                
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("User", u);
+		model.addAttribute("reservasPendientes", espacio_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("view", "admin/filtrar_espacios");	
+				
+        return "index";
+    }
+	
+	@RequestMapping(value="/admin/administrar/espacios/restaurar/edificio/{nombre}/page/{pageNumber}", method=RequestMethod.GET)
+    public String misEspaciosPaginadosPorEdificioRestaurar(@PathVariable Integer pageNumber, Model model, @PathVariable String nombre) {
+		
+		User u = espacio_service.getCurrentUser();
+		
+		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);		
+        Page<Espacio> currentResults = espacio_service.getEspaciosEliminadosPorEdificio(nombre, pageRequest);
+                
+        model.addAttribute("currentResults", currentResults);
+        
+        int current = currentResults.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, currentResults.getTotalPages()); 
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current); 
+		model.addAttribute("User", u);
+		model.addAttribute("reservasPendientes", espacio_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("view", "admin/filtrar_espacios");	
+				
+        return "index";
+    }
+	
 	@RequestMapping(value="/admin/nuevoEspacio",method=RequestMethod.GET)
 	public String nuevoEspacio(Model model){
 		

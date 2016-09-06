@@ -32,23 +32,7 @@ public class EdificioRestController {
 	@RequestMapping(value = "/admin/administrar/edificios/editar/{idEdificio}", method = RequestMethod.PUT)
 	public void editarEdificio(@PathVariable("idEdificio") long idEdificio, @RequestBody EdificioDTO edificioActualizado){
 
-			Attachment attachment = new Attachment("");
-			if (edificio_service.getAttachmentByName(edificioActualizado.getImagen()).isEmpty()){
-				//si no esta, lo añado
-				String img = edificioActualizado.getImagen();
-				int pos = img.lastIndexOf(".");
-				String punto = img.substring(0, pos);
-				String fin = img.substring(pos+1, img.length());
-				String nom = punto + "-" + idEdificio + "." + fin;
-				nom = nom.replace(nom, "/img/" + nom);
-				
-				
-				attachment.setAttachmentUrl("/img/" + edificioActualizado.getImagen());
-				attachment.setStorageKey(nom);
-			}else{
-				attachment = edificio_service.getAttachmentByName(edificioActualizado.getImagen()).get(0);
-			}
-			edificio_service.editarEdificio(edificioActualizado, attachment);
+		edificio_service.editarEdificio(edificioActualizado);
 
 	}
 	

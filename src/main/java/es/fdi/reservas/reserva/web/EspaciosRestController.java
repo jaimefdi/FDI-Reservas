@@ -46,40 +46,9 @@ public class EspaciosRestController {
 	
 	@RequestMapping(value = "/admin/administrar/espacio/editar/{idEspacio}", method = RequestMethod.PUT)
 	public void editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioDTO espacioDTO) {
-		
-		Attachment attachment = new Attachment("");
-		
-//		if (espacioDTO.getEdificio() == null){
-//			espacioDTO.setEdificio(espacio_service.getEspacio(espacioDTO.getId()).getEdificio().getNombreEdificio());
-//		}
-		
-		if (espacioDTO.getImagen().equals("")){
-			attachment = espacio_service.getEspacio(espacioDTO.getId()).getImagen();
-		}
-		else {
+	
+		espacio_service.editarEspacio(espacioDTO);
 
-			
-			if (espacio_service.getAttachmentByName(espacioDTO.getImagen()).isEmpty()){
-		
-				//si no esta, lo añado
-				String img = espacioDTO.getImagen();
-				int pos = img.lastIndexOf(".");
-				String punto = img.substring(0, pos);
-				String fin = img.substring(pos+1, img.length());
-				String nom = punto + "-" + idEspacio + "." + fin;
-				nom = nom.replace(nom, "/img/" + nom);
-				
-				
-				attachment.setAttachmentUrl("/img/" + espacioDTO.getImagen());
-				attachment.setStorageKey(nom);
-				//reserva_service.addAttachment(attachment);
-			}else{
-				attachment = espacio_service.getAttachmentByName(espacioDTO.getImagen()).get(0);
-			}
-		}
-		espacio_service.editarEspacio(espacioDTO, attachment);
-
-		//return "redirect:/admin/administrar/espacios/page/1";
 	}
 	
 	

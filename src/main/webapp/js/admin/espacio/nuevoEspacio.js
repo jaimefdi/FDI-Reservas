@@ -13,7 +13,7 @@ $(document).ready(function(){
 			//espacio.capacidad = $("#idCapa").val();
 			espacio.capacidad = 99;
 			espacio.tipoEspacio = $("#idTipo").val();
-			//espacio.idEdificio =  $("#idEdificio").val();
+			espacio.idEdificio =  $("#idEdificio").val();
 			//espacio.imagen = $("#idAttachment").val();
 			
 			console.log(espacio);
