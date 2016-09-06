@@ -2,7 +2,6 @@ package es.fdi.reservas.reserva.web;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,19 +10,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import es.fdi.reservas.reserva.business.boundary.EdificioService;
-import es.fdi.reservas.reserva.business.boundary.FacultadService;
-import es.fdi.reservas.reserva.business.boundary.ReservaService;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.EstadoReserva;
+import es.fdi.reservas.users.business.entity.User;
 
 @Controller
 public class EdificioController {
 
 	private EdificioService edificio_service;
-	
-	private ReservaService reserva_service;
 		
 	@Autowired
 	public EdificioController(EdificioService es){
@@ -37,6 +32,9 @@ public class EdificioController {
 	}
 	@RequestMapping(value="/admin/administrar/edificios/page/{pageNumber}", method=RequestMethod.GET)
     public String misEdificiosPaginados(@PathVariable Integer pageNumber, Model model) {
+		
+		User u = edificio_service.getCurrentUser();
+		
 		PageRequest pageRequest = new PageRequest(pageNumber - 1, 5);
 	    Page<Edificio> currentResults = edificio_service.getEdificiosPaginados(pageRequest);
 	            
@@ -46,12 +44,11 @@ public class EdificioController {
 	    int begin = Math.max(1, current - 5);
 	    int end = Math.min(begin + 10, currentResults.getTotalPages()); 
 	
-	    model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(edificio_service.getCurrentUser().getId(), EstadoReserva.PENDIENTE).size());
+	    model.addAttribute("reservasPendientes", edificio_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 	    model.addAttribute("beginIndex", begin);
 	    model.addAttribute("endIndex", end);
 	    model.addAttribute("currentIndex", current); 
-	    model.addAttribute("totalPages", currentResults.getTotalPages()); 
-		model.addAttribute("User", edificio_service.getCurrentUser());
+		model.addAttribute("User", u);
 		model.addAttribute("view", "admin/administrar_edificios");
 		
         return "index";
@@ -59,6 +56,8 @@ public class EdificioController {
 	
 	@RequestMapping(value = "/admin/administrar/edificios/restaurar/page/{numPag}")
 	public String restaurarEdificios(@PathVariable("numPag") Integer numPag, Model model){
+		
+		User u = edificio_service.getCurrentUser();
 		
 		PageRequest pageRequest = new PageRequest(numPag - 1, 5);
 		Page<Edificio> currentResults = edificio_service.getEdificiosEliminadosPaginados(pageRequest);
@@ -68,11 +67,11 @@ public class EdificioController {
 	    int end = Math.min(begin + 10, currentResults.getTotalPages());
 	
 	    model.addAttribute("currentResults", currentResults);
-	    model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(edificio_service.getCurrentUser().getId(), EstadoReserva.PENDIENTE).size());
+	    model.addAttribute("reservasPendientes", edificio_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 	    model.addAttribute("beginIndex", begin);
 	    model.addAttribute("endIndex", end);
 	    model.addAttribute("currentIndex", current);
-		model.addAttribute("User", edificio_service.getCurrentUser());
+		model.addAttribute("User", u);
 		model.addAttribute("pagina", numPag);
 		model.addAttribute("view", "admin/papelera_edificios");
 		return "index";	
@@ -83,7 +82,7 @@ public class EdificioController {
 		
 		model.addAttribute("edificio", edificio_service.getEdificio(idEdificio));
 		model.addAttribute("facultades", edificio_service.getFacultades());
-		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(edificio_service.getCurrentUser().getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("reservasPendientes", edificio_service.reservasPendientesUsuario(edificio_service.getCurrentUser().getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("User", edificio_service.getCurrentUser());
 		model.addAttribute("edificio", edificio_service.getEdificio(idEdificio));
 		model.addAttribute("view", "admin/editarEdificio");
@@ -93,10 +92,12 @@ public class EdificioController {
 	@RequestMapping(value="/admin/nuevoEdificio",method=RequestMethod.GET)
 	public String nuevoEdificio(Model model){
 		
-		model.addAttribute("User", edificio_service.getCurrentUser());
+		User u = edificio_service.getCurrentUser();
+		
+		model.addAttribute("User", u);
 		model.addAttribute("Edificio", new Edificio());
 		model.addAttribute("view", "admin/nuevoEdificio");
-		model.addAttribute("reservasPendientes", reserva_service.reservasPendientesUsuario(edificio_service.getCurrentUser().getId(), EstadoReserva.PENDIENTE).size());
+		model.addAttribute("reservasPendientes", edificio_service.reservasPendientesUsuario(u.getId(), EstadoReserva.PENDIENTE).size());
 		model.addAttribute("facultades", edificio_service.getFacultades());
 		return "index";
 	}

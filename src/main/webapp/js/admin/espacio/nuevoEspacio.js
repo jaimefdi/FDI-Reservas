@@ -8,69 +8,22 @@ $(document).ready(function(){
 		
 		
 		
-		$("#enlaceGuardar").click(function(){
+		$("#enlaceCrear").click(function(){
 			espacio.nombreEspacio = $("#idNombre").val();
-			espacio.capacidad = $("#idCapa").val();
-			espacio.microfono = $("#idMicro").val();
-			espacio.proyector = $("#idProy").val();
+			//espacio.capacidad = $("#idCapa").val();
+			espacio.capacidad = 99;
 			espacio.tipoEspacio = $("#idTipo").val();
-			espacio.imagen = $("#idAttachment").val();
+			//espacio.idEdificio =  $("#idEdificio").val();
+			//espacio.imagen = $("#idAttachment").val();
 			
-			
-	    	editarEspacio(espacio,reqHeaders);
+			console.log(espacio);
+			nuevoEspacio(espacio,reqHeaders);
   	
 		});
 		
-		$("#idFacultad").change(function(){
-			$("#idEdificio").autocomplete({
-			source:function(request, response){
-					var tag = request.term;
-					var fac = $("#idFacultad").val();
-					$.ajax({
-						url: '/reservas/admin/edificio/tag/' + tag + '/' + fac,
-						type: 'GET',
-						contentType: 'application/json',
-						success : function(datos) {
-							console.log(datos);
-							
-							response($.map(datos,function(item){
-								
-									var obj = new Object();
-									obj.label = item.id;
-									obj.value = item.nombreEdificio; 
-									return obj;
-				
-							}))
-							
-						},    
-					    error : function(xhr, status) {
-					        alert('Disculpe, existió un problema');
-					    }
-					});
-			},
-			select: function(event, ui){
-				espacio.edificio = ui.item.label;
-				//console.log(idFacultad);
-				//$("#idFacultad").prop("name", idFacultad);
-			},
-			minLength: 3
-
-		}).autocomplete("instance")._renderItem = function(ul,item){
+		
 			
-				var inner_html = '<div class="media"><div class="media-left">' + 
-				                  '</div>' + 
-				                  '<div class="media-body">' + 
-				                  '<h5 class="media-heading">'+ item.value +'</h5>' + 
-				                  '</div></div>';
-				                  
-				        
-				                  
-		            return $('<li></li>')
-		                    .data("item.autocomplete", item)
-		                    .append(inner_html)
-		                    .appendTo(ul);
-			
-		};})
+		
 		$("#idFacultad").autocomplete({
 			source:function(request, response){
 					var tag = request.term;
@@ -87,7 +40,6 @@ $(document).ready(function(){
 									var obj = new Object();
 									obj.label = item.id;
 									obj.value = item.nombreFacultad; 
-									//obj.webFacultad = item.webFacultad;
 									return obj;
 				
 							}))
@@ -99,9 +51,9 @@ $(document).ready(function(){
 					});
 			},
 			select: function(event, ui){
-				user.facultad = ui.item.label;
-				//console.log(idFacultad);
-				//$("#idFacultad").prop("name", idFacultad);
+				espacio.facultad = ui.item.label;
+				//metodo ajax que carga los edificios
+				edificiosFacultad(espacio.facultad, reqHeaders);
 			},
 			minLength: 3
 
@@ -121,60 +73,11 @@ $(document).ready(function(){
 		                    .appendTo(ul);
 			
 		};
-//		$("#idEdificio").autocomplete({
-//			source:function(request, response){
-//					var tag = request.term;
-//					
-//					$.ajax({
-//						url: '/reservas/admin/edificio/tag/' + tag,
-//						type: 'GET',
-//						contentType: 'application/json',
-//						success : function(datos) {
-//							console.log(datos);
-//							
-//							response($.map(datos,function(item){
-//								
-//									var obj = new Object();
-//									obj.label = item.id;
-//									obj.value = item.nombreEdificio; 
-//									//obj.webFacultad = item.webFacultad;
-//									return obj;
-//				
-//							}))
-//							
-//						},    
-//					    error : function(xhr, status) {
-//					        alert('Disculpe, existió un problema');
-//					    }
-//					});
-//			},
-//			select: function(event, ui){
-//				espacio.edificio = ui.item.label;
-//				//console.log(idFacultad);
-//				//$("#idFacultad").prop("name", idFacultad);
-//			},
-//			minLength: 3
-//
-//		}).autocomplete("instance")._renderItem = function(ul,item){
-//			
-//				var inner_html = '<div class="media"><div class="media-left">' + 
-//				                  '</div>' + 
-//				                  '<div class="media-body">' + 
-//				                  '<h5 class="media-heading">'+ item.value +'</h5>' + 
-//				                  '</div></div>';
-//				                  
-//				        
-//				                  
-//		            return $('<li></li>')
-//		                    .data("item.autocomplete", item)
-//		                    .append(inner_html)
-//		                    .appendTo(ul);
-//			
-//		};
+
 		
 });	
 
-function editarEspacio(espacio, reqHeaders){
+function nuevoEspacio(espacio, reqHeaders){
 	
 	$.ajax({
 			url: baseURL + 'admin/nuevoEspacio',
@@ -184,12 +87,39 @@ function editarEspacio(espacio, reqHeaders){
 			contentType: 'application/json',
 			
 			success : function(datos) {   
-				 window.location = "/reservas/admin/administrar/espacios/1";
+				 window.location = "/reservas/admin/administrar/espacios/page/1";
 			},    
 			error : function(xhr, status) {
  			alert('Disculpe, existió un problema');
  			
 			}
 		});
+	
+}
+
+
+function edificiosFacultad(idFacultad, reqHeaders){
+	
+	$.ajax({
+		url: baseURL + 'edificiosFacultad/' + idFacultad,
+		type: 'GET',
+		headers : reqHeaders,
+		contentType: 'application/json',
+		
+		success : function(datos) {   
+			 $("#idEdificio").empty();
+			 
+			 for(var i in datos){
+				 var value = datos[i].id;
+				 var text = datos[i].nombreEdificio;
+				 
+				 $("#idEdificio").append(new Option(text, value));
+			 }
+		},    
+		error : function(xhr, status) {
+			alert('Disculpe, existió un problema');
+			
+		}
+	});
 	
 }

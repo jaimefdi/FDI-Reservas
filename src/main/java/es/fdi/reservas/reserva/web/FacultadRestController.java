@@ -29,7 +29,6 @@ public class FacultadRestController {
 
 	@RequestMapping(value = "/facultad/{idFacultad}", method = RequestMethod.DELETE)
 	public void eliminarFacultad(@PathVariable("idFacultad") long idFacultad) {
-		//reserva_service.eliminarFacultad(facultad);
 		facultad_service.editarFacultadDeleted(idFacultad);
 	}
 	
@@ -47,9 +46,9 @@ public class FacultadRestController {
 	
 
 	@RequestMapping(value="/admin/nuevaFacultad", method=RequestMethod.POST)
-	public String crearFacultad(Facultad f){
+	public String crearFacultad(@RequestBody FacultadDTO f){
 		facultad_service.addNewFacultad(f);
-	   return "redirect:/admin/administrar/facultad/1";
+	   return "redirect:/admin/administrar/facultad/page/1";
 	}
 	
 //	@RequestMapping(value = "/admin/facultad/nombre/tag/{tagName}", method = RequestMethod.GET)

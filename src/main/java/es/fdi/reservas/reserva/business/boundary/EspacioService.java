@@ -1,21 +1,18 @@
 package es.fdi.reservas.reserva.business.boundary;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
-
 import es.fdi.reservas.fileupload.business.control.AttachmentRepository;
 import es.fdi.reservas.fileupload.business.entity.Attachment;
-import es.fdi.reservas.reserva.business.control.EdificioRepository;
 import es.fdi.reservas.reserva.business.control.EspacioRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
 import es.fdi.reservas.reserva.business.entity.Espacio;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
+import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.business.entity.TipoEspacio;
 import es.fdi.reservas.reserva.web.EspacioDTO;
 import es.fdi.reservas.users.business.boundary.UserService;
@@ -25,17 +22,15 @@ import es.fdi.reservas.users.business.entity.User;
 public class EspacioService {
 
 	private EspacioRepository espacio_repository;
-	private EdificioRepository edificio_repository;
 	private UserService user_service;
 	private EdificioService edificio_service;
 	private AttachmentRepository attachment_repository;
 	
 	@Autowired
-	public EspacioService(EspacioRepository er, UserService us, EdificioService es, EdificioRepository ere, AttachmentRepository ar){
+	public EspacioService(EspacioRepository er, UserService us, EdificioService es, AttachmentRepository ar){
 		espacio_repository = er;
 		user_service = us;
 		edificio_service = es;
-		edificio_repository = ere;
 		attachment_repository = ar;
 	}
 	
@@ -56,18 +51,21 @@ public class EspacioService {
 		e.setMicrofono(espacio.isMicrofono());
 		e.setProyector(espacio.isProyector());
 		e.setTipoEspacio(TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()));
-		Long id = Long.decode(espacio.getEdificio());
-		e.setEdificio(edificio_repository.findOne(id));
+		e.setEdificio(edificio_service.getEdificio(espacio.getIdEdificio()));
 		e.setImagen(attachment);
+		
 		return espacio_repository.save(e);
 	}
 	
-	public Espacio addNewEspacio(Espacio espacio){
-		Espacio newEspacio = new Espacio(espacio.getNombreEspacio(),espacio.getCapacidad(), espacio.isMicrofono(), espacio.isProyector(), espacio.getTipoEspacio()); 
-				//TipoEspacio.fromTipoEspacio(espacio.getTipoEspacio()), edificio_repository.findOne(espacio.getIdEdificio()));
+	public Espacio addNewEspacio(EspacioDTO espacioDTO){
+		TipoEspacio tipoEspacio = TipoEspacio.fromTipoEspacio(espacioDTO.getTipoEspacio());
+		Espacio newEspacio = new Espacio(espacioDTO.getNombreEspacio(),espacioDTO.getCapacidad(), tipoEspacio); 
+
+		newEspacio.setEdificio(edificio_service.getEdificio(1));
+		newEspacio.setImagen(attachment_repository.findOne((long) 1));
 		newEspacio = espacio_repository.save(newEspacio);
 		
-		return null;
+		return newEspacio;
 	}
 	
 	public Espacio restaurarEspacio(Long idEspacio) {
@@ -81,28 +79,23 @@ public class EspacioService {
 		return attachment_repository.getAttachmentByName(imagen);
 	}
 
-	public List<Edificio> getEdificiosPorTagName(String tagName) {
-		
-		return edificio_repository.getEdificiosPorTagName(tagName);
+	public List<Edificio> getEdificiosPorTagName(String tagName) {	
+		return edificio_service.getEdificiosPorTagName(tagName);
 	}
 
 	public Page<Espacio> getEspaciosPorNombre(String nombre, Pageable pagerequest) {
-		// TODO Auto-generated method stub
 		return espacio_repository.getEspaciosByTagName(nombre,pagerequest);
 	}
 
 	public Page<Espacio> getEspaciosPorEdificio(String tagName, Pageable pagerequest) {
-		// TODO Auto-generated method stub
 		return espacio_repository.getEspaciosPorEdificio(tagName, pagerequest);
 	}
 	
 	public Page<Espacio> getEspaciosEliminadosPorNombre(String nombre, Pageable pagerequest) {
-		// TODO Auto-generated method stub
 		return espacio_repository.getEspaciosEliminadosByTagName(nombre,pagerequest);
 	}
 
 	public Page<Espacio> getEspaciosEliminadosPorEdificio(String tagName, Pageable pagerequest) {
-		// TODO Auto-generated method stub
 		return espacio_repository.getEspaciosEliminadosPorEdificio(tagName, pagerequest);
 	}
 
@@ -157,8 +150,11 @@ public class EspacioService {
 	}
 
 	public Page<Espacio> getEspaciosEliminadosPaginados(Pageable pageRequest) {
-		// TODO Auto-generated method stub
 		return espacio_repository.getEspaciosEliminadosPaginados(pageRequest);
+	}
+
+	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estadoReserva) {
+		return user_service.reservasPendientesUsuario(idUsuario, estadoReserva);
 	}
 }
 

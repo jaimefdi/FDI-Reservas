@@ -26,7 +26,7 @@ $(document).ready(function(){
  		var edificio = $(this).attr("edif");
  		var eliminado = $(this).attr("act");
  		var accion = $(this).attr("data-accion");
- 		var imagen = "../../../.." + $(this).attr("img");
+ 		var imagen = "../../../../../" + $(this).attr("img");
 
  		var x = isEnabled(eliminado);
  		var pr = isEnabled(proyector);
@@ -44,7 +44,7 @@ $(document).ready(function(){
  	
  		if (accion == 'Restaurar'){
  			
-				modalRestaurarEspacio(edificio, reqHeaders);	
+				modalRestaurarEspacio(espacio, reqHeaders);	
 			
  		}else if(accion == 'Ver'){
  		
@@ -66,13 +66,14 @@ $(document).ready(function(){
 function modalRestaurarEspacio(espacio, reqHeaders){
  	
 		$.ajax({
-			url: baseURL + "/admin/administrar/espacio/" + pag + "/restaurar/" + espacio.id,
+			url: baseURL + "admin/administrar/restaurar/espacio/" + espacio.id,
 			type: 'DELETE',
 			headers : reqHeaders,
 			success : function(datos) {
 				alert("Espacio restaurado");
 				$('#modalEditarEspacio').modal('hide');
-				$("#" + edificio.id).remove();
+				$("#" + espacio.id).remove();
+				 window.location = "/reservas/admin/administrar/espacios/page/1";
 			
 			},    
 			error : function(xhr, status) {

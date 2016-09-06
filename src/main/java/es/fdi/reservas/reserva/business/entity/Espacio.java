@@ -42,9 +42,9 @@ public class Espacio {
 	@Enumerated(EnumType.ORDINAL)
 	private TipoEspacio tipoEspacio;
 
-	@NotNull
+	//@NotNull
 	private Autorizacion tipoAutorizacion;
-	@NotNull
+	//@NotNull
 	private int horasAutorizacion;
 	@NotNull
 	private boolean deleted;
@@ -69,14 +69,13 @@ public class Espacio {
 		this.deleted = false;
 	}*/
 	
-	public Espacio(String nombre_espacio, int capacidad, boolean microfono, boolean proyector,
-			TipoEspacio tipoEspacio) {
+	public Espacio(String nombre_espacio, int capacidad,TipoEspacio tipoEspacio) {
 		super();
 		this.nombreEspacio = nombre_espacio;
 		this.capacidad = capacidad;
-		this.microfono = microfono;
-		this.proyector = proyector;
 		this.tipoEspacio = tipoEspacio;
+		this.microfono = false;
+		this.proyector = false;	
 		this.deleted = false;
 	}
 

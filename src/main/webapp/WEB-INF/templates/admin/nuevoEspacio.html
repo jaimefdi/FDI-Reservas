@@ -22,7 +22,7 @@
 			
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
-                       <form role="form" action="#" th:object="${Espacio}" method="post">
+                      
                        
                        	<div class="form-group">
                               <label>Nombre</label>
@@ -83,11 +83,9 @@
                                 <label>Edificio</label>
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                  <select name="idFacultad" title="Facultad" class="form-control">				     
-							          <option th:each="f : ${facultades}" 
-							          		  th:value="${f.id}" 
-							          		  th:text="${f.nombreFacultad}"/>							          			
-							        </select>					        
+                         				     
+							         <select id="idEdificio" name="edificio" title="Edificio" class="form-control">							          			
+							          </select>	
                                 </div>
                                 <p class="small help-block text-left">Agregar este espacio a un edificio.</p>
                             </div>
@@ -100,10 +98,10 @@
 <!-- 						        </select> -->
 <!-- 					        </div> -->
                           <div class="text-center">
-                               <button type="submit" class="btn-normal">CREAR</button>
+                               <button  id="enlaceCrear" type="button" class="btn-normal">CREAR</button>
                           </div>
 
-                       </form>
+                 
                    
                 </div>
             </div>

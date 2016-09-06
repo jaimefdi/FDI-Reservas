@@ -5,10 +5,13 @@ import es.fdi.reservas.reserva.business.entity.Espacio;
 public class EspacioDTO {
 	
 	private Long id;
+	
 	private String nombreEspacio;
-	private String edificio;
+	
+	private Long idEdificio;
 
 	private int capacidad;
+	
 	private boolean microfono, proyector;
 	
 	private String tipoEspacio;
@@ -17,12 +20,12 @@ public class EspacioDTO {
 	
 	public EspacioDTO(){}
 	
-	public EspacioDTO(Long id, String nombreEspacio, String edificio, int capacidad, boolean microfono,
+	public EspacioDTO(Long id, String nombreEspacio, Long edificio, int capacidad, boolean microfono,
 			boolean proyector, String tipoEspacio, String imagen) {
 		super();
 		this.id = id;
 		this.nombreEspacio = nombreEspacio;
-		this.edificio = edificio;
+		this.idEdificio = edificio;
 		this.capacidad = capacidad;
 		this.microfono = microfono;
 		this.proyector = proyector;
@@ -30,11 +33,11 @@ public class EspacioDTO {
 		this.imagen = imagen;
 	}
 	
-	public EspacioDTO(String nombreEspacio, String edificio, int capacidad, boolean microfono,
+	public EspacioDTO(String nombreEspacio, Long edificio, int capacidad, boolean microfono,
 			boolean proyector, String tipoEspacio, String imagen) {
 		super();
 		this.nombreEspacio = nombreEspacio;
-		this.edificio = edificio;
+		this.idEdificio = edificio;
 		this.capacidad = capacidad;
 		this.microfono = microfono;
 		this.proyector = proyector;
@@ -58,14 +61,16 @@ public class EspacioDTO {
 		this.nombreEspacio = nombreEspacio;
 	}
 
-	public String getEdificio() {
-		return edificio;
+	
+	
+	public Long getIdEdificio() {
+		return idEdificio;
 	}
 
-	public void setEdificio(String edificio) {
-		this.edificio = edificio;
+	public void setIdEdificio(Long idEdificio) {
+		this.idEdificio = idEdificio;
 	}
-	
+
 	public int getCapacidad() {
 		return capacidad;
 	}
@@ -107,10 +112,10 @@ public class EspacioDTO {
 	}
 
 	public static EspacioDTO fromEspacioDTOAutocompletar(Espacio e){
-		return new EspacioDTO(e.getId(), e.getNombreEspacio(), e.getEdificio().getNombreEdificio(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo(), e.getImagen().getAttachmentUrl());
+		return new EspacioDTO(e.getId(), e.getNombreEspacio(), e.getEdificio().getId(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo(), e.getImagen().getAttachmentUrl());
 	}
 	
 	public static EspacioDTO fromEspacioDTO(Espacio e){
-		return new EspacioDTO(e.getNombreEspacio(), e.getEdificio().getNombreEdificio(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo(), e.getImagen().getAttachmentUrl());
+		return new EspacioDTO(e.getNombreEspacio(), e.getEdificio().getId(), e.getCapacidad(), e.isMicrofono(), e.isProyector(), e.getTipoEspacio().getTipo(), e.getImagen().getAttachmentUrl());
 	}
 }

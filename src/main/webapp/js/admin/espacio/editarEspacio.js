@@ -17,7 +17,7 @@ $(document).ready(function(){
 			espacio.tipoEspacio = $("#idTipo").val();
 			espacio.imagen = $("#idAttachment").val();
 			
-			
+			console.log(espacio);
 	    	editarEspacio(espacio,reqHeaders);
   	
 		});

@@ -13,7 +13,9 @@ import es.fdi.reservas.fileupload.business.entity.Attachment;
 import es.fdi.reservas.reserva.business.control.EdificioRepository;
 import es.fdi.reservas.reserva.business.control.FacultadRepository;
 import es.fdi.reservas.reserva.business.entity.Edificio;
+import es.fdi.reservas.reserva.business.entity.EstadoReserva;
 import es.fdi.reservas.reserva.business.entity.Facultad;
+import es.fdi.reservas.reserva.business.entity.Reserva;
 import es.fdi.reservas.reserva.web.EdificioDTO;
 import es.fdi.reservas.users.business.boundary.UserService;
 import es.fdi.reservas.users.business.entity.User;
@@ -170,8 +172,11 @@ public class EdificioService {
 	}
 
 	public List<Attachment> getAttachmentByName(String imagen) {
-		// TODO Auto-generated method stub
 		return attachment_repository.getAttachmentByName(imagen);
+	}
+
+	public List<Reserva> reservasPendientesUsuario(Long idUsuario, EstadoReserva estadoReserva) {
+		return user_service.reservasPendientesUsuario(idUsuario, estadoReserva);
 	}
 }
 

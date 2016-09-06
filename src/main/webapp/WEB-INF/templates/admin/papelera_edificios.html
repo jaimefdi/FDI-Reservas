@@ -58,7 +58,7 @@
                   </thead>
                   <tbody>
                       <tr th:each="r : ${currentResults}" th:attr="id=${r.id}" class = "danger" >
-                      	  <td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="42" width="42"></img></td>
+                      	  <td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
                           <td th:text="${r.nombreEdificio}"></td>
                           <td th:text="${r.facultad.nombreFacultad}"></td>
                           <td><a th:attr="data-id=${r.id},name=${r.nombreEdificio},dir=${r.direccion},fac=${r.facultad.nombreFacultad},act=${r.deleted},img=${r.imagen.attachmentUrl},data-accion='Ver'" role="button" data-toggle="tooltip" data-placement="top" title="Ver" ><i class="zmdi zmdi-eye zmdi-hc-lg"> </i></a>

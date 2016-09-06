@@ -10,7 +10,6 @@ $(document).ready(function(){
 			user.username = $("#idNombre").val();
 			user.email = $("#idEmail").val();
 			user.password = $("#idPassword").val();
-			//user.facultad = $("#idFacultad").val();
 			user.imagen = $("#idAttachment").val();
 			console.log(user);
 	    	editarUsuario(user,reqHeaders);

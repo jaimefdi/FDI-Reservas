@@ -45,23 +45,24 @@ public class EspaciosRestController {
 	}
 	
 	@RequestMapping(value = "/admin/administrar/espacio/editar/{idEspacio}", method = RequestMethod.PUT)
-	public void editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioDTO espacioActualizado) {
+	public void editarEspacios(@PathVariable("idEspacio") long idEspacio, @RequestBody EspacioDTO espacioDTO) {
 		
 		Attachment attachment = new Attachment("");
 		
-		if (espacioActualizado.getEdificio() == null){
-			espacioActualizado.setEdificio(espacio_service.getEspacio(espacioActualizado.getId()).getEdificio().getNombreEdificio());
-		}
-		if (espacioActualizado.getImagen().equals("")){
-			attachment = espacio_service.getEspacio(espacioActualizado.getId()).getImagen();
+//		if (espacioDTO.getEdificio() == null){
+//			espacioDTO.setEdificio(espacio_service.getEspacio(espacioDTO.getId()).getEdificio().getNombreEdificio());
+//		}
+		
+		if (espacioDTO.getImagen().equals("")){
+			attachment = espacio_service.getEspacio(espacioDTO.getId()).getImagen();
 		}
 		else {
 
 			
-			if (espacio_service.getAttachmentByName(espacioActualizado.getImagen()).isEmpty()){
+			if (espacio_service.getAttachmentByName(espacioDTO.getImagen()).isEmpty()){
 		
 				//si no esta, lo añado
-				String img = espacioActualizado.getImagen();
+				String img = espacioDTO.getImagen();
 				int pos = img.lastIndexOf(".");
 				String punto = img.substring(0, pos);
 				String fin = img.substring(pos+1, img.length());
@@ -69,30 +70,28 @@ public class EspaciosRestController {
 				nom = nom.replace(nom, "/img/" + nom);
 				
 				
-				attachment.setAttachmentUrl("/img/" + espacioActualizado.getImagen());
+				attachment.setAttachmentUrl("/img/" + espacioDTO.getImagen());
 				attachment.setStorageKey(nom);
 				//reserva_service.addAttachment(attachment);
 			}else{
-				attachment = espacio_service.getAttachmentByName(espacioActualizado.getImagen()).get(0);
+				attachment = espacio_service.getAttachmentByName(espacioDTO.getImagen()).get(0);
 			}
 		}
-		espacio_service.editarEspacio(espacioActualizado, attachment);
+		espacio_service.editarEspacio(espacioDTO, attachment);
 
 		//return "redirect:/admin/administrar/espacios/page/1";
 	}
 	
 	
-	@RequestMapping(value = "/administrar/espacio/{numPag}/restaurar/{idEspacio}", method = RequestMethod.GET)
-	public String restaurarEspacio(@PathVariable("numPag") Long numPag, @PathVariable("idEspacio") Long idEspacio){
+	@RequestMapping(value = "/admin/administrar/restaurar/espacio/{idEspacio}", method = RequestMethod.DELETE)
+	public void restaurarEspacio(@PathVariable("idEspacio") Long idEspacio){
 		espacio_service.restaurarEspacio(idEspacio);
-		return "redirect:/administrar/espacio/{numPag}/restaurar";
+	
 	}
 	
 	@RequestMapping(value="/admin/nuevoEspacio", method=RequestMethod.POST)
-	public String crearEspacio(Espacio f){
-		espacio_service.addNewEspacio(f);
-	   return "redirect:/admin/administrar/espacios/1";
-		//return "nuevoUsuario";
+	public void crearEspacio(@RequestBody EspacioDTO f){
+		 espacio_service.addNewEspacio(f);
 	}
 	
 	@RequestMapping(value = "/admin/edificio/tag/{tagName}", method = RequestMethod.GET)

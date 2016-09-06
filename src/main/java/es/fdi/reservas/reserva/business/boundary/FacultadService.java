@@ -65,15 +65,10 @@ public class FacultadService {
 	}
 	
 
-	public Facultad addNewFacultad(Facultad facultad){
+	public Facultad addNewFacultad(FacultadDTO facultad){
 		Facultad newFacultad = new Facultad(facultad.getNombreFacultad(), facultad.getWebFacultad());
 		newFacultad = facultad_repository.save(newFacultad);
-		
-		if (newFacultad != null){
-			System.out.println("Facultad añadida correctamente");
-			
-		}
-		
+				
 		return newFacultad;
 	}
 	

@@ -94,4 +94,20 @@ public class EdificioRestController {
 		return result;
 	}
 	
+	
+	@RequestMapping(value = "/edificiosFacultad/{idFacultad}", method = RequestMethod.GET)
+	public List<EdificioDTO> edificiosFacultad(@PathVariable("idFacultad") Long idFacultad) {
+
+		List<EdificioDTO> result = new ArrayList<>();
+		List<Edificio> edificios = new ArrayList<>();
+
+		edificios = edificio_service.getEdificiosFacultad(idFacultad);
+
+		for (Edificio u : edificios) {
+			result.add(EdificioDTO.fromEdificioDTOAutocompletar(u));
+		}
+
+		return result;
+	}
+	
 }

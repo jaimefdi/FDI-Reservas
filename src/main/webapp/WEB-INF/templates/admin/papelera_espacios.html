@@ -41,12 +41,12 @@
 	<div class="row">
     	<div class="col-md-8 col-md-offset-2">
          	
-			<div class="jumbotron text-center" th:if="${#lists.isEmpty(espacios)}">
+			<div class="jumbotron text-center" th:if="${#lists.isEmpty(currentResults.content)}">
                 <i class="fa fa-ban fa-5x"></i>
                 <h4>¡Uups! No hay ningún espacio.</h4>
            </div> 
 			
-            <div class="table-responsive" th:unless="${#lists.isEmpty(espacios)}">
+            <div class="table-responsive" th:unless="${#lists.isEmpty(currentResults.content)}">
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
@@ -58,7 +58,7 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr th:each="r : ${espacios}" th:attr="data-id=${r.id}" class="danger">
+                      <tr th:each="r : ${currentResults}" th:attr="id=${r.id}" class="danger">
                       	<td class="text-center"><img class="img-circle" th:alt="${r.imagen.description}" th:src="@{${r.imagen.attachmentUrl}}" height="25" width="25"></img></td>
                         <td th:text="${r.nombreEspacio}"></td>
                         <td th:text="${r.edificio.nombreEdificio}"></td>
